@@ -1,0 +1,48 @@
+:root {
+  /* The Cyberbotanist - Generated Design System */
+  
+  /* Colors */
+  --color-primary: #8B6914;
+  --color-secondary: #6B8E6B;
+  --color-accent: #D4A843;
+  --color-background: #F5F0E8;
+  --color-surface: #FFFFFF;
+  --color-text: #2D2926;
+  --color-text-muted: #7A756E;
+  --color-border: #D9D4CC;
+  --color-warm: #D4A843;
+  --color-cool: #7BA3A8;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', 'Palatino', serif;
+  --font-body: 'Source Sans 3', 'Palatino', serif;
+  --font-mono: 'Fira Code', monospace;
+
+  /* Spacing Scale */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 0.5rem;
+  --radius-base: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 1000ms;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-snappy: cubic-bezier(0.4, 0, 1, 1);
+}

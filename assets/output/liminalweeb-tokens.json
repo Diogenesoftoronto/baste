@@ -1,0 +1,96 @@
+{
+  "colors": {
+    "primary": "#4A6FA5",
+    "secondary": "#6B5B95",
+    "accent": "#88B0C4",
+    "background": "#1A1F2E",
+    "surface": "#242B3D",
+    "text": "#E8E8F0",
+    "textMuted": "#8A8FA8",
+    "border": "#3A4055",
+    "warm": "#C4956A",
+    "cool": "#88B0C4",
+    "density": "minimal"
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": "'Space Grotesk', 'Courier New', serif",
+      "body": "'Source Sans 3', Georgia, serif",
+      "mono": "'Courier Prime', monospace"
+    },
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "2rem",
+      "4xl": "2.5rem"
+    },
+    "fontWeight": {
+      "normal": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.7
+    }
+  },
+  "spacing": {
+    "scale": {
+      "0": "0",
+      "1": "0.25rem",
+      "2": "0.5rem",
+      "3": "0.75rem",
+      "4": "1rem",
+      "5": "1.5rem",
+      "6": "2rem",
+      "7": "3rem",
+      "8": "4rem",
+      "9": "6rem",
+      "10": "8rem"
+    },
+    "density": "minimal"
+  },
+  "borders": {
+    "radius": {
+      "none": "0",
+      "sm": "0.25rem",
+      "base": "0.5rem",
+      "lg": "0.75rem",
+      "xl": "1rem",
+      "full": "9999px"
+    },
+    "width": {
+      "thin": "1px",
+      "base": "1.5px",
+      "thick": "2px"
+    },
+    "style": "dashed"
+  },
+  "shadows": {
+    "sm": "0 1px 2px rgba(0,0,0,0.05)",
+    "base": "0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)",
+    "lg": "0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)",
+    "xl": "0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)",
+    "glow": "0 0 30px rgba(136, 176, 196, 0.2)"
+  },
+  "motion": {
+    "duration": {
+      "fast": "200ms",
+      "base": "400ms",
+      "slow": "800ms",
+      "slower": "1500ms"
+    },
+    "easing": {
+      "default": "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+      "smooth": "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+      "snappy": "cubic-bezier(0.4, 0, 1, 1)",
+      "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+    }
+  }
+}

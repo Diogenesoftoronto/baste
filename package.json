@@ -1,0 +1,50 @@
+{
+  "name": "baste",
+  "version": "0.2.0",
+  "description": "Persona-driven UI and asset generation using AI agents",
+  "type": "module",
+  "bin": {
+    "baste": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./persona": {
+      "types": "./dist/persona/index.d.ts",
+      "import": "./dist/persona/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/baste-config.d.ts",
+      "import": "./dist/config/baste-config.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src/gui/public"
+  ],
+  "scripts": {
+    "dev": "flue dev --target node",
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "generate": "node dist/cli.js",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@flue/sdk": "^0.3.10",
+    "openai": "^4.85.0",
+    "valibot": "^1.0.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@flue/cli": "^0.3.10",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baste - Persona Manager</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #14141f;
+      --surface-hover: #1e1e2e;
+      --text: #e8e8f0;
+      --text-muted: #8a8fa8;
+      --border: #2a2a3d;
+      --accent: #7b68ee;
+      --accent-hover: #9b8af5;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --radius: 8px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .tabs button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+    .tabs button:hover { border-color: var(--accent); color: var(--text); }
+    .tabs button.active { background: var(--accent); border-color: var(--accent); color: white; }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .card p { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem; }
+    .card .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .tag {
+      background: rgba(123, 104, 238, 0.15);
+      color: var(--accent-hover);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+    .tag.base { background: rgba(46, 204, 113, 0.15); color: var(--success); }
+    .tag.custom { background: rgba(230, 126, 34, 0.15); color: #e67e22; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn.secondary { background: var(--surface-hover); border: 1px solid var(--border); color: var(--text); }
+    .btn.danger { background: var(--danger); }
+    .btn-group { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .empty { text-align: center; padding: 4rem; color: var(--text-muted); }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.6rem 0.8rem;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .editor { max-width: 800px; margin: 0 auto; }
+    .editor .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    .editor h2 { font-size: 1.25rem; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 640px) { .field-row { grid-template-columns: 1fr; } }
+    .details-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .details-overlay.active { opacity: 1; pointer-events: auto; }
+    .details-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 600px; width: 90%; max-height: 80vh;
+      overflow-y: auto; padding: 1.5rem;
+    }
+    .details-panel h2 { margin-bottom: 0.5rem; }
+    .details-panel .subtitle { color: var(--text-muted); margin-bottom: 1rem; }
+    .details-panel .section { margin-bottom: 1rem; }
+    .details-panel .section h4 { font-size: 0.8rem; text-transform: uppercase; color: var(--accent-hover); margin-bottom: 0.3rem; }
+    .details-panel .section p, .details-panel .section ul { font-size: 0.875rem; color: var(--text-muted); }
+    .details-panel .section ul { list-style: none; }
+    .details-panel .section ul li { padding: 0.15rem 0; }
+    .details-panel .section ul li::before { content: "• "; color: var(--accent); }
+    .close-btn {
+      position: absolute; top: 1rem; right: 1rem;
+      background: transparent; border: none; color: var(--text-muted);
+      font-size: 1.5rem; cursor: pointer;
+    }
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.8rem 1.2rem; border-radius: var(--radius);
+      color: var(--text); font-size: 0.875rem;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s; z-index: 200;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-color: var(--success); }
+    .toast.error { border-color: var(--danger); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Baste</h1>
+    <nav class="tabs">
+      <button class="active" data-tab="personas">Personas</button>
+      <button data-tab="create">Create</button>
+      <button data-tab="config">Config</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Personas Panel -->
+    <section id="panel-personas" class="panel active">
+      <div class="btn-group">
+        <button class="btn" onclick="showCreatePanel()">+ New Persona</button>
+        <button class="btn secondary" onclick="loadPersonas()">Refresh</button>
+      </div>
+      <div id="persona-grid" class="grid"></div>
+    </section>
+
+    <!-- Create/Edit Panel -->
+    <section id="panel-create" class="panel">
+      <div class="editor">
+        <div class="header">
+          <h2 id="editor-title">Create Persona</h2>
+          <div>
+            <button class="btn secondary" onclick="showPersonasPanel()">Cancel</button>
+            <button class="btn" onclick="savePersona()">Save</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>ID (kebab-case)</label>
+          <input type="text" id="p-id" placeholder="my-persona">
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="p-name" placeholder="My Persona Name">
+        </div>
+        <div class="form-group">
+          <label>Summary</label>
+          <textarea id="p-summary" placeholder="Brief description of who this persona is..."></textarea>
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Culture</h3>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Region</label>
+            <input type="text" id="p-region" placeholder="e.g. Pacific Northwest">
+          </div>
+          <div class="form-group">
+            <label>Subcultures (comma separated)</label>
+            <input type="text" id="p-subcultures" placeholder="solarpunk, biohacking">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Values (comma separated)</label>
+          <input type="text" id="p-values" placeholder="interconnectedness, growth, sustainability">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Influences</h3>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Films (comma separated)</label>
+            <input type="text" id="p-films" placeholder="Annihilation, Nausicaä">
+          </div>
+          <div class="form-group">
+            <label>Anime (comma separated)</label>
+            <input type="text" id="p-anime" placeholder="Mushishi, Princess Mononoke">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Music Genres (comma separated)</label>
+            <input type="text" id="p-music-genres" placeholder="ambient, folktronica">
+          </div>
+          <div class="form-group">
+            <label>Music Artists (comma separated)</label>
+            <input type="text" id="p-music-artists" placeholder="Biosphere, Mary Lattimore">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Visual Artists (comma separated)</label>
+          <input type="text" id="p-visual-artists" placeholder="Ernst Haeckel, Rogan Brown">
+        </div>
+        <div class="form-group">
+          <label>Spaces (comma separated)</label>
+          <input type="text" id="p-spaces" placeholder="greenhouses, herbariums">
+        </div>
+        <div class="form-group">
+          <label>Obsessions (comma separated)</label>
+          <input type="text" id="p-obsessions" placeholder="mycelial networks, bioluminescence">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Behaviors</h3>
+        <div class="form-group">
+          <label>Interface Values (comma separated)</label>
+          <input type="text" id="p-interface-values" placeholder="discoverability, organic feedback">
+        </div>
+        <div class="form-group">
+          <label>Pet Peeves (comma separated)</label>
+          <input type="text" id="p-pet-peeves" placeholder="aggressive notifications, dark patterns">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Aesthetic</h3>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Color Temperature</label>
+            <select id="p-color-temp">
+              <option value="warm">Warm</option>
+              <option value="cool">Cool</option>
+              <option value="neutral" selected>Neutral</option>
+              <option value="high-contrast">High Contrast</option>
+              <option value="muted">Muted</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Density</label>
+            <select id="p-density">
+              <option value="minimal">Minimal</option>
+              <option value="dense">Dense</option>
+              <option value="rich" selected>Rich</option>
+              <option value="maximalist">Maximalist</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Edge Style</label>
+            <select id="p-edge">
+              <option value="sharp">Sharp</option>
+              <option value="soft" selected>Soft</option>
+              <option value="organic">Organic</option>
+              <option value="geometric">Geometric</option>
+              <option value="brutalist">Brutalist</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Motion Style</label>
+            <select id="p-motion">
+              <option value="smooth" selected>Smooth</option>
+              <option value="snappy">Snappy</option>
+              <option value="liquid">Liquid</option>
+              <option value="mechanical">Mechanical</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Typography Style</label>
+            <select id="p-typography">
+              <option value="clean">Clean</option>
+              <option value="expressive" selected>Expressive</option>
+              <option value="retro">Retro</option>
+              <option value="futuristic">Futuristic</option>
+              <option value="handcrafted">Handcrafted</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Texture Style</label>
+            <select id="p-texture">
+              <option value="flat">Flat</option>
+              <option value="textured" selected>Textured</option>
+              <option value="noisy">Noisy</option>
+              <option value="clean">Clean</option>
+              <option value="grainy">Grainy</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Icon Style</label>
+            <select id="p-icon">
+              <option value="line" selected>Line</option>
+              <option value="filled">Filled</option>
+              <option value="hand-drawn">Hand-drawn</option>
+              <option value="geometric">Geometric</option>
+              <option value="abstract">Abstract</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Layout Style</label>
+            <select id="p-layout">
+              <option value="grid">Grid</option>
+              <option value="organic" selected>Organic</option>
+              <option value="asymmetric">Asymmetric</option>
+              <option value="brutalist">Brutalist</option>
+              <option value="editorial">Editorial</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Config Panel -->
+    <section id="panel-config" class="panel">
+      <div class="editor">
+        <div class="header">
+          <h2>Configuration</h2>
+          <div>
+            <button class="btn" onclick="exportConfig()">Export JSON</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Output Directory</label>
+          <input type="text" id="cfg-output-dir" value="./assets/output">
+        </div>
+        <div class="form-group">
+          <label>Persona Directory</label>
+          <input type="text" id="cfg-persona-dir" value="./personas">
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>QD Iterations</label>
+            <input type="number" id="cfg-iterations" value="5" min="1" max="50">
+          </div>
+          <div class="form-group">
+            <label>Batch Size</label>
+            <input type="number" id="cfg-batch-size" value="3" min="1" max="20">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="form-group">
+            <label>Mutation Rate</label>
+            <input type="number" id="cfg-mutation" value="0.4" min="0" max="1" step="0.1">
+          </div>
+          <div class="form-group">
+            <label>Quality Threshold</label>
+            <input type="number" id="cfg-threshold" value="0.5" min="0" max="1" step="0.1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Output Count</label>
+          <input type="number" id="cfg-output-count" value="3" min="1" max="20">
+        </div>
+        <div class="form-group">
+          <label>Evaluator Model</label>
+          <input type="text" id="cfg-model" value="gpt-4o">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">Generators</h3>
+        <div class="form-group">
+          <label>Image Provider</label>
+          <select id="cfg-img-provider">
+            <option value="openai" selected>OpenAI</option>
+            <option value="stability">Stability AI</option>
+            <option value="local">Local</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Image Model</label>
+          <input type="text" id="cfg-img-model" value="gpt-image-2">
+        </div>
+        <div class="form-group">
+          <label>SVG Provider</label>
+          <select id="cfg-svg-provider">
+            <option value="quiver" selected>Quiver</option>
+            <option value="openai">OpenAI</option>
+            <option value="local">Local</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Video Provider</label>
+          <select id="cfg-video-provider">
+            <option value="veo" selected>Veo</option>
+            <option value="runway">Runway</option>
+            <option value="local">Local</option>
+          </select>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Details Modal -->
+  <div id="details-overlay" class="details-overlay" onclick="closeDetails(event)">
+    <div class="details-panel" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeDetails()">&times;</button>
+      <div id="details-content"></div>
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+        <button class="btn" onclick="generateFromDetails()">Generate Assets</button>
+        <button class="btn secondary" onclick="editFromDetails()">Edit</button>
+        <button class="btn secondary" onclick="deleteFromDetails()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let personas = [];
+    let currentDetailId = null;
+    let editingId = null;
+
+    // Tab switching
+    document.querySelectorAll('.tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show ' + type;
+      setTimeout(() => t.className = 'toast', 3000);
+    }
+
+    function showPersonasPanel() {
+      document.querySelector('.tabs button[data-tab="personas"]').click();
+    }
+    function showCreatePanel() {
+      editingId = null;
+      document.getElementById('editor-title').textContent = 'Create Persona';
+      clearForm();
+      document.querySelector('.tabs button[data-tab="create"]').click();
+    }
+
+    function clearForm() {
+      document.querySelectorAll('#panel-create input, #panel-create textarea').forEach(el => {
+        if (el.tagName === 'SELECT') el.selectedIndex = 0;
+        else el.value = '';
+      });
+      document.getElementById('p-color-temp').value = 'neutral';
+      document.getElementById('p-density').value = 'rich';
+      document.getElementById('p-edge').value = 'soft';
+      document.getElementById('p-motion').value = 'smooth';
+      document.getElementById('p-typography').value = 'expressive';
+      document.getElementById('p-texture').value = 'textured';
+      document.getElementById('p-icon').value = 'line';
+      document.getElementById('p-layout').value = 'organic';
+    }
+
+    function showDetails(id) {
+      const p = personas.find(x => x.id === id);
+      if (!p) return;
+      currentDetailId = id;
+      const html = `
+        <h2>${p.name}</h2>
+        <p class="subtitle">${p.summary || ''}</p>
+        <div class="section">
+          <h4>Culture</h4>
+          <p>Region: ${p.culture?.region || 'N/A'}</p>
+          <p>Subcultures: ${p.culture?.subcultures?.join(', ') || 'N/A'}</p>
+          <p>Values: ${p.culture?.values?.join(', ') || 'N/A'}</p>
+        </div>
+        <div class="section">
+          <h4>Influences</h4>
+          <p>Films: ${p.influences?.films?.join(', ') || 'N/A'}</p>
+          <p>Anime: ${p.influences?.anime?.join(', ') || 'N/A'}</p>
+          <p>Music: ${p.influences?.music?.genres?.join(', ') || 'N/A'}</p>
+          <p>Spaces: ${p.influences?.spaces?.join(', ') || 'N/A'}</p>
+          <p>Obsessions: ${p.influences?.obsessions?.join(', ') || 'N/A'}</p>
+        </div>
+        <div class="section">
+          <h4>Aesthetic</h4>
+          <p>Color: ${p.aesthetic?.colorTemperature || 'N/A'} | Density: ${p.aesthetic?.density || 'N/A'}</p>
+          <p>Edge: ${p.aesthetic?.edgeStyle || ''} | Motion: ${p.aesthetic?.motionStyle || ''}</p>
+          <p>Typography: ${p.aesthetic?.typographyStyle || ''} | Texture: ${p.aesthetic?.textureStyle || ''}</p>
+        </div>
+      `;
+      document.getElementById('details-content').innerHTML = html;
+      document.getElementById('details-overlay').classList.add('active');
+    }
+
+    function closeDetails(e) {
+      if (e && e.target !== document.getElementById('details-overlay')) return;
+      document.getElementById('details-overlay').classList.remove('active');
+      currentDetailId = null;
+    }
+
+    function editFromDetails() {
+      if (!currentDetailId) return;
+      closeDetails();
+      const p = personas.find(x => x.id === currentDetailId);
+      if (!p) return;
+      editingId = currentDetailId;
+      document.getElementById('editor-title').textContent = 'Edit Persona';
+      // Fill form
+      document.getElementById('p-id').value = p.id;
+      document.getElementById('p-name').value = p.name;
+      document.getElementById('p-summary').value = p.summary || '';
+      document.getElementById('p-region').value = p.culture?.region || '';
+      document.getElementById('p-subcultures').value = (p.culture?.subcultures || []).join(', ');
+      document.getElementById('p-values').value = (p.culture?.values || []).join(', ');
+      document.getElementById('p-films').value = (p.influences?.films || []).join(', ');
+      document.getElementById('p-anime').value = (p.influences?.anime || []).join(', ');
+      document.getElementById('p-music-genres').value = (p.influences?.music?.genres || []).join(', ');
+      document.getElementById('p-music-artists').value = (p.influences?.music?.artists || []).join(', ');
+      document.getElementById('p-visual-artists').value = (p.influences?.visualArtists || []).join(', ');
+      document.getElementById('p-spaces').value = (p.influences?.spaces || []).join(', ');
+      document.getElementById('p-obsessions').value = (p.influences?.obsessions || []).join(', ');
+      document.getElementById('p-interface-values').value = (p.behaviors?.interfaceValues || []).join(', ');
+      document.getElementById('p-pet-peeves').value = (p.behaviors?.petPeeves || []).join(', ');
+      document.getElementById('p-color-temp').value = p.aesthetic?.colorTemperature || 'neutral';
+      document.getElementById('p-density').value = p.aesthetic?.density || 'rich';
+      document.getElementById('p-edge').value = p.aesthetic?.edgeStyle || 'soft';
+      document.getElementById('p-motion').value = p.aesthetic?.motionStyle || 'smooth';
+      document.getElementById('p-typography').value = p.aesthetic?.typographyStyle || 'expressive';
+      document.getElementById('p-texture').value = p.aesthetic?.textureStyle || 'textured';
+      document.getElementById('p-icon').value = p.aesthetic?.iconStyle || 'line';
+      document.getElementById('p-layout').value = p.aesthetic?.layoutStyle || 'organic';
+      document.querySelector('.tabs button[data-tab="create"]').click();
+    }
+
+    async function deleteFromDetails() {
+      if (!currentDetailId) return;
+      if (!confirm('Delete this persona?')) return;
+      try {
+        await fetch(`/api/personas/${currentDetailId}`, { method: 'DELETE' });
+        showToast('Deleted');
+        closeDetails();
+        loadPersonas();
+      } catch {
+        showToast('Delete failed', 'error');
+      }
+    }
+
+    function generateFromDetails() {
+      if (!currentDetailId) return;
+      showToast('Generation started (check console)');
+      // In a real implementation, this would trigger asset generation
+    }
+
+    function splitCSV(val) {
+      return val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
+    async function savePersona() {
+      const id = document.getElementById('p-id').value.trim();
+      if (!id) { showToast('ID is required', 'error'); return; }
+
+      const persona = {
+        id,
+        name: document.getElementById('p-name').value.trim() || id,
+        summary: document.getElementById('p-summary').value.trim(),
+        culture: {
+          region: document.getElementById('p-region').value.trim() || undefined,
+          subcultures: splitCSV(document.getElementById('p-subcultures').value),
+          values: splitCSV(document.getElementById('p-values').value),
+        },
+        influences: {
+          films: splitCSV(document.getElementById('p-films').value),
+          shows: [],
+          anime: splitCSV(document.getElementById('p-anime').value),
+          music: {
+            genres: splitCSV(document.getElementById('p-music-genres').value),
+            artists: splitCSV(document.getElementById('p-music-artists').value),
+          },
+          games: [],
+          visualArtists: splitCSV(document.getElementById('p-visual-artists').value),
+          fashion: [],
+          spaces: splitCSV(document.getElementById('p-spaces').value),
+          tools: [],
+          obsessions: splitCSV(document.getElementById('p-obsessions').value),
+        },
+        behaviors: {
+          discovery: [],
+          interfaceValues: splitCSV(document.getElementById('p-interface-values').value),
+          platforms: [],
+          expression: [],
+          petPeeves: splitCSV(document.getElementById('p-pet-peeves').value),
+        },
+        aesthetic: {
+          colorTemperature: document.getElementById('p-color-temp').value,
+          density: document.getElementById('p-density').value,
+          edgeStyle: document.getElementById('p-edge').value,
+          motionStyle: document.getElementById('p-motion').value,
+          typographyStyle: document.getElementById('p-typography').value,
+          textureStyle: document.getElementById('p-texture').value,
+          iconStyle: document.getElementById('p-icon').value,
+          layoutStyle: document.getElementById('p-layout').value,
+          visualKeywords: splitCSV(document.getElementById('p-films').value + ',' +
+            document.getElementById('p-anime').value + ',' +
+            document.getElementById('p-visual-artists').value).slice(0, 8),
+          moodKeywords: splitCSV(document.getElementById('p-values').value + ',' +
+            document.getElementById('p-interface-values').value).slice(0, 6),
+        },
+      };
+
+      try {
+        const url = editingId ? `/api/personas/${editingId}` : '/api/personas';
+        const method = editingId ? 'PUT' : 'POST';
+        const resp = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(persona),
+        });
+        if (!resp.ok) throw new Error('Save failed');
+        showToast(editingId ? 'Updated' : 'Created');
+        showPersonasPanel();
+        loadPersonas();
+      } catch {
+        showToast('Save failed', 'error');
+      }
+    }
+
+    async function loadPersonas() {
+      try {
+        const resp = await fetch('/api/personas');
+        personas = await resp.json();
+        const grid = document.getElementById('persona-grid');
+        if (!personas.length) {
+          grid.innerHTML = '<div class="empty"><p>No personas yet. Create your first!</p></div>';
+          return;
+        }
+        grid.innerHTML = personas.map(p => `
+          <div class="card" onclick="showDetails('${p.id}')">
+            <h3>${p.name}</h3>
+            <p>${p.summary || 'No summary'}</p>
+            <div class="tags">
+              <span class="tag ${p._source || 'base'}">${p._source || 'base'}</span>
+              <span class="tag">${p.aesthetic?.colorTemperature || 'N/A'}</span>
+              <span class="tag">${p.aesthetic?.density || 'N/A'}</span>
+            </div>
+          </div>
+        `).join('');
+      } catch {
+        document.getElementById('persona-grid').innerHTML = '<div class="empty"><p>Failed to load personas. Is the server running?</p></div>';
+      }
+    }
+
+    function exportConfig() {
+      const config = {
+        outputDir: document.getElementById('cfg-output-dir').value,
+        personaDir: document.getElementById('cfg-persona-dir').value,
+        qd: {
+          iterations: parseInt(document.getElementById('cfg-iterations').value),
+          batchSize: parseInt(document.getElementById('cfg-batch-size').value),
+          mutationRate: parseFloat(document.getElementById('cfg-mutation').value),
+          qualityThreshold: parseFloat(document.getElementById('cfg-threshold').value),
+        },
+        outputCount: parseInt(document.getElementById('cfg-output-count').value),
+        evaluator: { model: document.getElementById('cfg-model').value },
+        generators: {
+          image: { provider: document.getElementById('cfg-img-provider').value, model: document.getElementById('cfg-img-model').value },
+          svg: { provider: document.getElementById('cfg-svg-provider').value },
+          video: { provider: document.getElementById('cfg-video-provider').value },
+        },
+      };
+      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'baste.config.json';
+      a.click();
+      showToast('Config exported');
+    }
+
+    // Initial load
+    loadPersonas();
+  </script>
+</body>
+</html>
