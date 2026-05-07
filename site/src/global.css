@@ -1,0 +1,20 @@
+@layer reset, base, tokens, recipes, utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: #0A0A0F;
+    color: #E8E8F0;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(123, 104, 238, 0.3);
+  }
+}

@@ -7,3 +7,10 @@ personas/*.json
 baste.config.json
 .vscode/
 .idea/
+
+# Site built output is committed for deployment
+# site-dist/
+
+# PandaCSS generated files
+site/styled-system
+site/styled-system-studio
