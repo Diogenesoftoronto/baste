@@ -3,16 +3,22 @@
   "checkpoint_id": "e4e219b04c8a",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "README.md",
     "package.json",
     "site/panda.config.ts",
+    "site/public/bg-frame.png",
+    "site/public/bg-grid.png",
+    "site/public/bg-splatter.png",
+    "site/public/og-baste.png",
+    "site/src/components/layout/baste-logo.tsx",
     "site/src/components/layout/nav.tsx",
     "site/src/components/router-head/router-head.tsx",
     "site/src/components/sections/hero.tsx",
     "site/src/global.css",
     "site/src/root.tsx",
+    "site/src/routes/gui/index.tsx",
     "src/assets/design-system.ts",
     "src/cli.ts",
     "src/gui/api.ts",
@@ -31,13 +37,19 @@
       "transcript": "/e4/e219b04c8a/0/full.jsonl",
       "content_hash": "/e4/e219b04c8a/0/content_hash.txt",
       "prompt": "/e4/e219b04c8a/0/prompt.txt"
+    },
+    {
+      "metadata": "/e4/e219b04c8a/1/metadata.json",
+      "transcript": "/e4/e219b04c8a/1/full.jsonl",
+      "content_hash": "/e4/e219b04c8a/1/content_hash.txt",
+      "prompt": "/e4/e219b04c8a/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 25,
-    "cache_creation_tokens": 33165,
-    "cache_read_tokens": 412552,
-    "output_tokens": 4374,
-    "api_call_count": 15
+    "input_tokens": 116,
+    "cache_creation_tokens": 206897,
+    "cache_read_tokens": 7430299,
+    "output_tokens": 55794,
+    "api_call_count": 86
   }
 }
