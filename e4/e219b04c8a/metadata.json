@@ -1,0 +1,43 @@
+{
+  "cli_version": "dev",
+  "checkpoint_id": "e4e219b04c8a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "package.json",
+    "site/panda.config.ts",
+    "site/src/components/layout/nav.tsx",
+    "site/src/components/router-head/router-head.tsx",
+    "site/src/components/sections/hero.tsx",
+    "site/src/global.css",
+    "site/src/root.tsx",
+    "src/assets/design-system.ts",
+    "src/cli.ts",
+    "src/gui/api.ts",
+    "src/gui/public/index.html",
+    "src/gui/server.ts",
+    "src/index.ts",
+    "src/openpencil/bridge.ts",
+    "src/versioning/database.ts",
+    "src/versioning/registry.ts",
+    "src/versioning/shareable.ts",
+    "src/versioning/types.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e4/e219b04c8a/0/metadata.json",
+      "transcript": "/e4/e219b04c8a/0/full.jsonl",
+      "content_hash": "/e4/e219b04c8a/0/content_hash.txt",
+      "prompt": "/e4/e219b04c8a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 25,
+    "cache_creation_tokens": 33165,
+    "cache_read_tokens": 412552,
+    "output_tokens": 4374,
+    "api_call_count": 15
+  }
+}
