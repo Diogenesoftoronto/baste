@@ -3,8 +3,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background: #0A0A0F;
-    color: #E8E8F0;
+    background: #0A0A12;
+    color: #F5F5F2;
   }
 
   body {
@@ -12,9 +12,102 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+    position: relative;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(138, 0, 255, 0.18) 0%, transparent 45%),
+      radial-gradient(circle at 88% 82%, rgba(255, 0, 184, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(198, 255, 0, 0.05) 0%, transparent 60%),
+      #0A0A12;
+  }
+
+  /* Layered atmosphere — splatter frame fixed behind content */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url("/bg-frame.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+    mix-blend-mode: screen;
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
   }
 
   ::selection {
-    background: rgba(123, 104, 238, 0.3);
+    background: rgba(198, 255, 0, 0.4);
+    color: #0A0A0A;
+  }
+
+  /* TMNT spray-paint scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #15101F; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #C6FF00 0%, #8A00FF 100%);
+    border-radius: 6px;
+  }
+
+  .baste-graffiti {
+    font-family: 'Bowlby One', 'Space Grotesk', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .baste-drip-text {
+    background: linear-gradient(180deg, #C6FF00 0%, #7BFF36 60%, #00E676 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 28px rgba(198, 255, 0, 0.35);
+  }
+
+  .baste-purple-glow {
+    box-shadow:
+      0 0 0 2px #0A0A0A,
+      0 0 0 4px #8A00FF,
+      0 0 24px rgba(138, 0, 255, 0.6);
+  }
+
+  /* Reusable layered-bg utility classes */
+  .baste-bg-grid {
+    background-image: url("/bg-grid.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .baste-bg-frame {
+    background-image: url("/bg-frame.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .baste-bg-splatter {
+    background-image: url("/bg-splatter.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Drop these onto a relatively-positioned container as a layer */
+  .baste-bg-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+  }
+
+  .baste-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 }

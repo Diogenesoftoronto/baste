@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { flex, hstack } from "styled-system/patterns";
+import { BasteLogo } from "./baste-logo";
 
 export const Nav = component$(() => {
   return (
@@ -11,9 +12,11 @@ export const Nav = component$(() => {
         left: 0,
         right: 0,
         zIndex: 50,
-        bg: "rgba(10,10,15,0.8)",
+        bg: "rgba(10,10,18,0.85)",
         backdropBlur: "xl",
-        borderBottom: "1px solid token(colors.border)",
+        borderBottom: "2px solid",
+        borderColor: "electric-purple",
+        boxShadow: "0 4px 0 rgba(138,0,255,0.3)",
       })}
     >
       <div
@@ -26,33 +29,8 @@ export const Nav = component$(() => {
           justify: "space-between",
         })}
       >
-        <a href="/" class={hstack({ gap: 3 })}>
-          <div
-            class={css({
-              w: 8,
-              h: 8,
-              rounded: "lg",
-              bgGradient: "to-br",
-              gradientFrom: "orange.500",
-              gradientTo: "amber.600",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "sm",
-              fontWeight: "bold",
-            })}
-          >
-            B
-          </div>
-          <span
-            class={css({
-              fontFamily: "heading",
-              fontWeight: "semibold",
-              fontSize: "lg",
-            })}
-          >
-            Baste
-          </span>
+        <a href="/" class={hstack({ gap: 2, textDecoration: "none" })}>
+          <BasteLogo size={40} withWord />
         </a>
 
         <div
@@ -66,6 +44,7 @@ export const Nav = component$(() => {
             { label: "Personas", href: "#personas" },
             { label: "How It Works", href: "#how-it-works" },
             { label: "Install", href: "#installation" },
+            { label: "Studio", href: "/gui" },
             { label: "GitHub", href: "https://github.com/diogeneshamilton/baste" },
           ].map((link) => (
             <a
@@ -74,28 +53,42 @@ export const Nav = component$(() => {
               target={link.href.startsWith("http") ? "_blank" : undefined}
               class={css({
                 color: "text-muted",
-                _hover: { color: "text" },
-                transition: "color 0.2s",
+                fontWeight: "semibold",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                _hover: { color: "acid-lime", textShadow: "0 0 12px rgba(198,255,0,0.7)" },
+                transition: "all 0.2s",
               })}
             >
               {link.label}
             </a>
           ))}
           <a
-            href="#installation"
+            href="/gui"
             class={css({
-              px: 4,
+              px: 5,
               py: 2,
               rounded: "lg",
-              bg: "surface-hover",
-              color: "text",
+              bg: "acid-lime",
+              color: "ink-black",
               fontSize: "sm",
-              fontWeight: "medium",
-              _hover: { bg: "border" },
-              transition: "all 0.2s",
+              fontWeight: "bold",
+              fontFamily: "graffiti",
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
+              border: "2px solid",
+              borderColor: "ink-black",
+              boxShadow: "drip",
+              transition: "all 0.15s",
+              _hover: {
+                bg: "neon-fuchsia",
+                color: "off-white",
+                transform: "translate(-2px,-2px)",
+                boxShadow: "6px 8px 0 #0A0A0A",
+              },
             })}
           >
-            Get Started
+            Start Co-creating »
           </a>
         </div>
       </div>

@@ -9,8 +9,14 @@ import { createServer } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, join } from "node:path";
 import type { Server } from "node:http";
+import { handleAPIRequest } from "./api.js";
 
-const GUI_ROOT = resolve(import.meta.dirname || ".", "public");
+const GUI_ROOT = resolve(
+  import.meta.dirname || ".",
+  existsSync(resolve(import.meta.dirname || ".", "public"))
+    ? "public"
+    : "../../../src/gui/public"
+);
 
 function getMimeType(path: string): string {
   if (path.endsWith(".html")) return "text/html";
@@ -48,18 +54,27 @@ export function createGUIServer(port = 3456): Server {
     const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
     const filePath = join(GUI_ROOT, pathname);
 
-    if (existsSync(filePath)) {
-      serveFile(res, filePath);
-    } else {
-      // Fallback to index.html for SPA routing
-      const indexPath = join(GUI_ROOT, "index.html");
-      if (existsSync(indexPath)) {
-        serveFile(res, indexPath);
+    // API routes — handled by api.ts
+    handleAPIRequest(req, res).then((isApi) => {
+      if (isApi) return;
+
+      // Static files
+      if (existsSync(filePath)) {
+        serveFile(res, filePath);
       } else {
-        res.writeHead(404, { "Content-Type": "text/plain" });
-        res.end("GUI not built. Run the build step first.");
+        // Fallback to index.html for SPA routing
+        const indexPath = join(GUI_ROOT, "index.html");
+        if (existsSync(indexPath)) {
+          serveFile(res, indexPath);
+        } else {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("GUI not built. Run the build step first.");
+        }
       }
-    }
+    }).catch(() => {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal server error");
+    });
   });
 
   return server;
