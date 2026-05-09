@@ -8,6 +8,14 @@ baste.config.json
 .vscode/
 .idea/
 
+# AI tool configs
+.claude/
+.codex/
+.cursor/
+.gemini/
+.opencode/
+.entire/
+
 # Site built output is committed for deployment
 # site-dist/
 

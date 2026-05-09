@@ -14,6 +14,18 @@ export const HeroSection = component$(() => {
         pt: 16,
       })}
     >
+      {/* Layered splatter+grid backdrop */}
+      <div
+        class="baste-bg-splatter"
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.55,
+          mixBlendMode: "screen",
+          pointerEvents: "none",
+        }}
+      />
       {/* Background gradients */}
       <div
         class={css({

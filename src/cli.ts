@@ -15,7 +15,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { resolve, dirname, basename } from "node:path";
 import {
   getPersona,
   listPersonas,
@@ -37,6 +37,7 @@ import {
   type BasteUserConfig,
 } from "./config/baste-config.js";
 import { startGUIServer } from "./gui/server.js";
+import { DesignVersionRegistry } from "./versioning/registry.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -55,6 +56,23 @@ Usage:
   baste delete <persona-id>                 Delete a custom persona
   baste config [options]                    Manage configuration
   baste gui [--port <n>]                    Start web GUI
+
+Design Version Control:
+  baste init <persona-id>                   Initialize design versioning
+  baste history <persona-id> [--limit <n>]  Show design history
+  baste status <persona-id>                 Show current state
+  baste branches <persona-id>               List branches
+  baste branch <persona-id> <name>          Create design branch
+  baste switch <persona-id> <branch>        Switch active branch
+  baste diff <v1> <v2>                      Diff two versions
+  baste update <persona-id> <key> <val>     Update design token
+  baste revert <persona-id> <version>       Revert to version
+  baste culture <persona-id> [path...]      Add cultural references
+
+Export/Share:
+  baste export <persona-id> [path]          Export .baste file
+  baste import <path>                       Import .baste file
+  baste openpencil <persona-id> [path]      Export .pen for OpenPencil
 
 Create options:
   --name <name>                             Display name for the persona
@@ -79,10 +97,10 @@ Global options:
 
 Examples:
   baste generate cyberbotanist
-  baste ui-kit nightmarketcoder --output-dir ./my-app/assets
-  baste create mypersona --name "My Persona" --base cyberbotanist
-  baste config --init
-  baste gui --port 8080
+  baste init cyberbotanist                  Init version control
+  baste history cyberbotanist               Show full history
+  baste export cyberbotanist ./cyber.baste  Export for sharing
+  baste culture cyberbotanist ~/Pictures/cultural/  Scan cultural refs
 `);
 }
 
@@ -461,6 +479,380 @@ async function main() {
       console.log("Press Ctrl+C to stop.");
       // Keep process alive
       await new Promise(() => {});
+      break;
+    }
+
+    case "init": {
+      const id = String(options._positional || args[1]);
+      const persona = getPersona(id);
+      if (!persona) {
+        console.error(`Unknown persona: ${id}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry({ author: "baste-cli" });
+      const result = registry.initPersona(persona);
+
+      console.log(`\n✅ Initialized design versioning for: ${persona.name}`);
+      console.log(`   Branch: ${result.branch.name} (${result.branch.id})`);
+      console.log(`   Commit: ${result.version.commitId.slice(0, 7)}`);
+      console.log(`   Component: ${result.component.name}`);
+      console.log(`\nDesign tokens are now version controlled.`);
+      console.log(`Use: baste history ${id}  to view the timeline.`);
+      break;
+    }
+
+    case "history": {
+      const id = String(options._positional || args[1]);
+      const limit = parseInt(String(options.limit || "20"));
+      const jsonOut = Boolean(options.json);
+      const persona = getPersona(id);
+      if (!persona) {
+        console.error(`Unknown persona: ${id}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      if (jsonOut) {
+        const data = registry.getPersonaHistory(id, limit);
+        console.log(JSON.stringify(data, null, 2));
+      } else {
+        const log = registry.getHistoryLog(id, limit);
+        console.log(log);
+      }
+      break;
+    }
+
+    case "status": {
+      const id = String(options._positional || args[1]);
+      const jsonOut = Boolean(options.json);
+      const persona = getPersona(id);
+      if (!persona) {
+        console.error(`Unknown persona: ${id}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const active = registry.db.getActiveBranch(id);
+      const components = registry.listComponents(id);
+      const refs = registry.getCulturalRefs(id);
+      const latest = registry.db.getLatestVersion(id);
+
+      if (jsonOut) {
+        console.log(JSON.stringify({ persona: { id, name: persona.name }, activeBranch: active ?? null, latestVersion: latest ?? null, components: components.length, culturalRefs: refs.length }, null, 2));
+        break;
+      }
+
+      console.log(`\n📋 Status for ${persona.name} (${id})`);
+      console.log(`   Active branch: ${active ? active.name : "none (not initialized)"}`);
+      console.log(`   Latest commit: ${latest ? latest.commitId.slice(0, 7) + " — " + latest.message : "none"}`);
+      console.log(`   Components: ${components.length}`);
+      console.log(`   Cultural refs: ${refs.length}`);
+
+      if (components.length > 0) {
+        const c = components[0];
+        console.log(`\n   Design tokens:`);
+        console.log(`     Colors — Primary: ${c.tokens.colors.primary}  Background: ${c.tokens.colors.background}`);
+        console.log(`     Typography — Heading: ${c.tokens.typography.fontFamily.heading.split(",")[0]}`);
+        console.log(`     Motion — Style: ${c.tokens.motion.easing.default}`);
+      }
+      console.log("");
+      break;
+    }
+
+    case "branches": {
+      const id = String(options._positional || args[1]);
+      const persona = getPersona(id);
+      if (!persona) {
+        console.error(`Unknown persona: ${id}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const active = registry.db.getActiveBranch(id);
+      const branches = registry.listBranches(id);
+
+      console.log(`\n🌿 Branches for ${persona.name}:`);
+      console.log("");
+      for (const b of branches) {
+        const marker = active && b.id === active.id ? " * " : "   ";
+        const defMarker = b.isDefault ? " [default]" : "";
+        console.log(`${marker}${b.name}${defMarker}`);
+        console.log(`     ${b.description || ""}`);
+      }
+      console.log("");
+      break;
+    }
+
+    case "revert": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+
+      const targetVersion = String(options._positional2 || args[2]);
+      if (!targetVersion) {
+        console.error("Usage: baste revert <persona-id> <version-id>");
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const components = registry.listComponents(personaId);
+      if (components.length === 0) {
+        // Auto-init
+        registry.initPersona(persona);
+      }
+
+      const component = registry.listComponents(personaId)[0];
+      if (!component) {
+        console.error("No components found");
+        process.exit(1);
+      }
+
+      const result = registry.revertToVersion(component.id, targetVersion);
+      console.log(`\n↩️  Reverted ${component.name} to ${targetVersion.slice(0, 7)}`);
+      console.log(`   New commit: ${result.revertVersion.commitId.slice(0, 7)} — ${result.revertVersion.message}`);
+      break;
+    }
+
+    case "branch": {
+      const personaId = String(options._positional || args[1]);
+      const branchName = String(options._positional2 || args[2]);
+      if (!branchName) {
+        console.error("Usage: baste branch <persona-id> <branch-name>");
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const branch = registry.createBranch(personaId, branchName);
+      console.log(`Created branch: ${branch.name} (${branch.id}) for ${personaId}`);
+      break;
+    }
+
+    case "switch": {
+      const personaId = String(options._positional || args[1]);
+      const branchName = String(options._positional2 || args[2]);
+      if (!branchName) {
+        console.error("Usage: baste switch <persona-id> <branch-name>");
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const branch = registry.switchBranch(personaId, branchName);
+      console.log(`Switched to branch: ${branch.name} (${branch.id})`);
+      break;
+    }
+
+    case "diff": {
+      const v1 = String(options._positional || args[1]);
+      const v2 = String(options._positional2 || args[2]);
+      if (!v1 || !v2) {
+        console.error("Usage: baste diff <version-id-1> <version-id-2>");
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const diff = registry.diff(v1, v2);
+      console.log(`\n${diff.summary}`);
+      console.log("");
+      if (diff.tokenDiffs.length > 0) {
+        console.log("Token changes:");
+        for (const td of diff.tokenDiffs) {
+          console.log(`  ${td.tokenPath}: ${td.oldValue} → ${td.newValue}`);
+        }
+      } else {
+        console.log("No token-level changes recorded (changes may be in other entities).");
+      }
+      console.log("");
+      for (const ch of diff.changes) {
+        console.log(`  [${ch.changeType}] ${ch.entityType}::${ch.entityId.slice(0, 7)}${ch.property ? ` :: ${ch.property}` : ""}${ch.newValue ? ` → ${ch.newValue}` : ""}`);
+      }
+      break;
+    }
+
+    case "update": {
+      const personaId = String(options._positional || args[1]);
+      const tokenPath = String(options._positional2 || args[2]);
+      const newValue = String(args[3]); // Third positional
+      if (!tokenPath || !newValue) {
+        console.error("Usage: baste update <persona-id> <token.path> <new-value>");
+        console.error("  e.g. baste update cyberbotanist colors.primary '#FF0000'");
+        process.exit(1);
+      }
+
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const components = registry.listComponents(personaId);
+      if (components.length === 0) {
+        // Auto-init if not initialized
+        registry.initPersona(persona);
+      }
+
+      const component = registry.listComponents(personaId)[0];
+      if (!component) {
+        console.error("No components found and auto-init failed");
+        process.exit(1);
+      }
+
+      // Parse token path (e.g., "colors.primary" or "typography.fontFamily.heading")
+      const path = tokenPath.split(".");
+      const result = registry.updateComponentTokens(component.id, (tokens) => {
+        let target: any = tokens;
+        for (let i = 0; i < path.length - 1; i++) {
+          if (!target[path[i]]) target[path[i]] = {};
+          target = target[path[i]];
+        }
+        target[path[path.length - 1]] = newValue;
+        return tokens;
+      });
+
+      console.log(`✅ Updated ${tokenPath} = ${newValue}`);
+      console.log(`   Version: ${result.version.commitId.slice(0, 7)}`);
+      console.log(`   Changes: ${result.changes.length}`);
+      for (const ch of result.changes) {
+        console.log(`   • ${ch.changeType}: ${ch.property}`);
+      }
+      break;
+    }
+
+    case "culture": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+
+      // Collect remaining args as image paths
+      const imagePaths: string[] = [];
+      for (let i = 2; i < args.length; i++) {
+        if (!args[i].startsWith("--")) {
+          imagePaths.push(resolve(args[i]));
+        }
+      }
+
+      const registry = new DesignVersionRegistry();
+
+      if (imagePaths.length === 0) {
+        // Just show current cultural refs
+        const refs = registry.getCulturalRefs(personaId);
+        console.log(`\n🎨 Cultural references for ${persona.name}:`);
+        console.log("");
+        for (const ref of refs) {
+          console.log(`  [${ref.type}] ${ref.value}`);
+          console.log(`      Why: ${ref.designRationale}`);
+          if (ref.source) console.log(`      Source: ${ref.source}`);
+          console.log("");
+        }
+        if (refs.length === 0) {
+          console.log("  No cultural references recorded yet.");
+          console.log("  Use: baste culture <persona> <image-path...>");
+        }
+        break;
+      }
+
+      // Add cultural refs from image paths
+      let added = 0;
+      for (const path of imagePaths) {
+        if (existsSync(path)) {
+          const stat = await import("node:fs").then((m) => m.statSync(path));
+          if (stat.isDirectory()) {
+            const files = await import("node:fs").then((m) => m.readdirSync(path));
+            for (const file of files.filter((f: string) => /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(f))) {
+              registry.addCulturalReference(personaId, {
+                type: "image",
+                value: basename(file),
+                designRationale: `Cultural reference from image library`,
+                source: resolve(path, file),
+              });
+              added++;
+            }
+          } else {
+            registry.addCulturalReference(personaId, {
+              type: "image",
+              value: basename(path),
+              designRationale: `Cultural reference image`,
+              source: path,
+            });
+            added++;
+          }
+        } else {
+          console.warn(`Path not found: ${path}`);
+        }
+      }
+
+      console.log(`✅ Added ${added} cultural reference(s) to ${persona.name}`);
+      break;
+    }
+
+    case "export": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+
+      const outputDir = String(options.outputdir || fileConfig.outputDir || "./assets/output");
+      const defaultPath = `${outputDir}/${personaId}.baste`;
+      const outputPath = String(args[2] || defaultPath);
+      mkdirSync(dirname(outputPath), { recursive: true });
+
+      const registry = new DesignVersionRegistry();
+      registry.exportToFile(personaId, outputPath);
+      console.log(`\n📦 Exported design system to ${outputPath}`);
+      console.log(`   Persona: ${persona.name}`);
+      console.log(`   Format: .baste (sharable)`);
+      break;
+    }
+
+    case "import": {
+      const importPath = String(options._positional || args[1]);
+      if (!importPath) {
+        console.error("Usage: baste import <path-to-file.baste>");
+        process.exit(1);
+      }
+      if (!existsSync(importPath)) {
+        console.error(`File not found: ${importPath}`);
+        process.exit(1);
+      }
+
+      const registry = new DesignVersionRegistry();
+      const result = registry.importFromFile(importPath);
+
+      console.log(`\n📥 Imported design system from ${importPath}`);
+      console.log(`   Persona ID: ${result.personaId}`);
+      console.log(`   Components: ${result.componentsImported}`);
+      console.log(`   Versions: ${result.versionsImported}`);
+      console.log(`   Cultural refs: ${result.refsImported}`);
+      break;
+    }
+
+    case "openpencil": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+
+      const outputDir = String(options.outputdir || fileConfig.outputDir || "./assets/output");
+      const defaultPath = `${outputDir}/${personaId}.pen`;
+      const outputPath = String(args[2] || defaultPath);
+      mkdirSync(dirname(outputPath), { recursive: true });
+
+      const registry = new DesignVersionRegistry();
+      const result = await registry.exportToOpenPencilFile(persona, outputPath);
+      console.log(`\n🎨 Exported OpenPencil document to ${result.path}`);
+      console.log(`   Persona: ${persona.name}`);
+      console.log(`   Open in OpenPencil to edit design tokens and cultural board`);
       break;
     }
 

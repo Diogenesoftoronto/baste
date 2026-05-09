@@ -87,6 +87,7 @@ export {
   generateDesignTokens,
   exportCSS,
   exportTailwindConfig,
+  exportPandaTheme,
 } from "./assets/design-system.js";
 export type {
   DesignTokens,
@@ -104,3 +105,54 @@ export type {
   BasteConfig,
   AssetSuite,
 } from "./baste.js";
+
+// Version Control — Design Component History
+export {
+  DesignVersionRegistry,
+} from "./versioning/registry.js";
+export {
+  exportDesignSystem,
+  exportDesignSystemLight,
+  writeBasteFile,
+  readBasteFile,
+  importDesignSystem,
+  mergeDesignSystems,
+  validateBasteFile,
+  BASTE_FORMAT_VERSION,
+  BASTE_SCHEMA,
+} from "./versioning/shareable.js";
+export {
+  getDB,
+  DesignVersionDB,
+} from "./versioning/database.js";
+export type {
+  DesignChange,
+  ComponentVersion,
+  DesignBranch,
+  DesignComponent,
+  CulturalReference,
+  CulturalRefType,
+  ChangeType,
+  ComponentCategory,
+  HistoryQuery,
+  VersionDiff,
+  ChangeProposal,
+  SharableDesignSystem,
+} from "./versioning/types.js";
+
+// OpenPencil Bridge
+export {
+  personaToOpenPencil,
+  serializeOpenPencil,
+  deserializeOpenPencil,
+  extractTokensFromOpenPencil,
+  exportToOpenPencil,
+} from "./openpencil/bridge.js";
+export type {
+  OpenPencilDocument as OpenPencilDoc,
+  OpenPencilToken,
+  OpenPencilPage,
+  OpenPencilFrame,
+  OpenPencilNode,
+  OpenPencilComponent,
+} from "./openpencil/bridge.js";

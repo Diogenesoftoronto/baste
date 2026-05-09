@@ -4,20 +4,20 @@
   "description": "Persona-driven UI and asset generation using AI agents",
   "type": "module",
   "bin": {
-    "baste": "./dist/cli.js"
+    "baste": "./dist/src/cli.js"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
     },
     "./persona": {
-      "types": "./dist/persona/index.d.ts",
-      "import": "./dist/persona/index.js"
+      "types": "./dist/src/persona/index.d.ts",
+      "import": "./dist/src/persona/index.js"
     },
     "./config": {
-      "types": "./dist/config/baste-config.d.ts",
-      "import": "./dist/config/baste-config.js"
+      "types": "./dist/src/config/baste-config.d.ts",
+      "import": "./dist/src/config/baste-config.js"
     }
   },
   "files": [
