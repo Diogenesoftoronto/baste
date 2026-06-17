@@ -25,13 +25,13 @@ const personas = [
       "A developer who grew up in East Asian night markets. Loves chaos, density, and the humanity of crowded spaces.",
     influences: ["Chungking Express", "City Pop", "Neon", "Yakuza"],
     aesthetic: [
-      { icon: "🎨", label: "Warm", color: "orange.400" },
-      { icon: "📐", label: "Geometric", color: "yellow.400" },
-      { icon: "✨", label: "Maximal", color: "amber.400" },
+      { icon: "🎨", label: "Warm", color: "#FF9B21" },
+      { icon: "📐", label: "Geometric", color: "#FFD23F" },
+      { icon: "✨", label: "Maximal", color: "#FF00B8" },
     ],
     bg: "#0A0A0A",
     text: "white",
-    accent: "orange.500",
+    accent: "#FF9B21",
   },
   {
     icon: "🌀",
@@ -40,13 +40,13 @@ const personas = [
       "Designer obsessed with liminal spaces, 90s web aesthetics, and digital decay. Finds beauty in forgotten corners of the internet.",
     influences: ["Lain", "Vaporwave", "Glitch Art", "Old Web"],
     aesthetic: [
-      { icon: "🎨", label: "Cool", color: "blue.400" },
-      { icon: "📐", label: "Soft", color: "purple.400" },
-      { icon: "✨", label: "Minimal", color: "cyan.400" },
+      { icon: "🎨", label: "Cool", color: "#00F0FF" },
+      { icon: "📐", label: "Soft", color: "#FF00B8" },
+      { icon: "✨", label: "Minimal", color: "#8A00FF" },
     ],
     bg: "#1A1F2E",
     text: "#E8E8F0",
-    accent: "blue.500",
+    accent: "#00F0FF",
   },
 ];
 
@@ -59,7 +59,7 @@ export const PersonasSection = component$(() => {
           inset: 0,
           bgGradient: "to-b",
           gradientFrom: "transparent",
-          gradientVia: "rgba(249,115,22,0.05)",
+          gradientVia: "rgba(138,0,255,0.06)",
           gradientTo: "transparent",
         })}
       />

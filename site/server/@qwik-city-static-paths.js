@@ -1,4 +1,4 @@
-const staticPaths = new Set(["/","/q-manifest.json","/sitemap.xml"]);
+const staticPaths = new Set(["/","/bg-frame.png","/bg-grid.png","/bg-splatter.png","/gui/","/og-baste.png","/q-manifest.json","/sitemap.xml"]);
 function isStaticPath(method, url) {
   if (method.toUpperCase() !== 'GET') {
     return false;

@@ -1,24 +1,19 @@
 /**
  * Asset Generation Services
- * 
- * Integrates with:
- * - QuiverAI for SVG generation
- * - OpenAI (DALL-E 3 / GPT Image 2) for images
- * - Veo 3 for video (when API available)
- * 
- * Each service takes a persona and asset specification,
- * generates the asset, and returns it with metadata.
+ *
+ * SVG: QuiverAI only — no fallback. Requires QUIVER_API_KEY.
+ * Image: OpenAI (gpt-image-2 / dall-e-3) or Google Gemini (Imagen 3 / Gemini Flash).
+ * Video: Veo 3 via Google API.
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";
-import { dirname } from "node:path";
 import type { Persona } from "../persona/types.js";
 import type { AssetType, GeneratedPrompt } from "../generation/prompts.js";
 
 export interface GeneratedAsset {
   id: string;
   type: "svg" | "image" | "video";
-  content: string; // SVG code, image URL/path, or video URL/path
+  content: string;
   prompt: string;
   metadata: {
     service: string;
@@ -31,45 +26,43 @@ export interface GeneratedAsset {
 }
 
 export interface GenerationConfig {
-  // API keys (read from env)
   openaiApiKey?: string;
   quiverApiKey?: string;
+  quiverBaseUrl?: string;
   googleApiKey?: string;
-
-  // Output settings
   outputDir: string;
-
-  // Generation parameters
-  seed?: number;
+  imageProvider?: "openai" | "gemini";
+  imageModel?: string;
+  imageSize?: string;
+  imageQuality?: "standard" | "high";
+  imageStyle?: "vivid" | "natural";
 }
 
-/**
- * SVG Asset Generator (QuiverAI)
- * 
- * QuiverAI generates vector graphics from text descriptions.
- * We use the SVG prompt format optimized for vector output.
- */
+// ── QuiverAI SVG Generator ────────────────────────────────────────────────────
+
 export class SVGGenerator {
   private apiKey: string | undefined;
+  private baseUrl: string;
   private outputDir: string;
 
   constructor(config: GenerationConfig) {
     this.apiKey = config.quiverApiKey || process.env.QUIVER_API_KEY;
+    this.baseUrl = config.quiverBaseUrl || process.env.QUIVER_BASE_URL || "https://api.quiverai.com";
     this.outputDir = `${config.outputDir}/svg`;
     mkdirSync(this.outputDir, { recursive: true });
   }
 
-  async generate(
-    persona: Persona,
-    asset: AssetType,
-    prompt: GeneratedPrompt
-  ): Promise<GeneratedAsset> {
+  async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
+    if (!this.apiKey) {
+      throw new Error(
+        "QuiverAI API key required for SVG generation. Set QUIVER_API_KEY environment variable or configure generators.svg.apiKey in baste.config.json."
+      );
+    }
+
     const startTime = Date.now();
     const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
 
-    // For now, generate SVG using OpenAI's capabilities or fallback to template
-    // TODO: Integrate QuiverAI API when available
-    const svgContent = await this.generateSVGWithLLM(prompt);
+    const svgContent = await this.callQuiverAPI(prompt);
 
     const outputPath = `${this.outputDir}/${id}.svg`;
     writeFileSync(outputPath, svgContent);
@@ -89,102 +82,87 @@ export class SVGGenerator {
     };
   }
 
-  private async generateSVGWithLLM(prompt: GeneratedPrompt): Promise<string> {
-    // Placeholder: This would call an LLM to generate SVG code
-    // In production, integrate with QuiverAI's actual API
-    const openaiKey = process.env.OPENAI_API_KEY;
+  private async callQuiverAPI(prompt: GeneratedPrompt): Promise<string> {
+    const response = await fetch(`${this.baseUrl}/v1/svg/generate`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: prompt.prompt,
+        style: prompt.systemContext,
+        format: "svg",
+        parameters: prompt.parameters,
+      }),
+    });
 
-    if (!openaiKey) {
-      // Return a template SVG when no API key available
-      return this.createTemplateSVG(prompt.prompt);
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(`QuiverAI API error ${response.status}: ${body || response.statusText}`);
     }
 
-    // Call OpenAI to generate SVG
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${openaiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "gpt-4o",
-          messages: [
-            { role: "system", content: prompt.systemContext },
-            { role: "user", content: prompt.prompt + "\n\nOutput only valid SVG XML code, no markdown, no explanations." },
-          ],
-          temperature: 0.7,
-        }),
-      });
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`OpenAI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content || "";
-
-      // Extract SVG from response
-      const svgMatch = content.match(/<svg[\s\S]*?<\/svg>/);
-      if (svgMatch) {
-        return svgMatch[0];
-      }
-
-      return this.createTemplateSVG(prompt.prompt);
-    } catch (error) {
-      console.warn("SVG generation failed, using template:", error);
-      return this.createTemplateSVG(prompt.prompt);
+    // QuiverAI returns SVG either as `svg`, `content`, or `data.svg`
+    const svgContent: string = data.svg ?? data.content ?? data.data?.svg ?? "";
+    if (!svgContent || !svgContent.includes("<svg")) {
+      throw new Error("QuiverAI returned an empty or invalid SVG response.");
     }
-  }
-
-  private createTemplateSVG(prompt: string): string {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- AI-generated SVG based on: ${prompt.slice(0, 100)}... -->
-  <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#e8d5b7"/>
-      <stop offset="100%" style="stop-color:#7a9e7e"/>
-    </linearGradient>
-  </defs>
-  <rect width="200" height="200" fill="url(#g1)" rx="12"/>
-  <circle cx="100" cy="100" r="60" fill="none" stroke="#f4f1ea" stroke-width="2" opacity="0.6"/>
-  <path d="M70,100 Q100,60 130,100 T70,100" fill="none" stroke="#f4f1ea" stroke-width="1.5" opacity="0.8"/>
-  <text x="100" y="180" text-anchor="middle" fill="#5a7a5e" font-family="system-ui" font-size="10">Generated Asset</text>
-</svg>`;
+    return svgContent;
   }
 }
 
-/**
- * Image Asset Generator (OpenAI DALL-E 3 / GPT Image 2)
- */
+// ── Image Generator (OpenAI or Gemini) ───────────────────────────────────────
+
 export class ImageGenerator {
-  private apiKey: string | undefined;
+  private openaiKey: string | undefined;
+  private googleKey: string | undefined;
+  private provider: "openai" | "gemini";
+  private model: string;
+  private size: string;
+  private quality: "standard" | "high";
+  private style: "vivid" | "natural";
   private outputDir: string;
 
   constructor(config: GenerationConfig) {
-    this.apiKey = config.openaiApiKey || process.env.OPENAI_API_KEY;
+    this.openaiKey = config.openaiApiKey || process.env.OPENAI_API_KEY;
+    this.googleKey = config.googleApiKey || process.env.GOOGLE_API_KEY;
+    this.provider = config.imageProvider ?? "openai";
+    this.model = config.imageModel ?? (this.provider === "gemini" ? "imagen-3.0-generate-002" : "gpt-image-2");
+    this.size = config.imageSize ?? "1024x1024";
+    this.quality = config.imageQuality ?? "high";
+    this.style = config.imageStyle ?? "vivid";
     this.outputDir = `${config.outputDir}/images`;
     mkdirSync(this.outputDir, { recursive: true });
   }
 
-  async generate(
-    persona: Persona,
-    asset: AssetType,
-    prompt: GeneratedPrompt
-  ): Promise<GeneratedAsset> {
+  async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
     const startTime = Date.now();
     const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
 
-    if (!this.apiKey) {
-      throw new Error("OpenAI API key required for image generation. Set OPENAI_API_KEY.");
+    let outputPath: string;
+    let service: string;
+
+    if (this.provider === "gemini") {
+      if (!this.googleKey) {
+        throw new Error(
+          "Google API key required for Gemini image generation. Set GOOGLE_API_KEY environment variable or configure generators.image.apiKey."
+        );
+      }
+      outputPath = `${this.outputDir}/${id}.png`;
+      await this.generateGemini(prompt, outputPath);
+      service = "google";
+    } else {
+      if (!this.openaiKey) {
+        throw new Error(
+          "OpenAI API key required for image generation. Set OPENAI_API_KEY environment variable or configure generators.image.apiKey."
+        );
+      }
+      outputPath = `${this.outputDir}/${id}.png`;
+      await this.generateOpenAI(prompt, outputPath);
+      service = "openai";
     }
-
-    // Use GPT Image 2 (latest) or DALL-E 3
-    const imageUrl = await this.callOpenAIImageAPI(prompt);
-
-    // Download and save the image
-    const outputPath = `${this.outputDir}/${id}.png`;
-    await this.downloadImage(imageUrl, outputPath);
 
     return {
       id,
@@ -192,8 +170,8 @@ export class ImageGenerator {
       content: outputPath,
       prompt: prompt.prompt,
       metadata: {
-        service: "openai",
-        model: "gpt-image-2",
+        service,
+        model: this.model,
         personaId: persona.id,
         assetPurpose: asset.purpose,
         generationTime: Date.now() - startTime,
@@ -201,61 +179,115 @@ export class ImageGenerator {
     };
   }
 
-  private async callOpenAIImageAPI(prompt: GeneratedPrompt): Promise<string> {
-    // Try GPT Image 2 first (newer), fallback to DALL-E 3
-    try {
-      const response = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${this.apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "gpt-image-2", // or "dall-e-3"
-          prompt: prompt.prompt,
-          size: prompt.parameters.size || "1024x1024",
-          quality: prompt.parameters.quality || "high",
-          style: prompt.parameters.style || "vivid",
-          n: 1,
-        }),
-      });
+  private async generateOpenAI(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.openaiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: this.model,
+        prompt: prompt.prompt,
+        size: prompt.parameters?.size || this.size,
+        quality: this.quality,
+        style: this.style,
+        n: 1,
+      }),
+    });
 
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`OpenAI API error: ${error}`);
-      }
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(`OpenAI image API error ${response.status}: ${body || response.statusText}`);
+    }
 
-      const data = await response.json();
-      return data.data[0]?.url || data.data[0]?.b64_json;
-    } catch (error) {
-      console.error("Image generation failed:", error);
-      throw error;
+    const data = await response.json();
+    const result = data.data?.[0];
+    if (!result) throw new Error("OpenAI returned no image data.");
+
+    if (result.b64_json) {
+      writeFileSync(outputPath, Buffer.from(result.b64_json, "base64"));
+    } else if (result.url) {
+      await this.downloadToFile(result.url, outputPath);
+    } else {
+      throw new Error("OpenAI returned neither b64_json nor url.");
     }
   }
 
-  private async downloadImage(url: string, outputPath: string): Promise<void> {
-    if (url.startsWith("data:")) {
-      // Handle base64
-      const base64 = url.split(",")[1];
-      writeFileSync(outputPath, Buffer.from(base64, "base64"));
-      return;
-    }
+  private async generateGemini(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    // Supports both Imagen 3 (imagen-3.0-generate-002) and
+    // Gemini 2.0 Flash Preview image generation
+    const isGeminiFlash = this.model.startsWith("gemini-");
 
-    const response = await fetch(url);
+    if (isGeminiFlash) {
+      await this.generateGeminiFlash(prompt, outputPath);
+    } else {
+      await this.generateImagen(prompt, outputPath);
+    }
+  }
+
+  private async generateImagen(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:predict?key=${this.googleKey}`;
+
+    const aspectRatio = prompt.parameters?.aspectRatio ?? "1:1";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        instances: [{ prompt: prompt.prompt }],
+        parameters: { sampleCount: 1, aspectRatio },
+      }),
+    });
+
     if (!response.ok) {
-      throw new Error(`Failed to download image: ${response.status}`);
+      const body = await response.text().catch(() => "");
+      throw new Error(`Imagen API error ${response.status}: ${body || response.statusText}`);
     }
 
-    const buffer = Buffer.from(await response.arrayBuffer());
-    writeFileSync(outputPath, buffer);
+    const data = await response.json();
+    const prediction = data.predictions?.[0];
+    if (!prediction?.bytesBase64Encoded) {
+      throw new Error("Imagen returned no image data.");
+    }
+    writeFileSync(outputPath, Buffer.from(prediction.bytesBase64Encoded, "base64"));
+  }
+
+  private async generateGeminiFlash(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent?key=${this.googleKey}`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt.prompt }] }],
+        generationConfig: { responseModalities: ["IMAGE", "TEXT"] },
+      }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(`Gemini Flash image API error ${response.status}: ${body || response.statusText}`);
+    }
+
+    const data = await response.json();
+    const parts: Array<{ inlineData?: { mimeType: string; data: string }; text?: string }> =
+      data.candidates?.[0]?.content?.parts ?? [];
+    const imagePart = parts.find((p) => p.inlineData?.mimeType?.startsWith("image/"));
+    if (!imagePart?.inlineData) {
+      throw new Error("Gemini Flash returned no image in response.");
+    }
+    writeFileSync(outputPath, Buffer.from(imagePart.inlineData.data, "base64"));
+  }
+
+  private async downloadToFile(url: string, outputPath: string): Promise<void> {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to download image: ${response.status}`);
+    writeFileSync(outputPath, Buffer.from(await response.arrayBuffer()));
   }
 }
 
-/**
- * Video Asset Generator (Veo 3)
- * 
- * Generates short video clips/loops for backgrounds, transitions, etc.
- */
+// ── Video Generator (Veo 3) ───────────────────────────────────────────────────
+
 export class VideoGenerator {
   private apiKey: string | undefined;
   private outputDir: string;
@@ -266,19 +298,14 @@ export class VideoGenerator {
     mkdirSync(this.outputDir, { recursive: true });
   }
 
-  async generate(
-    persona: Persona,
-    asset: AssetType,
-    prompt: GeneratedPrompt
-  ): Promise<GeneratedAsset> {
-    const startTime = Date.now();
-    const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
-
+  async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
     if (!this.apiKey) {
       throw new Error("Google API key required for video generation. Set GOOGLE_API_KEY.");
     }
 
-    // Veo 3 API integration
+    const startTime = Date.now();
+    const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
+
     const videoResult = await this.callVeoAPI(prompt);
 
     return {
@@ -297,61 +324,46 @@ export class VideoGenerator {
   }
 
   private async callVeoAPI(prompt: GeneratedPrompt): Promise<string> {
-    // Veo 3 API endpoint (placeholder - actual API may differ)
-    try {
-      const response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/veo-3:generateVideo",
-        {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${this.apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: prompt.prompt,
-            duration: prompt.parameters.duration || 5,
-            aspectRatio: prompt.parameters.aspectRatio || "16:9",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Veo API error: ${error}`);
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/veo-3:generateVideo",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: prompt.prompt,
+          duration: prompt.parameters?.duration ?? 5,
+          aspectRatio: prompt.parameters?.aspectRatio ?? "16:9",
+        }),
       }
+    );
 
-      const data = await response.json();
-      // Return video URL or local path
-      return data.video?.uri || data.videoUrl || "";
-    } catch (error) {
-      console.error("Video generation failed:", error);
-      throw error;
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(`Veo API error ${response.status}: ${body || response.statusText}`);
     }
+
+    const data = await response.json();
+    return data.video?.uri ?? data.videoUrl ?? "";
   }
 }
 
-/**
- * Unified Asset Generator
- * Routes to appropriate service based on type
- */
+// ── Unified Asset Generator ───────────────────────────────────────────────────
+
 export class AssetGenerator {
   private svg: SVGGenerator;
   private image: ImageGenerator;
   private video: VideoGenerator;
-  private config: GenerationConfig;
 
   constructor(config: GenerationConfig) {
-    this.config = config;
     this.svg = new SVGGenerator(config);
     this.image = new ImageGenerator(config);
     this.video = new VideoGenerator(config);
   }
 
-  async generate(
-    persona: Persona,
-    asset: AssetType,
-    prompt: GeneratedPrompt
-  ): Promise<GeneratedAsset> {
+  async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
     switch (asset.kind) {
       case "svg":
         return this.svg.generate(persona, asset, prompt);
@@ -370,22 +382,18 @@ export class AssetGenerator {
     prompts: Record<string, GeneratedPrompt>
   ): Promise<GeneratedAsset[]> {
     const results: GeneratedAsset[] = [];
-
     for (const asset of assets) {
       const prompt = prompts[asset.kind];
       if (!prompt) {
         console.warn(`No prompt for asset type: ${asset.kind}`);
         continue;
       }
-
       try {
-        const result = await this.generate(persona, asset, prompt);
-        results.push(result);
+        results.push(await this.generate(persona, asset, prompt));
       } catch (error) {
         console.error(`Failed to generate ${asset.kind} asset:`, error);
       }
     }
-
     return results;
   }
 }

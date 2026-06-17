@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { flex, hstack } from "styled-system/patterns";
+import { BasteLogo } from "./baste-logo";
 
 export const Footer = component$(() => {
   return (
@@ -22,31 +23,7 @@ export const Footer = component$(() => {
         })}
       >
         <div class={hstack({ gap: 3 })}>
-          <div
-            class={css({
-              w: 8,
-              h: 8,
-              rounded: "lg",
-              bgGradient: "to-br",
-              gradientFrom: "orange.500",
-              gradientTo: "amber.600",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "sm",
-              fontWeight: "bold",
-            })}
-          >
-            B
-          </div>
-          <span
-            class={css({
-              fontFamily: "heading",
-              fontWeight: "semibold",
-            })}
-          >
-            Baste
-          </span>
+          <BasteLogo size={32} withWord />
           <span class={css({ color: "text-muted" })}>
             — Persona-driven design generation
           </span>

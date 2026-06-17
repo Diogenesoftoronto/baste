@@ -7,6 +7,7 @@
  */
 
 import type { Persona } from "../persona/types.js";
+import { buildLearnedPreferencesDocument } from "./feedback-memory.js";
 
 export interface EvaluationCriteria {
   personaAlignment: number; // 0-1: how well does it match the persona
@@ -45,6 +46,10 @@ export interface EvaluateOptions {
 
   // Optional: generation prompt used
   prompt?: string;
+
+  // Optional: pre-built learned-preferences document to inject into the prompt.
+  // When omitted, evaluateBatch loads one per persona from feedback-memory.
+  learnedPreferences?: string;
 }
 
 /**
@@ -64,7 +69,9 @@ Your job is to evaluate generated assets against a specific persona's taste prof
 You are rigorous but fair. $${persona.name} would reject generic, mass-produced looking work. They appreciate:
 ${persona.behaviors.interfaceValues.map((v) => `- ${v}`).join("\n")}
 
-Rate assets on a 0.0-1.0 scale. Be precise with decimals. Only exceptional work that would genuinely delight ${persona.name} should score above 0.85.`;
+Rate assets on a 0.0-1.0 scale. Be precise with decimals. Only exceptional work that would genuinely delight ${persona.name} should score above 0.85.
+
+${options.learnedPreferences ? options.learnedPreferences : ""}`;
 
   const user = `Evaluate this ${options.assetType} asset for ${persona.name}.
 
@@ -207,12 +214,14 @@ export async function evaluateBatch(
   evaluateFn: (system: string, user: string) => Promise<string>
 ): Promise<EvaluationResult[]> {
   const evaluations: EvaluationResult[] = [];
+  const learnedPreferences = buildLearnedPreferencesDocument(persona.id);
 
   for (const asset of assets) {
     const { system, user } = buildEvaluationPrompt(persona, {
       assetType: asset.type,
       prompt: asset.prompt,
       content: asset.content,
+      learnedPreferences,
     });
 
     try {

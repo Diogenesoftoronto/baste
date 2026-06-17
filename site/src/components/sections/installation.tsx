@@ -38,7 +38,7 @@ export const InstallationSection = component$(() => {
           inset: 0,
           bgGradient: "to-b",
           gradientFrom: "transparent",
-          gradientVia: "rgba(249,115,22,0.05)",
+          gradientVia: "rgba(198,255,0,0.05)",
           gradientTo: "transparent",
         })}
       />
@@ -82,13 +82,13 @@ export const InstallationSection = component$(() => {
                     w: 8,
                     h: 8,
                     rounded: "lg",
-                    bg: "rgba(249,115,22,0.2)",
+                    bg: "rgba(198,255,0,0.18)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     fontSize: "sm",
                     fontWeight: "bold",
-                    color: "orange.400",
+                    color: "acid-lime",
                   })}
                 >
                   {step.num}

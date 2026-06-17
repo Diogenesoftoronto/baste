@@ -82,11 +82,21 @@ export function createGUIServer(port = 3456): Server {
 
 export async function startGUIServer(port = 3456): Promise<Server> {
   const server = createGUIServer(port);
-  return new Promise((resolve, reject) => {
+  const started = await new Promise<Server>((resolve, reject) => {
     server.listen(port, () => {
       console.log(`\n🌐 Baste GUI running at http://localhost:${port}`);
       resolve(server);
     });
     server.on("error", reject);
   });
+
+  // Graceful shutdown on SIGINT
+  process.on("SIGINT", () => {
+    console.log("\n[gui] SIGINT received, closing server...");
+    server.close(() => process.exit(0));
+    // Force-exit after 5s in case of stuck connections
+    setTimeout(() => process.exit(1), 5000);
+  });
+
+  return started;
 }

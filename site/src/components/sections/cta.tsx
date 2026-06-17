@@ -10,7 +10,7 @@ export const CTASection = component$(() => {
           position: "absolute",
           inset: 0,
           bgGradient: "to-t",
-          gradientFrom: "rgba(249,115,22,0.1)",
+          gradientFrom: "rgba(138,0,255,0.12)",
           gradientTo: "transparent",
         })}
       />
@@ -52,18 +52,23 @@ export const CTASection = component$(() => {
             class={css({
               px: 8,
               py: 4,
-              rounded: "xl",
-              bgGradient: "to-r",
-              gradientFrom: "orange.500",
-              gradientTo: "amber.600",
-              color: "white",
-              fontWeight: "semibold",
+              rounded: "lg",
+              bg: "acid-lime",
+              color: "ink-black",
+              fontFamily: "graffiti",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
+              border: "2px solid",
+              borderColor: "ink-black",
+              boxShadow: "drip",
+              transition: "all 0.15s",
               _hover: {
-                gradientFrom: "orange.400",
-                gradientTo: "amber.500",
+                bg: "neon-fuchsia",
+                color: "off-white",
+                transform: "translate(-2px,-2px)",
+                boxShadow: "6px 8px 0 #0A0A0A",
               },
-              transition: "all 0.2s",
-              shadow: "0 0 20px rgba(249,115,22,0.2)",
             })}
           >
             View on GitHub
@@ -74,13 +79,20 @@ export const CTASection = component$(() => {
             class={css({
               px: 8,
               py: 4,
-              rounded: "xl",
+              rounded: "lg",
               bg: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              border: "2px solid",
+              borderColor: "electric-purple",
               color: "text",
               fontWeight: "semibold",
-              _hover: { bg: "rgba(255,255,255,0.1)" },
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
               transition: "all 0.2s",
+              _hover: {
+                bg: "rgba(138,0,255,0.15)",
+                color: "acid-lime",
+                boxShadow: "0 0 18px rgba(138,0,255,0.5)",
+              },
             })}
           >
             npm install

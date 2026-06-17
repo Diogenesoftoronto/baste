@@ -25,7 +25,7 @@ export const WhySection = component$(() => {
               })}
             >
               The opposite of generic isn't premium.{" "}
-              <span class={css({ color: "orange.400" })}>It's personal.</span>
+              <span class={css({ color: "acid-lime", textShadow: "0 0 18px rgba(198,255,0,0.4)" })}>It's personal.</span>
             </h2>
             <p
               class={css({
@@ -111,9 +111,10 @@ export const WhySection = component$(() => {
                 p: 6,
                 rounded: "xl",
                 bgGradient: "to-br",
-                gradientFrom: "rgba(249,115,22,0.1)",
-                gradientTo: "rgba(217,119,6,0.1)",
-                border: "1px solid rgba(249,115,22,0.2)",
+                gradientFrom: "rgba(198,255,0,0.1)",
+                gradientTo: "rgba(138,0,255,0.12)",
+                border: "1px solid rgba(198,255,0,0.25)",
+                boxShadow: "0 0 28px rgba(138,0,255,0.18)",
               })}
             >
               <div class={hstack({ gap: 3, mb: 3 })}>
@@ -155,8 +156,8 @@ export const WhySection = component$(() => {
                       px: 2,
                       py: 1,
                       rounded: "sm",
-                      bg: "rgba(249,115,22,0.1)",
-                      color: "orange.300",
+                      bg: "rgba(198,255,0,0.12)",
+                      color: "acid-lime",
                       fontSize: "xs",
                     })}
                   >
