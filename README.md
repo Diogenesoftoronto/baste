@@ -82,6 +82,44 @@ baste diff <version-id-1> <version-id-2>
 # (use the registry API programmatically)
 ```
 
+### Decompose a Live Site
+
+Pull a real URL into a Baste persona + brand kit (palette with role assignment, fonts, `@font-face` URLs, logo, OG image, image inventory, plus inferred aesthetic signals).
+
+```bash
+# Basic: fetch HTML + linked CSS, extract palette/fonts/logo
+baste decompose https://qwik.dev --id qwik
+
+# Deep: full JS rendering via Playwright (required for SPA sites)
+baste decompose https://example.com --deep
+
+# Mirror logo/OG/images to disk; auto-initialize design versioning
+baste decompose https://stripe.com --mirror-assets --init
+
+# Custom slug + display name
+baste decompose https://acme.example --id acme --name "Acme Co."
+```
+
+Outputs:
+- `./personas/<id>.json` — the draft persona (aesthetic inferred from extracted signals)
+- `./personas/<id>.brandkit.json` — literal extracted artifacts (palette roles, font-faces, image URLs, signals)
+- `./assets/decomposed/<id>/` — mirrored logo/OG/thumbnails (with `--mirror-assets`)
+
+The extracted palette and fonts flow into `baste tokens <id>` automatically — `--color-primary` will be the real brand color.
+
+**Deep mode** requires Playwright. Install once:
+```bash
+npm install --save-dev playwright && npx playwright install chromium
+```
+
+### Remix Personas
+
+Cross two personas (and their brand kits) into a new one:
+
+```bash
+baste remix cyberbotanist nightmarketcoder --as solar-night
+```
+
 ### Cultural Experiences
 
 Link images, screenshots, logos, and references to personas to capture the cultural DNA behind design decisions.

@@ -18,6 +18,10 @@
     "./config": {
       "types": "./dist/src/config/baste-config.d.ts",
       "import": "./dist/src/config/baste-config.js"
+    },
+    "./mcp": {
+      "types": "./dist/src/mcp/server.d.ts",
+      "import": "./dist/src/mcp/server.js"
     }
   },
   "files": [
@@ -30,10 +34,12 @@
     "start": "node dist/cli.js",
     "generate": "node dist/cli.js",
     "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test --experimental-strip-types tests/*.test.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@flue/sdk": "^0.3.10",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "openai": "^4.85.0",
     "valibot": "^1.0.0",
     "zod": "^3.24.0"

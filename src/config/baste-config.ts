@@ -25,7 +25,7 @@ export interface GeneratorConfig {
 
   /** Image generator settings */
   image?: {
-    provider: "openai" | "stability" | "local";
+    provider: "openai" | "gemini" | "stability" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
@@ -138,7 +138,7 @@ export const defaultConfig: Required<BasteUserConfig> = {
   personaDir: "./personas",
   generators: {
     svg: { provider: "quiver" },
-    image: { provider: "openai", model: "gpt-image-2", size: "1024x1024", quality: "high", style: "vivid" },
+    image: { provider: "openai" as const, model: "gpt-image-2", size: "1024x1024", quality: "high" as const, style: "vivid" as const },
     video: { provider: "veo", model: "veo-3", duration: 5, quality: "1080p" },
   },
   evaluator: {
@@ -162,32 +162,6 @@ export const defaultConfig: Required<BasteUserConfig> = {
 };
 
 /**
- * Deep merge two objects. Arrays are replaced, objects are merged.
- */
-function deepMerge<T extends Record<string, unknown>>(base: T, override: Partial<T>): T {
-  const result = { ...base } as T;
-  for (const key in override) {
-    if (override[key] === undefined) continue;
-    if (
-      typeof override[key] === "object" &&
-      override[key] !== null &&
-      !Array.isArray(override[key]) &&
-      typeof base[key] === "object" &&
-      base[key] !== null &&
-      !Array.isArray(base[key])
-    ) {
-      (result as Record<string, unknown>)[key] = deepMerge(
-        base[key] as Record<string, unknown>,
-        override[key] as Record<string, unknown>
-      );
-    } else {
-      (result as Record<string, unknown>)[key] = override[key];
-    }
-  }
-  return result;
-}
-
-/**
  * Resolve API keys from environment variables.
  */
 function resolveEnvKeys(config: BasteUserConfig): BasteUserConfig {
@@ -198,8 +172,13 @@ function resolveEnvKeys(config: BasteUserConfig): BasteUserConfig {
   if (!resolved.generators.svg?.apiKey && process.env.QUIVER_API_KEY) {
     resolved.generators.svg = { ...(resolved.generators.svg || {}), apiKey: process.env.QUIVER_API_KEY } as GeneratorConfig["svg"];
   }
-  if (!resolved.generators.image?.apiKey && process.env.OPENAI_API_KEY) {
+  // OpenAI key for OpenAI image provider
+  if (!resolved.generators.image?.apiKey && resolved.generators.image?.provider !== "gemini" && process.env.OPENAI_API_KEY) {
     resolved.generators.image = { ...(resolved.generators.image || {}), apiKey: process.env.OPENAI_API_KEY } as GeneratorConfig["image"];
+  }
+  // Google key for Gemini image provider
+  if (!resolved.generators.image?.apiKey && resolved.generators.image?.provider === "gemini" && process.env.GOOGLE_API_KEY) {
+    resolved.generators.image = { ...(resolved.generators.image || {}), apiKey: process.env.GOOGLE_API_KEY } as GeneratorConfig["image"];
   }
   if (!resolved.generators.video?.apiKey && process.env.GOOGLE_API_KEY) {
     resolved.generators.video = { ...(resolved.generators.video || {}), apiKey: process.env.GOOGLE_API_KEY } as GeneratorConfig["video"];
@@ -211,27 +190,53 @@ function resolveEnvKeys(config: BasteUserConfig): BasteUserConfig {
   return resolved;
 }
 
+export interface GenerationOverrides {
+  imageProvider?: string;
+  imageModel?: string;
+}
+
 /**
  * Build a complete BasteConfig (for the orchestrator) from a user config.
+ * Optional overrides allow per-request provider/model selection from the GUI.
  */
-export function toBasteConfig(userConfig: BasteUserConfig): {
+export function toBasteConfig(
+  userConfig: BasteUserConfig,
+  overrides?: GenerationOverrides
+): {
   generation: GenerationConfig;
   qd: QDConfig;
   outputCount: number;
   evaluator: { model: string; apiKey?: string; baseUrl?: string; temperature?: number; weights?: Record<string, number> };
 } {
   const envResolved = resolveEnvKeys(userConfig);
-  const qdCfg = {
-    ...defaultConfig.qd,
-    ...(envResolved.qd || {}),
-  };
-  const evalCfg = {
-    ...defaultConfig.evaluator,
-    ...(envResolved.evaluator || {}),
-  };
+  const qdCfg = { ...defaultConfig.qd, ...(envResolved.qd || {}) };
+  const evalCfg = { ...defaultConfig.evaluator, ...(envResolved.evaluator || {}) };
+  const imgCfg = envResolved.generators?.image ?? defaultConfig.generators.image;
+  const svgCfg = envResolved.generators?.svg ?? defaultConfig.generators.svg;
+  const vidCfg = envResolved.generators?.video ?? defaultConfig.generators.video;
+
+  const imageProvider = (overrides?.imageProvider ?? imgCfg?.provider ?? "openai") as "openai" | "gemini";
+  const imageModel = overrides?.imageModel ?? imgCfg?.model;
+
+  // Resolve the right API key for the chosen image provider
+  const imageApiKey = imgCfg?.apiKey ??
+    (imageProvider === "gemini"
+      ? (vidCfg?.apiKey ?? process.env.GOOGLE_API_KEY)
+      : process.env.OPENAI_API_KEY);
 
   return {
-    generation: { outputDir: envResolved.outputDir ?? defaultConfig.outputDir },
+    generation: {
+      outputDir: envResolved.outputDir ?? defaultConfig.outputDir,
+      imageProvider,
+      imageModel,
+      imageSize: imgCfg?.size,
+      imageQuality: imgCfg?.quality,
+      imageStyle: imgCfg?.style,
+      openaiApiKey: imageProvider === "openai" ? imageApiKey : undefined,
+      googleApiKey: imageProvider === "gemini" ? imageApiKey : (vidCfg?.apiKey ?? process.env.GOOGLE_API_KEY),
+      quiverApiKey: svgCfg?.apiKey ?? process.env.QUIVER_API_KEY,
+      quiverBaseUrl: svgCfg?.baseUrl,
+    },
     qd: {
       features: qdCfg.features!,
       iterations: qdCfg.iterations!,

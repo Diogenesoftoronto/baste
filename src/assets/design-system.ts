@@ -9,6 +9,7 @@
  */
 
 import type { Persona, AestheticProfile } from "../persona/types.js";
+import type { BrandKit } from "../decompose/index.js";
 
 export interface DesignTokens {
   colors: ColorPalette;
@@ -111,19 +112,62 @@ export interface MotionTokens {
 }
 
 /**
- * Generate design tokens from persona
+ * Generate design tokens from persona. If a BrandKit is supplied, its
+ * extracted palette / fonts override the persona-derived defaults.
  */
-export function generateDesignTokens(persona: Persona): DesignTokens {
+export function generateDesignTokens(persona: Persona, brandKit?: BrandKit | null): DesignTokens {
   const aesthetic = persona.aesthetic;
 
+  const baseColors = generateColorPalette(aesthetic);
+  const baseTypography = generateTypography(aesthetic);
+
   return {
-    colors: generateColorPalette(aesthetic),
-    typography: generateTypography(aesthetic),
+    colors: brandKit ? overlayColors(baseColors, brandKit) : baseColors,
+    typography: brandKit ? overlayTypography(baseTypography, brandKit) : baseTypography,
     spacing: generateSpacing(aesthetic),
     borders: generateBorders(aesthetic),
     shadows: generateShadows(aesthetic),
     motion: generateMotion(aesthetic),
   };
+}
+
+function overlayColors(base: ColorPalette, kit: BrandKit): ColorPalette {
+  const r = kit.paletteRoles || {};
+  return {
+    ...base,
+    primary: r.primary ?? base.primary,
+    secondary: r.secondary ?? base.secondary,
+    accent: r.accent ?? base.accent,
+    background: r.background ?? base.background,
+    surface: r.surface ?? base.surface,
+    text: r.text ?? base.text,
+    textMuted: r.textMuted ?? base.textMuted,
+    border: r.border ?? base.border,
+  };
+}
+
+function overlayTypography(base: TypographyTokens, kit: BrandKit): TypographyTokens {
+  const fonts = kit.fonts || [];
+  if (fonts.length === 0) return base;
+  const monoCandidate = fonts.find((f) => /mono|code|courier|fira|jetbrains|consolas|menlo|cascadia/i.test(f));
+  const displayCandidate = fonts.find((f) => /grotesk|display|black|condensed|impact|playfair|orbitron/i.test(f)) ?? fonts[0];
+  const bodyCandidate =
+    fonts.find((f) => f !== displayCandidate && !/mono|code|courier|fira|jetbrains|consolas|menlo|cascadia/i.test(f)) ??
+    displayCandidate ??
+    fonts[0];
+
+  return {
+    ...base,
+    fontFamily: {
+      heading: `'${displayCandidate}', ${stripQuotedFamily(base.fontFamily.heading)}`,
+      body: `'${bodyCandidate}', ${stripQuotedFamily(base.fontFamily.body)}`,
+      mono: monoCandidate ? `'${monoCandidate}', ${stripQuotedFamily(base.fontFamily.mono)}` : base.fontFamily.mono,
+    },
+  };
+}
+
+function stripQuotedFamily(stack: string): string {
+  return stack.replace(/^['"][^'"]+['"]\s*,\s*/, "");
 }
 
 function generateColorPalette(aesthetic: AestheticProfile): ColorPalette {
@@ -462,8 +506,8 @@ function generateMotion(aesthetic: AestheticProfile): MotionTokens {
 /**
  * Export tokens as CSS custom properties
  */
-export function exportCSS(persona: Persona): string {
-  const tokens = generateDesignTokens(persona);
+export function exportCSS(persona: Persona, brandKit?: BrandKit | null): string {
+  const tokens = generateDesignTokens(persona, brandKit);
 
   return `:root {
   /* ${persona.name} - Generated Design System */
@@ -519,8 +563,8 @@ export function exportCSS(persona: Persona): string {
 /**
  * Export tokens as Tailwind config
  */
-export function exportTailwindConfig(persona: Persona): string {
-  const tokens = generateDesignTokens(persona);
+export function exportTailwindConfig(persona: Persona, brandKit?: BrandKit | null): string {
+  const tokens = generateDesignTokens(persona, brandKit);
 
   return `// tailwind.config.js - ${persona.name} Theme
 module.exports = {
@@ -570,8 +614,8 @@ module.exports = {
 /**
  * Export tokens as PandaCSS theme config
  */
-export function exportPandaTheme(persona: Persona): string {
-  const t = generateDesignTokens(persona);
+export function exportPandaTheme(persona: Persona, brandKit?: BrandKit | null): string {
+  const t = generateDesignTokens(persona, brandKit);
 
   return `import { defineConfig } from "@pandacss/dev";
 

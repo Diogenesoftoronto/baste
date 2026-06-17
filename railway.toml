@@ -1,0 +1,15 @@
+# Generated from den.dhall
+# Backend: nix
+# Name: baste-site
+
+[build]
+dockerfilePath = "Dockerfile"
+
+[deploy]
+restartPolicyType = "ALWAYS"
+healthcheckPath = "/"
+
+[deploy.env]
+DEN_NAME = "baste-site"
+DEN_BACKEND = "nix"
+TAILSCALE_AUTHKEY = "TAILSCALE_AUTHKEY"

@@ -5,7 +5,7 @@
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { readFileSync, writeFileSync, existsSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, join } from "node:path";
 import type { Persona } from "../persona/types.js";
 import {
@@ -13,14 +13,27 @@ import {
   listPersonas,
   savePersona,
   deletePersona,
-  getBasePersonas,
-  getCustomPersonas,
-  initStore,
   isBasePersona,
 } from "../persona/store.js";
+import { extendPersona } from "../persona/builder.js";
 import { resolveConfig, toBasteConfig, type BasteUserConfig } from "../config/baste-config.js";
 import { generateAssetSuite, generateUIKit } from "../baste.js";
 import { generateDesignTokens, exportCSS, exportTailwindConfig, exportPandaTheme } from "../assets/design-system.js";
+import { slugifyUrl, safeFetch } from "../shared/url.js";
+import { loadBrandKit, saveBrandKit } from "../decompose/store.js";
+import { DesignVersionRegistry } from "../versioning/registry.js";
+import {
+  appendFeedback,
+  buildLearnedPreferencesDocument,
+  summarizeFeedback,
+} from "../evaluation/feedback-memory.js";
+import {
+  personaToOpenPencil,
+  serializeOpenPencil,
+  deserializeOpenPencil,
+  extractTokensFromOpenPencil,
+} from "../openpencil/bridge.js";
+import { watch, type FSWatcher } from "node:fs";
 
 const DEFAULT_CONFIG_PATH = "./baste.config.json";
 
@@ -43,19 +56,25 @@ const ranks: AssetRank[] = [];
 const MOODBOARD_FILE = ".baste/moodboards.json";
 const RANKS_FILE = ".baste/ranks.json";
 
+import { mkdirSync } from "node:fs";
+
 function persistMoodboards(): void {
   try {
     const dir = resolve(".baste");
-    if (!existsSync(dir)) require("node:fs").mkdirSync(dir, { recursive: true });
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
     writeFileSync(resolve(MOODBOARD_FILE), JSON.stringify(Array.from(moodboards.values()), null, 2));
-  } catch {}
+  } catch (err) {
+    console.warn(`[gui/api] Failed to persist moodboards: ${err instanceof Error ? err.message : String(err)}`);
+  }
 }
 function persistRanks(): void {
   try {
     const dir = resolve(".baste");
-    if (!existsSync(dir)) require("node:fs").mkdirSync(dir, { recursive: true });
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
     writeFileSync(resolve(RANKS_FILE), JSON.stringify(ranks, null, 2));
-  } catch {}
+  } catch (err) {
+    console.warn(`[gui/api] Failed to persist ranks: ${err instanceof Error ? err.message : String(err)}`);
+  }
 }
 function loadStores(): void {
   try {
@@ -67,7 +86,9 @@ function loadStores(): void {
       const data = JSON.parse(readFileSync(resolve(RANKS_FILE), "utf-8")) as AssetRank[];
       ranks.push(...data);
     }
-  } catch {}
+  } catch (err) {
+    console.warn(`[gui/api] Failed to load stores: ${err instanceof Error ? err.message : String(err)}`);
+  }
 }
 loadStores();
 
@@ -105,8 +126,11 @@ function parseBody(req: IncomingMessage): Promise<unknown> {
     req.on("end", () => {
       try {
         resolve(JSON.parse(body));
-      } catch {
+      } catch (err) {
         resolve({});
+        if (body.length > 0) {
+          console.warn(`[gui/api] Invalid JSON body (${body.length} chars): ${err instanceof Error ? err.message : String(err)}`);
+        }
       }
     });
     req.on("error", reject);
@@ -249,9 +273,12 @@ const generateHandler: RouteHandler = async (req, res, params) => {
     return;
   }
 
-  const body = await parseBody(req) as { type?: string; assetTypes?: unknown[]; dryRun?: boolean };
+  const body = await parseBody(req) as { type?: string; assetTypes?: unknown[]; dryRun?: boolean; imageProvider?: string; imageModel?: string };
   const config = resolveConfig();
-  const basteConfig = toBasteConfig(config);
+  const basteConfig = toBasteConfig(config, {
+    imageProvider: body.imageProvider,
+    imageModel: body.imageModel,
+  });
 
   const jobId = makeJobId();
   const job: GenerationJob = {
@@ -362,24 +389,25 @@ const exportTokensHandler: RouteHandler = async (req, res, params) => {
   }
   const body = await parseBody(req) as { format?: string };
   const format = body.format || "css";
+  const brandKit = loadBrandKit(params.id);
 
   let output = "";
   let ext = "";
   switch (format) {
     case "css":
-      output = exportCSS(persona);
+      output = exportCSS(persona, brandKit);
       ext = "css";
       break;
     case "tailwind":
-      output = exportTailwindConfig(persona);
+      output = exportTailwindConfig(persona, brandKit);
       ext = "js";
       break;
     case "json":
-      output = JSON.stringify(generateDesignTokens(persona), null, 2);
+      output = JSON.stringify(generateDesignTokens(persona, brandKit), null, 2);
       ext = "json";
       break;
     case "panda":
-      output = exportPandaTheme(persona);
+      output = exportPandaTheme(persona, brandKit);
       ext = "ts";
       break;
     default:
@@ -453,7 +481,12 @@ const addReferenceHandler: RouteHandler = async (req, res, params) => {
 
 /** POST /api/rank — submit an asset ranking */
 const rankAssetHandler: RouteHandler = async (req, res) => {
-  const body = (await parseBody(req)) as Partial<AssetRank>;
+  const body = (await parseBody(req)) as Partial<AssetRank> & {
+    assetType?: "svg" | "image" | "video";
+    prompt?: string;
+    features?: number[];
+    tags?: string[];
+  };
   if (!body.assetId || !body.personaId || typeof body.score !== "number") {
     json(res, { error: "assetId, personaId, score required" }, 400);
     return;
@@ -467,7 +500,200 @@ const rankAssetHandler: RouteHandler = async (req, res) => {
   };
   ranks.push(entry);
   persistRanks();
+
+  // Mirror into the learned-preferences memory so the judge can consume it
+  // on subsequent generations.
+  appendFeedback({
+    personaId: entry.personaId,
+    score: entry.score,
+    feedback: entry.feedback,
+    assetId: entry.assetId,
+    assetType: body.assetType,
+    prompt: body.prompt,
+    features: body.features,
+    tags: body.tags,
+    ts: entry.ts,
+  });
+
   json(res, { success: true, total: ranks.length });
+};
+
+/** GET /api/feedback/:id — returns the learned-preferences document fed to the judge. */
+const getFeedbackHandler: RouteHandler = async (_req, res, params) => {
+  const summary = summarizeFeedback(params.id);
+  const document = buildLearnedPreferencesDocument(params.id);
+  json(res, { ...summary, document });
+};
+
+// ── OpenPencil edit loop ─────────────────────────────────────────────────────
+const OPENPENCIL_DIR = ".baste/openpencil";
+
+function openpencilPath(id: string): string {
+  return resolve(join(OPENPENCIL_DIR, `${id}.openpencil.json`));
+}
+
+function ensureOpenpencilDir(): string {
+  const dir = resolve(OPENPENCIL_DIR);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  return dir;
+}
+
+const openpencilWatchers = new Map<string, FSWatcher>();
+
+function importOpenPencilEdits(personaId: string, json: string): { ok: boolean; error?: string } {
+  try {
+    const doc = deserializeOpenPencil(json);
+    const partial = extractTokensFromOpenPencil(doc);
+    const kit = loadBrandKit(personaId) ?? {
+      sourceUrl: `openpencil:${personaId}`,
+      fetchedAt: new Date().toISOString(),
+      title: doc.metadata.personaName,
+      description: "OpenPencil-edited persona",
+      palette: [],
+      paletteRoles: {},
+      fonts: [],
+      fontFaces: [],
+      images: [],
+      rawText: "",
+      signals: {
+        borderRadiusMax: 0, borderRadiusAvg: 0, transitionTimings: [],
+        hasGrid: false, hasMonoFont: false, bodyFontCategory: "unknown" as const,
+        imageCount: 0, ratingPalette: 0,
+      },
+    };
+    if (partial.colors) {
+      kit.palette = Array.from(
+        new Set(Object.values(partial.colors).filter((c): c is string => typeof c === "string" && c.startsWith("#")))
+      ).slice(0, 12);
+      kit.paletteRoles = {
+        background: partial.colors.background,
+        surface: partial.colors.surface,
+        text: partial.colors.text,
+        textMuted: partial.colors.textMuted,
+        border: partial.colors.border,
+        primary: partial.colors.primary,
+        secondary: partial.colors.secondary,
+        accent: partial.colors.accent,
+      };
+    }
+    if (partial.typography) {
+      kit.fonts = Array.from(
+        new Set([
+          partial.typography.fontFamily.heading,
+          partial.typography.fontFamily.body,
+          partial.typography.fontFamily.mono,
+          ...kit.fonts,
+        ].filter(Boolean))
+      ).slice(0, 8);
+    }
+    kit.fetchedAt = new Date().toISOString();
+    saveBrandKit(personaId, kit);
+
+    try {
+      const registry = new DesignVersionRegistry();
+      const persona = getPersona(personaId);
+      if (persona) registry.initPersona(persona);
+    } catch (err) {
+      console.warn(`[gui/api/openpencil] versioning snapshot failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+/** GET /api/openpencil/:id — return the OpenPencil document for a persona. */
+const getOpenPencilHandler: RouteHandler = async (_req, res, params) => {
+  const persona = getPersona(params.id);
+  if (!persona) {
+    json(res, { error: "Persona not found" }, 404);
+    return;
+  }
+  const kit = loadBrandKit(params.id);
+  const tokens = generateDesignTokens(persona, kit);
+  const doc = personaToOpenPencil(persona, tokens);
+  json(res, doc);
+};
+
+/** POST /api/openpencil/:id — accept edited OpenPencil JSON and import. */
+const postOpenPencilHandler: RouteHandler = async (req, res, params) => {
+  if (!getPersona(params.id)) {
+    json(res, { error: "Persona not found" }, 404);
+    return;
+  }
+  const body = await parseBody(req) as { document?: unknown };
+  if (!body.document) {
+    json(res, { error: "document required" }, 400);
+    return;
+  }
+  const result = importOpenPencilEdits(params.id, JSON.stringify(body.document));
+  if (!result.ok) {
+    json(res, { error: result.error }, 400);
+    return;
+  }
+  json(res, { success: true });
+};
+
+/** POST /api/openpencil/:id/file — write the doc to disk for external editing. */
+const writeOpenPencilFileHandler: RouteHandler = async (_req, res, params) => {
+  const persona = getPersona(params.id);
+  if (!persona) {
+    json(res, { error: "Persona not found" }, 404);
+    return;
+  }
+  const kit = loadBrandKit(params.id);
+  const tokens = generateDesignTokens(persona, kit);
+  const doc = personaToOpenPencil(persona, tokens);
+  ensureOpenpencilDir();
+  const path = openpencilPath(params.id);
+  writeFileSync(path, serializeOpenPencil(doc));
+  json(res, { path, watching: openpencilWatchers.has(params.id) });
+};
+
+/** POST /api/openpencil/:id/watch — toggle a file watcher that re-imports on save. */
+const toggleOpenPencilWatchHandler: RouteHandler = async (req, res, params) => {
+  const persona = getPersona(params.id);
+  if (!persona) {
+    json(res, { error: "Persona not found" }, 404);
+    return;
+  }
+  const body = await parseBody(req) as { enabled?: boolean };
+  const path = openpencilPath(params.id);
+
+  if (body.enabled === false) {
+    openpencilWatchers.get(params.id)?.close();
+    openpencilWatchers.delete(params.id);
+    json(res, { watching: false });
+    return;
+  }
+
+  if (openpencilWatchers.has(params.id)) {
+    json(res, { watching: true, path });
+    return;
+  }
+
+  if (!existsSync(path)) {
+    ensureOpenpencilDir();
+    const kit = loadBrandKit(params.id);
+    const tokens = generateDesignTokens(persona, kit);
+    writeFileSync(path, serializeOpenPencil(personaToOpenPencil(persona, tokens)));
+  }
+
+  let lastImport = 0;
+  const watcher = watch(path, { persistent: false }, () => {
+    const now = Date.now();
+    if (now - lastImport < 200) return; // debounce noisy editor saves
+    lastImport = now;
+    try {
+      const json = readFileSync(path, "utf-8");
+      const result = importOpenPencilEdits(params.id, json);
+      if (!result.ok) console.warn(`[openpencil] watch import failed: ${result.error}`);
+    } catch (err) {
+      console.warn(`[openpencil] watch read failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  });
+  openpencilWatchers.set(params.id, watcher);
+  json(res, { watching: true, path });
 };
 
 /** GET /api/rank/:id — get aggregate ranking stats for a persona */
@@ -487,29 +713,295 @@ const getRanksHandler: RouteHandler = async (_req, res, params) => {
   });
 };
 
-/** POST /api/split — split a sheet image into asset regions (stub). */
+/** POST /api/decompose — pull a live URL into a persona + brand kit. */
+const decomposeHandler: RouteHandler = async (req, res) => {
+  const body = (await parseBody(req)) as {
+    url?: string;
+    id?: string;
+    name?: string;
+    seedMoodboard?: boolean;
+    deep?: boolean;
+    mirrorAssets?: boolean;
+    initVersioning?: boolean;
+  };
+  if (!body.url) {
+    json(res, { error: "url is required" }, 400);
+    return;
+  }
+  try {
+    const { decomposeUrl } = await import("../decompose/index.js");
+    const slug = body.id || slugifyUrl(body.url);
+    if (isBasePersona(slug)) {
+      json(res, { error: `Cannot overwrite base persona "${slug}"` }, 400);
+      return;
+    }
+    const { persona, brandKit } = await decomposeUrl(body.url, {
+      id: slug,
+      name: body.name,
+      deep: !!body.deep,
+      saveAssetsDir: body.mirrorAssets ? "./assets/decomposed" : undefined,
+      generatePaletteSwatch: !!body.mirrorAssets,
+    });
+    savePersona(persona);
+    saveBrandKit(slug, brandKit);
+
+    if (body.initVersioning) {
+      try {
+        const registry = new DesignVersionRegistry();
+        registry.initPersona(persona);
+        const sources = [brandKit.logo, brandKit.ogImage, ...brandKit.images.slice(0, 8).map((i) => i.url)]
+          .filter((s): s is string => !!s);
+        if (sources.length) registry.scanCulturalImages(persona.id, sources, `Decomposed from ${brandKit.sourceUrl}`);
+      } catch (err) {
+        console.warn(`[gui/api] initVersioning failed: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+
+    if (body.seedMoodboard !== false) {
+      const board = moodboards.get(slug) || { personaId: slug, references: [], notes: "", vibe: [] };
+      const seeds = [brandKit.logo, brandKit.ogImage, ...brandKit.images.slice(0, 12).map((i) => i.url)].filter(
+        (s): s is string => !!s
+      );
+      const seen = new Set(board.references.map((r) => r.src));
+      for (const src of seeds) {
+        if (seen.has(src)) continue;
+        seen.add(src);
+        board.references.push({
+          id: `ref-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          src,
+          tags: ["decomposed", brandKit.sourceUrl],
+          pinned: false,
+          addedAt: Date.now(),
+        });
+      }
+      board.vibe = Array.from(new Set([...(board.vibe || []), ...brandKit.palette])).slice(0, 16);
+      if (!board.notes) board.notes = `Decomposed from ${brandKit.sourceUrl} on ${brandKit.fetchedAt}`;
+      moodboards.set(slug, board);
+      persistMoodboards();
+    }
+
+    json(res, { persona, brandKit });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    json(res, { error: msg }, 400);
+  }
+};
+
+/** GET /api/proxy?url=… — fetches a remote image through the server (CORS / hotlink workaround). */
+const proxyHandler: RouteHandler = async (req, res) => {
+  const url = new URL(req.url || "/", "http://localhost");
+  const target = url.searchParams.get("url");
+  if (!target) {
+    json(res, { error: "url query param required" }, 400);
+    return;
+  }
+  try {
+    const upstream = await safeFetch(target, { timeoutMs: 10_000 });
+    if (!upstream.ok) {
+      res.writeHead(upstream.status, { "Content-Type": "text/plain" });
+      res.end(`Upstream ${upstream.status}`);
+      return;
+    }
+    const ct = upstream.headers.get("content-type") || "application/octet-stream";
+    if (!/^image\//i.test(ct) && !/svg/i.test(ct)) {
+      res.writeHead(415, { "Content-Type": "text/plain" });
+      res.end(`Unsupported content-type: ${ct}`);
+      return;
+    }
+    const buf = Buffer.from(await upstream.arrayBuffer());
+    res.writeHead(200, { "Content-Type": ct, "Cache-Control": "public, max-age=3600" });
+    res.end(buf);
+  } catch (err) {
+    res.writeHead(502, { "Content-Type": "text/plain" });
+    res.end(`Proxy error: ${err instanceof Error ? err.message : String(err)}`);
+  }
+};
+
+/** GET /api/brandkit/:id — fetch the saved brand kit for a persona. */
+const getBrandKitHandler: RouteHandler = async (_req, res, params) => {
+  const kit = loadBrandKit(params.id);
+  if (!kit) {
+    json(res, { error: "No brand kit found" }, 404);
+    return;
+  }
+  json(res, kit);
+};
+
+/** POST /api/remix — cross two personas into a new one. */
+const remixHandler: RouteHandler = async (req, res) => {
+  const body = (await parseBody(req)) as { a?: string; b?: string; id?: string; name?: string };
+  if (!body.a || !body.b || !body.id) {
+    json(res, { error: "a, b, and id are required" }, 400);
+    return;
+  }
+  const pa = getPersona(body.a);
+  const pb = getPersona(body.b);
+  if (!pa || !pb) {
+    json(res, { error: `Unknown persona: ${!pa ? body.a : body.b}` }, 404);
+    return;
+  }
+  if (isBasePersona(body.id)) {
+    json(res, { error: `Cannot overwrite base persona "${body.id}"` }, 400);
+    return;
+  }
+  const remix = extendPersona(pa, {
+    id: body.id,
+    name: body.name || `${pa.name} × ${pb.name}`,
+    summary: `Remix of ${pa.name} and ${pb.name}.`,
+    culture: { subcultures: pb.culture.subcultures, values: pb.culture.values },
+    influences: {
+      films: pb.influences.films,
+      anime: pb.influences.anime,
+      visualArtists: pb.influences.visualArtists,
+      fashion: pb.influences.fashion,
+      spaces: pb.influences.spaces,
+      obsessions: pb.influences.obsessions,
+    },
+    aesthetic: {
+      colorTemperature: pb.aesthetic.colorTemperature,
+      density: pa.aesthetic.density,
+      visualKeywords: pb.aesthetic.visualKeywords,
+      moodKeywords: pa.aesthetic.moodKeywords,
+    },
+  });
+  savePersona(remix);
+
+  const ka = loadBrandKit(body.a);
+  const kb = loadBrandKit(body.b);
+  if (ka || kb) {
+    const merged = {
+      ...(kb || ka)!,
+      sourceUrl: `remix:${body.a}+${body.b}`,
+      fetchedAt: new Date().toISOString(),
+      palette: [...new Set([...(ka?.palette ?? []), ...(kb?.palette ?? [])])].slice(0, 12),
+      fonts: [...new Set([...(ka?.fonts ?? []), ...(kb?.fonts ?? [])])].slice(0, 8),
+      paletteRoles: {
+        ...(ka?.paletteRoles ?? {}),
+        ...(kb?.paletteRoles ?? {}),
+        primary: ka?.paletteRoles?.primary ?? kb?.paletteRoles?.primary,
+        accent: kb?.paletteRoles?.accent ?? ka?.paletteRoles?.accent,
+      },
+    };
+    saveBrandKit(body.id, merged);
+  }
+  json(res, { success: true, persona: remix });
+};
+
+/** POST /api/split — split a sheet image into asset regions.
+ *
+ *  strategy:
+ *   - "grid"   uniform N×M (legacy behavior)
+ *   - "auto"   detect content gutters via horizontal+vertical projections
+ *              over transparency / luminance and label each region by aspect
+ *   - "detect" alias for auto when image dims are readable, else falls back to grid
+ *
+ *  If `saveTo` is set, each region is cropped via seamagic and the local path
+ *  is returned. Otherwise crop coordinates are returned for the client to slice.
+ */
 const splitAssetsHandler: RouteHandler = async (req, res) => {
-  const body = (await parseBody(req)) as { src?: string; cols?: number; rows?: number };
+  const body = (await parseBody(req)) as {
+    src?: string;
+    cols?: number;
+    rows?: number;
+    strategy?: "detect" | "grid" | "auto";
+    saveTo?: string;
+    minRegionPx?: number;
+    threshold?: number;
+  };
   if (!body.src) {
     json(res, { error: "src required" }, 400);
     return;
   }
-  const cols = body.cols || 4;
-  const rows = body.rows || 4;
-  const cells = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      cells.push({
-        id: `cell-${r}-${c}`,
-        x: c / cols,
-        y: r / rows,
-        w: 1 / cols,
-        h: 1 / rows,
-        src: body.src,
+
+  const { safeFetchBuffer } = await import("../shared/url.js");
+  const { parseImageDimensionsFromBuffer } = await import("../shared/img-dims.js");
+  const { detectRegions, labelRegion, cropWithSeamagic } = await import("../assets/splitter.js");
+
+  let dims: { width: number; height: number; format: string } | undefined;
+  let buffer: Buffer | undefined;
+  try {
+    const { data } = await safeFetchBuffer(body.src, { timeoutMs: 15_000 });
+    buffer = data;
+    dims = parseImageDimensionsFromBuffer(data);
+  } catch (err) {
+    console.warn(`[gui/api/split] Could not fetch ${body.src}: ${err instanceof Error ? err.message : String(err)}`);
+  }
+
+  const strategy = body.strategy ?? (dims ? "auto" : "grid");
+
+  // Auto-detect path
+  if ((strategy === "auto" || strategy === "detect") && dims && buffer) {
+    try {
+      const regions = await detectRegions(buffer, dims, {
+        minRegionPx: body.minRegionPx ?? 32,
+        threshold: body.threshold ?? 0.04,
       });
+      if (regions.length >= 2) {
+        const cells = await Promise.all(regions.map(async (r, i) => {
+          const label = labelRegion(r.w, r.h);
+          const cell: {
+            id: string; x: number; y: number; w: number; h: number;
+            src: string; format?: string; label: string; localPath?: string;
+          } = { id: `region-${i}`, ...r, src: body.src!, format: dims!.format, label };
+          if (body.saveTo) {
+            const out = await cropWithSeamagic(body.src!, body.saveTo, `region-${i}-${label}`, r);
+            if (out) cell.localPath = out;
+          }
+          return cell;
+        }));
+        json(res, {
+          src: body.src,
+          strategy: "auto",
+          detected: { width: dims.width, height: dims.height, format: dims.format },
+          regions: cells.length,
+          cells,
+        });
+        return;
+      }
+    } catch (err) {
+      console.warn(`[gui/api/split] auto-detect failed, falling back to grid: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
-  json(res, { src: body.src, cols, rows, cells, note: "Pure-CSS crop regions. Pipe to QuiverAI for SVG remake." });
+
+  // Grid fallback
+  const cols = Math.max(1, body.cols || 4);
+  const rows = Math.max(1, body.rows || 4);
+  const cellW = dims ? Math.floor(dims.width / cols) : undefined;
+  const cellH = dims ? Math.floor(dims.height / rows) : undefined;
+
+  const cells: Array<{
+    id: string; x: number; y: number; w: number; h: number;
+    src: string; format?: string; label: string; localPath?: string;
+  }> = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = dims ? c * cellW! : c / cols;
+      const y = dims ? r * cellH! : r / rows;
+      const w = dims ? cellW! : Math.round(1000 / cols) / 1000;
+      const h = dims ? cellH! : Math.round(1000 / rows) / 1000;
+      const cell = {
+        id: `cell-${r}-${c}`,
+        x, y, w, h,
+        src: body.src,
+        format: dims?.format,
+        label: dims ? labelRegion(w, h) : "tile",
+      };
+      if (dims && body.saveTo) {
+        const out = await cropWithSeamagic(body.src, body.saveTo, `cell-${r}-${c}`, { x, y, w, h });
+        if (out) (cell as typeof cell & { localPath?: string }).localPath = out;
+      }
+      cells.push(cell);
+    }
+  }
+
+  json(res, {
+    src: body.src,
+    strategy: "grid",
+    cols,
+    rows,
+    detected: dims ? { width: dims.width, height: dims.height, format: dims.format } : null,
+    cells,
+  });
 };
 
 // Route table: [method, pattern, handler]
@@ -519,7 +1011,16 @@ const routes: Array<[string, RegExp, RouteHandler]> = [
   ["POST", /^\/api\/moodboard\/([^/]+)\/reference$/, addReferenceHandler],
   ["POST", /^\/api\/rank$/, rankAssetHandler],
   ["GET", /^\/api\/rank\/([^/]+)$/, getRanksHandler],
+  ["GET", /^\/api\/feedback\/([^/]+)$/, getFeedbackHandler],
+  ["GET", /^\/api\/openpencil\/([^/]+)$/, getOpenPencilHandler],
+  ["POST", /^\/api\/openpencil\/([^/]+)$/, postOpenPencilHandler],
+  ["POST", /^\/api\/openpencil\/([^/]+)\/file$/, writeOpenPencilFileHandler],
+  ["POST", /^\/api\/openpencil\/([^/]+)\/watch$/, toggleOpenPencilWatchHandler],
   ["POST", /^\/api\/split$/, splitAssetsHandler],
+  ["POST", /^\/api\/decompose$/, decomposeHandler],
+  ["GET", /^\/api\/proxy$/, proxyHandler],
+  ["POST", /^\/api\/remix$/, remixHandler],
+  ["GET", /^\/api\/brandkit\/([^/]+)$/, getBrandKitHandler],
   ["GET", /^\/api\/personas$/, listPersonasHandler],
   ["GET", /^\/api\/personas\/([^/]+)$/, getPersonaHandler],
   ["POST", /^\/api\/personas$/, createPersonaHandler],

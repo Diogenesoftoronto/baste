@@ -43,7 +43,7 @@ export const HeroSection = component$(() => {
           left: "25%",
           w: "24rem",
           h: "24rem",
-          bg: "rgba(249,115,22,0.1)",
+          bg: "rgba(138,0,255,0.18)",
           rounded: "full",
           filter: "blur(96px)",
           animation: "pulse-glow 4s ease-in-out infinite",
@@ -56,7 +56,7 @@ export const HeroSection = component$(() => {
           right: "25%",
           w: "24rem",
           h: "24rem",
-          bg: "rgba(217,119,6,0.1)",
+          bg: "rgba(255,0,184,0.15)",
           rounded: "full",
           filter: "blur(96px)",
           animation: "pulse-glow 4s ease-in-out infinite",
@@ -101,12 +101,13 @@ export const HeroSection = component$(() => {
         >
           <span
             class={css({
-              bgGradient: "to-r",
-              gradientFrom: "orange.400",
-              gradientVia: "amber.400",
-              gradientTo: "orange.500",
+              bgGradient: "to-br",
+              gradientFrom: "acid-lime",
+              gradientVia: "toxic-green",
+              gradientTo: "electric-purple",
               bgClip: "text",
               color: "transparent",
+              textShadow: "0 0 32px rgba(198,255,0,0.35)",
             })}
           >
             Baste
@@ -127,7 +128,7 @@ export const HeroSection = component$(() => {
           Generate unique UI assets and design systems from{" "}
           <em>cultural personas</em>. Go from generic interfaces to something
           that feels like it came from{" "}
-          <span class={css({ color: "orange.400" })}>someone's imagination</span>.
+          <span class={css({ color: "acid-lime" })}>someone's imagination</span>.
         </p>
 
         <div class={hstack({ gap: 4, flexWrap: "wrap", justify: "center" })}>
@@ -136,18 +137,23 @@ export const HeroSection = component$(() => {
             class={css({
               px: 8,
               py: 4,
-              rounded: "xl",
-              bgGradient: "to-r",
-              gradientFrom: "orange.500",
-              gradientTo: "amber.600",
-              color: "white",
-              fontWeight: "semibold",
+              rounded: "lg",
+              bg: "acid-lime",
+              color: "ink-black",
+              fontFamily: "graffiti",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
+              border: "2px solid",
+              borderColor: "ink-black",
+              boxShadow: "drip",
+              transition: "all 0.15s",
               _hover: {
-                gradientFrom: "orange.400",
-                gradientTo: "amber.500",
+                bg: "neon-fuchsia",
+                color: "off-white",
+                transform: "translate(-2px,-2px)",
+                boxShadow: "6px 8px 0 #0A0A0A",
               },
-              transition: "all 0.2s",
-              shadow: "0 0 20px rgba(249,115,22,0.2)",
             })}
           >
             npm install baste
@@ -157,13 +163,20 @@ export const HeroSection = component$(() => {
             class={css({
               px: 8,
               py: 4,
-              rounded: "xl",
+              rounded: "lg",
               bg: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              border: "2px solid",
+              borderColor: "electric-purple",
               color: "text",
               fontWeight: "semibold",
-              _hover: { bg: "rgba(255,255,255,0.1)" },
+              textTransform: "uppercase",
+              letterSpacing: "0.04em",
               transition: "all 0.2s",
+              _hover: {
+                bg: "rgba(138,0,255,0.15)",
+                color: "acid-lime",
+                boxShadow: "0 0 18px rgba(138,0,255,0.5)",
+              },
             })}
           >
             See the Personas
@@ -218,7 +231,7 @@ export const HeroSection = component$(() => {
               </div>
               <div class={css({ mt: 2, color: "rgba(255,255,255,0.6)" })}>
                 🔍 Dry run for{" "}
-                <span class={css({ color: "orange.400" })}>The Cyberbotanist</span>
+                <span class={css({ color: "acid-lime" })}>The Cyberbotanist</span>
               </div>
               <div
                 class={css({

@@ -78,8 +78,8 @@ export const HowItWorksSection = component$(() => {
                   h: 12,
                   rounded: "xl",
                   bgGradient: "to-br",
-                  gradientFrom: "rgba(249,115,22,0.2)",
-                  gradientTo: "rgba(217,119,6,0.2)",
+                  gradientFrom: "rgba(198,255,0,0.18)",
+                  gradientTo: "rgba(138,0,255,0.2)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -93,7 +93,7 @@ export const HowItWorksSection = component$(() => {
                 class={css({
                   fontSize: "xs",
                   fontFamily: "mono",
-                  color: "orange.400",
+                  color: "acid-lime",
                   mb: 2,
                 })}
               >
@@ -130,6 +130,7 @@ export const HowItWorksSection = component$(() => {
             rounded: "2xl",
             bg: "#111",
             border: "1px solid rgba(255,255,255,0.05)",
+            overflowX: "auto",
           })}
         >
           <div class={vstack({ gap: 2, textAlign: "center", mb: 8 })}>
@@ -152,6 +153,7 @@ export const HowItWorksSection = component$(() => {
               gap: 4,
               textAlign: "center",
               alignItems: "center",
+              minW: "32rem",
             })}
           >
             <div
@@ -185,9 +187,9 @@ export const HowItWorksSection = component$(() => {
                 p: 4,
                 rounded: "xl",
                 bgGradient: "to-br",
-                gradientFrom: "rgba(249,115,22,0.1)",
-                gradientTo: "rgba(217,119,6,0.1)",
-                border: "1px solid rgba(249,115,22,0.2)",
+                gradientFrom: "rgba(198,255,0,0.12)",
+                gradientTo: "rgba(138,0,255,0.14)",
+                border: "1px solid rgba(198,255,0,0.25)",
               })}
             >
               <div class={css({ fontSize: "2xl", mb: 2 })}>🎨</div>
@@ -195,7 +197,7 @@ export const HowItWorksSection = component$(() => {
               <div
                 class={css({
                   fontSize: "xs",
-                  color: "rgba(249,115,22,0.6)",
+                  color: "acid-lime",
                   mt: 1,
                 })}
               >

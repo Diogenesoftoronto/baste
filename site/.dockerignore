@@ -1,0 +1,10 @@
+node_modules
+dist
+tmp
+.git
+.gitignore
+*.log
+.env
+.DS_Store
+styled-system
+public/*.png

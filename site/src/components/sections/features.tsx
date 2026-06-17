@@ -41,8 +41,13 @@ export const FeaturesSection = component$(() => {
                 rounded: "xl",
                 bg: "rgba(255,255,255,0.02)",
                 border: "1px solid rgba(255,255,255,0.05)",
-                _hover: { bg: "rgba(255,255,255,0.04)" },
                 transition: "all 0.2s",
+                _hover: {
+                  bg: "rgba(255,255,255,0.04)",
+                  borderColor: "rgba(198,255,0,0.35)",
+                  transform: "translateY(-3px)",
+                  boxShadow: "0 8px 24px rgba(138,0,255,0.18)",
+                },
               })}
             >
               <div class={css({ fontSize: "3xl", mb: 3 })}>{f.icon}</div>

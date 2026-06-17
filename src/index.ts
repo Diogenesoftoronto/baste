@@ -156,3 +156,14 @@ export type {
   OpenPencilNode,
   OpenPencilComponent,
 } from "./openpencil/bridge.js";
+
+// MCP Server
+export {
+  createBasteMCPServer,
+  runBasteMcpStdio,
+  runBasteMcpHttp,
+} from "./mcp/server.js";
+export type {
+  MCPOptions,
+  HTTPMCPOptions,
+} from "./mcp/server.js";
