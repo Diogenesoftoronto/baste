@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.4.7",
+  "checkpoint_id": "f065ed57fff0",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "site/server/assets/CMfDF7_w-style.css",
+    "site/server/assets/DNM5dT0n-style.css",
+    "site/server/q-BehNZe3t.js",
+    "site/server/q-Cm5jJe_M.js",
+    "site/src/components/layout/footer.tsx",
+    "site/src/components/sections/cta.tsx",
+    "site/src/components/sections/features.tsx",
+    "site/src/components/sections/hero.tsx",
+    "site/src/components/sections/how-it-works.tsx",
+    "site/src/components/sections/installation.tsx",
+    "site/src/components/sections/personas.tsx",
+    "site/src/components/sections/why.tsx",
+    "site/src/routes/gui/index.tsx",
+    "tests/e2e/crush-e2e.sh",
+    "tests/properties.test.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/f0/65ed57fff0/0/metadata.json",
+      "transcript": "/f0/65ed57fff0/0/full.jsonl",
+      "context": "/f0/65ed57fff0/0/context.md",
+      "content_hash": "/f0/65ed57fff0/0/content_hash.txt",
+      "prompt": "/f0/65ed57fff0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 5581,
+    "cache_creation_tokens": 307159,
+    "cache_read_tokens": 7653210,
+    "output_tokens": 58345,
+    "api_call_count": 83
+  }
+}

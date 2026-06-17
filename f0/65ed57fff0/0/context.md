@@ -1,0 +1,16 @@
+# Session Context
+
+## User Prompts
+
+### Prompt 1
+
+what is the current state of the repository
+
+### Prompt 2
+
+I would also like you to improve the styling of the pages and the genenral composition of everything. I also want you to try testing things end to end. Property and example test where useful as well. crush should be used to do the tests end to end
+
+### Prompt 3
+
+I want you to group and add everything in  this commit. I also want  you to write a report on there various aspects t heh design could be improved, icons and uniquueness and custom artifacts thata  would  make i t jujmp out to designers a s a good tool
+
