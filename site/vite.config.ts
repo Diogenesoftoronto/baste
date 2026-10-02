@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import pandaPostcss from "@pandacss/postcss";
+import pandaPostcss from "@pandacss/dev/postcss";
 
 export default defineConfig(() => {
   return {

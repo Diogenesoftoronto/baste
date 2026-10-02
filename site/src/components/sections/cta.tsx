@@ -47,7 +47,7 @@ export const CTASection = component$(() => {
 
         <div class={hstack({ gap: 4, flexWrap: "wrap", justify: "center" })}>
           <a
-            href="https://github.com/diogeneshamilton/baste"
+            href="https://github.com/Diogenesoftoronto/baste"
             target="_blank"
             class={css({
               px: 8,

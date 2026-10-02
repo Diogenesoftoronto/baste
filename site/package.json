@@ -21,7 +21,8 @@
     "preview": "qwik build preview && vite preview --open",
     "serve": "node server/entry.express",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik"
+    "qwik": "qwik",
+    "build:production": "panda codegen && npm run build.client && npm run build.server"
   },
   "devDependencies": {
     "@builder.io/qwik": "^1.13.0",
