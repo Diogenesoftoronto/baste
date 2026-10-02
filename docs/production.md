@@ -4,7 +4,7 @@ This release serves the committed public Qwik site at https://baste.love. The pu
 
 ## Pipeline and checks
 
-Reuse Railway project `996bc181-df20-435a-b5f4-685e2c0fee0b`, service `d32a4c18-d6d6-4c14-9b27-926204fa9db5`, environment `production`. Connect its existing GitHub integration to `Diogenesoftoronto/baste`, branch `main`. Pushes build the locked site dependencies, Panda styles, client assets, and static pages using the root Dockerfile. GitHub CI checks CLI types, site types, lint and the same static build, retaining a public-site artifact. No CI deployment credential is needed.
+Reuse Railway project `996bc181-df20-435a-b5f4-685e2c0fee0b`, service `d32a4c18-d6d6-4c14-9b27-926204fa9db5`, environment `production`. Set the non-secret service variable `PORT=80` to match nginx and Railway health checks. Keep nginx at two workers to avoid sizing memory use to the host CPU count. Connect its existing GitHub integration to `Diogenesoftoronto/baste`, branch `main`. Pushes build the locked site dependencies, Panda styles, client assets, and static pages using the root Dockerfile. GitHub CI checks CLI types, site types, lint and the same static build, retaining a public-site artifact. No CI deployment credential is needed.
 
 Run `npm ci`, `npm run typecheck`, `npm run build`; then `npm ci --prefix site`, `npm --prefix site run build:production`, `npm --prefix site run build.types`, and `npm --prefix site run lint`. Build the container with `docker build -t baste-public .`; run it with `docker run --rm -p 127.0.0.1:18080:80 baste-public`.
 
