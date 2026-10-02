@@ -7,9 +7,10 @@
 
 import { createServer } from "node:http";
 import { readFileSync, existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { resolve, join, sep } from "node:path";
 import type { Server } from "node:http";
 import { handleAPIRequest } from "./api.js";
+import { accountEnabled, publicOrigin } from "../notorganic/server.js";
 
 const GUI_ROOT = resolve(
   import.meta.dirname || ".",
@@ -40,19 +41,15 @@ function serveFile(res: any, path: string, status = 200): void {
 
 export function createGUIServer(port = 3456): Server {
   const server = createServer((req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-    if (req.method === "OPTIONS") {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
-
+    // Host validation prevents DNS rebinding against the local server and its keys.
+    const allowedHosts = new Set([`localhost:${port}`, `127.0.0.1:${port}`, `[::1]:${port}`, new URL(publicOrigin()).host]);
+    if (!req.headers.host || !allowedHosts.has(req.headers.host)) { res.writeHead(403); res.end("Invalid host"); return; }
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("Referrer-Policy", "same-origin");
     const url = new URL(req.url || "/", `http://localhost:${port}`);
     const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
-    const filePath = join(GUI_ROOT, pathname);
+    const filePath = resolve(GUI_ROOT, `.${pathname}`);
+    if (!filePath.startsWith(`${GUI_ROOT}${sep}`)) { res.writeHead(404); res.end("Not found"); return; }
 
     // API routes — handled by api.ts
     handleAPIRequest(req, res).then((isApi) => {
@@ -82,11 +79,23 @@ export function createGUIServer(port = 3456): Server {
 
 export async function startGUIServer(port = 3456): Promise<Server> {
   const server = createGUIServer(port);
-  return new Promise((resolve, reject) => {
-    server.listen(port, () => {
+  const started = await new Promise<Server>((resolve, reject) => {
+    const host = process.env.BASTE_API_HOST ?? (accountEnabled() ? "127.0.0.1" : "127.0.0.1");
+    if (!accountEnabled() && !["127.0.0.1", "localhost", "::1"].includes(host)) throw new Error("Local mode must bind to loopback. Enable Not Organic account mode before exposing the API.");
+    server.listen(port, host, () => {
       console.log(`\n🌐 Baste GUI running at http://localhost:${port}`);
       resolve(server);
     });
     server.on("error", reject);
   });
+
+  // Graceful shutdown on SIGINT
+  process.on("SIGINT", () => {
+    console.log("\n[gui] SIGINT received, closing server...");
+    server.close(() => process.exit(0));
+    // Force-exit after 5s in case of stuck connections
+    setTimeout(() => process.exit(1), 5000);
+  });
+
+  return started;
 }

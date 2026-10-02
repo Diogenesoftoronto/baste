@@ -20,7 +20,6 @@ import {
   getPersona,
   listPersonas,
   isBasePersona,
-  isCustomPersona,
   savePersona,
   deletePersona,
   initStore,
@@ -33,11 +32,12 @@ import {
   resolveConfig,
   toBasteConfig,
   loadConfigFile,
-  defaultConfig,
   type BasteUserConfig,
 } from "./config/baste-config.js";
 import { startGUIServer } from "./gui/server.js";
 import { DesignVersionRegistry } from "./versioning/registry.js";
+import { slugifyUrl } from "./shared/url.js";
+import { saveBrandKit, loadBrandKit } from "./decompose/store.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -53,9 +53,16 @@ Usage:
   baste show <persona-id>                   Show persona details
   baste tokens <persona-id> [--format]      Export design tokens
   baste create <id> [options]               Create new custom persona
+  baste decompose <url> [opts]              Decompose a live site into persona + brand kit
+                                              --id, --name, --deep, --mirror-assets, --init
+  baste remix <a> <b> --as <id>             Cross a persona with another into a new one
   baste delete <persona-id>                 Delete a custom persona
   baste config [options]                    Manage configuration
   baste gui [--port <n>]                    Start web GUI
+  baste mcp [--stdio | --http]              Start MCP server (stdio or HTTP)
+                                              --port <n>   Port for HTTP mode (default: 3457)
+                                              --key <path> TLS private key (enables HTTPS)
+                                              --cert <path> TLS certificate
 
 Design Version Control:
   baste init <persona-id>                   Initialize design versioning
@@ -73,6 +80,9 @@ Export/Share:
   baste export <persona-id> [path]          Export .baste file
   baste import <path>                       Import .baste file
   baste openpencil <persona-id> [path]      Export .pen for OpenPencil
+  baste lint-palette <persona-id>           WCAG contrast check on persona's brand kit
+                                              --against <#hex>    bg color to test against
+                                              --min-ratio <n>     override 4.5 default
 
 Create options:
   --name <name>                             Display name for the persona
@@ -318,21 +328,22 @@ async function main() {
       const format = String(options.format || "css");
       const outputDir = String(options.outputdir || "./assets/output");
       const { exportCSS, exportTailwindConfig, generateDesignTokens } = await import("./assets/design-system.js");
+      const brandKit = loadBrandKit(id);
 
       let output = "";
       let ext = "";
 
       switch (format) {
         case "css":
-          output = exportCSS(persona);
+          output = exportCSS(persona, brandKit);
           ext = "css";
           break;
         case "tailwind":
-          output = exportTailwindConfig(persona);
+          output = exportTailwindConfig(persona, brandKit);
           ext = "js";
           break;
         case "json":
-          output = JSON.stringify(generateDesignTokens(persona), null, 2);
+          output = JSON.stringify(generateDesignTokens(persona, brandKit), null, 2);
           ext = "json";
           break;
         default:
@@ -398,6 +409,131 @@ async function main() {
       console.log(`Name: ${persona.name}`);
       console.log(`Source: ${isBasePersona(persona.id) ? "base" : "custom"}`);
       console.log(`Saved to: ./personas/${persona.id}.json`);
+      break;
+    }
+
+    case "decompose": {
+      const url = String(options._positional || args[1] || "");
+      if (!url || !/^https?:\/\//i.test(url)) {
+        console.error("Usage: baste decompose <url> [--id <persona-id>] [--name <name>] [--deep] [--mirror-assets] [--init] [--output-dir <dir>]");
+        process.exit(1);
+      }
+      const { decomposeUrl } = await import("./decompose/index.js");
+      const slug = String(options.id || slugifyUrl(url));
+      const outputDir = String(options.outputdir || "./personas");
+      const deep = !!options.deep;
+      const mirror = !!options.mirrorassets;
+      const init = !!options.init;
+      const saveAssetsDir = mirror ? String(options.assetsdir || "./assets/decomposed") : undefined;
+
+      console.log(`\nDecomposing ${url} ${deep ? "(deep mode)" : ""} ...`);
+      try {
+        const { persona, brandKit } = await decomposeUrl(url, {
+          id: slug,
+          name: options.name ? String(options.name) : undefined,
+          deep,
+          saveAssetsDir,
+          generatePaletteSwatch: mirror,
+          timeoutMs: options.timeout ? parseInt(String(options.timeout)) : undefined,
+        });
+
+        savePersona(persona);
+        const kitPath = saveBrandKit(slug, brandKit, outputDir);
+
+        if (init) {
+          const registry = new DesignVersionRegistry();
+          registry.initPersona(persona);
+          const sources: string[] = [];
+          if (brandKit.logo) sources.push(brandKit.logo);
+          if (brandKit.ogImage) sources.push(brandKit.ogImage);
+          for (const img of brandKit.images.slice(0, 8)) sources.push(img.url);
+          if (sources.length) {
+            registry.scanCulturalImages(persona.id, sources, `Decomposed from ${brandKit.sourceUrl}`);
+          }
+          console.log(`Versioning initialized; ${sources.length} cultural refs added.`);
+        }
+
+        console.log(`\nCreated persona: ${persona.id} (${persona.name})`);
+        console.log(`Brand kit saved to: ${kitPath}`);
+        if (brandKit.localAssets) console.log(`Assets mirrored to: ${brandKit.localAssets.dir}`);
+        console.log(`\nPalette roles:`);
+        for (const [role, hex] of Object.entries(brandKit.paletteRoles)) {
+          if (hex) console.log(`  ${role.padEnd(11)} ${hex}`);
+        }
+        console.log(`\nFonts: ${brandKit.fonts.join(", ") || "(none detected)"}`);
+        if (brandKit.fontFaces.length) {
+          console.log(`@font-face URLs: ${brandKit.fontFaces.filter((f) => f.src).length}`);
+        }
+        if (brandKit.logo) console.log(`Logo: ${brandKit.logo}`);
+        if (brandKit.ogImage) console.log(`OG Image: ${brandKit.ogImage}`);
+        console.log(`Images detected: ${brandKit.images.length}`);
+        console.log(`Signals: edge≈${brandKit.signals.borderRadiusAvg.toFixed(1)}px, grid=${brandKit.signals.hasGrid}, fontCategory=${brandKit.signals.bodyFontCategory}`);
+        console.log(`\nNext: baste show ${slug}  |  baste tokens ${slug} --format css  |  baste export ${slug}`);
+      } catch (err) {
+        console.error(`\nDecompose failed: ${err instanceof Error ? err.message : String(err)}`);
+        process.exit(1);
+      }
+      break;
+    }
+
+    case "remix": {
+      const a = String(options._positional || args[1] || "");
+      const b = String(options._positional2 || args[2] || "");
+      const newId = String(options.as || `${a}-${b}`);
+      if (!a || !b) {
+        console.error("Usage: baste remix <persona-a> <persona-b> [--as <new-id>] [--name <name>]");
+        process.exit(1);
+      }
+      const pa = getPersona(a);
+      const pb = getPersona(b);
+      if (!pa || !pb) {
+        console.error(`Unknown persona: ${pa ? b : a}`);
+        process.exit(1);
+      }
+      const remix = extendPersona(pa, {
+        id: newId,
+        name: String(options.name || `${pa.name} × ${pb.name}`),
+        summary: `Remix of ${pa.name} and ${pb.name}.`,
+        culture: {
+          subcultures: pb.culture.subcultures,
+          values: pb.culture.values,
+        },
+        influences: {
+          films: pb.influences.films,
+          anime: pb.influences.anime,
+          visualArtists: pb.influences.visualArtists,
+          fashion: pb.influences.fashion,
+          spaces: pb.influences.spaces,
+          obsessions: pb.influences.obsessions,
+        },
+        aesthetic: {
+          colorTemperature: pb.aesthetic.colorTemperature,
+          density: pa.aesthetic.density,
+          visualKeywords: pb.aesthetic.visualKeywords,
+          moodKeywords: pa.aesthetic.moodKeywords,
+        },
+      });
+      savePersona(remix);
+
+      const ka = loadBrandKit(a);
+      const kb = loadBrandKit(b);
+      if (ka || kb) {
+        const merged = {
+          ...(kb || ka)!,
+          sourceUrl: `remix:${a}+${b}`,
+          fetchedAt: new Date().toISOString(),
+          palette: [...new Set([...(ka?.palette ?? []), ...(kb?.palette ?? [])])].slice(0, 12),
+          fonts: [...new Set([...(ka?.fonts ?? []), ...(kb?.fonts ?? [])])].slice(0, 8),
+          paletteRoles: {
+            ...(ka?.paletteRoles ?? {}),
+            ...(kb?.paletteRoles ?? {}),
+            primary: ka?.paletteRoles?.primary ?? kb?.paletteRoles?.primary,
+            accent: kb?.paletteRoles?.accent ?? ka?.paletteRoles?.accent,
+          },
+        };
+        saveBrandKit(newId, merged);
+      }
+      console.log(`Remixed: ${a} + ${b} → ${newId}`);
       break;
     }
 
@@ -479,6 +615,24 @@ async function main() {
       console.log("Press Ctrl+C to stop.");
       // Keep process alive
       await new Promise(() => {});
+      break;
+    }
+
+    case "mcp": {
+      if (options.stdio) {
+        const { runBasteMcpStdio } = await import("./mcp/server.js");
+        await runBasteMcpStdio(fileConfig.personaDir ? { personaDir: fileConfig.personaDir } : undefined);
+      } else {
+        const { runBasteMcpHttp } = await import("./mcp/server.js");
+        await runBasteMcpHttp({
+          personaDir: fileConfig.personaDir,
+          port: options.port ? parseInt(String(options.port)) : undefined,
+          key: options.key ? String(options.key) : undefined,
+          cert: options.cert ? String(options.cert) : undefined,
+        });
+        // Keep alive until SIGINT
+        await new Promise(() => {});
+      }
       break;
     }
 
@@ -854,6 +1008,56 @@ async function main() {
       console.log(`   Persona: ${persona.name}`);
       console.log(`   Open in OpenPencil to edit design tokens and cultural board`);
       break;
+    }
+
+    case "lint-palette": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+      const { lintPalette, contrastRatio, parseColor } = await import("./assets/contrast.js");
+      const { loadBrandKit } = await import("./decompose/store.js");
+      const kit = loadBrandKit(personaId);
+      if (!kit) {
+        console.error(`No brand kit for ${personaId}. Run "baste decompose <url> --id ${personaId}" first.`);
+        process.exit(1);
+      }
+      const palette = kit.palette;
+      const against = options.against ? String(options.against) : undefined;
+      const minRatio = options.minratio ? Number(options.minratio) : 4.5;
+      const issues = lintPalette(palette, { minRatio, against });
+
+      console.log(`\nPalette lint — ${persona.name} (${personaId})`);
+      console.log(`  Colors:    ${palette.length}`);
+      console.log(`  Against:   ${against ?? "(lightest in palette)"}`);
+      console.log(`  Threshold: ${minRatio}:1 (WCAG AA body text)`);
+      console.log("");
+      // Show every pairwise ratio so the user can read it.
+      const parsed = palette.map((c) => ({ c, rgb: parseColor(c) })).filter((x) => x.rgb);
+      const bg = against
+        ? { c: against, rgb: parseColor(against) }
+        : parsed.slice().sort((a, b) => (b.rgb!.r + b.rgb!.g + b.rgb!.b) - (a.rgb!.r + a.rgb!.g + a.rgb!.b))[0];
+      if (bg?.rgb) {
+        console.log(`  Ratios (foreground on ${bg.c}):`);
+        for (const fg of parsed) {
+          if (fg.c === bg.c) continue;
+          const r = contrastRatio(fg.rgb!, bg.rgb!);
+          const tag = r >= 7 ? "AAA" : r >= 4.5 ? "AA " : r >= 3 ? "A+ " : "FAIL";
+          console.log(`    ${fg.c.padEnd(8)} → ${r.toFixed(2).padStart(5)}:1  ${tag}`);
+        }
+      }
+      console.log("");
+      if (issues.length === 0) {
+        console.log(`  ✓ All colors pass ${minRatio}:1 against ${bg?.c ?? against}.`);
+        process.exit(0);
+      }
+      console.log(`  ✗ ${issues.length} pair(s) below ${minRatio}:1:`);
+      for (const i of issues) {
+        console.log(`    ${i.pair[0]} on ${i.pair[1]}  ${i.ratio}:1  (${i.level})`);
+      }
+      process.exit(2);
     }
 
     default:

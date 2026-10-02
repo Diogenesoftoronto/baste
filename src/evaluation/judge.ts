@@ -7,6 +7,10 @@
  */
 
 import type { Persona } from "../persona/types.js";
+import { buildLearnedPreferencesDocument } from "./feedback-memory.js";
+import type { EvaluatorConfig } from "../config/baste-config.js";
+import { resolveEvaluatorProvider } from "../config/baste-config.js";
+import { evaluateWithTypeSafe, type TypeSafeJudgments } from "./typesafe-judge.js";
 
 export interface EvaluationCriteria {
   personaAlignment: number; // 0-1: how well does it match the persona
@@ -34,6 +38,9 @@ export interface EvaluationResult {
 
   // Tags extracted from evaluation
   tags: string[];
+  /** Optional provider evidence; existing consumers keep the same interface. */
+  typesafe?: TypeSafeJudgments;
+  gate?: { accepted: boolean; reason?: string };
 }
 
 export interface EvaluateOptions {
@@ -45,6 +52,14 @@ export interface EvaluateOptions {
 
   // Optional: generation prompt used
   prompt?: string;
+
+  // Optional: pre-built learned-preferences document to inject into the prompt.
+  // When omitted, evaluateBatch loads one per persona from feedback-memory.
+  learnedPreferences?: string;
+  purpose?: string;
+  metadata?: Record<string, unknown>;
+  suite?: Array<{ type: string; purpose: string; prompt: string; metadata?: Record<string, unknown> }>;
+  features?: number[];
 }
 
 /**
@@ -64,7 +79,9 @@ Your job is to evaluate generated assets against a specific persona's taste prof
 You are rigorous but fair. $${persona.name} would reject generic, mass-produced looking work. They appreciate:
 ${persona.behaviors.interfaceValues.map((v) => `- ${v}`).join("\n")}
 
-Rate assets on a 0.0-1.0 scale. Be precise with decimals. Only exceptional work that would genuinely delight ${persona.name} should score above 0.85.`;
+Rate assets on a 0.0-1.0 scale. Be precise with decimals. Only exceptional work that would genuinely delight ${persona.name} should score above 0.85.
+
+${options.learnedPreferences ? options.learnedPreferences : ""}`;
 
   const user = `Evaluate this ${options.assetType} asset for ${persona.name}.
 
@@ -203,16 +220,24 @@ export function parseEvaluation(response: string): EvaluationResult {
  */
 export async function evaluateBatch(
   persona: Persona,
-  assets: Array<{ type: "svg" | "image" | "video"; prompt: string; content?: string }>,
-  evaluateFn: (system: string, user: string) => Promise<string>
+  assets: Array<{ type: "svg" | "image" | "video"; prompt: string; content?: string } & Omit<EvaluateOptions, "assetType">>,
+  evaluateFn: (system: string, user: string) => Promise<string>,
+  config: Partial<EvaluatorConfig> = {}
 ): Promise<EvaluationResult[]> {
   const evaluations: EvaluationResult[] = [];
+  const learnedPreferences = buildLearnedPreferencesDocument(persona.id);
 
   for (const asset of assets) {
+    if (["typesafe", "notorganic"].includes(resolveEvaluatorProvider(config))) {
+      // Service/malformed-answer failures must not become fallback passing scores.
+      evaluations.push(await evaluateWithTypeSafe(persona, { ...asset, assetType: asset.type, learnedPreferences }, config));
+      continue;
+    }
     const { system, user } = buildEvaluationPrompt(persona, {
       assetType: asset.type,
       prompt: asset.prompt,
       content: asset.content,
+      learnedPreferences,
     });
 
     try {
@@ -258,6 +283,8 @@ export function createScorer(
   const w = { ...defaultWeights, ...weights };
 
   return (result: EvaluationResult) => {
+    // Reject even when QD's qualityThreshold is zero; a hard gate cannot average away.
+    if (result.gate?.accepted === false) return Number.NEGATIVE_INFINITY;
     return (
       result.criteria.personaAlignment * w.personaAlignment +
       result.criteria.visualQuality * w.visualQuality +
