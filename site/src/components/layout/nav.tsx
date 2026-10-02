@@ -45,7 +45,7 @@ export const Nav = component$(() => {
             { label: "How It Works", href: "#how-it-works" },
             { label: "Install", href: "#installation" },
             { label: "Studio", href: "/gui" },
-            { label: "GitHub", href: "https://github.com/diogeneshamilton/baste" },
+            { label: "GitHub", href: "https://github.com/Diogenesoftoronto/baste" },
           ].map((link) => (
             <a
               key={link.label}

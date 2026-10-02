@@ -1,0 +1,11 @@
+**/node_modules
+**/dist
+**/server
+**/tmp
+**/styled-system
+.git
+.env*
+assets
+personas
+ops
+media

@@ -57,7 +57,7 @@ export const Footer = component$(() => {
             Docs
           </a>
           <a
-            href="https://github.com/diogeneshamilton/baste"
+            href="https://github.com/Diogenesoftoronto/baste"
             target="_blank"
             class={css({ _hover: { color: "text" }, transition: "color 0.2s" })}
           >
