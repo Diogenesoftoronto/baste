@@ -1,4 +1,5 @@
 import { randomBytes } from "node:crypto";
+import { ConsentService, ConsentValidationError, policyCopies } from "./consent.js";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createDpopKey, dpopProof, hash, type DpopKey } from "./dpop.js";
 
@@ -7,8 +8,8 @@ const TTL = 8 * 60 * 60 * 1000;
 const SCOPE = "wallet:read usage:read billing:checkout infer:image judgement:evaluate";
 interface Token { access_token: string; token_type: string; expires_in: number; refresh_token?: string; refresh_expires_in?: number }
 interface Profile { did: string; handle?: string }
-interface Session { id: string; csrf: string; deadline: number; profile?: Profile; key?: DpopKey; token?: Token; expires?: number; refreshExpires?: number; pendingRefresh?: Promise<void>; transaction?: { state: string; verifier: string; created: number } }
-export class AccountError extends Error { constructor(public status: number, message: string) { super(message); } }
+interface Session { id: string; csrf: string; deadline: number; profile?: Profile; key?: DpopKey; token?: Token; expires?: number; refreshExpires?: number; pendingRefresh?: Promise<void>; policyProvided?: { version: string; contentSha256: string }; transaction?: { state: string; verifier: string; created: number; locale: "en" | "fr" } }
+export class AccountError extends Error { constructor(public status: number, message: string, public code?: string) { super(message); } }
 const random = () => randomBytes(32).toString("base64url");
 function secureURL(value: string): URL {
   const url = new URL(value);
@@ -46,7 +47,11 @@ export function guardOrigin(req: IncomingMessage, mutation: boolean): void {
 }
 export class AccountManager {
   private sessions = new Map<string, Session>();
-  constructor(private fetcher: typeof fetch = (...args) => fetch(...args)) {}
+  constructor(private fetcher: typeof fetch = (...args) => fetch(...args), private consent = new ConsentService()) {}
+  private requireConsent(session: Session) {
+    if (!session.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
+    if (!this.consent.allowed(session.profile.did)) throw new AccountError(428, "Complete the current Baste age and account confirmations before continuing.", "baste_consent_required");
+  }
   private find(req: IncomingMessage): Session | undefined {
     const id = String(req.headers?.cookie ?? "").split(";").map(s => s.trim()).find(s => s.startsWith(`${COOKIE}=`))?.slice(COOKIE.length + 1);
     const session = id ? this.sessions.get(id) : undefined;
@@ -76,6 +81,7 @@ export class AccountManager {
     const session = this.find(req);
     if (!session) throw new AccountError(401, "Sign in to Not Organic to continue.");
     this.csrf(req, session);
+    this.requireConsent(session);
   }
   private async raw(path: string, init: RequestInit = {}): Promise<Response> {
     return this.fetcher(`${settings().issuer}${path}`, { ...init, redirect: "error", signal: init.signal ?? AbortSignal.timeout(20000) });
@@ -116,7 +122,9 @@ export class AccountManager {
   private async request(session: Session, path: string, init: RequestInit = {}): Promise<Response> {
     if (session.profile && this.sessions.get(session.id) !== session) throw new AccountError(401, "This account session has ended. Sign in again to continue.");
     if (!/^\/v1\/(account|models|wallet|billing\/checkout|images\/generations|judgement)$/.test(path)) throw new AccountError(400, "Unsupported Not Organic route.");
+    if (session.profile) this.requireConsent(session);
     await this.active(session);
+    if (session.profile) this.requireConsent(session);
     if (session.profile && this.sessions.get(session.id) !== session) throw new AccountError(401, "This account session has ended. Sign in again to continue.");
     const headers = new Headers(init.headers);
     const url = `${settings().issuer}${path}`;
@@ -133,7 +141,9 @@ export class AccountManager {
     if (!accountEnabled()) return;
     const session = this.find(req);
     if (!session?.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
+    this.requireConsent(session);
     await this.active(session);
+    this.requireConsent(session);
     return { did: session.profile.did, fetch: (path, init) => this.request(session, path, init) };
   }
   async handle(req: IncomingMessage, res: ServerResponse): Promise<boolean> {
@@ -141,6 +151,8 @@ export class AccountManager {
     if (!url.pathname.startsWith("/api/notorganic/")) return false;
     res.setHeader("Cache-Control", "no-store");
     const route = url.pathname.slice("/api/notorganic/".length);
+    let callbackLocale: "en" | "fr" = "en";
+    let callbackSession: Session | undefined;
     try {
       // OAuth callback is a top-level cross-site navigation, verified using one-time state.
       if (route !== "callback") guardOrigin(req, req.method !== "GET");
@@ -148,28 +160,34 @@ export class AccountManager {
       if (route === "status" && req.method === "GET") {
         let reason: string | undefined;
         if (session.profile) { try { await this.active(session); } catch (e) { session.profile = undefined; reason = e instanceof AccountError ? e.message : "Account service is unavailable."; } }
-        send(res, { enabled: accountEnabled(), configured: accountEnabled(), authenticated: !!session.profile, csrfToken: session.csrf, profile: session.profile ?? null, manageAccountUrl: settings().manage, capabilities: { profileEdit: false, imageGeneration: true, videoGeneration: false, serverConfigEdit: !accountEnabled(), externalFileEdit: !accountEnabled(), serverCropSave: !accountEnabled() }, ...(reason ? { reason } : {}) }); return true;
+        send(res, { enabled: accountEnabled(), configured: accountEnabled(), authenticated: !!session.profile, csrfToken: session.csrf, consent: this.consent.status(session.profile?.did), accessGranted: !!session.profile && this.consent.allowed(session.profile.did), profile: session.profile ?? null, manageAccountUrl: settings().manage, capabilities: { profileEdit: false, imageGeneration: true, videoGeneration: false, serverConfigEdit: !accountEnabled(), externalFileEdit: !accountEnabled(), serverCropSave: !accountEnabled() }, ...(reason ? { reason } : {}) }); return true;
       }
       if (!accountEnabled()) throw new AccountError(503, "Not Organic is not enabled on this Baste server.");
       if (route === "login" && req.method === "POST") {
-        this.csrf(req, session); await readJSON(req);
+        this.csrf(req, session); const body = await readJSON(req);
+        if (!this.consent.current().canAccept) throw new AccountError(503, "Baste account acceptance is paused until its policies are adopted.", "baste_policy_not_adopted");
+        const locale = body.locale === "fr" ? "fr" : "en";
         const verifier = random(); const state = random();
-        session.transaction = { verifier, state, created: Date.now() };
+        session.transaction = { verifier, state, created: Date.now(), locale };
         const config = settings(); const authorization = new URL(config.authorization);
         for (const [key, value] of Object.entries({ client_id: config.origin, redirect_uri: config.redirect, response_type: "code", code_challenge_method: "S256", code_challenge: hash(verifier), scope: SCOPE, state, product: "baste", prompt: "select_account" })) authorization.searchParams.set(key, value);
         send(res, { url: authorization.toString() }); return true;
       }
       if (route === "callback" && req.method === "GET") {
         const tx = session.transaction;
+        callbackLocale = tx?.locale ?? "en";
         delete session.transaction;
         if (!tx || url.searchParams.get("state") !== tx.state || Date.now() - tx.created > 300000 || url.searchParams.has("error")) throw new AccountError(400, "Sign-in could not be verified. Try again.");
         const code = url.searchParams.get("code");
         if (!code || code.length > 512) throw new AccountError(400, "Sign-in could not be verified.");
+        if (!this.consent.current().canAccept) throw new AccountError(503, "Baste account acceptance is paused until its policies are adopted.", "baste_policy_not_adopted");
         const key = createDpopKey(); const config = settings();
         const response = await this.raw("/v1/public/token", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code, code_verifier: tx.verifier, client_id: config.origin, redirect_uri: config.redirect, dpop_jwk: key.publicJwk, device_session: true, device_name: "Baste Studio" }) });
         if (!response.ok) await this.providerError(response);
         const next: Session = { id: random(), csrf: random(), deadline: Date.now() + TTL, key };
+        callbackSession = next;
         this.setToken(next, await response.json());
+        if (this.sessions.get(session.id) !== session || session.transaction) throw new AccountError(400, "Sign-in was cancelled. Try again.");
         // Authenticate through the issuer before inspecting token claims. Never trust a browser DID.
         const account = await (await this.request(next, "/v1/account")).json() as { account?: { did?: string; handle?: string } };
         const claims = JSON.parse(Buffer.from(next.token!.access_token.split(".")[1] ?? "", "base64url").toString());
@@ -177,8 +195,27 @@ export class AccountManager {
         // A concurrent logout/new login invalidates the original transaction.
         if (this.sessions.get(session.id) !== session || session.transaction) throw new AccountError(400, "Sign-in was cancelled. Try again.");
         next.profile = { did: account.account.did, ...(typeof account.account.handle === "string" ? { handle: account.account.handle } : {}) };
+        const required = this.consent.status(next.profile.did).required;
         this.sessions.delete(session.id); this.sessions.set(next.id, next); this.cookie(res, next.id);
-        res.writeHead(303, { location: "/gui/?flow=settings&account=connected" }); res.end(); return true;
+        callbackSession = undefined;
+        res.writeHead(303, { location: `/gui/?flow=settings&lang=${tx.locale}&account=${required ? "onboarding" : "connected"}` }); res.end(); return true;
+      }
+      if (route === "consent/policy" && req.method === "GET") {
+        const policy = this.consent.current();
+        if (session.profile) session.policyProvided = { version: policy.version, contentSha256: policy.contentSha256 };
+        send(res, { policy, copies: policyCopies }); return true;
+      }
+      if (route === "consent" && req.method === "POST") {
+        this.csrf(req, session);
+        if (!session.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
+        if (!this.consent.current().canAccept) throw new AccountError(503, "Baste account acceptance is paused until its policies are adopted.", "baste_policy_not_adopted");
+        const policy = this.consent.current();
+        if (session.policyProvided?.version !== policy.version || session.policyProvided.contentSha256 !== policy.contentSha256) throw new AccountError(409, "Load the current French policy copy before confirming.", "baste_consent_invalid");
+        await this.active(session);
+        if (this.sessions.get(session.id) !== session || !session.profile) throw new AccountError(401, "This account session has ended.");
+        try { this.consent.accept(session.profile.did, await readJSON(req)); }
+        catch (error) { if (error instanceof ConsentValidationError) throw new AccountError(409, error.message, "baste_consent_invalid"); throw error; }
+        send(res, { success: true, consent: this.consent.status(session.profile.did) }); return true;
       }
       if (route === "logout" && req.method === "POST") {
         this.csrf(req, session); this.sessions.delete(session.id);
@@ -191,6 +228,7 @@ export class AccountManager {
         send(res, { success: true }); return true;
       }
       if (!session.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
+      this.requireConsent(session);
       if (route === "models" && req.method === "GET") {
         const value = await (await this.request(session, "/v1/models")).json() as { data?: Array<{ id: string }> };
         send(res, { data: (value.data ?? []).filter(m => typeof m.id === "string").map(m => ({ id: m.id, kind: m.id === "image" ? "image" : m.id === "judgement" ? "judgement" : ["fast", "balanced", "reasoning", "vision"].includes(m.id) ? "text" : "other" })) }); return true;
@@ -211,9 +249,14 @@ export class AccountManager {
       }
       throw new AccountError(404, "Not found.");
     } catch (error) {
+      if (callbackSession?.token?.refresh_token && callbackSession.key) {
+        // A cancelled/failed callback must not leave a newly issued device grant behind.
+        const target = `${settings().issuer}/v1/public/device/revoke`;
+        await this.raw("/v1/public/device/revoke", { method: "POST", headers: { "content-type": "application/json", dpop: dpopProof(callbackSession.key, target, "POST") }, body: JSON.stringify({ refresh_token: callbackSession.token.refresh_token }) }).catch(() => undefined);
+      }
       const safe = error instanceof AccountError ? error : new AccountError(502, "Account service is unavailable. Try again later.");
-      if (route === "callback") { res.writeHead(303, { location: `/gui/?flow=settings&account=error&reason=${encodeURIComponent(safe.message)}` }); res.end(); }
-      else send(res, { error: safe.message }, safe.status);
+      if (route === "callback") { res.writeHead(303, { location: `/gui/?flow=settings&lang=${callbackLocale}&account=error&reason=${encodeURIComponent(safe.message)}` }); res.end(); }
+      else send(res, { error: safe.message, ...(safe.code ? { code: safe.code } : {}) }, safe.status);
       return true;
     }
   }

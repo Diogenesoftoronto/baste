@@ -22,6 +22,9 @@ import { RemixFlow } from "~/components/studio/flows/remix";
 import { SettingsFlow } from "~/components/studio/flows/settings";
 import { ProjectsFlow } from "~/components/studio/flows/projects";
 import { DEFAULT_API } from "~/lib/api";
+import { AccountSection } from "~/components/studio/flows/account";
+import { needsAccountOnboarding } from "~/lib/notorganic";
+import { accountCopy } from "~/lib/account-copy";
 
 const TABS: PersonaTab[] = ["fitting", "tokens", "generate", "moodboard", "brandkit", "feedback", "editor"];
 const FLOWS: StudioView[] = ["decompose", "remix", "settings", "tailor", "projects"];
@@ -49,8 +52,9 @@ export default component$(() => {
       /* storage unavailable — use the default */
     }
     await connectStudio(state, base);
-    if (q.get("account") === "connected") toast(state, "Connected to Not Organic");
-    if (q.get("account") === "error") toast(state, "Sign-in could not be completed. Try signing in again.", "error");
+    if (q.get("account") === "connected") toast(state, accountCopy[locale.value].connectedToast);
+    if (q.get("account") === "onboarding") toast(state, accountCopy[locale.value].onboardingToast, "info");
+    if (q.get("account") === "error") toast(state, accountCopy[locale.value].accountError, "error");
     if (q.get("payment") === "returned") toast(state, "Returned from checkout. Refresh your wallet to confirm available credit.", "info");
     if (q.has("account") || q.has("payment")) {
       const clean = new URL(window.location.href);
@@ -80,12 +84,14 @@ export default component$(() => {
       >
         <Rail />
         <main id="studio-main" class={css({ minW: 0, px: { base: 4, md: 8 }, py: { base: 5, md: 8 } })}>
+          {needsAccountOnboarding(state.account.status) ? <AccountSection /> : <>
           {state.view === "persona" && <Workspace key={accountViewKey} />}
           {(state.view === "new" || state.view === "edit" || state.view === "tailor") && <PersonaForm key={`${accountViewKey}:${state.view}-${state.selectedId}`} />}
           {state.view === "decompose" && <DecomposeFlow key={accountViewKey} />}
           {state.view === "remix" && <RemixFlow key={accountViewKey} />}
           {state.view === "settings" && <SettingsFlow key={accountViewKey} />}
           {state.view === "projects" && <ProjectsFlow key={projectViewKey} />}
+          </>}
         </main>
       </div>
       <Toasts />

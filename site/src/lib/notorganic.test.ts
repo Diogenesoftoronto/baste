@@ -41,7 +41,7 @@ test('sign-out clears previous models and wallet, while independent catalog fail
     assert.equal(account.wallet, null);
     assert.equal(account.status?.authenticated, false);
     globalThis.fetch = async (url) => {
-      if (String(url).endsWith('/status')) return new Response(JSON.stringify({ configured: true, authenticated: true, csrfToken: 'signed-in' }));
+      if (String(url).endsWith('/status')) return new Response(JSON.stringify({ configured: true, authenticated: true, accessGranted: true, csrfToken: 'signed-in' }));
       if (String(url).endsWith('/models')) return new Response(JSON.stringify({ error: 'Catalog unavailable' }), { status: 502 });
       return new Response(JSON.stringify({ availableMicros: 3000000, checkout: { available: false, packIds: [] } }));
     };
@@ -87,5 +87,20 @@ test('bodyless persona deletion still sends the account CSRF token', async () =>
     const client = createClient('/api');
     client.setCsrfToken!('account-token');
     assert.deepEqual(await client.deletePersona('my-persona'), { success: true });
+  } finally { globalThis.fetch = original; }
+});
+
+
+test('authenticated accounts without the Baste gate never load models or wallet, including old servers', async () => {
+  const original = globalThis.fetch;
+  try {
+    for (const status of [{ configured: true, authenticated: true, accessGranted: false }, { configured: true, authenticated: true }]) {
+      const calls: string[] = [];
+      globalThis.fetch = async (url) => { calls.push(String(url)); return Response.json(status); };
+      const account = emptyHostedAccount();
+      account.models = [{ id: 'previous', kind: 'image' }]; account.wallet = { availableMicros: 2000000 };
+      await refreshHostedAccount('/api', account);
+      assert.deepEqual(calls, ['/api/notorganic/status']); assert.deepEqual(account.models, []); assert.equal(account.wallet, null);
+    }
   } finally { globalThis.fetch = original; }
 });

@@ -92,6 +92,9 @@ export async function refreshAccount(s: StudioState) {
 export async function refreshPersonas(s: StudioState) {
   const c = s.client;
   if (!c) return;
+  if (s.account.status?.configured && (!s.account.status.authenticated || s.account.status.accessGranted !== true)) {
+    s.personas = []; s.tokens = {}; s.selectedId = ""; s.projectId = ""; s.loading = false; return;
+  }
   s.loading = true;
   try {
     const list = await c.listPersonas();

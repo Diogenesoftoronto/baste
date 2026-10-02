@@ -72,3 +72,7 @@ Both complete texts are included in static HTML. After hydration the selected la
 The Studio itself has no shared Footer in the current layout, so this patch adds links wherever the existing public-site Footer is used (including Documentation), without changing the Studio shell. The legal routes can also be reached directly. Adding a Studio-shell legal link can be a separate reviewed integration change.
 
 The JSON is the website text source; the four Markdown files are readable review copies. Keep them synchronized when revising. Markdown and a printable standalone HTML pack are supplied as editable/readable artifacts; no unrendered Word document is represented as verified.
+
+## Account sign-in follow-up
+
+The later isolated `baste-account-consent` branch implements a Baste-only post-authentication 14+ attestation and versioned Terms/necessary-processing checkpoint. Current-version account receipts persist across sign-outs/restarts; pending accounts cannot access account data, models, wallets or provider calls. French Terms are supplied before an express English choice. The manifest remains review-only; real login/acceptance is disabled until final adoption. Only loopback mock-provider previews work during review. See ../account-consent-review.md. This does not enforce an age boundary on the anonymous demo, initial website/font requests, CLI or independent local mode, or implement parental representation, full age verification, receipt deletion/expiry or the remaining hosted-service/privacy operations. The public deployment is unchanged.
