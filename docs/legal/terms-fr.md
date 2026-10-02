@@ -4,7 +4,7 @@ Les présentes conditions proposées visent le site public de Baste et la démon
 
 ## Exploitant et portée
 
-[Avant adoption : inscrire le nom légal confirmé de l’exploitant, une adresse publique de contact professionnel et un moyen vérifié de joindre le soutien.] « Baste », « nous » et « notre » désignent cet exploitant. Baste est un nom de produit; ce projet ne fait aucune déclaration d’immatriculation ou de constitution en société.
+Baste est exploité par Keith Abiola Noel, entrepreneur individuel au Québec, au Canada. « Baste », « nous » et « notre » désignent cet exploitant. Baste est un nom de produit; ce projet ne fait aucune déclaration quant à l’immatriculation ou à la constitution en société. Le contact commun de soutien de l’entreprise est support@notorganic.info. [Avant adoption : ajouter l’adresse postale publique de contact professionnel et confirmer que cette boîte publiée reçoit et traite de façon fiable les demandes concernant Baste.]
 
 Ces conditions concernent le service public de l’exploitant. Une copie téléchargée du logiciel relève de la licence logicielle applicable. Un serveur Baste exploité indépendamment a son propre exploitant et ses propres pratiques de traitement. Ces conditions ne remplacent pas le contrat d’achat ou de compte d’un autre fournisseur.
 
@@ -54,10 +54,10 @@ Un éventuel service payant nécessiterait ses propres modalités de préavis, d
 
 ## Confidentialité et contact
 
-La Politique de confidentialité de Baste décrit les traitements actuels dans le navigateur et la distinction avec un serveur local. Un avis de confidentialité ne constitue pas un consentement général à de nouvelles fins. [Avant adoption : inscrire les coordonnées vérifiées du soutien et du responsable de la confidentialité; ne pas orienter les demandes privées vers un suivi public de problèmes.]
+La Politique de confidentialité de Baste décrit les traitements actuels dans le navigateur et la distinction avec un serveur local. Un avis de confidentialité ne vaut pas consentement général à de nouvelles fins. Envoyez les questions concernant le soutien, les textes juridiques et la confidentialité de Baste à support@notorganic.info, le contact professionnel commun publié. Indiquez Baste et décrivez la demande sans envoyer de mots de passe, de clés API ou de renseignements personnels superflus. Ne publiez pas de demandes privées dans un outil public de suivi des problèmes. La fiabilité de la réception du courrier et du traitement des demandes doit être confirmée avant adoption.
 
 ## Langue et modifications
 
 Des textes de révision anglais et français sont fournis. Le choix de langue du navigateur ne vaut ni renonciation aux droits linguistiques ni acceptation d’un contrat anglais. Toute exigence québécoise applicable de remise du contrat français avant un choix exprès d’une autre langue doit être respectée dans le processus réel de conclusion du contrat.
 
-La version adoptée devra indiquer sa date d’entrée en vigueur. Les changements importants doivent être communiqués et acceptés lorsque la loi l’exige; modifier cette page ne suffit pas pour autoriser de nouveaux traitements ou modifier un contrat payant existant. Les règles impératives locales, tribunaux compétents et recours disponibles demeurent applicables. [Avant adoption : confirmer le territoire de l’exploitant et faire examiner toute clause proposée de droit applicable.]
+Une version adoptée doit préciser sa date d’entrée en vigueur. Les changements importants doivent être communiqués et acceptés lorsque la loi l’exige; modifier cette page n’autorise pas à elle seule de nouveaux traitements et ne modifie pas un accord payant existant. L’exploitant est établi au Québec, au Canada. Les lois impératives applicables ainsi que les tribunaux et recours disponibles restent applicables; ce projet n’impose pas de tribunal exclusif et ne supprime aucune protection des consommateurs.

@@ -4,13 +4,13 @@ This proposed notice explains the Baste public website and browser demo, includi
 
 ## Who is responsible
 
-[Before adoption: confirm the legal operator, the title and verified contact of the person responsible for protecting personal information, and a public business contact address.] Baste is a product name. The operator of a server you choose is responsible for that server’s practices. Do not send private information to a public issue tracker.
+Baste is operated by Keith Abiola Noel, a sole proprietor in Québec, Canada. The proprietor is responsible for protecting personal information unless that responsibility is delegated in writing as permitted by law. For this draft, the responsible person is Keith Abiola Noel, proprietor; the shared published business contact for Baste privacy and support requests is support@notorganic.info. [Before adoption: add the public business mailing address, confirm reliable private request handling through this mailbox, and record any written delegation that changes the responsible person.] The operator of an independently chosen server is responsible for that server’s practices. Do not send private information to a public issue tracker.
 
 ## Public visits and technical requests
 
 Your browser sends the website host information needed to deliver pages and files, including your IP address, requested URL, time and browser/request headers. URLs may contain persona, tab, project or language parameters; avoid personal information in names or URLs. This information can also appear in browser history and in links you share.
 
-[Before adoption: confirm the hosting and delivery providers, which access or error logs they actually retain, their purposes, access permissions, storage countries, retention and backup handling.] We cannot presently state that visits are unlogged or that all data stays in Québec. HTTPS protects transport to the public site; it does not prevent hosting providers from receiving requests.
+The public-site deployment configuration uses Railway hosting and nginx to serve static files. The hosting service receives delivery requests; it is separate from the optional Not Organic gateway. [Before adoption: confirm the access and error logs actually retained, any additional delivery provider, purposes, staff/provider access, storage countries, retention periods and backup handling.] We cannot presently state that visits are unlogged or that all data stays in Québec. HTTPS protects transport to the public site; it does not prevent hosting providers from receiving requests.
 
 ## What you enter in the browser demo
 
@@ -19,6 +19,8 @@ Studio can handle persona names and summaries, cultural references and preferenc
 Design personas may reveal sensitive interests or beliefs if they describe an identifiable person. Use fictional examples and omit unnecessary personal information. The demo’s aesthetic scoring is not intended as a decision about a real person. Entering content is optional; you can browse the supplied examples instead.
 
 This does not mean the page is offline: it loads site resources and fonts, and user-added external reference images can create separate requests.
+
+We use information for the features you request, support, service security and applicable legal obligations. We do not sell your Baste working content or use it to train general-purpose AI models. The current demo gives the operator no stored account copy of that working content. Saved preferences or feedback used in an evaluation are different from model-weight training. Any future optional training service must separately identify the selected data, purpose, recipients, audience and controls before it is enabled. This commitment does not determine an independent server operator’s practices or override an AI provider’s own terms.
 
 ## Cookies and browser storage
 
@@ -54,15 +56,19 @@ A supported local account bridge, if enabled and externally authorized, keeps an
 
 Before enabling a hosted service, we must disclose the actual operator and recipient roles, account identifiers, sessions, project and prompt storage, usage and billing records, payment provider, purposes, retention, cross-border processing and relevant choices. Connecting an account must not be treated as consent to unrelated training, marketing or publication of private personas.
 
+If you separately use an authorized Not Organic connection, its shared layer processes the account and authorization information, requested AI content, usage and billing records needed for that feature. Its current published notice identifies Railway for hosting and Convex for application records, configured routing/model providers for AI, Paddle for purchases and PostHog for gateway operational analytics when configured. The inspected gateway telemetry uses a pseudonymous identifier and usage, cost and outcome metadata rather than prompt bodies or direct DIDs. Those are shared-layer practices, not evidence that the current Baste demo sends content to Convex, collects card details or runs PostHog. Review https://notorganic.info/privacy and https://notorganic.info/terms for that layer’s current review notices; they remain marked not effective.
+
 ## Retention exports and deletion
 
 Demo content lasts in memory for that page/client instance. Preference storage lasts as described above. Website logging and backup retention are unresolved and must be stated before adoption; no fixed period is invented here.
 
 Token and editor exports create copies you control. Removing a custom persona removes that demo persona and its saved demo editor document, but does not establish that all moodboards, feedback or exports have been erased. Reloading resets demo memory. In the local source, persona deletion removes its custom JSON file, not all related records, output files, databases, backups or upstream provider records. Local operators must manage those separately. There is no verified hosted “delete everything” action.
 
+The shared Not Organic implementation encrypts stored gateway response records and assigns a 30-day expiry, including a stored judgement result when that path completes with usage. A supported Responses API request with store: false avoids that response record; Baste’s inspected account bridge does not expose that endpoint as a general user control. The 30-day expiry does not apply to Baste local files, feedback, project history, billing/security records, backups or independent provider copies. It is not a verified deadline for deleting every record after a Baste request.
+
 ## Your requests and choices
 
-Depending on applicable law, you may request access, correction, withdrawal of consent and deletion or portability where provided by law. [Before adoption: provide the verified private contact and an operational request process.] We will respond within applicable legal time limits, verify identity proportionately and explain any lawful refusal or retention. Do not send passwords, API keys or full payment-card numbers.
+Depending on applicable law, you may request access, correction, withdrawal of consent and deletion or portability where provided by law. Direct a Baste request to Keith Abiola Noel, proprietor responsible for privacy, through support@notorganic.info; identify Baste and the relevant data or account. [Before adoption: confirm this mailbox reliably receives private requests and implement the identity-verification, response and escalation process.] We will respond within applicable legal time limits, verify identity proportionately and explain any lawful refusal or retention. Do not send passwords, API keys or full payment-card numbers.
 
 For local files, direct requests to the server operator; for external recipients, their own request processes may also be needed. Withdrawal may affect a feature requiring the information. You may raise a concern with the Commission d’accès à l’information du Québec at https://www.cai.gouv.qc.ca or, where applicable, the Office of the Privacy Commissioner of Canada at https://www.priv.gc.ca.
 
