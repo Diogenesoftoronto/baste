@@ -43,8 +43,8 @@ function loadCustomPersonas(dir: string): Map<string, Persona> {
       if (persona.id) {
         map.set(persona.id, persona);
       }
-    } catch {
-      // Skip invalid files silently
+    } catch (err) {
+      console.warn(`[persona/store] Skipping invalid file ${file}: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
   return map;

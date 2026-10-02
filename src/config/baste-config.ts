@@ -25,7 +25,7 @@ export interface GeneratorConfig {
 
   /** Image generator settings */
   image?: {
-    provider: "openai" | "stability" | "local";
+    provider: "openai" | "gemini" | "notorganic" | "stability" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
@@ -36,16 +36,21 @@ export interface GeneratorConfig {
 
   /** Video generator settings */
   video?: {
-    provider: "veo" | "runway" | "local";
+    provider: "seedance" | "veo" | "runway" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
     duration?: number;
+    ratio?: string;
     quality?: string;
   };
 }
 
 export interface EvaluatorConfig {
+  /** Omitted: TypeSafe when TYPESAFE_API_KEY is set, otherwise OpenAI. */
+  provider?: "typesafe" | "openai" | "notorganic";
+  /** Server-only, request-scoped authorization; not part of saved configuration. */
+  notOrganicFetch?: GenerationConfig["notOrganicFetch"];
   /** LLM model for judging assets */
   model: string;
   /** API key (falls back to env vars) */
@@ -138,8 +143,8 @@ export const defaultConfig: Required<BasteUserConfig> = {
   personaDir: "./personas",
   generators: {
     svg: { provider: "quiver" },
-    image: { provider: "openai", model: "gpt-image-2", size: "1024x1024", quality: "high", style: "vivid" },
-    video: { provider: "veo", model: "veo-3", duration: 5, quality: "1080p" },
+    image: { provider: "openai" as const, model: "gpt-image-2.5", size: "1024x1024", quality: "high" as const, style: "vivid" as const },
+    video: { provider: "seedance", model: "seedance-1-0-pro-250528", duration: 5, ratio: "16:9", quality: "1080p" },
   },
   evaluator: {
     model: "gpt-4o",
@@ -161,77 +166,74 @@ export const defaultConfig: Required<BasteUserConfig> = {
   ],
 };
 
-/**
- * Deep merge two objects. Arrays are replaced, objects are merged.
- */
-function deepMerge<T extends Record<string, unknown>>(base: T, override: Partial<T>): T {
-  const result = { ...base } as T;
-  for (const key in override) {
-    if (override[key] === undefined) continue;
-    if (
-      typeof override[key] === "object" &&
-      override[key] !== null &&
-      !Array.isArray(override[key]) &&
-      typeof base[key] === "object" &&
-      base[key] !== null &&
-      !Array.isArray(base[key])
-    ) {
-      (result as Record<string, unknown>)[key] = deepMerge(
-        base[key] as Record<string, unknown>,
-        override[key] as Record<string, unknown>
-      );
-    } else {
-      (result as Record<string, unknown>)[key] = override[key];
-    }
-  }
-  return result;
+export function resolveEvaluatorProvider(config: Pick<EvaluatorConfig, "provider"> = {}): "typesafe" | "openai" | "notorganic" {
+  return config.provider ?? (process.env.TYPESAFE_API_KEY ? "typesafe" : "openai");
 }
 
-/**
- * Resolve API keys from environment variables.
- */
-function resolveEnvKeys(config: BasteUserConfig): BasteUserConfig {
-  const resolved: BasteUserConfig = { ...config };
-
-  if (!resolved.generators) resolved.generators = {};
-
-  if (!resolved.generators.svg?.apiKey && process.env.QUIVER_API_KEY) {
-    resolved.generators.svg = { ...(resolved.generators.svg || {}), apiKey: process.env.QUIVER_API_KEY } as GeneratorConfig["svg"];
-  }
-  if (!resolved.generators.image?.apiKey && process.env.OPENAI_API_KEY) {
-    resolved.generators.image = { ...(resolved.generators.image || {}), apiKey: process.env.OPENAI_API_KEY } as GeneratorConfig["image"];
-  }
-  if (!resolved.generators.video?.apiKey && process.env.GOOGLE_API_KEY) {
-    resolved.generators.video = { ...(resolved.generators.video || {}), apiKey: process.env.GOOGLE_API_KEY } as GeneratorConfig["video"];
-  }
-  if (!resolved.evaluator?.apiKey && process.env.OPENAI_API_KEY) {
-    resolved.evaluator = { ...(resolved.evaluator || {}), apiKey: process.env.OPENAI_API_KEY } as EvaluatorConfig;
-  }
-
-  return resolved;
+export interface GenerationOverrides {
+  imageProvider?: string;
+  imageModel?: string;
+  videoProvider?: string;
+  videoModel?: string;
 }
 
 /**
  * Build a complete BasteConfig (for the orchestrator) from a user config.
+ * Optional overrides allow per-request provider/model selection from the GUI.
  */
-export function toBasteConfig(userConfig: BasteUserConfig): {
+export function toBasteConfig(
+  userConfig: BasteUserConfig,
+  overrides?: GenerationOverrides
+): {
   generation: GenerationConfig;
   qd: QDConfig;
   outputCount: number;
-  evaluator: { model: string; apiKey?: string; baseUrl?: string; temperature?: number; weights?: Record<string, number> };
+  evaluator: EvaluatorConfig;
 } {
-  const envResolved = resolveEnvKeys(userConfig);
-  const qdCfg = {
-    ...defaultConfig.qd,
-    ...(envResolved.qd || {}),
-  };
-  const evalCfg = {
-    ...defaultConfig.evaluator,
-    ...(envResolved.evaluator || {}),
-  };
+  const qdCfg = { ...defaultConfig.qd, ...(userConfig.qd || {}) };
+  const evalCfg = { ...defaultConfig.evaluator, ...(userConfig.evaluator || {}) };
+  const imgCfg = userConfig.generators?.image ?? defaultConfig.generators.image;
+  const svgCfg = userConfig.generators?.svg ?? defaultConfig.generators.svg;
+  const vidCfg = userConfig.generators?.video ?? defaultConfig.generators.video;
+
+  const imageProvider = (overrides?.imageProvider ?? imgCfg?.provider ?? "openai") as "openai" | "gemini" | "notorganic";
+  if (!["openai", "gemini", "notorganic"].includes(imageProvider)) throw new Error(`Unsupported image provider: ${imageProvider}`);
+  const imageModel = overrides?.imageModel ?? (imageProvider === imgCfg?.provider ? imgCfg.model : undefined);
+  const videoProvider = overrides?.videoProvider ?? vidCfg?.provider ?? "seedance";
+  if (!["seedance", "veo", "runway", "local"].includes(videoProvider)) {
+    throw new Error(`Unsupported video provider: ${videoProvider}`);
+  }
+  const videoModel = overrides?.videoModel ?? (videoProvider === vidCfg?.provider ? vidCfg.model : undefined);
+  const videoApiKey = (videoProvider === vidCfg?.provider ? vidCfg.apiKey : undefined) ??
+    (videoProvider === "seedance" ? process.env.ARK_API_KEY : videoProvider === "veo" ? process.env.GOOGLE_API_KEY : undefined);
+  const evaluatorProvider = resolveEvaluatorProvider(userConfig.evaluator);
+
+  // Resolve the right API key for the chosen image provider
+  const imageApiKey = (imageProvider === imgCfg?.provider ? imgCfg.apiKey : undefined) ??
+    (imageProvider === "gemini"
+      ? process.env.GOOGLE_API_KEY
+      : process.env.OPENAI_API_KEY);
 
   return {
-    generation: { outputDir: envResolved.outputDir ?? defaultConfig.outputDir },
+    generation: {
+      outputDir: userConfig.outputDir ?? defaultConfig.outputDir,
+      imageProvider,
+      imageModel,
+      imageSize: imgCfg?.size,
+      imageQuality: imgCfg?.quality,
+      imageStyle: imgCfg?.style,
+      openaiApiKey: imageProvider === "openai" ? imageApiKey : undefined,
+      googleApiKey: imageProvider === "gemini" ? imageApiKey : process.env.GOOGLE_API_KEY,
+      videoProvider: videoProvider as GenerationConfig["videoProvider"],
+      videoModel,
+      videoApiKey,
+      videoBaseUrl: videoProvider === vidCfg?.provider ? vidCfg.baseUrl : undefined,
+      videoDuration: vidCfg?.duration,
+      videoRatio: vidCfg?.ratio,
+      videoResolution: vidCfg?.quality,
+      quiverApiKey: svgCfg?.apiKey ?? process.env.QUIVER_API_KEY,
+      quiverBaseUrl: svgCfg?.baseUrl,
+    },
     qd: {
       features: qdCfg.features!,
       iterations: qdCfg.iterations!,
@@ -239,10 +241,11 @@ export function toBasteConfig(userConfig: BasteUserConfig): {
       mutationRate: qdCfg.mutationRate!,
       qualityThreshold: qdCfg.qualityThreshold!,
     },
-    outputCount: envResolved.outputCount ?? defaultConfig.outputCount,
+    outputCount: userConfig.outputCount ?? defaultConfig.outputCount,
     evaluator: {
-      model: evalCfg.model!,
-      apiKey: evalCfg.apiKey,
+      provider: evaluatorProvider,
+      model: userConfig.evaluator?.model ?? (evaluatorProvider === "notorganic" ? "judgement" : evaluatorProvider === "typesafe" ? "jev-latest" : defaultConfig.evaluator.model),
+      apiKey: evalCfg.apiKey ?? (evaluatorProvider === "typesafe" ? process.env.TYPESAFE_API_KEY : process.env.OPENAI_API_KEY),
       baseUrl: evalCfg.baseUrl,
       temperature: evalCfg.temperature,
       weights: evalCfg.weights,

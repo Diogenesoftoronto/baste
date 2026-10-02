@@ -11,6 +11,7 @@
  */
 
 import type { Persona } from "./persona/types.js";
+import { resolveEvaluatorProvider, type EvaluatorConfig } from "./config/baste-config.js";
 import type { AssetType, GeneratedPrompt } from "./generation/prompts.js";
 import { generatePrompts, mutatePrompt } from "./generation/prompts.js";
 import {
@@ -43,10 +44,7 @@ export interface BasteConfig {
   outputCount: number;
 
   // LLM evaluator config
-  evaluator: {
-    model: string;
-    apiKey?: string;
-  };
+  evaluator: EvaluatorConfig;
 }
 
 export interface AssetSuite {
@@ -75,6 +73,13 @@ export async function generateAssetSuite(
 ): Promise<AssetSuite> {
   const startTime = Date.now();
   const generator = new AssetGenerator(config.generation);
+  const evaluations: EvaluationResult[] = [];
+  const evaluatorProvider = resolveEvaluatorProvider(config.evaluator);
+  // Surface missing video credentials to the GUI before generating paid assets.
+  if (assetTypes.some(a => a.kind === "video") && (config.generation.videoProvider ?? "seedance") === "seedance"
+      && !config.generation.videoApiKey && !process.env.ARK_API_KEY) {
+    throw new Error("Seedance needs ARK_API_KEY");
+  }
 
   console.log(`\n🎨 Baste: Generating assets for "${persona.name}"`);
   console.log(`   Persona: ${persona.summary}`);
@@ -128,30 +133,52 @@ export async function generateAssetSuite(
               type: "image",
               prompt: genome,
               content: asset.content,
+              purpose: imageAsset.purpose,
+              metadata: asset.metadata,
+              suite: assetTypes.map(a => ({ type: a.kind, purpose: a.purpose, prompt: promptsByAsset.get(a)![a.kind].prompt })),
             },
           ],
           // Evaluation function using OpenAI
           async (system, user) => {
             const apiKey = config.evaluator.apiKey || process.env.OPENAI_API_KEY;
             if (!apiKey) {
-              // Fallback: random evaluation for demo
+              console.warn("[baste] No OPENAI_API_KEY set — using rule-based heuristic evaluation (set OPENAI_API_KEY or evaluator.apiKey for LLM judge)");
+              // Local heuristic: score based on prompt richness and persona keyword overlap.
+              // Ensures the archive is still useful even without an LLM API key.
+              const keywords = [...persona.aesthetic.visualKeywords, ...persona.aesthetic.moodKeywords];
+              const promptWords = genome.toLowerCase().split(/[^a-z]+/);
+              const overlap = keywords.filter(k => promptWords.includes(k.toLowerCase())).length;
+              const normOverlap = keywords.length ? Math.min(1, overlap / Math.max(1, keywords.length * 0.3)) : 0.5;
+              const richness = Math.min(1, promptWords.filter(w => w.length > 3).length / 20);
+              const baseScore = 0.4 + (normOverlap * 0.35) + (richness * 0.15);
+              const paScore = Math.min(1, baseScore + 0.05 * Math.random());
+              const vqScore = Math.min(1, 0.5 + richness * 0.4 + 0.05 * Math.random());
+              const unScore = Math.min(1, 0.45 + normOverlap * 0.45 + 0.05 * Math.random());
+              const coScore = Math.min(1, 0.5 + 0.3 * richness + 0.05 * Math.random());
+              const usScore = Math.min(1, 0.55 + 0.3 * normOverlap + 0.05 * Math.random());
+              const overall = paScore * 0.3 + vqScore * 0.2 + unScore * 0.2 + coScore * 0.15 + usScore * 0.15;
               return JSON.stringify({
-                overall: 0.6 + Math.random() * 0.3,
+                overall,
                 criteria: {
-                  personaAlignment: 0.6 + Math.random() * 0.3,
-                  visualQuality: 0.6 + Math.random() * 0.3,
-                  uniqueness: 0.6 + Math.random() * 0.3,
-                  coherence: 0.6 + Math.random() * 0.3,
-                  usability: 0.6 + Math.random() * 0.3,
+                  personaAlignment: +paScore.toFixed(3),
+                  visualQuality: +vqScore.toFixed(3),
+                  uniqueness: +unScore.toFixed(3),
+                  coherence: +coScore.toFixed(3),
+                  usability: +usScore.toFixed(3),
                 },
                 features: [
-                  Math.random() * 2 - 1, // color temp
-                  Math.random(), // density
-                  Math.random(), // abstractness
+                  +(Math.random() * 2 - 1).toFixed(3),
+                  +richness.toFixed(3),
+                  +normOverlap.toFixed(3),
                 ],
-                feedback: "Generated evaluation (no API key provided)",
-                improvements: ["Add API key for real evaluation"],
-                tags: ["demo", "placeholder"],
+                feedback: `Local heuristic evaluation: prompt-keyword overlap=${(normOverlap * 100).toFixed(0)}%, prompt richness=${(richness * 100).toFixed(0)}%. ` +
+                  (normOverlap > 0.5 ? "Strong persona alignment" : normOverlap > 0.2 ? "Moderate persona alignment, consider more persona keywords" : "Weak persona alignment, refine prompt"),
+                improvements: [
+                  "Add API key for LLM judge (OPENAI_API_KEY)",
+                  normOverlap < 0.5 ? `Inject more ${persona.aesthetic.visualKeywords.slice(0,3).join(", ")} keywords` : "Explore contrasting moods for diversity",
+                  richness < 0.5 ? "Expand prompt with detail: lighting, materials, composition" : "Experiment with shorter, punchier prompts",
+                ],
+                tags: ["heuristic", normOverlap > 0.5 ? "aligned" : "needs-work", richness > 0.5 ? "rich" : "sparse", "local-eval"],
               });
             }
 
@@ -173,11 +200,13 @@ export async function generateAssetSuite(
 
             const data = await response.json();
             return data.choices[0]?.message?.content || "";
-          }
+          },
+          config.evaluator
         );
 
         const result = evalResults[0];
-        const scorer = createScorer();
+        evaluations.push(result);
+        const scorer = createScorer(config.evaluator.weights);
         const quality = scorer(result);
 
         return {
@@ -190,22 +219,32 @@ export async function generateAssetSuite(
 
   // Generate final diverse assets from archive
   console.log("\n🎯 Generating final assets...");
-  const diversePrompts = getDiverseSamples(archive, config.outputCount);
+  const diversePrompts = imageAssets.length > 0 ? getDiverseSamples(archive, config.outputCount)
+    : [{ genome: "", quality: 0, features: [0, 0, 0], generation: 0 }];
 
   const finalAssets: GeneratedAsset[] = [];
-  const evaluations: EvaluationResult[] = [];
 
   for (const solution of diversePrompts) {
     for (const assetType of assetTypes) {
       try {
+        const originalPrompt = promptsByAsset.get(assetType)![assetType.kind];
         const asset = await generator.generate(persona, assetType, {
-          prompt: solution.genome,
-          systemContext: `Generate ${assetType.kind} for ${persona.name}`,
-          parameters: {},
+          ...originalPrompt,
+          prompt: assetType.kind === "image" ? solution.genome : originalPrompt.prompt,
         });
+        if (evaluatorProvider === "typesafe" || evaluatorProvider === "notorganic") {
+          const [evaluation] = await evaluateBatch(persona, [{
+            type: asset.type, prompt: asset.prompt, content: asset.content,
+            purpose: assetType.purpose, metadata: asset.metadata,
+            suite: finalAssets.map(a => ({ type: a.type, purpose: a.metadata.assetPurpose, prompt: a.prompt, metadata: a.metadata })),
+          }], async () => { throw new Error("Unexpected OpenAI evaluator selection"); }, config.evaluator);
+          evaluations.push(evaluation);
+          if (evaluation.gate?.accepted === false) continue;
+        }
         finalAssets.push(asset);
       } catch (error) {
         console.error(`Failed to generate ${assetType.kind}:`, error);
+        if (assetType.kind === "video" || evaluatorProvider === "typesafe" || evaluatorProvider === "notorganic" || config.generation.imageProvider === "notorganic") throw error;
       }
     }
   }

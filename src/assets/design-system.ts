@@ -9,6 +9,16 @@
  */
 
 import type { Persona, AestheticProfile } from "../persona/types.js";
+import type { BrandKit } from "../decompose/index.js";
+import { contrastRatio, parseColor } from "./contrast.js";
+import { hueDistance, normalizeHue, oklchToHex, toOklab, toOklch, type Oklch } from "./oklch.js";
+import { COLOR_LEXICON, FONT_BASES, FONT_OVERRIDES, culturalCorpus, scoreTriggers } from "./palette-lexicon.js";
+
+/** Built-in font families; externally supplied BrandKit fonts remain caller-owned. */
+export const TOKEN_FONT_FAMILIES: string[] = [...new Set([
+  ...Object.values(FONT_BASES).flatMap((fonts) => Object.values(fonts)),
+  ...FONT_OVERRIDES.map((override) => override.heading),
+])];
 
 export interface DesignTokens {
   colors: ColorPalette;
@@ -111,14 +121,18 @@ export interface MotionTokens {
 }
 
 /**
- * Generate design tokens from persona
+ * Generate design tokens from persona. If a BrandKit is supplied, its
+ * extracted palette / fonts override the persona-derived defaults.
  */
-export function generateDesignTokens(persona: Persona): DesignTokens {
+export function generateDesignTokens(persona: Persona, brandKit?: BrandKit | null): DesignTokens {
   const aesthetic = persona.aesthetic;
 
+  const baseColors = generateColorPalette(persona);
+  const baseTypography = generateTypography(persona);
+
   return {
-    colors: generateColorPalette(aesthetic),
-    typography: generateTypography(aesthetic),
+    colors: brandKit ? overlayColors(baseColors, brandKit) : baseColors,
+    typography: brandKit ? overlayTypography(baseTypography, brandKit) : baseTypography,
     spacing: generateSpacing(aesthetic),
     borders: generateBorders(aesthetic),
     shadows: generateShadows(aesthetic),
@@ -126,108 +140,159 @@ export function generateDesignTokens(persona: Persona): DesignTokens {
   };
 }
 
-function generateColorPalette(aesthetic: AestheticProfile): ColorPalette {
-  const colorMap: Record<string, ColorPalette> = {
-    warm: {
-      primary: "#8B6914",
-      secondary: "#6B8E6B",
-      accent: "#D4A843",
-      background: "#F5F0E8",
-      surface: "#FFFFFF",
-      text: "#2D2926",
-      textMuted: "#7A756E",
-      border: "#D9D4CC",
-      warm: "#D4A843",
-      cool: "#7BA3A8",
-      density: aesthetic.density,
-    },
-    cool: {
-      primary: "#4A6FA5",
-      secondary: "#6B5B95",
-      accent: "#88B0C4",
-      background: "#1A1F2E",
-      surface: "#242B3D",
-      text: "#E8E8F0",
-      textMuted: "#8A8FA8",
-      border: "#3A4055",
-      warm: "#C4956A",
-      cool: "#88B0C4",
-      density: aesthetic.density,
-    },
-    "high-contrast": {
-      primary: "#FF6B35",
-      secondary: "#004E89",
-      accent: "#1A659E",
-      background: "#0A0A0A",
-      surface: "#141414",
-      text: "#FFFFFF",
-      textMuted: "#999999",
-      border: "#333333",
-      warm: "#FF6B35",
-      cool: "#00A8E8",
-      density: aesthetic.density,
-    },
-    muted: {
-      primary: "#9B8E7E",
-      secondary: "#A8B5A6",
-      accent: "#C4B8A8",
-      background: "#FAF8F5",
-      surface: "#FFFFFF",
-      text: "#4A4540",
-      textMuted: "#9A948C",
-      border: "#E8E4DE",
-      warm: "#C4B8A8",
-      cool: "#A8B5C4",
-      density: aesthetic.density,
-    },
-    neutral: {
-      primary: "#5A5A5A",
-      secondary: "#7A7A7A",
-      accent: "#3A7CA5",
-      background: "#F7F7F7",
-      surface: "#FFFFFF",
-      text: "#1A1A1A",
-      textMuted: "#6A6A6A",
-      border: "#E0E0E0",
-      warm: "#C4A882",
-      cool: "#82A8C4",
-      density: aesthetic.density,
-    },
+function overlayColors(base: ColorPalette, kit: BrandKit): ColorPalette {
+  const r = kit.paletteRoles || {};
+  return {
+    ...base,
+    primary: r.primary ?? base.primary,
+    secondary: r.secondary ?? base.secondary,
+    accent: r.accent ?? base.accent,
+    background: r.background ?? base.background,
+    surface: r.surface ?? base.surface,
+    text: r.text ?? base.text,
+    textMuted: r.textMuted ?? base.textMuted,
+    border: r.border ?? base.border,
   };
-
-  return colorMap[aesthetic.colorTemperature] || colorMap.neutral;
 }
 
-function generateTypography(aesthetic: AestheticProfile): TypographyTokens {
-  const fontMap: Record<string, { heading: string; body: string; mono: string }> = {
-    clean: {
-      heading: "'Inter', system-ui, sans-serif",
-      body: "'Inter', system-ui, sans-serif",
-      mono: "'JetBrains Mono', monospace",
-    },
-    expressive: {
-      heading: "'Space Grotesk', 'Helvetica Neue', sans-serif",
-      body: "'Source Sans 3', system-ui, sans-serif",
-      mono: "'Fira Code', monospace",
-    },
-    retro: {
-      heading: "'Space Grotesk', 'Courier New', serif",
-      body: "'Source Sans 3', Georgia, serif",
-      mono: "'Courier Prime', monospace",
-    },
-    futuristic: {
-      heading: "'Rajdhani', 'Helvetica Neue', sans-serif",
-      body: "'Inter', system-ui, sans-serif",
-      mono: "'JetBrains Mono', monospace",
-    },
-    handcrafted: {
-      heading: "'Space Grotesk', 'Palatino', serif",
-      body: "'Source Sans 3', 'Palatino', serif",
-      mono: "'Fira Code', monospace",
+function overlayTypography(base: TypographyTokens, kit: BrandKit): TypographyTokens {
+  const fonts = kit.fonts || [];
+  if (fonts.length === 0) return base;
+  const monoCandidate = fonts.find((f) => /mono|code|courier|fira|jetbrains|consolas|menlo|cascadia/i.test(f));
+  const displayCandidate = fonts.find((f) => /grotesk|display|black|condensed|impact|playfair|orbitron/i.test(f)) ?? fonts[0];
+  const bodyCandidate =
+    fonts.find((f) => f !== displayCandidate && !/mono|code|courier|fira|jetbrains|consolas|menlo|cascadia/i.test(f)) ??
+    displayCandidate ??
+    fonts[0];
+
+  return {
+    ...base,
+    fontFamily: {
+      heading: `'${displayCandidate}', ${stripQuotedFamily(base.fontFamily.heading)}`,
+      body: `'${bodyCandidate}', ${stripQuotedFamily(base.fontFamily.body)}`,
+      mono: monoCandidate ? `'${monoCandidate}', ${stripQuotedFamily(base.fontFamily.mono)}` : base.fontFamily.mono,
     },
   };
+}
 
-  const fonts = fontMap[aesthetic.typographyStyle] || fontMap.clean;
+function stripQuotedFamily(stack: string): string {
+  return stack.replace(/^['"][^'"]+['"]\s*,\s*/, "");
+}
+
+interface ScoredAnchor extends Oklch { score: number }
+
+/** Merge nearest hue neighbours until all cluster centres are at least 20° apart. */
+function clusterAnchors(anchors: ScoredAnchor[]): ScoredAnchor[] {
+  const clusters = anchors.map((anchor) => ({ ...anchor }));
+  while (true) {
+    let closest = 20;
+    let pair: [number, number] | undefined;
+    for (let i = 0; i < clusters.length; i++) {
+      for (let j = i + 1; j < clusters.length; j++) {
+        const distance = hueDistance(clusters[i].h, clusters[j].h);
+        if (distance < closest) { closest = distance; pair = [i, j]; }
+      }
+    }
+    if (!pair) break;
+    const [i, j] = pair;
+    const a = toOklab(clusters[i]);
+    const b = toOklab(clusters[j]);
+    const score = clusters[i].score + clusters[j].score;
+    const weight = clusters[i].score / score;
+    clusters[i] = {
+      ...toOklch({ l: a.l * weight + b.l * (1 - weight), a: a.a * weight + b.a * (1 - weight), b: a.b * weight + b.b * (1 - weight) }),
+      score,
+    };
+    clusters.splice(j, 1);
+  }
+  return clusters.sort((a, b) => b.score - a.score);
+}
+
+function fallbackAnchor(persona: Persona): ScoredAnchor {
+  // FNV-1a over UTF-8 gives a stable unsigned 32-bit seed on every Node platform.
+  let hash = 0x811c9dc5;
+  for (const byte of new TextEncoder().encode(persona.id + persona.aesthetic.visualKeywords.join(""))) {
+    hash = Math.imul(hash ^ byte, 0x01000193) >>> 0;
+  }
+  const seed = hash / 0x100000000;
+  const temperature = persona.aesthetic.colorTemperature;
+  const h = temperature === "warm" ? 20 + seed * 60 : temperature === "cool" ? 190 + seed * 70 : seed * 360;
+  const c = temperature === "high-contrast" ? 0.2 : temperature === "muted" ? 0.12 * 0.5 : 0.12;
+  return { l: 0.62, c, h, score: 1 };
+}
+
+/** Check rounded, gamut-mapped hex colours; nudge only OKLCH lightness. */
+function contrastedHex(color: Oklch, background: string, minimum: number, darkGround: boolean): string {
+  const bg = parseColor(background)!;
+  for (let step = 0; step <= 200; step++) {
+    const l = Math.max(0, Math.min(1, color.l + (darkGround ? 1 : -1) * step * 0.005));
+    const hex = oklchToHex({ ...color, l });
+    if (contrastRatio(parseColor(hex)!, bg) >= minimum) return hex;
+  }
+  throw new Error("Unable to satisfy palette contrast");
+}
+
+function generateColorPalette(persona: Persona): ColorPalette {
+  const aesthetic = persona.aesthetic;
+  const corpus = culturalCorpus(persona);
+  const anchors: ScoredAnchor[] = [];
+  const temperatureBias = { "high-contrast": 2, cool: 1, neutral: 0, warm: -1, muted: -1 };
+  let nightVotes = temperatureBias[aesthetic.colorTemperature];
+  for (const entry of COLOR_LEXICON) {
+    const score = scoreTriggers(corpus, entry.triggers);
+    if (score === 0) continue;
+    nightVotes += entry.night * score;
+    anchors.push(...entry.anchors.map((anchor) => ({ ...anchor, score })));
+  }
+  const darkGround = nightVotes > 0;
+  const clusters = clusterAnchors(anchors.length ? anchors : [fallbackAnchor(persona)]);
+  const primaryCluster = clusters[0];
+  const primary = {
+    ...primaryCluster,
+    l: Math.max(darkGround ? 0.55 : 0.42, Math.min(darkGround ? 0.72 : 0.55, primaryCluster.l)),
+    c: Math.max(0.09, primaryCluster.c),
+  };
+  const secondaryCluster = clusters.find((cluster) => hueDistance(cluster.h, primary.h) >= 40);
+  const secondary = secondaryCluster ?? { l: primary.l, c: primary.c * 0.7, h: normalizeHue(primary.h + 150) };
+  const accent = clusters.filter((cluster) => cluster !== primaryCluster && cluster !== secondaryCluster)
+    .sort((a, b) => b.c - a.c)[0] ?? { l: primary.l, c: 0.18, h: normalizeHue(primary.h - 60) };
+  // Choose anchors nearest the centres of the specified warm/cool hue bands.
+  const warm = anchors.filter((anchor) => anchor.h >= 20 && anchor.h <= 90)
+    .sort((a, b) => hueDistance(a.h, 55) - hueDistance(b.h, 55) || b.score - a.score)[0];
+  const cool = anchors.filter((anchor) => anchor.h >= 180 && anchor.h <= 280)
+    .sort((a, b) => hueDistance(a.h, 230) - hueDistance(b.h, 230) || b.score - a.score)[0];
+  const extras = {
+    warm: ["#D4A843", "#7BA3A8"], cool: ["#C4956A", "#88B0C4"],
+    "high-contrast": ["#FF6B35", "#00A8E8"], muted: ["#C4B8A8", "#A8B5C4"], neutral: ["#C4A882", "#82A8C4"],
+  }[aesthetic.colorTemperature];
+  const ground = (l: number, c = 0.015): Oklch => ({ l, c, h: primary.h });
+  const background = oklchToHex(ground(darkGround ? 0.17 : 0.965));
+  return {
+    primary: contrastedHex(primary, background, 3, darkGround),
+    secondary: oklchToHex(secondary), accent: oklchToHex(accent), background,
+    surface: oklchToHex(ground(darkGround ? 0.22 : 0.99)),
+    border: oklchToHex(ground(darkGround ? 0.32 : 0.86)),
+    text: contrastedHex(ground(darkGround ? 0.95 : 0.22, darkGround ? 0.01 : 0.015), background, 7, darkGround),
+    textMuted: contrastedHex(ground(darkGround ? 0.72 : 0.48, 0.02), background, 4.5, darkGround),
+    warm: warm ? oklchToHex(warm) : extras[0], cool: cool ? oklchToHex(cool) : extras[1],
+    density: aesthetic.density,
+  };
+}
+
+function fontStack(family: string): string {
+  const fallback = ["Space Mono", "VT323", "JetBrains Mono", "Fira Code"].includes(family) ? "monospace"
+    : ["Fraunces", "Source Serif 4"].includes(family) ? "serif" : "sans-serif";
+  return `'${family}', ${fallback}`;
+}
+
+function generateTypography(persona: Persona): TypographyTokens {
+  const base = FONT_BASES[persona.aesthetic.typographyStyle] || FONT_BASES.clean;
+  const corpus = culturalCorpus(persona);
+  const override = FONT_OVERRIDES.map((entry) => ({ ...entry, score: scoreTriggers(corpus, entry.triggers) }))
+    .filter((entry) => entry.score > 0).sort((a, b) => b.score - a.score)[0];
+  const fonts = {
+    heading: fontStack(override?.heading ?? base.heading), body: fontStack(base.body), mono: fontStack(base.mono),
+  };
 
   return {
     fontFamily: fonts,
@@ -462,8 +527,8 @@ function generateMotion(aesthetic: AestheticProfile): MotionTokens {
 /**
  * Export tokens as CSS custom properties
  */
-export function exportCSS(persona: Persona): string {
-  const tokens = generateDesignTokens(persona);
+export function exportCSS(persona: Persona, brandKit?: BrandKit | null): string {
+  const tokens = generateDesignTokens(persona, brandKit);
 
   return `:root {
   /* ${persona.name} - Generated Design System */
@@ -519,8 +584,8 @@ export function exportCSS(persona: Persona): string {
 /**
  * Export tokens as Tailwind config
  */
-export function exportTailwindConfig(persona: Persona): string {
-  const tokens = generateDesignTokens(persona);
+export function exportTailwindConfig(persona: Persona, brandKit?: BrandKit | null): string {
+  const tokens = generateDesignTokens(persona, brandKit);
 
   return `// tailwind.config.js - ${persona.name} Theme
 module.exports = {
@@ -570,8 +635,8 @@ module.exports = {
 /**
  * Export tokens as PandaCSS theme config
  */
-export function exportPandaTheme(persona: Persona): string {
-  const t = generateDesignTokens(persona);
+export function exportPandaTheme(persona: Persona, brandKit?: BrandKit | null): string {
+  const t = generateDesignTokens(persona, brandKit);
 
   return `import { defineConfig } from "@pandacss/dev";
 

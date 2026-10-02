@@ -64,6 +64,8 @@ export {
   evaluateBatch,
   createScorer,
 } from "./evaluation/judge.js";
+export { evaluateWithTypeSafe, PET_PEEVE_REJECTION_THRESHOLD } from "./evaluation/typesafe-judge.js";
+export type { TypeSafeJudgments, ScoreAnswer } from "./evaluation/typesafe-judge.js";
 export type {
   EvaluationCriteria,
   EvaluationResult,
@@ -156,3 +158,19 @@ export type {
   OpenPencilNode,
   OpenPencilComponent,
 } from "./openpencil/bridge.js";
+
+// MCP Server
+export {
+  createBasteMCPServer,
+  runBasteMcpStdio,
+  runBasteMcpHttp,
+} from "./mcp/server.js";
+export type {
+  MCPOptions,
+  HTTPMCPOptions,
+} from "./mcp/server.js";
+
+// Durable projects and shared commands for Studio and future agent tools.
+export { listProjects, getProject, createProject, applyProjectCommand, ProjectError } from "./projects/commands.js";
+export { PROJECT_LIMITS } from "./projects/contracts.js";
+export type { DesignProject, DesignPartner, ProjectSummary, ProjectRevision, ProjectDetail, CreateProjectRequest, ProjectCommand } from "./projects/contracts.js";
