@@ -11,7 +11,7 @@ export default component$(() => (
       <h1 class={css({ fontSize: "3xl", fontWeight: "bold", mb: 6 })}>Run Baste Studio locally</h1>
       <p>The public site introduces Baste. Studio runs on your computer, where your personas, projects and provider credentials stay under your control.</p>
       <p class={css({ mt: 6 })}>Clone the repository and follow its installation guide:</p>
-      <p class={css({ mt: 4 })}><a href="https://github.com/Diogenesoftoronto/baste#readme" class={css({ color: "acid-lime" })}>Open the Baste installation guide</a></p>
+      <p class={css({ mt: 4 })}><a href="https://github.com/Diogenesoftoronto/baste/tree/main#readme" class={css({ color: "acid-lime" })}>Open the Baste installation guide</a></p>
       <p class={css({ mt: 6 })}>Hosted accounts and generation are not available on this public release.</p>
       <p class={css({ mt: 6 })}><a href="/" class={css({ color: "acid-lime" })}>Back to Baste</a></p>
     </main>
