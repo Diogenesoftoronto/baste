@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$, useSignal } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 
@@ -8,13 +10,14 @@ interface CopyCommandProps {
 
 /** A shell command you can copy in one click. */
 export const CopyCommand = component$<CopyCommandProps>(({ command, tone = "paper" }) => {
+  const locale = useLocale();
   const copied = useSignal(false);
   const night = tone === "night";
   return (
     <button
       type="button"
       data-juice="copy"
-      aria-label={`Copy command: ${command}`}
+      aria-label={text(locale.value, "Copy command: {command}", { command })}
       onClick$={async () => {
         try {
           await navigator.clipboard.writeText(command);
@@ -52,7 +55,7 @@ export const CopyCommand = component$<CopyCommandProps>(({ command, tone = "pape
         class={css({ fontFamily: "body", fontSize: "12px", ml: "auto", pl: 2, whiteSpace: "nowrap" })}
         style={{ color: night ? "#A8A193" : "#6E6A61" }}
       >
-        {copied.value ? "Copied" : "Copy"}
+        {copied.value ? text(locale.value, "Copied") : text(locale.value, "Copy")}
       </span>
     </button>
   );

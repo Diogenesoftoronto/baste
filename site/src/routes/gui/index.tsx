@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$, useContextProvider, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { css } from "styled-system/css";
@@ -25,6 +27,7 @@ const TABS: PersonaTab[] = ["fitting", "tokens", "generate", "moodboard", "brand
 const FLOWS: StudioView[] = ["decompose", "remix", "settings", "tailor", "projects"];
 
 export default component$(() => {
+  const locale = useLocale();
   const state = useStore(initialState(), { deep: true });
   useContextProvider(StudioCtx, state);
 
@@ -63,7 +66,7 @@ export default component$(() => {
 
   return (
     <div class={css({ minH: "100dvh", display: "flex", flexDirection: "column" })}>
-      <a href="#studio-main" class="skip-link">Skip to workspace</a>
+      <a href="#studio-main" class="skip-link">{text(locale.value, "Skip to workspace")}</a>
       <Topbar />
       <div
         class={css({

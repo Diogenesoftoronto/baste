@@ -1,0 +1,13 @@
+Baste uses General Translation’s framework-neutral formatMessage API with bundled, locally authored EN/FR JSON. Static labels use STRING formatting; templates/plurals use ICU. The Qwik 1 provider is independent of Twyne’s Qwik 2 adapter.
+
+Locale precedence: ?lang=en|fr → baste.language cookie → ordered browser/Accept-Language preferences → English. The selector preserves the current path, parameters and anchor. Internal public links carry the locale. Cookie refusal retains the URL choice. No account authority, provider calls, private translation or credentials are added.
+
+npm run i18n:check verifies catalog/ICU parity, raster assets and literal JSX in the 19 migrated public/shell/fitting components. npm run test:i18n tests locale resolution, explicit preference, fallback, command interpolation, catalog parity and assets. Existing site API/material/Not Organic tests remain applicable. Browser verification uses built static output.
+
+Migrated: homepage sections, navigation/footer, command-copy UI, Studio rail/topbar/workspace and initial fitting preview, measurement sheet, aesthetic/palette labels, archive status and export persona selector. Long preview-space and rail labels wrap. Built-in persona display selection is checked across all three examples on desktop/mobile and automatic rotation. Locale-specific OG PNGs are selected from a reusable manifest with a language-neutral fallback; editable SVG sources are included. Baste’s main logo remains language neutral.
+
+Still English: deeper Studio create/remix/decompose/generation/tokens/moodboard/feedback/export flows; settings/account/payment toasts and server errors; projects/unavailable-backend explanation; docs/specimen/materials route bodies; manifest text. Commands/identifiers are retained. The three built-in personas’ display names, descriptions and fitting-preview copy are translated locally. Film/music titles, proper names, model output and user-authored/custom persona content remain unchanged. IDs and generation input are never translated.
+
+Production currently serves static English HTML. Browser resume applies query/cookie/browser locale and document/metadata updates. French initial HTML, no-JavaScript support and crawler-specific metadata require a future localized static-route build or SSR release. Original shared auth/payment logic is untouched; no deployment performed.
+
+French browser QA audits rendered catalog copy and accessibility labels in these public/fitting surfaces. Generated code comments and identifiers, language self-names and cultural proper names/genre names retain their source form; custom persona/model content is not translated. Other Studio tabs and routes remain outside this audit.

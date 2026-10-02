@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { chalkPuff, haptic, play, setSoundEnabled, snipBurst, soundEnabled, type Sound } from "~/lib/juice";
@@ -77,6 +79,7 @@ export const Juice = component$(() => {
 
 /** Sound on/off. Juice is optional; the choice persists. */
 export const SoundToggle = component$<{ tone?: "paper" | "night" }>(({ tone = "paper" }) => {
+  const locale = useLocale();
   const on = useSignal(true);
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
@@ -89,8 +92,8 @@ export const SoundToggle = component$<{ tone?: "paper" | "night" }>(({ tone = "p
     <button
       type="button"
       aria-pressed={on.value}
-      aria-label={on.value ? "Sound on — turn off" : "Sound off — turn on"}
-      title={on.value ? "Sound on" : "Sound off"}
+      aria-label={text(locale.value, on.value ? "Sound on — turn off" : "Sound off — turn on")}
+      title={text(locale.value, on.value ? "Sound on" : "Sound off")}
       onClick$={() => {
         setSoundEnabled(!on.value);
         on.value = !on.value;

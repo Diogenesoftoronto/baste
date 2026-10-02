@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import type { DesignTokens, Persona } from "~/lib/api-types";
@@ -26,11 +28,12 @@ function seeded(s: string, mod: number, min = 1): number {
  * Same pattern for every persona — only the fitting changes.
  */
 export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full", class: cls }) => {
+  const locale = useLocale();
   const inf = persona.influences;
   const spaces = (inf?.spaces ?? []).slice(0, 3);
   const keywords = (persona.aesthetic?.visualKeywords ?? []).slice(0, 4);
-  const heading = cap(inf?.obsessions?.[0] ?? persona.name);
-  const eyebrow = persona.culture?.region || cap(persona.aesthetic?.moodKeywords?.[0]) || "Collection";
+  const heading = cap(personaText(locale.value, persona, inf?.obsessions?.[0] ?? persona.name));
+  const eyebrow = personaText(locale.value, persona, persona.culture?.region || persona.aesthetic?.moodKeywords?.[0] || "Collection");
   const artist = inf?.music?.artists?.[0] ?? "—";
   const genre = inf?.music?.genres?.[0] ?? "";
   const compact = size === "compact";
@@ -55,9 +58,9 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
           {persona.id}.app / collections
         </span>
         <span class={css({ ml: "auto", display: { base: "none", sm: "flex" }, gap: 4 })}>
-          <span>Library</span>
-          <span style={{ color: "var(--f-text)", fontWeight: 600 }}>Collections</span>
-          <span>Notes</span>
+          <span>{text(locale.value, "Library")}</span>
+          <span style={{ color: "var(--f-text)", fontWeight: 600 }}>{text(locale.value, "Collections")}</span>
+          <span>{text(locale.value, "Notes")}</span>
         </span>
       </div>
 
@@ -84,12 +87,12 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
           </h3>
           {!compact && (
             <p style={{ fontSize: "14px", lineHeight: 1.55, color: "var(--f-muted)", maxWidth: "46ch" }}>
-              {persona.summary}
+              {personaText(locale.value, persona, persona.summary)}
             </p>
           )}
           <div class={css({ display: "flex", gap: 2, flexWrap: "wrap", mt: 1 })}>
-            <span class="f-btn" style={{ fontSize: "13px" }}>Start a collection</span>
-            <span class="f-btn f-btn--ghost" style={{ fontSize: "13px" }}>Browse</span>
+            <span class="f-btn" style={{ fontSize: "13px" }}>{text(locale.value, "Start a collection")}</span>
+            <span class="f-btn f-btn--ghost" style={{ fontSize: "13px" }}>{text(locale.value, "Browse")}</span>
           </div>
         </div>
 
@@ -99,7 +102,7 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
           style={{ gridTemplateColumns: compact ? "1fr" : "repeat(auto-fit, minmax(190px, 1fr))" }}
         >
           <div class="f-surface" style={{ padding: "var(--f-pad)" }}>
-            <div style={{ fontSize: "12px", color: "var(--f-muted)", marginBottom: "10px" }}>Pinned spaces</div>
+            <div style={{ fontSize: "12px", color: "var(--f-muted)", marginBottom: "10px" }}>{text(locale.value, "Pinned spaces")}</div>
             <ul class={css({ listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" })}>
               {spaces.map((s, i) => (
                 <li key={s} class={css({ display: "flex", alignItems: "center", gap: 2, fontSize: "13px" })}>
@@ -110,7 +113,7 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
                       background: ["var(--f-primary)", "var(--f-secondary)", "var(--f-accent)"][i],
                     }}
                   />
-                  <span class={css({ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" })}>{cap(s)}</span>
+                  <span class={css({ flex: 1, minW: 0, overflowWrap: "break-word" })}>{cap(personaText(locale.value, persona, s))}</span>
                   <span class="f-mono" style={{ color: "var(--f-muted)", fontSize: "12px" }}>{seeded(s, 48, 3)}</span>
                 </li>
               ))}
@@ -118,9 +121,9 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
           </div>
           {!compact && (
             <div class="f-surface" style={{ padding: "var(--f-pad)", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ fontSize: "12px", color: "var(--f-muted)" }}>Now playing</div>
+              <div style={{ fontSize: "12px", color: "var(--f-muted)" }}>{text(locale.value, "Now playing")}</div>
               <div class="f-heading" style={{ fontSize: "18px", fontWeight: 700, lineHeight: 1.15 }}>{artist}</div>
-              <div style={{ fontSize: "12px", color: "var(--f-muted)" }}>{cap(genre)}</div>
+              <div style={{ fontSize: "12px", color: "var(--f-muted)" }}>{cap(personaText(locale.value, persona, genre))}</div>
               <div
                 style={{ height: "4px", borderRadius: "999px", background: "var(--f-border)", marginTop: "auto", overflow: "hidden" }}
               >
@@ -132,7 +135,7 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
 
         <div class={css({ display: "flex", gap: "6px", flexWrap: "wrap" })}>
           {keywords.map((k) => (
-            <span key={k} class="f-chip">{k}</span>
+            <span key={k} class="f-chip">{personaText(locale.value, persona, k)}</span>
           ))}
         </div>
       </div>
