@@ -41,9 +41,9 @@ export const Nav = component$(() => {
           })}
         >
           {[
-            { label: "Personas", href: "#personas" },
-            { label: "How It Works", href: "#how-it-works" },
-            { label: "Install", href: "#installation" },
+            { label: "Personas", href: "/#personas" },
+            { label: "How It Works", href: "/#how-it-works" },
+            { label: "Install", href: "/#installation" },
             { label: "Studio", href: "/gui" },
             { label: "GitHub", href: "https://github.com/Diogenesoftoronto/baste" },
           ].map((link) => (
