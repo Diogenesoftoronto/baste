@@ -32,6 +32,8 @@ jobs:
       - run: npm --prefix site run build.types
       - run: npm --prefix site run lint
       - run: npm --prefix site test
+      - run: npm --prefix site run i18n:check
+      - run: npm --prefix site run test:i18n
       - uses: actions/upload-artifact@v4
         with:
           name: baste-public-site

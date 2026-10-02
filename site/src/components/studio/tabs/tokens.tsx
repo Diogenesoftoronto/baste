@@ -1,3 +1,5 @@
+import { useLocale } from '~/i18n/provider';
+import { text } from '~/i18n/runtime';
 import { component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, toast } from "../context";
@@ -14,6 +16,7 @@ const FORMATS: Array<{ id: TokenFormat; label: string; ext: string }> = [
 
 export const TokensTab = component$(() => {
   const s = useContext(StudioCtx);
+  const locale = useLocale();
   const format = useSignal<TokenFormat>("css");
   const content = useSignal("");
   const loading = useSignal(false);
@@ -42,8 +45,8 @@ export const TokensTab = component$(() => {
       <section class={panel} aria-labelledby="tok-title">
         <div class={css({ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 3, flexWrap: "wrap", mb: 4 })}>
           <div>
-            <span class={kicker}>Pattern</span>
-            <h2 id="tok-title" class={panelTitle}>Design tokens</h2>
+            <span class={kicker}>{text(locale.value, "Pattern")}</span>
+            <h2 id="tok-title" class={panelTitle}>{text(locale.value, "Design tokens")}</h2>
           </div>
           <div class={css({ display: "flex", gap: 2 })}>
             <button
@@ -52,11 +55,9 @@ export const TokensTab = component$(() => {
               disabled={!content.value}
               onClick$={async () => {
                 await navigator.clipboard?.writeText(content.value);
-                toast(s, "Tokens copied");
+                toast(s, text(locale.value, "Tokens copied"));
               }}
-            >
-              Copy
-            </button>
+            >{text(locale.value, "Copy")}</button>
             <button
               class={btn("primary", btnSm)}
               data-juice="snip"
@@ -69,12 +70,11 @@ export const TokensTab = component$(() => {
                 a.click();
                 URL.revokeObjectURL(a.href);
               }}
-            >
-              Download .{ext}
+            >{text(locale.value, "Download .{ext}", { ext })}
             </button>
           </div>
         </div>
-        <div role="tablist" aria-label="Format" class={css({ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" })}>
+        <div role="tablist" aria-label={text(locale.value, "Format")} class={css({ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" })}>
           {FORMATS.map((f) => (
             <button
               key={f.id}
@@ -83,12 +83,12 @@ export const TokensTab = component$(() => {
               onClick$={() => (format.value = f.id)}
               class={css({ h: "30px", px: 3, rounded: "sm", fontSize: "13px", border: "1px solid token(colors.rule)", bg: "card", color: "ink-soft", "&[aria-selected=true]": { bg: "ink", color: "paper", borderColor: "ink" } })}
             >
-              {f.label}
+              {text(locale.value, f.label)}
             </button>
           ))}
         </div>
         <div aria-busy={loading.value} style={{ opacity: loading.value ? 0.5 : 1, transition: "opacity 0.2s" }}>
-          <CodeView code={content.value || "/* loading… */"} label={`${format.value} tokens`} maxHeight="560px" />
+          <CodeView code={content.value || "/* loading… */"} label={text(locale.value, "Tokens · {format}", { format: format.value })} maxHeight="560px" />
         </div>
         <p class={css({ fontFamily: "mono", fontSize: "12px", color: "ink-muted", mt: 3 })}>
           $ baste tokens {s.selectedId} --format {format.value}
@@ -98,8 +98,8 @@ export const TokensTab = component$(() => {
       {t && (
         <aside class={css({ display: "flex", flexDirection: "column", gap: 6 })}>
           <section class={panel} aria-labelledby="tok-scale">
-            <span class={kicker}>Seam allowances</span>
-            <h2 id="tok-scale" class={panelTitle}>Spacing · {t.spacing.density}</h2>
+            <span class={kicker}>{text(locale.value, "Seam allowances")}</span>
+            <h2 id="tok-scale" class={panelTitle}>{text(locale.value, "Spacing · {density}", { density: text(locale.value, t.spacing.density) })}</h2>
             <ul class={css({ listStyle: "none", display: "flex", flexDirection: "column", gap: 2, mt: 4 })}>
               {Object.entries(t.spacing.scale).filter(([k]) => k !== "0").map(([k, v]) => (
                 <li key={k} class={css({ display: "grid", gridTemplateColumns: "22px 1fr 54px", gap: 3, alignItems: "center", fontFamily: "mono", fontSize: "12px" })}>
@@ -114,8 +114,8 @@ export const TokensTab = component$(() => {
             </ul>
           </section>
           <section class={panel} aria-labelledby="tok-radius">
-            <span class={kicker}>Edges</span>
-            <h2 id="tok-radius" class={panelTitle}>Radii & shadow</h2>
+            <span class={kicker}>{text(locale.value, "Edges")}</span>
+            <h2 id="tok-radius" class={panelTitle}>{text(locale.value, "Radii & shadow")}</h2>
             <div class={css({ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 3, mt: 4 })}>
               {(["sm", "base", "lg", "xl"] as const).map((r) => (
                 <div key={r} class={css({ display: "flex", flexDirection: "column", gap: 1, alignItems: "center" })}>
@@ -126,9 +126,9 @@ export const TokensTab = component$(() => {
             </div>
           </section>
           <section class={panel} aria-labelledby="tok-motion">
-            <span class={kicker}>Hang</span>
-            <h2 id="tok-motion" class={panelTitle}>Motion</h2>
-            <p class={css({ fontSize: "13px", color: "ink-muted", mt: 1 })}>Hover a row to feel the curve.</p>
+            <span class={kicker}>{text(locale.value, "Hang")}</span>
+            <h2 id="tok-motion" class={panelTitle}>{text(locale.value, 'Motion')}</h2>
+            <p class={css({ fontSize: "13px", color: "ink-muted", mt: 1 })}>{text(locale.value, "Hover a row to feel the curve.")}</p>
             <ul class={css({ listStyle: "none", display: "flex", flexDirection: "column", gap: 3, mt: 3 })}>
               {Object.entries(t.motion.easing).map(([k, curve]) => (
                 <li key={k} class={css({ display: "flex", flexDirection: "column", gap: 1, "&:hover .bob": { transform: "translateX(calc(100cqw - 18px))" } })}>

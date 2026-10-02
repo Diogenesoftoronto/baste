@@ -1,3 +1,5 @@
+import { useLocale } from '~/i18n/provider';
+import { text } from '~/i18n/runtime';
 import { $, component$, useComputed$, useContext, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, refreshPersonas, selectPersona, toast } from "../context";
@@ -40,6 +42,7 @@ const slug = (v: string) => v.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").r
 /** New persona, edit a custom one, or tailor a copy of a base persona. */
 export const PersonaForm = component$(() => {
   const s = useContext(StudioCtx);
+  const locale = useLocale();
   const editing = s.view === "edit";
   const source = s.personas.find((p) => p.id === s.selectedId);
   const tailoring = s.view === "tailor" && !!source;
@@ -90,7 +93,7 @@ export const PersonaForm = component$(() => {
     const id = slug(f.id || f.name);
     if (!id || !f.name.trim()) {
       play("error");
-      toast(s, "A persona needs a name", "error");
+      toast(s, text(locale.value, "A persona needs a name"), "error");
       return;
     }
     const L = (k: ListKey) => splitList(f.lists[k]);
@@ -122,10 +125,13 @@ export const PersonaForm = component$(() => {
 
     f.busy = true;
     try {
-      if (editing) await s.client.updatePersona(id, persona);
-      else await s.client.createPersona(persona);
+      // Qwik context values may be proxies. Match the JSON wire payload used by
+      // the live API before the in-memory client structured-clones this data.
+      const payload = JSON.parse(JSON.stringify(persona)) as Persona;
+      if (editing) await s.client.updatePersona(id, payload);
+      else await s.client.createPersona(payload);
       play("fanfare");
-      toast(s, editing ? `${persona.name} re-fitted` : `${persona.name} added to the wardrobe`);
+      toast(s, editing ? text(locale.value, "{name} re-fitted", { name: persona.name }) : text(locale.value, "{name} added to the wardrobe", { name: persona.name }));
       await refreshPersonas(s);
       selectPersona(s, id, "fitting");
     } catch (err) {
@@ -147,16 +153,14 @@ export const PersonaForm = component$(() => {
     >
       <header class={css({ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 4, flexWrap: "wrap" })}>
         <div>
-          <span class={kicker}>{editing ? "Re-measure" : tailoring ? "Tailor a copy" : "New measurement sheet"}</span>
+          <span class={kicker}>{editing ? text(locale.value, "Re-measure") : tailoring ? text(locale.value, "Tailor a copy") : text(locale.value, "New measurement sheet")}</span>
           <h1 id="pf-title" class="display" style={{ fontSize: "clamp(32px, 4vw, 48px)" }}>
-            {editing ? `Edit ${source?.name}` : tailoring ? `Tailor ${source?.name}` : "Measure a new persona"}
+            {editing ? text(locale.value, "Edit {name}", { name: source?.name ?? "" }) : tailoring ? text(locale.value, "Tailor {name}", { name: source?.name ?? "" }) : text(locale.value, "Measure a new persona")}
           </h1>
-          <p class={css({ color: "ink-soft", maxW: "62ch", mt: 2 })}>
-            Be specific. “Wong Kar-wai's Chungking Express” is a measurement; “likes movies” isn't. Lists are comma-separated.
-          </p>
+          <p class={css({ color: "ink-soft", maxW: "62ch", mt: 2 })}>{text(locale.value, "Be specific. “Wong Kar-wai's Chungking Express” is a measurement; “likes movies” isn't. Lists are comma-separated.")}</p>
         </div>
-        <div class={css({ minW: "180px" })} aria-label={`Sheet ${completeness.value}% complete`}>
-          <span class={css({ fontFamily: "mono", fontSize: "11.5px", color: "ink-muted" })}>sheet {completeness.value}% measured</span>
+        <div class={css({ minW: "180px" })} aria-label={text(locale.value, "Sheet {percent}% complete", { percent: completeness.value })}>
+          <span class={css({ fontFamily: "mono", fontSize: "11.5px", color: "ink-muted" })}>{text(locale.value, "Sheet {percent}% measured", { percent: completeness.value })}</span>
           <div class={css({ h: "10px", mt: 1, rounded: "xs", bg: "tape", position: "relative", overflow: "hidden" })} style={{ backgroundImage: "repeating-linear-gradient(90deg, rgba(28,27,25,0.55) 0 1px, transparent 1px 6px)", backgroundSize: "auto 4px", backgroundRepeat: "repeat-x" }}>
             <span class={css({ position: "absolute", top: 0, bottom: 0, w: "2px", bg: "thread", transition: "left 0.5s token(easings.thread)" })} style={{ left: `${completeness.value}%` }} />
           </div>
@@ -164,34 +168,34 @@ export const PersonaForm = component$(() => {
       </header>
 
       <section class={panel} aria-labelledby="pf-identity">
-        <h2 id="pf-identity" class={panelTitle}>Who they are</h2>
+        <h2 id="pf-identity" class={panelTitle}>{text(locale.value, "Who they are")}</h2>
         <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "1fr 1fr 1fr" }, gap: 4, mt: 4 })}>
           <div>
-            <label class={fieldLabel} for="pf-name">Name</label>
-            <input id="pf-name" class={input} required placeholder="The Tide-Pool Archivist" value={f.name} onInput$={(_, el) => { f.name = el.value; if (!editing) f.id = slug(el.value); }} />
+            <label class={fieldLabel} for="pf-name">{text(locale.value, "Name")}</label>
+            <input id="pf-name" class={input} required placeholder={text(locale.value, "The Tide-Pool Archivist")} value={f.name} onInput$={(_, el) => { f.name = el.value; if (!editing) f.id = slug(el.value); }} />
           </div>
           <div>
-            <label class={fieldLabel} for="pf-id">Slug</label>
+            <label class={fieldLabel} for="pf-id">{text(locale.value, "Slug")}</label>
             <input id="pf-id" class={input} value={f.id} disabled={editing} onInput$={(_, el) => (f.id = slug(el.value))} />
-            <p class={hint}>File: personas/{f.id || "…"}.json</p>
+            <p class={hint}>{text(locale.value, "File:")} personas/{f.id || "…"}.json</p>
           </div>
           <div>
-            <label class={fieldLabel} for="pf-region">Region</label>
-            <input id="pf-region" class={input} placeholder="Pacific Northwest" value={f.region} onInput$={(_, el) => (f.region = el.value)} />
+            <label class={fieldLabel} for="pf-region">{text(locale.value, "Region")}</label>
+            <input id="pf-region" class={input} placeholder={text(locale.value, "Pacific Northwest")} value={f.region} onInput$={(_, el) => (f.region = el.value)} />
           </div>
         </div>
-        <label class={fieldLabel} for="pf-summary" style={{ marginTop: "16px" }}>In a sentence or two</label>
-        <textarea id="pf-summary" class={textarea} rows={3} placeholder="By day… by night… They believe…" value={f.summary} onInput$={(_, el) => (f.summary = el.value)} />
+        <label class={fieldLabel} for="pf-summary" style={{ marginTop: "16px" }}>{text(locale.value, "In a sentence or two")}</label>
+        <textarea id="pf-summary" class={textarea} rows={3} placeholder={text(locale.value, "By day… by night… They believe…")} value={f.summary} onInput$={(_, el) => (f.summary = el.value)} />
       </section>
 
       {groups.map((g) => (
         <section key={g} class={panel} aria-labelledby={`pf-${g}`}>
-          <h2 id={`pf-${g}`} class={panelTitle}>{g}</h2>
+          <h2 id={`pf-${g}`} class={panelTitle}>{text(locale.value, g)}</h2>
           <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "1fr 1fr" }, gap: 4, mt: 4 })}>
             {LIST_FIELDS.filter((l) => l.group === g).map((l) => (
               <div key={l.key}>
-                <label class={fieldLabel} for={`pf-${l.key}`}>{l.label}</label>
-                <input id={`pf-${l.key}`} class={input} placeholder={l.ph} value={f.lists[l.key]} onInput$={(_, el) => (f.lists[l.key] = el.value)} />
+                <label class={fieldLabel} for={`pf-${l.key}`}>{text(locale.value, l.label)}</label>
+                <input id={`pf-${l.key}`} class={input} placeholder={text(locale.value, l.ph)} value={f.lists[l.key]} onInput$={(_, el) => (f.lists[l.key] = el.value)} />
               </div>
             ))}
           </div>
@@ -199,12 +203,12 @@ export const PersonaForm = component$(() => {
       ))}
 
       <section class={panel} aria-labelledby="pf-cut">
-        <h2 id="pf-cut" class={panelTitle}>The cut</h2>
-        <p class={hint}>How their world should feel in an interface. These drive the generated tokens directly.</p>
+        <h2 id="pf-cut" class={panelTitle}>{text(locale.value, "The cut")}</h2>
+        <p class={hint}>{text(locale.value, "How their world should feel in an interface. These drive the generated tokens directly.")}</p>
         <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "1fr 1fr" }, gap: 5, mt: 4 })}>
           {AESTHETIC_AXES.map((ax) => (
             <fieldset key={ax.key} class={css({ border: 0, p: 0 })}>
-              <legend class={fieldLabel}>{ax.label}</legend>
+              <legend class={fieldLabel}>{text(locale.value, ax.label)}</legend>
               <div class={css({ display: "flex", flexWrap: "wrap", gap: "6px" })}>
                 {ax.options.map((o) => (
                   <label
@@ -212,7 +216,7 @@ export const PersonaForm = component$(() => {
                     class={css({ display: "inline-flex", alignItems: "center", h: "30px", px: 3, rounded: "full", border: "1px solid token(colors.rule-strong)", fontSize: "13px", cursor: "pointer", bg: "card", transition: "all 0.15s", "&:has(input:checked)": { bg: "ink", color: "paper", borderColor: "ink" }, "&:has(input:focus-visible)": { outline: "2px solid token(colors.chalk)", outlineOffset: "2px" } })}
                   >
                     <input type="radio" name={ax.key} value={o} checked={f.aesthetic[ax.key] === o} onChange$={() => (f.aesthetic[ax.key] = o)} class={css({ position: "absolute", opacity: 0, w: 0, h: 0 })} />
-                    {o}
+                    {text(locale.value, o)}
                   </label>
                 ))}
               </div>
@@ -221,21 +225,21 @@ export const PersonaForm = component$(() => {
         </div>
         <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "1fr 1fr" }, gap: 4, mt: 5 })}>
           <div>
-            <label class={fieldLabel} for="pf-kw">Visual keywords</label>
-            <input id="pf-kw" class={input} placeholder="bioluminescent, herbariums, natural dyes" value={f.keywords} onInput$={(_, el) => (f.keywords = el.value)} />
-            <p class={hint}>The strongest signal for palette and type.</p>
+            <label class={fieldLabel} for="pf-kw">{text(locale.value, "Visual keywords")}</label>
+            <input id="pf-kw" class={input} placeholder={text(locale.value, "bioluminescent, herbariums, natural dyes")} value={f.keywords} onInput$={(_, el) => (f.keywords = el.value)} />
+            <p class={hint}>{text(locale.value, "The strongest signal for palette and type.")}</p>
           </div>
           <div>
-            <label class={fieldLabel} for="pf-mood">Mood keywords</label>
-            <input id="pf-mood" class={input} placeholder="growth, hidden complexity" value={f.mood} onInput$={(_, el) => (f.mood = el.value)} />
+            <label class={fieldLabel} for="pf-mood">{text(locale.value, "Mood keywords")}</label>
+            <input id="pf-mood" class={input} placeholder={text(locale.value, "growth, hidden complexity")} value={f.mood} onInput$={(_, el) => (f.mood = el.value)} />
           </div>
         </div>
       </section>
 
       <div class={css({ position: "sticky", bottom: 4, display: "flex", gap: 3, justifyContent: "flex-end", p: 3, rounded: "lg", bg: "rgba(251,249,244,0.92)", backdropFilter: "blur(8px)", border: "1px solid token(colors.rule)", boxShadow: "lift" })}>
-        <button type="button" class={btn("ghost")} onClick$={() => (s.view = "persona")}>Cancel</button>
+        <button type="button" class={btn("ghost")} onClick$={() => (s.view = "persona")}>{text(locale.value, "Cancel")}</button>
         <button type="submit" class={btn("primary")} data-juice="snip" disabled={f.busy}>
-          {f.busy ? "Stitching…" : editing ? "Save measurements" : "Add to wardrobe"}
+          {f.busy ? text(locale.value, "Stitching…") : editing ? text(locale.value, "Save measurements") : text(locale.value, "Add to wardrobe")}
         </button>
       </div>
     </form>
