@@ -1,0 +1,374 @@
+{
+  "terms": {
+    "en": {
+      "title": "Baste Terms of Service",
+      "intro": "These proposed terms cover the Baste public website and browser Studio demo at baste.love. They explain the demo, local software, your content and the limits of AI design tools. Prepared for owner review on 2 October 2026; unpublished and not effective. Reading or trying this draft does not accept a new agreement.",
+      "sections": [
+        {
+          "id": "1",
+          "title": "Operator and scope",
+          "paragraphs": [
+            "[Before adoption: insert the confirmed legal operator name, public business contact address and verified support channel.] “Baste”, “we” and “us” mean that operator. Baste is a product name; this draft makes no representation about business registration or incorporation.",
+            "These terms concern the operator’s public service. A downloaded copy of the software is governed by its applicable software licence. An independently run Baste server has its own operator and data practices. These terms do not replace another provider’s purchase or account agreement."
+          ]
+        },
+        {
+          "id": "2",
+          "title": "The current offering",
+          "paragraphs": [
+            "The public website and browser demo are available without a Baste account or payment. Studio provides sample personas, previews, token exports, in-memory edits and simulated generation jobs. A demo job is a dry run, not newly generated imagery or video. Demo changes are temporary and can disappear on reload or when the page is closed. Export work you wish to keep.",
+            "Real generation, persistent server data and account-dependent features require a separately configured server and supported providers. Documentation and interface controls do not establish that a feature is enabled. The public deployment does not currently offer Baste-hosted sign-in, checkout or paid generation."
+          ]
+        },
+        {
+          "id": "3",
+          "title": "Your use and permissions",
+          "paragraphs": [
+            "Use Baste lawfully and only with material and systems you are authorized to use. Do not submit private credentials, confidential client material or unnecessary personal information. Use fictional personas where possible. Obtain the required authority before supplying information or images about another person.",
+            "Do not exploit children, harass people, infringe rights, deceptively impersonate others, distribute malicious content, gain unauthorized access or interfere with the service. These terms do not restrict rights you hold under applicable software licences.",
+            "If you later enter a purchase or account agreement, you must have legal capacity or legally sufficient authorization where permitted. [Before adoption: decide the intended user ages and any parental authorization process; the present demo has no age verification.]"
+          ]
+        },
+        {
+          "id": "4",
+          "title": "Your material and output",
+          "paragraphs": [
+            "You keep the rights you already have in your persona descriptions, reference materials and other inputs. Using the browser demo permits the processing and display needed for the actions you request in that browser. It does not transfer ownership to Baste or authorize unrelated model training.",
+            "An export is a way to copy a result, not a guarantee that every element is owned by you or cleared for every use. Sample assets, fonts, third-party materials and software retain their applicable licences. Review attribution, font licensing, trademark, copyright and image or personality rights before distributing work. Baste claims no additional ownership in your output under these proposed terms."
+          ]
+        },
+        {
+          "id": "5",
+          "title": "AI and design limitations",
+          "paragraphs": [
+            "AI output and aesthetic scores can be inaccurate, biased, incomplete or similar to other people’s work. A quality or persona-alignment score is a design aid, not a certification of accessibility, originality, safety or legal clearance. Output may not qualify for copyright protection. Review and test SVG, code, tokens, images and video before production use.",
+            "Baste is not intended to make decisions about a person’s employment, credit, health, education or other significant interests. Do not treat a fictional design persona as a factual assessment of a real person. We do not promise exclusive output, commercial clearance or a particular design result."
+          ]
+        },
+        {
+          "id": "6",
+          "title": "Local software and outside services",
+          "paragraphs": [
+            "Installing the CLI or connecting Studio to an API you choose can send requests to that server and, for configured generation, to its AI providers. The server operator controls stored files, provider accounts and access. Verify the destination and its notices before sending content. Keep provider keys on a trusted server.",
+            "Depending on the installed version, local software supports configured QuiverAI SVG generation, OpenAI or Google images, Google or Seedance video endpoints, and OpenAI, TypeSafe or Not Organic evaluation paths. Review the actual installed version and provider settings; availability is not guaranteed by a provider name. External fonts and user-added reference image URLs also cause browser requests, as explained in the Privacy Policy."
+          ]
+        },
+        {
+          "id": "7",
+          "title": "Charges and future offers",
+          "paragraphs": [
+            "There is no charge for the current public browser demo. Running local software may incur charges under your separate provider or hosting agreements. A demo progress message, displayed model name or account control is not a purchase confirmation.",
+            "If Baste later offers paid service, a separate offer must identify the seller, currency, total price, taxes, included usage, charging method, any renewal, cancellation, refund and credit conditions before purchase. Nothing here creates a subscription, expiry rule, non-refundable credit rule or automatic renewal. Mandatory cancellation, refund and other consumer rights continue to apply."
+          ]
+        },
+        {
+          "id": "8",
+          "title": "Availability and ending use",
+          "paragraphs": [
+            "You can stop using the demo at any time. Baste may interrupt or restrict public access to address misuse, technical problems or legal obligations. The demo is not a backup service and has no promised service-level agreement. Local files and exports do not disappear merely because you stop visiting the website.",
+            "A future paid service would need its own notice, data retrieval and remedy arrangements. These terms do not exclude mandatory warranties, excuse our legal obligations or impose a liability cap, indemnity, mandatory arbitration or class-action waiver."
+          ]
+        },
+        {
+          "id": "9",
+          "title": "Privacy and contact",
+          "paragraphs": [
+            "The Baste Privacy Policy describes the current browser data paths and the separate local-server boundary. A privacy notice is not blanket consent to new purposes. [Before adoption: insert the verified support and privacy contact; do not direct private requests to a public issue tracker.]"
+          ]
+        },
+        {
+          "id": "10",
+          "title": "Language and changes",
+          "paragraphs": [
+            "English and French review texts are provided. No language preference in the browser constitutes a waiver of French-language rights or acceptance of an English contract. Any applicable Québec requirement to provide the French agreement before an express choice of another language must be met in the actual contracting process.",
+            "An adopted version must identify its effective date. Material changes must be communicated and agreed to where required by law; editing this page alone does not authorize new processing or alter an existing paid agreement. Mandatory local law and available courts and remedies remain applicable. [Before adoption: confirm the operator’s jurisdiction and any proposed governing-law clause with legal review.]"
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "title": "Conditions d’utilisation de Baste",
+      "intro": "Les présentes conditions proposées visent le site public de Baste et la démonstration de Studio dans le navigateur à baste.love. Elles expliquent la démonstration, le logiciel local, votre contenu et les limites des outils de conception par IA. Préparées pour examen par le propriétaire le 2 octobre 2026; non publiées et non en vigueur. Lire ou essayer ce projet ne vaut pas acceptation d’un nouvel accord.",
+      "sections": [
+        {
+          "id": "1",
+          "title": "Exploitant et portée",
+          "paragraphs": [
+            "[Avant adoption : inscrire le nom légal confirmé de l’exploitant, une adresse publique de contact professionnel et un moyen vérifié de joindre le soutien.] « Baste », « nous » et « notre » désignent cet exploitant. Baste est un nom de produit; ce projet ne fait aucune déclaration d’immatriculation ou de constitution en société.",
+            "Ces conditions concernent le service public de l’exploitant. Une copie téléchargée du logiciel relève de la licence logicielle applicable. Un serveur Baste exploité indépendamment a son propre exploitant et ses propres pratiques de traitement. Ces conditions ne remplacent pas le contrat d’achat ou de compte d’un autre fournisseur."
+          ]
+        },
+        {
+          "id": "2",
+          "title": "Offre actuelle",
+          "paragraphs": [
+            "Le site public et la démonstration dans le navigateur sont accessibles sans compte Baste ni paiement. Studio propose des personas d’exemple, des aperçus, des exportations de jetons de conception, des modifications en mémoire et des tâches de génération simulées. Une tâche de démonstration est un essai à blanc, pas une nouvelle image ou vidéo générée. Les modifications sont temporaires et peuvent disparaître au rechargement ou à la fermeture de la page. Exportez le travail à conserver.",
+            "La génération réelle, la conservation sur serveur et les fonctions liées à un compte exigent un serveur configuré séparément et des fournisseurs compatibles. La documentation et les commandes de l’interface ne prouvent pas qu’une fonction est activée. Le déploiement public ne propose actuellement ni connexion à un compte hébergée par Baste, ni paiement, ni génération payante."
+          ]
+        },
+        {
+          "id": "3",
+          "title": "Utilisation et autorisations",
+          "paragraphs": [
+            "Utilisez Baste légalement, avec des contenus et des systèmes pour lesquels vous avez les autorisations nécessaires. Ne fournissez pas d’identifiants secrets, de documents clients confidentiels ni de renseignements personnels inutiles. Privilégiez les personas fictifs. Obtenez l’autorisation requise avant de fournir des renseignements ou des images concernant une autre personne.",
+            "N’exploitez pas les enfants, ne harcelez pas autrui, ne portez pas atteinte aux droits d’autrui, n’usurpez pas une identité de façon trompeuse, ne diffusez pas de contenu malveillant, n’accédez pas sans autorisation aux systèmes et ne perturbez pas le service. Ces conditions ne limitent pas vos droits découlant des licences logicielles applicables.",
+            "Si vous concluez ultérieurement un contrat d’achat ou de compte, vous devez avoir la capacité juridique ou une autorisation juridiquement suffisante lorsque cela est permis. [Avant adoption : déterminer les âges visés et tout mécanisme d’autorisation parentale; la démonstration actuelle ne vérifie pas l’âge.]"
+          ]
+        },
+        {
+          "id": "4",
+          "title": "Vos contenus et les résultats",
+          "paragraphs": [
+            "Vous conservez les droits que vous détenez sur vos descriptions de personas, références et autres données fournies. L’utilisation de la démonstration permet le traitement et l’affichage nécessaires aux actions demandées dans ce navigateur. Elle ne transfère pas la propriété à Baste et n’autorise pas un entraînement de modèle sans rapport avec ces actions.",
+            "Une exportation permet de copier un résultat; elle ne garantit pas que vous détenez tous les éléments ni que tout usage est autorisé. Les exemples, polices, contenus de tiers et logiciels conservent leurs licences applicables. Vérifiez les obligations d’attribution, les licences de polices, les marques, le droit d’auteur et les droits à l’image ou de la personnalité avant diffusion. Baste ne revendique aucun droit de propriété supplémentaire sur vos résultats dans ces conditions proposées."
+          ]
+        },
+        {
+          "id": "5",
+          "title": "Limites de l’IA et de la conception",
+          "paragraphs": [
+            "Les résultats de l’IA et les scores esthétiques peuvent être inexacts, biaisés, incomplets ou similaires à d’autres créations. Un score de qualité ou d’adéquation à un persona est une aide à la conception, pas une certification d’accessibilité, d’originalité, de sécurité ou d’autorisation juridique. Un résultat peut ne pas être protégé par le droit d’auteur. Examinez et testez les SVG, le code, les jetons, les images et les vidéos avant leur utilisation en production.",
+            "Baste n’est pas conçu pour prendre des décisions concernant l’emploi, le crédit, la santé, l’éducation ou d’autres intérêts importants d’une personne. Ne traitez pas un persona fictif comme une évaluation factuelle d’une personne réelle. Nous ne promettons ni exclusivité des résultats, ni autorisation d’usage commercial, ni résultat de conception précis."
+          ]
+        },
+        {
+          "id": "6",
+          "title": "Logiciel local et services externes",
+          "paragraphs": [
+            "Installer la CLI ou connecter Studio à une API choisie peut envoyer des requêtes à ce serveur et, pour la génération configurée, à ses fournisseurs d’IA. L’exploitant du serveur contrôle les fichiers conservés, les comptes fournisseurs et les accès. Vérifiez la destination et ses avis avant tout envoi. Gardez les clés fournisseurs sur un serveur de confiance.",
+            "Selon la version installée, le logiciel local comporte des chemins configurables pour les SVG QuiverAI, les images OpenAI ou Google, les vidéos Google ou Seedance et l’évaluation OpenAI, TypeSafe ou Not Organic. Vérifiez la version réellement installée et ses réglages; un nom de fournisseur ne garantit pas la disponibilité. Les polices externes et les URL d’images de référence ajoutées entraînent aussi des requêtes du navigateur, décrites dans la Politique de confidentialité."
+          ]
+        },
+        {
+          "id": "7",
+          "title": "Frais et offres futures",
+          "paragraphs": [
+            "La démonstration publique actuelle est gratuite. L’utilisation locale peut entraîner des frais prévus par vos contrats distincts avec des fournisseurs ou hébergeurs. Un message de progression, un nom de modèle ou une commande de compte dans la démonstration ne confirme pas un achat.",
+            "Si Baste propose ultérieurement un service payant, une offre distincte devra identifier avant l’achat le vendeur, la devise, le prix total, les taxes, l’usage inclus, le mode de facturation et les modalités de renouvellement, d’annulation, de remboursement et de crédits. Ce texte ne crée aucun abonnement, délai d’expiration, règle de crédit non remboursable ni renouvellement automatique. Les droits impératifs d’annulation, de remboursement et de protection du consommateur demeurent applicables."
+          ]
+        },
+        {
+          "id": "8",
+          "title": "Disponibilité et fin d’utilisation",
+          "paragraphs": [
+            "Vous pouvez cesser d’utiliser la démonstration à tout moment. Baste peut interrompre ou restreindre l’accès public pour traiter un usage abusif, un problème technique ou une obligation légale. La démonstration n’est pas un service de sauvegarde et ne comporte aucun engagement de niveau de service. Les fichiers locaux et exportés ne disparaissent pas simplement parce que vous cessez de visiter le site.",
+            "Un éventuel service payant nécessiterait ses propres modalités de préavis, de récupération des données et de recours. Ces conditions n’excluent pas les garanties impératives, ne nous dispensent pas de nos obligations légales et n’imposent aucun plafond de responsabilité, obligation d’indemnisation, arbitrage obligatoire ni renonciation à une action collective."
+          ]
+        },
+        {
+          "id": "9",
+          "title": "Confidentialité et contact",
+          "paragraphs": [
+            "La Politique de confidentialité de Baste décrit les traitements actuels dans le navigateur et la distinction avec un serveur local. Un avis de confidentialité ne constitue pas un consentement général à de nouvelles fins. [Avant adoption : inscrire les coordonnées vérifiées du soutien et du responsable de la confidentialité; ne pas orienter les demandes privées vers un suivi public de problèmes.]"
+          ]
+        },
+        {
+          "id": "10",
+          "title": "Langue et modifications",
+          "paragraphs": [
+            "Des textes de révision anglais et français sont fournis. Le choix de langue du navigateur ne vaut ni renonciation aux droits linguistiques ni acceptation d’un contrat anglais. Toute exigence québécoise applicable de remise du contrat français avant un choix exprès d’une autre langue doit être respectée dans le processus réel de conclusion du contrat.",
+            "La version adoptée devra indiquer sa date d’entrée en vigueur. Les changements importants doivent être communiqués et acceptés lorsque la loi l’exige; modifier cette page ne suffit pas pour autoriser de nouveaux traitements ou modifier un contrat payant existant. Les règles impératives locales, tribunaux compétents et recours disponibles demeurent applicables. [Avant adoption : confirmer le territoire de l’exploitant et faire examiner toute clause proposée de droit applicable.]"
+          ]
+        }
+      ]
+    }
+  },
+  "privacy": {
+    "en": {
+      "title": "Baste Privacy Policy",
+      "intro": "This proposed notice explains the Baste public website and browser demo, including information stored in your browser and requests to external services. It separately explains what changes when you run or connect a server. Prepared for owner review on 2 October 2026; unpublished and not effective. Bracketed items must be resolved before adoption.",
+      "sections": [
+        {
+          "id": "1",
+          "title": "Who is responsible",
+          "paragraphs": [
+            "[Before adoption: confirm the legal operator, the title and verified contact of the person responsible for protecting personal information, and a public business contact address.] Baste is a product name. The operator of a server you choose is responsible for that server’s practices. Do not send private information to a public issue tracker."
+          ]
+        },
+        {
+          "id": "2",
+          "title": "Public visits and technical requests",
+          "paragraphs": [
+            "Your browser sends the website host information needed to deliver pages and files, including your IP address, requested URL, time and browser/request headers. URLs may contain persona, tab, project or language parameters; avoid personal information in names or URLs. This information can also appear in browser history and in links you share.",
+            "[Before adoption: confirm the hosting and delivery providers, which access or error logs they actually retain, their purposes, access permissions, storage countries, retention and backup handling.] We cannot presently state that visits are unlogged or that all data stays in Québec. HTTPS protects transport to the public site; it does not prevent hosting providers from receiving requests."
+          ]
+        },
+        {
+          "id": "3",
+          "title": "What you enter in the browser demo",
+          "paragraphs": [
+            "Studio can handle persona names and summaries, cultural references and preferences, moodboard URLs, notes and tags, rankings and feedback, prompt previews, editor documents and demo job details. In the current demo these are kept in that client’s memory, rather than saved to a Baste account or sent to an AI generation API. They can disappear when the page reloads or closes.",
+            "Design personas may reveal sensitive interests or beliefs if they describe an identifiable person. Use fictional examples and omit unnecessary personal information. The demo’s aesthetic scoring is not intended as a decision about a real person. Entering content is optional; you can browse the supplied examples instead.",
+            "This does not mean the page is offline: it loads site resources and fonts, and user-added external reference images can create separate requests."
+          ]
+        },
+        {
+          "id": "4",
+          "title": "Cookies and browser storage",
+          "paragraphs": [
+            "The language selector sets baste.language to en or fr for up to 365 days, with Path=/ and SameSite=Lax, plus Secure on HTTPS. This preference cookie is available to page scripts and accompanies matching site requests; it is not an account credential. You can delete or block it, or choose a language through ?lang=en or ?lang=fr. Browser language preferences are also used when no explicit choice is available.",
+            "The website uses localStorage for baste_api_url (the API destination), baste_sound (sound preference), baste:material:v1 (material recipe) and baste:backdrop:v1 (backdrop choice). These entries have no automatic expiry in the inspected code and remain until you or your browser remove them. They are available to scripts on this origin but are not automatically sent as cookies. The stored API destination is used to make server requests.",
+            "Clear this site’s cookies and storage in your browser settings to reset these preferences. This does not delete files you exported, local-server files or another service’s records. No advertising or audience-analytics integration was identified in the inspected website source; host logging remains to be confirmed. Sound and language controls are not analytics consent controls."
+          ]
+        },
+        {
+          "id": "5",
+          "title": "Fonts images and documentation media",
+          "paragraphs": [
+            "Pages request Google Fonts stylesheets and font files from fonts.googleapis.com and fonts.gstatic.com. Google receives network information such as your IP address and request headers. Its handling is described in Google’s privacy information at https://policies.google.com/privacy.",
+            "In demo mode, moodboard image URLs load directly from the destination you supply. That destination can receive your IP address, headers and any cookies your browser permits for it. The public site’s referrer policy is strict-origin-when-cross-origin; cross-origin requests can reveal the site origin. A reference URL itself can contain identifiers. Do not use private or signed URLs unless you understand their disclosure.",
+            "Studio documentation screenshots, narrated videos and captions are served as site files, without a third-party video embed in the inspected guide. Loading or playing them still sends requests to the website host. Following an external link takes you to that service’s own practices."
+          ]
+        },
+        {
+          "id": "6",
+          "title": "Connecting or running a server",
+          "paragraphs": [
+            "Studio first probes the configured API’s health endpoint and falls back to the demo when that fails. Changing the API destination can send subsequent personas, feedback, documents or other requested operations to that server. Requests include credentials where the browser permits them; optional account operations use a CSRF header. Verify that you trust the server.",
+            "A local CLI/server can save custom persona JSON, configuration, moodboards, rankings, feedback history, generated assets and metadata, brand kits, editor documents, project snapshots and command receipts, OpenPencil exports and design-version records in files or SQLite. Storage depends on the command and installed build. Feedback can be summarized and included in later evaluation requests to personalize scoring; this is not the same as training model weights. The public site operator does not receive these files merely because you run the software.",
+            "Depending on the installed version, local software supports QuiverAI for SVGs, OpenAI or Google for images, Google or configured Seedance endpoints for video, and OpenAI, TypeSafe or Not Organic for evaluation. These paths can transmit prompts, persona context, candidate descriptions, metadata, feedback-derived preferences and, where supplied for evaluation, SVG source. Check your installed version and the actual account’s settings and terms for model availability, training use, retention, processing countries and deletion. No provider-wide zero-retention or no-training promise is made.",
+            "On a supported server, decompose fetches the URL you request and related stylesheets and can use a browser to render it; optional mirroring stores assets. An image proxy fetches requested images through that server. Those destinations receive the server’s requests, and deep rendering can load third-party page resources. Use only URLs you are authorized to access. Remix combines persona information into a saved new persona when the server supports it. These are server features, not operations performed by the public browser demo."
+          ]
+        },
+        {
+          "id": "7",
+          "title": "Accounts payment and future hosted processing",
+          "paragraphs": [
+            "The current public deployment does not provide account login, checkout or paid generation endpoints. Interface code for a Not Organic bridge is not proof that the connection is registered, authorized or operational. This policy does not describe an active Baste payment-card collection or hosted account-deletion service.",
+            "A supported local account bridge, if enabled and externally authorized, keeps an opaque baste_session cookie for up to eight hours, with HttpOnly, SameSite=Lax and Secure on HTTPS. Sessions, authorization state, CSRF values, upstream tokens and signing keys are held in server memory; restart ends those sessions. The browser sees a public DID/handle and account/model/wallet information. Owned files can be separated in server directories by a hash of the DID; hashing does not make personal information anonymous. Sign-out is not deletion of those files. These are source-level mechanisms, not verified public-service behavior.",
+            "Before enabling a hosted service, we must disclose the actual operator and recipient roles, account identifiers, sessions, project and prompt storage, usage and billing records, payment provider, purposes, retention, cross-border processing and relevant choices. Connecting an account must not be treated as consent to unrelated training, marketing or publication of private personas."
+          ]
+        },
+        {
+          "id": "8",
+          "title": "Retention exports and deletion",
+          "paragraphs": [
+            "Demo content lasts in memory for that page/client instance. Preference storage lasts as described above. Website logging and backup retention are unresolved and must be stated before adoption; no fixed period is invented here.",
+            "Token and editor exports create copies you control. Removing a custom persona removes that demo persona and its saved demo editor document, but does not establish that all moodboards, feedback or exports have been erased. Reloading resets demo memory. In the local source, persona deletion removes its custom JSON file, not all related records, output files, databases, backups or upstream provider records. Local operators must manage those separately. There is no verified hosted “delete everything” action."
+          ]
+        },
+        {
+          "id": "9",
+          "title": "Your requests and choices",
+          "paragraphs": [
+            "Depending on applicable law, you may request access, correction, withdrawal of consent and deletion or portability where provided by law. [Before adoption: provide the verified private contact and an operational request process.] We will respond within applicable legal time limits, verify identity proportionately and explain any lawful refusal or retention. Do not send passwords, API keys or full payment-card numbers.",
+            "For local files, direct requests to the server operator; for external recipients, their own request processes may also be needed. Withdrawal may affect a feature requiring the information. You may raise a concern with the Commission d’accès à l’information du Québec at https://www.cai.gouv.qc.ca or, where applicable, the Office of the Privacy Commissioner of Canada at https://www.priv.gc.ca."
+          ]
+        },
+        {
+          "id": "10",
+          "title": "Protection transfers and children",
+          "paragraphs": [
+            "The public demo avoids account storage of your working content, but your browser, exported files and chosen server still require protection. [Before adoption: confirm actual host access controls, incident response and notification procedures and any safeguards for information processed outside Québec.] External requests can involve processing outside Québec or Canada; this draft does not claim that a privacy impact assessment or provider agreement is complete.",
+            "[Before adoption: decide the intended user ages and how to handle a child’s information or required parental consent.] No child account or parental-consent workflow has been verified. Do not submit children’s personal information in the demo. This instruction does not replace any legal obligation if such information is received."
+          ]
+        },
+        {
+          "id": "11",
+          "title": "Changes and consent",
+          "paragraphs": [
+            "The adopted policy must have an effective date and remain accessible in English and French. Material changes will be communicated appropriately. Where a new purpose or disclosure requires consent, we must obtain it before that processing begins; simply changing this policy or your continuing to browse does not provide blanket consent."
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "title": "Politique de confidentialité de Baste",
+      "intro": "Cet avis proposé explique le site public et la démonstration de Baste dans le navigateur, y compris les renseignements conservés dans votre navigateur et les requêtes vers des services externes. Il explique séparément ce qui change lorsque vous exploitez ou connectez un serveur. Préparé pour examen par le propriétaire le 2 octobre 2026; non publié et non en vigueur. Les éléments entre crochets doivent être réglés avant adoption.",
+      "sections": [
+        {
+          "id": "1",
+          "title": "Responsabilité",
+          "paragraphs": [
+            "[Avant adoption : confirmer l’exploitant légal, le titre et les coordonnées vérifiées du responsable de la protection des renseignements personnels, ainsi qu’une adresse publique de contact professionnel.] Baste est un nom de produit. L’exploitant d’un serveur que vous choisissez est responsable des pratiques de ce serveur. N’envoyez pas de renseignements privés dans un suivi public de problèmes."
+          ]
+        },
+        {
+          "id": "2",
+          "title": "Visites et requêtes techniques",
+          "paragraphs": [
+            "Votre navigateur transmet à l’hébergeur les renseignements nécessaires à la livraison des pages et fichiers : adresse IP, URL demandée, moment de la requête et en-têtes du navigateur. Les URL peuvent contenir des paramètres de persona, d’onglet, de projet ou de langue; évitez les renseignements personnels dans les noms et URL. Ils peuvent aussi figurer dans l’historique et les liens partagés.",
+            "[Avant adoption : confirmer les fournisseurs d’hébergement et de diffusion, les journaux d’accès ou d’erreurs réellement conservés, leurs fins, les accès autorisés, les pays de stockage, la conservation et les sauvegardes.] Nous ne pouvons actuellement affirmer que les visites ne sont pas journalisées ni que toutes les données restent au Québec. HTTPS protège le transport vers le site public; il n’empêche pas l’hébergeur de recevoir les requêtes."
+          ]
+        },
+        {
+          "id": "3",
+          "title": "Données saisies dans la démonstration",
+          "paragraphs": [
+            "Studio peut traiter les noms et résumés de personas, références et préférences culturelles, URL de tableaux d’inspiration, notes et étiquettes, classements et commentaires, aperçus de prompts, documents de l’éditeur et détails des tâches simulées. Dans la démonstration actuelle, ces données restent en mémoire dans ce client; elles ne sont pas enregistrées dans un compte Baste ni envoyées à une API de génération par IA. Elles peuvent disparaître au rechargement ou à la fermeture de la page.",
+            "Un persona peut révéler des intérêts ou croyances sensibles s’il décrit une personne identifiable. Utilisez des exemples fictifs et omettez les renseignements inutiles. Le score esthétique de la démonstration n’est pas destiné à prendre une décision concernant une personne réelle. La saisie est facultative; vous pouvez consulter les exemples fournis.",
+            "Cela ne signifie pas que la page fonctionne hors ligne : elle charge les ressources et polices du site, et les images de référence externes ajoutées peuvent entraîner des requêtes distinctes."
+          ]
+        },
+        {
+          "id": "4",
+          "title": "Témoins et stockage du navigateur",
+          "paragraphs": [
+            "Le sélecteur de langue crée le témoin baste.language avec la valeur en ou fr pour une durée maximale de 365 jours, Path=/ et SameSite=Lax, ainsi que Secure sous HTTPS. Ce témoin de préférence est accessible aux scripts et accompagne les requêtes correspondantes au site; il n’authentifie pas un compte. Vous pouvez le supprimer ou le bloquer, ou choisir une langue avec ?lang=en ou ?lang=fr. Sans choix explicite, les préférences linguistiques du navigateur sont aussi utilisées.",
+            "Le site utilise localStorage pour baste_api_url (destination API), baste_sound (préférence sonore), baste:material:v1 (recette de matière) et baste:backdrop:v1 (fond choisi). Le code examiné ne prévoit aucune expiration automatique; ces entrées restent jusqu’à leur suppression par vous ou votre navigateur. Les scripts de cette origine y ont accès, mais elles ne sont pas automatiquement transmises comme des témoins. La destination API enregistrée sert aux requêtes au serveur.",
+            "Effacez les témoins et le stockage de ce site dans votre navigateur pour réinitialiser ces préférences. Cela ne supprime pas vos exportations, les fichiers d’un serveur local ni les données d’un autre service. Aucune intégration de publicité ou d’analyse d’audience n’a été identifiée dans le code du site examiné; les journaux de l’hébergeur restent à confirmer. Les réglages sonores et linguistiques ne sont pas des commandes de consentement à l’analyse d’audience."
+          ]
+        },
+        {
+          "id": "5",
+          "title": "Polices images et médias de documentation",
+          "paragraphs": [
+            "Les pages demandent les feuilles de style et fichiers de Google Fonts à fonts.googleapis.com et fonts.gstatic.com. Google reçoit des renseignements réseau, notamment votre adresse IP et les en-têtes des requêtes. Ses pratiques sont décrites à https://policies.google.com/privacy.",
+            "En mode démonstration, les images d’un tableau d’inspiration sont chargées directement depuis les URL fournies. La destination peut recevoir votre adresse IP, les en-têtes et les témoins que votre navigateur autorise pour elle. Le site public utilise strict-origin-when-cross-origin comme règle de référent; les requêtes externes peuvent révéler l’origine du site. Une URL de référence peut elle-même contenir des identifiants. N’utilisez pas d’URL privées ou signées sans comprendre leur divulgation.",
+            "Les captures, vidéos narrées et sous-titres du guide Studio sont des fichiers du site, sans lecteur vidéo tiers intégré dans le guide examiné. Leur chargement ou lecture transmet néanmoins des requêtes à l’hébergeur. Les liens externes mènent à des services ayant leurs propres pratiques."
+          ]
+        },
+        {
+          "id": "6",
+          "title": "Connexion ou exploitation d’un serveur",
+          "paragraphs": [
+            "Studio teste d’abord la santé de l’API configurée puis utilise la démonstration en cas d’échec. Modifier cette destination peut transmettre ensuite les personas, commentaires, documents ou autres opérations demandées au serveur choisi. Les requêtes incluent les identifiants de session lorsque le navigateur le permet; les opérations de compte facultatives utilisent un en-tête CSRF. Vérifiez que ce serveur est digne de confiance.",
+            "Une CLI ou un serveur local peut enregistrer les personas JSON personnalisés, la configuration, les tableaux d’inspiration, classements, historique de commentaires, ressources et métadonnées, kits de marque, documents d’éditeur, instantanés de projets et reçus de commandes, exports OpenPencil et versions de conception dans des fichiers ou SQLite. Le stockage dépend de la commande et de la version installée. Les commentaires peuvent être résumés et inclus dans des demandes ultérieures d’évaluation pour personnaliser les scores; cela diffère d’un entraînement des poids d’un modèle. L’exploitant du site public ne reçoit pas ces fichiers du seul fait que vous utilisez le logiciel.",
+            "Selon la version installée, le logiciel local prévoit QuiverAI pour les SVG, OpenAI ou Google pour les images, Google ou des points d’accès Seedance configurés pour les vidéos et OpenAI, TypeSafe ou Not Organic pour l’évaluation. Ces chemins peuvent transmettre les prompts, le contexte du persona, les descriptions de candidats, métadonnées, préférences tirées des commentaires et, lorsqu’il est fourni pour l’évaluation, le code SVG. Vérifiez la version installée et les paramètres et modalités du compte réel pour la disponibilité, l’entraînement, la conservation, les pays et la suppression. Aucune promesse générale d’absence de conservation ou d’entraînement n’est faite.",
+            "Sur un serveur compatible, la décomposition récupère l’URL demandée et les feuilles de style liées, et peut utiliser un navigateur pour rendre la page; une copie facultative conserve les ressources. Un relais d’images récupère les images demandées depuis ce serveur. Les destinations reçoivent les requêtes du serveur; le rendu approfondi peut charger des ressources de tiers. Utilisez seulement les URL auxquelles vous avez le droit d’accéder. Le remix combine des personas dans un nouveau persona enregistré lorsque le serveur le permet. Ces fonctions relèvent du serveur, pas de la démonstration publique."
+          ]
+        },
+        {
+          "id": "7",
+          "title": "Comptes paiements et hébergement futur",
+          "paragraphs": [
+            "Le déploiement public actuel ne fournit pas de points d’accès de connexion, de paiement ou de génération payante. Le code d’interface d’une passerelle Not Organic ne prouve pas que la connexion est enregistrée, autorisée ou fonctionnelle. Cette politique ne décrit pas une collecte active de cartes de paiement par Baste ni un service hébergé de suppression de compte.",
+            "Une passerelle locale de compte compatible, si elle est activée et autorisée par le fournisseur, conserve un témoin opaque baste_session pendant un maximum de huit heures, avec HttpOnly, SameSite=Lax et Secure sous HTTPS. Les sessions, états d’autorisation, valeurs CSRF, jetons fournisseurs et clés de signature restent en mémoire sur le serveur; son redémarrage met fin aux sessions. Le navigateur voit un DID ou identifiant public et des renseignements de compte, de modèles et de solde. Les fichiers propres au compte peuvent être séparés dans des répertoires selon une empreinte du DID; cette empreinte ne rend pas les renseignements anonymes. La déconnexion ne supprime pas ces fichiers. Il s’agit de mécanismes du code, pas d’un comportement vérifié du service public.",
+            "Avant d’activer un service hébergé, nous devons expliquer les rôles réels des exploitants et destinataires, les identifiants de compte, sessions, données de projet et prompts conservés, registres d’usage et de facturation, fournisseur de paiement, fins, durées, traitements transfrontaliers et choix pertinents. Connecter un compte ne doit pas valoir consentement à un entraînement sans rapport, au marketing ou à la publication de personas privés."
+          ]
+        },
+        {
+          "id": "8",
+          "title": "Conservation exportations et suppression",
+          "paragraphs": [
+            "Le contenu de démonstration reste en mémoire pour cette instance de page ou de client. Les préférences sont conservées comme indiqué ci-dessus. La durée des journaux et sauvegardes du site reste à déterminer avant adoption; aucune durée fixe n’est inventée ici.",
+            "Les exportations de jetons et de l’éditeur créent des copies sous votre contrôle. Supprimer un persona personnalisé retire ce persona de démonstration et son document d’éditeur enregistré, mais ne démontre pas l’effacement de tous les tableaux, commentaires ou exports. Le rechargement réinitialise la mémoire. Dans le code local, supprimer un persona retire son fichier JSON personnalisé, pas toutes les données associées, ressources, bases, sauvegardes ou données des fournisseurs. Les exploitants locaux doivent les gérer séparément. Aucune fonction hébergée « tout supprimer » n’est vérifiée."
+          ]
+        },
+        {
+          "id": "9",
+          "title": "Demandes et choix",
+          "paragraphs": [
+            "Selon la loi applicable, vous pouvez demander l’accès, la rectification, le retrait du consentement et la suppression ou la portabilité lorsque la loi les prévoit. [Avant adoption : fournir un contact privé vérifié et une procédure opérationnelle.] Nous répondrons dans les délais légaux applicables, vérifierons l’identité de façon proportionnée et expliquerons tout refus ou maintien légal de données. N’envoyez pas de mots de passe, de clés API ni de numéros complets de carte de paiement.",
+            "Pour les fichiers locaux, adressez-vous à l’exploitant du serveur; les procédures des destinataires externes peuvent aussi être nécessaires. Le retrait peut affecter une fonction qui exige ces données. Vous pouvez saisir la Commission d’accès à l’information du Québec à https://www.cai.gouv.qc.ca ou, lorsque cela s’applique, le Commissariat à la protection de la vie privée du Canada à https://www.priv.gc.ca."
+          ]
+        },
+        {
+          "id": "10",
+          "title": "Protection transferts et enfants",
+          "paragraphs": [
+            "La démonstration publique ne conserve pas votre travail dans un compte, mais votre navigateur, vos fichiers exportés et votre serveur choisi nécessitent une protection. [Avant adoption : confirmer les contrôles d’accès de l’hébergeur, la réponse aux incidents, les notifications et les mesures pour les traitements hors Québec.] Les requêtes externes peuvent entraîner un traitement hors Québec ou hors Canada; ce projet ne prétend pas qu’une évaluation des facteurs relatifs à la vie privée ou un contrat fournisseur a été réalisé.",
+            "[Avant adoption : déterminer les âges visés et le traitement des renseignements d’un enfant ou du consentement parental requis.] Aucun compte enfant ni processus de consentement parental n’a été vérifié. Ne fournissez pas de renseignements personnels d’enfants dans la démonstration. Cette instruction ne remplace pas les obligations légales si de tels renseignements sont reçus."
+          ]
+        },
+        {
+          "id": "11",
+          "title": "Modifications et consentement",
+          "paragraphs": [
+            "La politique adoptée devra indiquer une date d’entrée en vigueur et rester accessible en anglais et en français. Les modifications importantes seront communiquées de manière appropriée. Lorsqu’une nouvelle fin ou communication exige un consentement, nous devons l’obtenir avant le traitement; modifier cette politique ou continuer à naviguer ne constitue pas un consentement général."
+          ]
+        }
+      ]
+    }
+  }
+}
