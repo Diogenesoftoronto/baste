@@ -3,25 +3,27 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { Nav } from "~/components/layout/nav";
 import { Footer } from "~/components/layout/footer";
 import { HeroSection } from "~/components/sections/hero";
-import { WhySection } from "~/components/sections/why";
-import { PersonasSection } from "~/components/sections/personas";
-import { HowItWorksSection } from "~/components/sections/how-it-works";
-import { InstallationSection } from "~/components/sections/installation";
-import { FeaturesSection } from "~/components/sections/features";
-import { CTASection } from "~/components/sections/cta";
+import { MeasureSection } from "~/components/sections/measure";
+import { MethodSection } from "~/components/sections/method";
+import { WardrobeSection } from "~/components/sections/wardrobe";
+import { DeliverablesSection } from "~/components/sections/deliverables";
+import { InstallSection } from "~/components/sections/install";
+import { ClosingSection } from "~/components/sections/closing";
+import { PageSeam } from "~/components/fx/page-seam";
 
 export default component$(() => {
   return (
     <>
       <Nav />
-      <main>
+      <PageSeam />
+      <main id="main">
         <HeroSection />
-        <WhySection />
-        <PersonasSection />
-        <HowItWorksSection />
-        <InstallationSection />
-        <FeaturesSection />
-        <CTASection />
+        <MeasureSection />
+        <MethodSection />
+        <WardrobeSection />
+        <DeliverablesSection />
+        <InstallSection />
+        <ClosingSection />
       </main>
       <Footer />
     </>
@@ -29,12 +31,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "Baste — Persona-Driven Asset Generation",
+  title: "Baste — interfaces cut to fit one person",
   meta: [
     {
       name: "description",
       content:
-        "Generate unique UI assets and design systems from cultural personas. Go from generic interfaces to something that feels like it came from someone's imagination.",
+        "Baste turns a persona's films, music, spaces and obsessions into a design system, icons, images and motion that fit them. Quality-diversity search, judged for persona fit.",
     },
   ],
 };

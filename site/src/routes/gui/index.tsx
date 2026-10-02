@@ -1,22 +1,96 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useContextProvider, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { css } from "styled-system/css";
-import { Nav } from "~/components/layout/nav";
-import { Footer } from "~/components/layout/footer";
+import {
+  API_KEY,
+  StudioCtx,
+  connectStudio,
+  initialState,
+  toast,
+  type PersonaTab,
+  type StudioView,
+} from "~/components/studio/context";
+import { Topbar } from "~/components/studio/topbar";
+import { Rail } from "~/components/studio/rail";
+import { Toasts } from "~/components/studio/toasts";
+import { Workspace } from "~/components/studio/workspace";
+import { PersonaForm } from "~/components/studio/flows/persona-form";
+import { DecomposeFlow } from "~/components/studio/flows/decompose";
+import { RemixFlow } from "~/components/studio/flows/remix";
+import { SettingsFlow } from "~/components/studio/flows/settings";
+import { ProjectsFlow } from "~/components/studio/flows/projects";
+import { DEFAULT_API } from "~/lib/api";
 
-export default component$(() => (
-  <>
-    <Nav />
-    <main class={css({ maxW: "3xl", mx: "auto", px: 6, pt: 32, pb: 24, color: "text" })}>
-      <h1 class={css({ fontSize: "3xl", fontWeight: "bold", mb: 6 })}>Run Baste Studio locally</h1>
-      <p>The public site introduces Baste. Studio runs on your computer, where your personas, projects and provider credentials stay under your control.</p>
-      <p class={css({ mt: 6 })}>Clone the repository and follow its installation guide:</p>
-      <p class={css({ mt: 4 })}><a href="https://github.com/Diogenesoftoronto/baste/tree/main#readme" class={css({ color: "acid-lime" })}>Open the Baste installation guide</a></p>
-      <p class={css({ mt: 6 })}>Hosted accounts and generation are not available on this public release.</p>
-      <p class={css({ mt: 6 })}><a href="/" class={css({ color: "acid-lime" })}>Back to Baste</a></p>
-    </main>
-    <Footer />
-  </>
-));
+const TABS: PersonaTab[] = ["fitting", "tokens", "generate", "moodboard", "brandkit", "feedback", "editor"];
+const FLOWS: StudioView[] = ["decompose", "remix", "settings", "tailor", "projects"];
 
-export const head: DocumentHead = { title: "Local Studio · Baste" };
+export default component$(() => {
+  const state = useStore(initialState(), { deep: true });
+  useContextProvider(StudioCtx, state);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(async () => {
+    const q = new URLSearchParams(window.location.search);
+    const tab = q.get("tab") as PersonaTab | null;
+    const flow = q.get("flow") as StudioView | null;
+    if (q.get("persona")) state.selectedId = q.get("persona")!;
+    if (q.get("project")) state.projectId = q.get("project")!;
+    if (tab && TABS.includes(tab)) state.tab = tab;
+    if (q.get("new")) state.view = "new";
+    else if (flow && FLOWS.includes(flow)) state.view = flow;
+
+    let base = DEFAULT_API;
+    try {
+      base = localStorage.getItem(API_KEY) || DEFAULT_API;
+    } catch {
+      /* storage unavailable — use the default */
+    }
+    await connectStudio(state, base);
+    if (q.get("account") === "connected") toast(state, "Connected to Not Organic");
+    if (q.get("account") === "error") toast(state, "Sign-in could not be completed. Try signing in again.", "error");
+    if (q.get("payment") === "returned") toast(state, "Returned from checkout. Refresh your wallet to confirm available credit.", "info");
+    if (q.has("account") || q.has("payment")) {
+      const clean = new URL(window.location.href);
+      clean.searchParams.delete("account");
+      clean.searchParams.delete("reason");
+      clean.searchParams.delete("payment");
+      window.history.replaceState(null, "", clean);
+    }
+  });
+
+  const accountViewKey = `${state.apiBase}:${state.account.status?.profile?.did ?? "local"}`;
+  const projectViewKey = `${accountViewKey}:${state.status}:${state.account.status?.configured}:${state.account.status?.authenticated}:${state.account.status?.csrfToken ?? ""}`;
+
+  return (
+    <div class={css({ minH: "100dvh", display: "flex", flexDirection: "column" })}>
+      <a href="#studio-main" class="skip-link">Skip to workspace</a>
+      <Topbar />
+      <div
+        class={css({
+          flex: 1,
+          display: "grid",
+          gridTemplateColumns: { base: "minmax(0, 1fr)", lg: "272px minmax(0, 1fr)" },
+          minH: 0,
+          // the rail is sticky; carry its paper + seam down the full column
+          bgImage: { lg: "linear-gradient(90deg, token(colors.paper) 0 271px, token(colors.rule) 271px 272px, transparent 272px)" },
+        })}
+      >
+        <Rail />
+        <main id="studio-main" class={css({ minW: 0, px: { base: 4, md: 8 }, py: { base: 5, md: 8 } })}>
+          {state.view === "persona" && <Workspace key={accountViewKey} />}
+          {(state.view === "new" || state.view === "edit" || state.view === "tailor") && <PersonaForm key={`${accountViewKey}:${state.view}-${state.selectedId}`} />}
+          {state.view === "decompose" && <DecomposeFlow key={accountViewKey} />}
+          {state.view === "remix" && <RemixFlow key={accountViewKey} />}
+          {state.view === "settings" && <SettingsFlow key={accountViewKey} />}
+          {state.view === "projects" && <ProjectsFlow key={projectViewKey} />}
+        </main>
+      </div>
+      <Toasts />
+    </div>
+  );
+});
+
+export const head: DocumentHead = {
+  title: "Studio — Baste",
+  meta: [{ name: "description", content: "Fit personas, draft tokens, generate assets and keep a moodboard — the Baste Studio." }],
+};

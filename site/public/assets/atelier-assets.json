@@ -1,0 +1,333 @@
+{
+  "reiconVersion": "1.2.5",
+  "icons": [
+    {
+      "path": "icons/reicon/scissors.svg",
+      "bytes": 1328,
+      "sha256": "0cd35dc8c40de9f5c32995858682c22ca34fd7f595d63756f7a4f90c567d163b",
+      "upstreamIcon": "Scissors",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Scissors.js"
+    },
+    {
+      "path": "icons/reicon/ruler.svg",
+      "bytes": 2462,
+      "sha256": "f0070f800224949964d6ecf3a6f5b01efc2e9690d7d07e9fae7b64482ef80318",
+      "upstreamIcon": "Ruler",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Ruler.js"
+    },
+    {
+      "path": "icons/reicon/ruler-pen.svg",
+      "bytes": 3984,
+      "sha256": "100fcad0d5ebe8c953fe7bd3173226770674e44d18cee24132dace9e6e3b39d1",
+      "upstreamIcon": "RulerPen",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/RulerPen.js"
+    },
+    {
+      "path": "icons/reicon/pin.svg",
+      "bytes": 688,
+      "sha256": "3ac92aafdbfeab23073c3e534b363849035b2f003dbe61f48853a8aab5a60b32",
+      "upstreamIcon": "PinTack",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/PinTack.js"
+    },
+    {
+      "path": "icons/reicon/shirt.svg",
+      "bytes": 3496,
+      "sha256": "6c38c850f38144c16dcfded7d01cd04057d549b3d23171f04a0f0faff2c0bf4c",
+      "upstreamIcon": "Tshirt",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Tshirt.js"
+    },
+    {
+      "path": "icons/reicon/hanger.svg",
+      "bytes": 1587,
+      "sha256": "08e04c7433f0a13377de2eb29b7a178d7650ce6ee51874c680e574663bab38f6",
+      "upstreamIcon": "Hanger",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Hanger.js"
+    },
+    {
+      "path": "icons/reicon/palette.svg",
+      "bytes": 2803,
+      "sha256": "70d4629a58e9dd2a98d5a6c912e0b5621e653e54599b55dc4ba66da7848300b0",
+      "upstreamIcon": "Palette2",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Palette2.js"
+    },
+    {
+      "path": "icons/reicon/layers.svg",
+      "bytes": 4321,
+      "sha256": "d116ee802fb1f475f99617a5d68077a9b8dadb7e53cc638667963fda5e9fdc41",
+      "upstreamIcon": "Layers",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Layers.js"
+    },
+    {
+      "path": "icons/reicon/wand.svg",
+      "bytes": 562,
+      "sha256": "b6845144af868d7107f67ba6d7b6ceb9ca4f981c591259f1ba6563d99bf2c43b",
+      "upstreamIcon": "MagicWand",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/MagicWand.js"
+    },
+    {
+      "path": "icons/reicon/sparkle.svg",
+      "bytes": 796,
+      "sha256": "88b60749903c49a6306758240b86dcdee69a749e934ab3f49508bdb1f24eb2b7",
+      "upstreamIcon": "Sparkle",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Sparkle.js"
+    },
+    {
+      "path": "icons/reicon/swatch.svg",
+      "bytes": 2028,
+      "sha256": "79231c8f90ef8b3c93714c65fd96be1088efab0b18637246496350d60fddd432",
+      "upstreamIcon": "ColorSwatch",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/ColorSwatch.js"
+    },
+    {
+      "path": "icons/reicon/image.svg",
+      "bytes": 3048,
+      "sha256": "6b517ed976d1d51516b9c638aaeb2dfec2254274c77e2b6bb082829d7dd8e059",
+      "upstreamIcon": "Image",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Image.js"
+    },
+    {
+      "path": "icons/reicon/video.svg",
+      "bytes": 2625,
+      "sha256": "da232d4156cd0fdcc3b30ad72f4f98f65c817060095d42ed0e33583fd4edd69a",
+      "upstreamIcon": "Video",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Video.js"
+    },
+    {
+      "path": "icons/reicon/type.svg",
+      "bytes": 1035,
+      "sha256": "6064629c48622d44e782c678536745505b150798dacf2ad56d2a1517b2777301",
+      "upstreamIcon": "TextTool",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/TextTool.js"
+    },
+    {
+      "path": "icons/reicon/code.svg",
+      "bytes": 1734,
+      "sha256": "dea0cfc95600b471c6987fa8359cf92b7402ebb4a4728b87b1fc3bee8ce0850b",
+      "upstreamIcon": "Code",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Code.js"
+    },
+    {
+      "path": "icons/reicon/download.svg",
+      "bytes": 2331,
+      "sha256": "e4e2e055f03b3dfdff33816bfed5f7c1f4a6958d36b37ff15fb9636a4e8d2dec",
+      "upstreamIcon": "Download",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Download.js"
+    },
+    {
+      "path": "icons/reicon/terminal.svg",
+      "bytes": 2619,
+      "sha256": "7a5b177da061db198110ae5f2ab446c8ea4045f489629a425ccc4b131cf582ff",
+      "upstreamIcon": "TerminalSquare",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/TerminalSquare.js"
+    },
+    {
+      "path": "icons/reicon/globe.svg",
+      "bytes": 3091,
+      "sha256": "3747eaaf718469b52574f65d5efa3d2e0ae43ff41ba920d838cfe25b6fd724b8",
+      "upstreamIcon": "Globe",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Globe.js"
+    },
+    {
+      "path": "icons/reicon/shuffle.svg",
+      "bytes": 2715,
+      "sha256": "ac3b6f9bcfcac3a52a787a2f113c4ff117a2fbc91b7facfc01d141e5dbfb8617",
+      "upstreamIcon": "Shuffle",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Shuffle.js"
+    },
+    {
+      "path": "icons/reicon/pen.svg",
+      "bytes": 1554,
+      "sha256": "c7251b264b0166cbd998219a9f6ee2a5b7722b27e76310fd3cddb6c2e8d0f9ef",
+      "upstreamIcon": "Pen",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Pen.js"
+    },
+    {
+      "path": "icons/reicon/pen-sparkle.svg",
+      "bytes": 1393,
+      "sha256": "bca5c717e393f5f3ff4d49880387b5a6102ed037b9ebf439f8d50d03d547dd02",
+      "upstreamIcon": "PenSparkle",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/PenSparkle.js"
+    },
+    {
+      "path": "icons/reicon/image-sparkle.svg",
+      "bytes": 933,
+      "sha256": "b34250f8e5c966066bf020fe823979d5383ada8d08bce3dfbb2d31e3194f9d2a",
+      "upstreamIcon": "ImageSparkle",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/ImageSparkle.js"
+    },
+    {
+      "path": "icons/reicon/video-cut.svg",
+      "bytes": 3553,
+      "sha256": "383b2c8f5ed5dea907a28c39f378cc5105aa0e6963c87d2fa94b22d1f85f142b",
+      "upstreamIcon": "VideoCut",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/VideoCut.js"
+    },
+    {
+      "path": "icons/reicon/folder.svg",
+      "bytes": 2718,
+      "sha256": "4d55b5e0b674aec6b1e449faf45a75326f91861490ccaf44acdf38f81ae067ac",
+      "upstreamIcon": "Folder",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Folder.js"
+    },
+    {
+      "path": "icons/reicon/copy.svg",
+      "bytes": 2257,
+      "sha256": "e232484ecb6654883a3a13d5e58aba2f129d0282627c2b02505e136f1ec33a21",
+      "upstreamIcon": "Copy",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Copy.js"
+    },
+    {
+      "path": "icons/reicon/grid.svg",
+      "bytes": 8074,
+      "sha256": "237df9d443d1066fd4ee65f1146f35121828455e740ce64d805b56e3c09007ce",
+      "upstreamIcon": "Grid",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Grid.js"
+    },
+    {
+      "path": "icons/reicon/arrow-right.svg",
+      "bytes": 573,
+      "sha256": "bdeacb9fa4e4944c24d72457d045ee6c13d4d3241e5b818a5fdbf2af9922aecc",
+      "upstreamIcon": "ArrowRight",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/ArrowRight.js"
+    },
+    {
+      "path": "icons/reicon/arrow-down.svg",
+      "bytes": 612,
+      "sha256": "45fde6876cb51574b3c698c10faadc9846213258ff977a40333e91085e69ba43",
+      "upstreamIcon": "ArrowDown",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/ArrowDown.js"
+    },
+    {
+      "path": "icons/reicon/check.svg",
+      "bytes": 449,
+      "sha256": "44b5d88cd47dfc626e0a4244bba4dc444853c4c311aeb052c5e14f6092ce13bd",
+      "upstreamIcon": "Check",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Check.js"
+    },
+    {
+      "path": "icons/reicon/plus.svg",
+      "bytes": 466,
+      "sha256": "fc54f29e8b982987fc7a192e8aafa13a2af42e8776b5941bcd9c744111516184",
+      "upstreamIcon": "Plus",
+      "weight": "Outline",
+      "source": "https://unpkg.com/reicon@1.2.5/icons/Plus.js"
+    }
+  ],
+  "textures": [
+    {
+      "path": "textures/linen-nor.jpg",
+      "bytes": 22454,
+      "sha256": "7a664384bc883c6e0fe949ad174011b5c8e4f6b48c3c0635f9779a447d41dee7",
+      "asset": "rough_linen",
+      "map": "nor_gl",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_nor_gl_1k.jpg",
+      "page": "https://polyhaven.com/a/rough_linen",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "license": "CC0-1.0",
+      "width": 512,
+      "height": 512,
+      "quality": 82
+    },
+    {
+      "path": "textures/linen-diff.jpg",
+      "bytes": 21923,
+      "sha256": "712a7be6a47f466be3a61216b407eebdf3b9dc5aadc991e6c32de9e1ac811f47",
+      "asset": "rough_linen",
+      "map": "diff",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+      "page": "https://polyhaven.com/a/rough_linen",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "license": "CC0-1.0",
+      "width": 512,
+      "height": 512,
+      "quality": 82
+    },
+    {
+      "path": "textures/denim-nor.jpg",
+      "bytes": 23643,
+      "sha256": "2858661a659c86ab77c29d8bfdc1ec92ecd47d9e893a7b3799df2e298bac2489",
+      "asset": "denim_fabric_04",
+      "map": "nor_gl",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric_04/denim_fabric_04_nor_gl_1k.jpg",
+      "page": "https://polyhaven.com/a/denim_fabric_04",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "license": "CC0-1.0",
+      "width": 512,
+      "height": 512,
+      "quality": 82
+    },
+    {
+      "path": "textures/denim-diff.jpg",
+      "bytes": 41877,
+      "sha256": "bdb155d66ff5f0144e909677d450a8ba9dcadac54f285f40260134b01eb2e0c2",
+      "asset": "denim_fabric_04",
+      "map": "diff",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric_04/denim_fabric_04_diff_1k.jpg",
+      "page": "https://polyhaven.com/a/denim_fabric_04",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "license": "CC0-1.0",
+      "width": 512,
+      "height": 512,
+      "quality": 82
+    },
+    {
+      "path": "textures/paper-diff.jpg",
+      "bytes": 19455,
+      "sha256": "872a4f5befd655b873b88e38bf86f676c2fbb1688e6e5e808610f24fbbb42bc6",
+      "asset": "Paper001",
+      "map": "Color",
+      "archiveMember": "Paper001_1K-JPG_Color.jpg",
+      "source": "https://ambientcg.com/get?file=Paper001_1K-JPG.zip",
+      "page": "https://ambientcg.com/a/Paper001",
+      "license": "CC0-1.0",
+      "width": 512,
+      "height": 512,
+      "quality": 82
+    }
+  ],
+  "reiconPackageIntegrity": "sha512-2I7zqhdNftyIO4FFv8Txy168gFIvy5qOO56zHlLNl1cyBmt6fy41LM8k+566epgcJN2pJd1Wk9TA+CXUZszUNA==",
+  "reiconIconCount": 2676,
+  "reiconLicenseCommit": "ceab2340577684a47d8e361172bdbcd75cb8c7f3",
+  "assetBytes": 196249
+}

@@ -1,251 +1,53 @@
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
-import { flex, hstack, vstack } from "styled-system/patterns";
+import { FittingRoom } from "~/components/fitting/fitting-room";
+import { CopyCommand } from "~/components/ui/copy-command";
+import { DEMO_PERSONAS, DEMO_TOKENS } from "~/lib/demo-data";
 
 export const HeroSection = component$(() => {
   return (
     <section
-      class={flex({
-        position: "relative",
-        minH: "100vh",
-        align: "center",
-        justify: "center",
-        overflow: "hidden",
-        pt: 16,
-      })}
+      id="fitting"
+      aria-labelledby="hero-title"
+      class={css({ maxW: "1240px", mx: "auto", px: { base: 4, md: 8 }, pt: { base: 12, md: 20 }, pb: { base: 16, md: 24 } })}
     >
-      {/* Layered splatter+grid backdrop */}
-      <div
-        class="baste-bg-splatter"
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.55,
-          mixBlendMode: "screen",
-          pointerEvents: "none",
-        }}
-      />
-      {/* Background gradients */}
-      <div
-        class={css({
-          position: "absolute",
-          inset: 0,
-          bgGradient: "to-b",
-          gradientFrom: "rgba(249,115,22,0.05)",
-          gradientTo: "transparent",
-        })}
-      />
-      <div
-        class={css({
-          position: "absolute",
-          top: "25%",
-          left: "25%",
-          w: "24rem",
-          h: "24rem",
-          bg: "rgba(249,115,22,0.1)",
-          rounded: "full",
-          filter: "blur(96px)",
-          animation: "pulse-glow 4s ease-in-out infinite",
-        })}
-      />
-      <div
-        class={css({
-          position: "absolute",
-          bottom: "25%",
-          right: "25%",
-          w: "24rem",
-          h: "24rem",
-          bg: "rgba(217,119,6,0.1)",
-          rounded: "full",
-          filter: "blur(96px)",
-          animation: "pulse-glow 4s ease-in-out infinite",
-          animationDelay: "2s",
-        })}
-      />
-
-      <div class={vstack({ position: "relative", maxW: "5xl", mx: "auto", px: 6, textAlign: "center", gap: 8 })}>
-        <div
-          class={hstack({
-            gap: 2,
-            px: 4,
-            py: 2,
-            rounded: "full",
-            bg: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            fontSize: "sm",
-            color: "text-muted",
-          })}
-        >
-          <span
-            class={css({
-              w: 2,
-              h: 2,
-              rounded: "full",
-              bg: "success",
-              animation: "pulse 2s infinite",
-            })}
-          />
-          v0.2.0 — Custom personas, config system, web GUI
-        </div>
-
-        <h1
-          class={css({
-            fontFamily: "heading",
-            fontSize: { base: "4xl", md: "6xl", lg: "8xl" },
-            fontWeight: "bold",
-            lineHeight: 1.1,
-            letterSpacing: "tight",
-            textWrap: "balance",
-          })}
-        >
-          <span
-            class={css({
-              bgGradient: "to-r",
-              gradientFrom: "orange.400",
-              gradientVia: "amber.400",
-              gradientTo: "orange.500",
-              bgClip: "text",
-              color: "transparent",
-            })}
+      <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", xl: "minmax(0, 0.78fr) minmax(0, 1.4fr)" }, gap: { base: 12, xl: 12 }, alignItems: "center" })}>
+        <div class={`rise ${css({ display: "flex", flexDirection: "column", gap: 6 })}`}>
+          <span class="label" style={{ color: "#A9311E" }}>Persona-driven design generation</span>
+          <h1
+            id="hero-title"
+            class="display"
+            style={{ fontSize: "clamp(48px, 7.4vw, 104px)" }}
           >
-            Baste
-          </span>
-          <br />
-          <span class={css({ color: "text" })}>Your Interface</span>
-        </h1>
-
-        <p
-          class={css({
-            fontSize: { base: "lg", md: "xl", lg: "2xl" },
-            color: "text-muted",
-            maxW: "2xl",
-            textWrap: "balance",
-            lineHeight: "relaxed",
-          })}
-        >
-          Generate unique UI assets and design systems from{" "}
-          <em>cultural personas</em>. Go from generic interfaces to something
-          that feels like it came from{" "}
-          <span class={css({ color: "orange.400" })}>someone's imagination</span>.
-        </p>
-
-        <div class={hstack({ gap: 4, flexWrap: "wrap", justify: "center" })}>
-          <a
-            href="#installation"
-            class={css({
-              px: 8,
-              py: 4,
-              rounded: "xl",
-              bgGradient: "to-r",
-              gradientFrom: "orange.500",
-              gradientTo: "amber.600",
-              color: "white",
-              fontWeight: "semibold",
-              _hover: {
-                gradientFrom: "orange.400",
-                gradientTo: "amber.500",
-              },
-              transition: "all 0.2s",
-              shadow: "0 0 20px rgba(249,115,22,0.2)",
-            })}
-          >
-            npm install baste
-          </a>
-          <a
-            href="#personas"
-            class={css({
-              px: 8,
-              py: 4,
-              rounded: "xl",
-              bg: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "text",
-              fontWeight: "semibold",
-              _hover: { bg: "rgba(255,255,255,0.1)" },
-              transition: "all 0.2s",
-            })}
-          >
-            See the Personas
-          </a>
-        </div>
-
-        {/* Terminal mockup */}
-        <div class={css({ mt: 12, maxW: "3xl", mx: "auto", w: "full" })}>
-          <div
-            class={css({
-              rounded: "xl",
-              border: "1px solid rgba(255,255,255,0.1)",
-              bg: "#111",
-              overflow: "hidden",
-              shadow: "2xl",
-            })}
-          >
-            <div
-              class={hstack({
-                gap: 2,
-                px: 4,
-                py: 3,
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
-              })}
-            >
-              <div class={css({ w: 3, h: 3, rounded: "full", bg: "rgba(239,68,68,0.5)" })} />
-              <div class={css({ w: 3, h: 3, rounded: "full", bg: "rgba(234,179,8,0.5)" })} />
-              <div class={css({ w: 3, h: 3, rounded: "full", bg: "rgba(34,197,94,0.5)" })} />
-              <span
-                class={css({
-                  ml: 2,
-                  fontSize: "xs",
-                  color: "rgba(255,255,255,0.3)",
-                  fontFamily: "mono",
-                })}
-              >
-                baste generate cyberbotanist --dry-run
-              </span>
-            </div>
-            <div
+            Cut to fit <em class={css({ fontStyle: "italic", color: "thread-ink" })}>one</em> person.
+          </h1>
+          <p class={css({ fontSize: { base: "18px", md: "20px" }, color: "ink-soft", maxW: "34ch", lineHeight: 1.5 })}>
+            Generic interfaces fit everyone, so they fit no one. Baste takes a persona's films,
+            music, rooms and obsessions, and from them drafts the design system, icons, images and
+            motion that fit.
+          </p>
+          <div class={css({ display: "flex", flexWrap: "wrap", gap: 3, alignItems: "center" })}>
+            <a
+              href="/gui"
+              data-juice="snip"
               class={css({
-                p: 6,
-                fontFamily: "mono",
-                fontSize: "sm",
-                textAlign: "left",
-                lineHeight: "relaxed",
+                display: "inline-flex", alignItems: "center", gap: 2, px: 5, h: "46px", rounded: "base",
+                bg: "ink", color: "paper", fontWeight: 600, textDecoration: "none", transition: "background 0.2s",
+                _hover: { bg: "thread-ink" },
               })}
             >
-              <div class={css({ color: "rgba(255,255,255,0.4)" })}>
-                $ <span class={css({ color: "success" })}>baste</span> generate
-                cyberbotanist --dry-run
-              </div>
-              <div class={css({ mt: 2, color: "rgba(255,255,255,0.6)" })}>
-                🔍 Dry run for{" "}
-                <span class={css({ color: "orange.400" })}>The Cyberbotanist</span>
-              </div>
-              <div
-                class={css({
-                  mt: 3,
-                  color: "rgba(255,255,255,0.4)",
-                  fontSize: "xs",
-                })}
-              >
-                Image Prompt:
-              </div>
-              <div
-                class={css({
-                  mt: 1,
-                  color: "rgba(255,255,255,0.8)",
-                  fontSize: "xs",
-                  lineHeight: "relaxed",
-                  maxW: "xl",
-                })}
-              >
-                Stunning hero image: Test asset. Style: warm earth tones with
-                amber and ochre highlights, organic textured surfaces...{" "}
-                <span class={css({ color: "amber.400" })}>Mushishi</span>,{" "}
-                <span class={css({ color: "success" })}>Ernst Haeckel</span>,{" "}
-                <span class={css({ color: "accent" })}>bioluminescent</span>...
-              </div>
-            </div>
+              Open the Studio <span aria-hidden="true">→</span>
+            </a>
+            <CopyCommand command="baste generate cyberbotanist --dry-run" />
           </div>
+        </div>
+
+        <div class={`rise ${css({ minW: 0 })}`} style={{ animationDelay: "120ms" }}>
+          <FittingRoom personas={DEMO_PERSONAS} tokens={DEMO_TOKENS} />
+          <p class={css({ mt: 4, fontSize: "13px", color: "ink-muted", maxW: "60ch" })}>
+            Same screen, same code. Every colour, typeface, radius, spacing step and easing curve
+            above was generated by Baste from the persona alone.
+          </p>
         </div>
       </div>
     </section>

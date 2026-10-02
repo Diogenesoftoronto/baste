@@ -1,5 +1,9 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import { FabricBackdrop } from "~/components/fx/fabric";
+import { ThreadCursor } from "~/components/fx/thread-cursor";
+import { Reveal } from "~/components/fx/reveal";
+import { Juice } from "~/components/fx/juice";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
@@ -9,5 +13,13 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 };
 
 export default component$(() => {
-  return <Slot />;
+  return (
+    <>
+      <FabricBackdrop />
+      <Slot />
+      <ThreadCursor />
+      <Reveal />
+      <Juice />
+    </>
+  );
 });
