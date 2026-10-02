@@ -4,7 +4,7 @@ These proposed terms cover the Baste public website and browser Studio demo at b
 
 ## Operator and scope
 
-[Before adoption: insert the confirmed legal operator name, public business contact address and verified support channel.] “Baste”, “we” and “us” mean that operator. Baste is a product name; this draft makes no representation about business registration or incorporation.
+Baste is operated by Keith Abiola Noel, a sole proprietor in Québec, Canada. “Baste”, “we” and “us” refer to that operator. Baste is a product name; this draft makes no representation about business registration or incorporation. The shared business support contact is support@notorganic.info. [Before adoption: add the public business mailing address and confirm that this published mailbox reliably receives and handles Baste requests.]
 
 These terms concern the operator’s public service. A downloaded copy of the software is governed by its applicable software licence. An independently run Baste server has its own operator and data practices. These terms do not replace another provider’s purchase or account agreement.
 
@@ -54,10 +54,10 @@ A future paid service would need its own notice, data retrieval and remedy arran
 
 ## Privacy and contact
 
-The Baste Privacy Policy describes the current browser data paths and the separate local-server boundary. A privacy notice is not blanket consent to new purposes. [Before adoption: insert the verified support and privacy contact; do not direct private requests to a public issue tracker.]
+The Baste Privacy Policy describes the current browser data paths and the separate local-server boundary. A privacy notice is not blanket consent to new purposes. Send Baste support, legal and privacy questions to support@notorganic.info, the shared published business contact. Identify Baste and describe the request without sending passwords, API keys or unnecessary personal information. Do not post private requests in a public issue tracker. Reliable mail delivery and request handling must be confirmed before adoption.
 
 ## Language and changes
 
 English and French review texts are provided. No language preference in the browser constitutes a waiver of French-language rights or acceptance of an English contract. Any applicable Québec requirement to provide the French agreement before an express choice of another language must be met in the actual contracting process.
 
-An adopted version must identify its effective date. Material changes must be communicated and agreed to where required by law; editing this page alone does not authorize new processing or alter an existing paid agreement. Mandatory local law and available courts and remedies remain applicable. [Before adoption: confirm the operator’s jurisdiction and any proposed governing-law clause with legal review.]
+An adopted version must identify its effective date. Material changes must be communicated and agreed to where required by law; editing this page alone does not authorize new processing or alter an existing paid agreement. The operator is based in Québec, Canada. Mandatory applicable law and available courts and remedies remain applicable; this draft does not impose an exclusive forum or remove consumer protections.
