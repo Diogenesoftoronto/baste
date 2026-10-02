@@ -1,0 +1,63 @@
+# Conditions d’utilisation de Baste
+
+Les présentes conditions proposées visent le site public de Baste et la démonstration de Studio dans le navigateur à baste.love. Elles expliquent la démonstration, le logiciel local, votre contenu et les limites des outils de conception par IA. Préparées pour examen par le propriétaire le 2 octobre 2026; non publiées et non en vigueur. Lire ou essayer ce projet ne vaut pas acceptation d’un nouvel accord.
+
+## Exploitant et portée
+
+[Avant adoption : inscrire le nom légal confirmé de l’exploitant, une adresse publique de contact professionnel et un moyen vérifié de joindre le soutien.] « Baste », « nous » et « notre » désignent cet exploitant. Baste est un nom de produit; ce projet ne fait aucune déclaration d’immatriculation ou de constitution en société.
+
+Ces conditions concernent le service public de l’exploitant. Une copie téléchargée du logiciel relève de la licence logicielle applicable. Un serveur Baste exploité indépendamment a son propre exploitant et ses propres pratiques de traitement. Ces conditions ne remplacent pas le contrat d’achat ou de compte d’un autre fournisseur.
+
+## Offre actuelle
+
+Le site public et la démonstration dans le navigateur sont accessibles sans compte Baste ni paiement. Studio propose des personas d’exemple, des aperçus, des exportations de jetons de conception, des modifications en mémoire et des tâches de génération simulées. Une tâche de démonstration est un essai à blanc, pas une nouvelle image ou vidéo générée. Les modifications sont temporaires et peuvent disparaître au rechargement ou à la fermeture de la page. Exportez le travail à conserver.
+
+La génération réelle, la conservation sur serveur et les fonctions liées à un compte exigent un serveur configuré séparément et des fournisseurs compatibles. La documentation et les commandes de l’interface ne prouvent pas qu’une fonction est activée. Le déploiement public ne propose actuellement ni connexion à un compte hébergée par Baste, ni paiement, ni génération payante.
+
+## Utilisation et autorisations
+
+Utilisez Baste légalement, avec des contenus et des systèmes pour lesquels vous avez les autorisations nécessaires. Ne fournissez pas d’identifiants secrets, de documents clients confidentiels ni de renseignements personnels inutiles. Privilégiez les personas fictifs. Obtenez l’autorisation requise avant de fournir des renseignements ou des images concernant une autre personne.
+
+N’exploitez pas les enfants, ne harcelez pas autrui, ne portez pas atteinte aux droits d’autrui, n’usurpez pas une identité de façon trompeuse, ne diffusez pas de contenu malveillant, n’accédez pas sans autorisation aux systèmes et ne perturbez pas le service. Ces conditions ne limitent pas vos droits découlant des licences logicielles applicables.
+
+Si vous concluez ultérieurement un contrat d’achat ou de compte, vous devez avoir la capacité juridique ou une autorisation juridiquement suffisante lorsque cela est permis. [Avant adoption : déterminer les âges visés et tout mécanisme d’autorisation parentale; la démonstration actuelle ne vérifie pas l’âge.]
+
+## Vos contenus et les résultats
+
+Vous conservez les droits que vous détenez sur vos descriptions de personas, références et autres données fournies. L’utilisation de la démonstration permet le traitement et l’affichage nécessaires aux actions demandées dans ce navigateur. Elle ne transfère pas la propriété à Baste et n’autorise pas un entraînement de modèle sans rapport avec ces actions.
+
+Une exportation permet de copier un résultat; elle ne garantit pas que vous détenez tous les éléments ni que tout usage est autorisé. Les exemples, polices, contenus de tiers et logiciels conservent leurs licences applicables. Vérifiez les obligations d’attribution, les licences de polices, les marques, le droit d’auteur et les droits à l’image ou de la personnalité avant diffusion. Baste ne revendique aucun droit de propriété supplémentaire sur vos résultats dans ces conditions proposées.
+
+## Limites de l’IA et de la conception
+
+Les résultats de l’IA et les scores esthétiques peuvent être inexacts, biaisés, incomplets ou similaires à d’autres créations. Un score de qualité ou d’adéquation à un persona est une aide à la conception, pas une certification d’accessibilité, d’originalité, de sécurité ou d’autorisation juridique. Un résultat peut ne pas être protégé par le droit d’auteur. Examinez et testez les SVG, le code, les jetons, les images et les vidéos avant leur utilisation en production.
+
+Baste n’est pas conçu pour prendre des décisions concernant l’emploi, le crédit, la santé, l’éducation ou d’autres intérêts importants d’une personne. Ne traitez pas un persona fictif comme une évaluation factuelle d’une personne réelle. Nous ne promettons ni exclusivité des résultats, ni autorisation d’usage commercial, ni résultat de conception précis.
+
+## Logiciel local et services externes
+
+Installer la CLI ou connecter Studio à une API choisie peut envoyer des requêtes à ce serveur et, pour la génération configurée, à ses fournisseurs d’IA. L’exploitant du serveur contrôle les fichiers conservés, les comptes fournisseurs et les accès. Vérifiez la destination et ses avis avant tout envoi. Gardez les clés fournisseurs sur un serveur de confiance.
+
+Selon la version installée, le logiciel local comporte des chemins configurables pour les SVG QuiverAI, les images OpenAI ou Google, les vidéos Google ou Seedance et l’évaluation OpenAI, TypeSafe ou Not Organic. Vérifiez la version réellement installée et ses réglages; un nom de fournisseur ne garantit pas la disponibilité. Les polices externes et les URL d’images de référence ajoutées entraînent aussi des requêtes du navigateur, décrites dans la Politique de confidentialité.
+
+## Frais et offres futures
+
+La démonstration publique actuelle est gratuite. L’utilisation locale peut entraîner des frais prévus par vos contrats distincts avec des fournisseurs ou hébergeurs. Un message de progression, un nom de modèle ou une commande de compte dans la démonstration ne confirme pas un achat.
+
+Si Baste propose ultérieurement un service payant, une offre distincte devra identifier avant l’achat le vendeur, la devise, le prix total, les taxes, l’usage inclus, le mode de facturation et les modalités de renouvellement, d’annulation, de remboursement et de crédits. Ce texte ne crée aucun abonnement, délai d’expiration, règle de crédit non remboursable ni renouvellement automatique. Les droits impératifs d’annulation, de remboursement et de protection du consommateur demeurent applicables.
+
+## Disponibilité et fin d’utilisation
+
+Vous pouvez cesser d’utiliser la démonstration à tout moment. Baste peut interrompre ou restreindre l’accès public pour traiter un usage abusif, un problème technique ou une obligation légale. La démonstration n’est pas un service de sauvegarde et ne comporte aucun engagement de niveau de service. Les fichiers locaux et exportés ne disparaissent pas simplement parce que vous cessez de visiter le site.
+
+Un éventuel service payant nécessiterait ses propres modalités de préavis, de récupération des données et de recours. Ces conditions n’excluent pas les garanties impératives, ne nous dispensent pas de nos obligations légales et n’imposent aucun plafond de responsabilité, obligation d’indemnisation, arbitrage obligatoire ni renonciation à une action collective.
+
+## Confidentialité et contact
+
+La Politique de confidentialité de Baste décrit les traitements actuels dans le navigateur et la distinction avec un serveur local. Un avis de confidentialité ne constitue pas un consentement général à de nouvelles fins. [Avant adoption : inscrire les coordonnées vérifiées du soutien et du responsable de la confidentialité; ne pas orienter les demandes privées vers un suivi public de problèmes.]
+
+## Langue et modifications
+
+Des textes de révision anglais et français sont fournis. Le choix de langue du navigateur ne vaut ni renonciation aux droits linguistiques ni acceptation d’un contrat anglais. Toute exigence québécoise applicable de remise du contrat français avant un choix exprès d’une autre langue doit être respectée dans le processus réel de conclusion du contrat.
+
+La version adoptée devra indiquer sa date d’entrée en vigueur. Les changements importants doivent être communiqués et acceptés lorsque la loi l’exige; modifier cette page ne suffit pas pour autoriser de nouveaux traitements ou modifier un contrat payant existant. Les règles impératives locales, tribunaux compétents et recours disponibles demeurent applicables. [Avant adoption : confirmer le territoire de l’exploitant et faire examiner toute clause proposée de droit applicable.]

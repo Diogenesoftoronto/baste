@@ -58,6 +58,10 @@ export const Footer = component$(() => {
         })}
       >
         <span>v0.2.0 · MIT</span>
+        <nav aria-label={locale.value === "fr" ? "Textes juridiques en révision" : "Legal review drafts"} class={css({ display: "flex", flexWrap: "wrap", gap: 4 })}>
+          <a href={localeHref("/terms/", locale.value) + (locale.value === "fr" ? "#legal-fr" : "#legal-en")} class={footLink}>{locale.value === "fr" ? "Conditions · projet" : "Terms · draft"}</a>
+          <a href={localeHref("/privacy/", locale.value) + (locale.value === "fr" ? "#legal-fr" : "#legal-en")} class={footLink}>{locale.value === "fr" ? "Confidentialité · projet" : "Privacy · draft"}</a>
+        </nav>
         <span>{text(locale.value, "Fitted, not templated.")}</span>
       </div>
     </footer>
