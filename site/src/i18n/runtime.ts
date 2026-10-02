@@ -34,12 +34,20 @@ export function localeHref(href: string, locale: Locale): string {
   return url.pathname + url.search + url.hash;
 }
 export const localizedAssets: Record<string, Partial<Record<Locale, string>> & { neutral: string }> = {
+  walkthrough: { en: '/media/studio-guide/walkthrough-en.mp4', fr: '/media/studio-guide/walkthrough-fr.mp4', neutral: '/media/studio-guide/walkthrough-en.mp4' },
+  'walkthrough-poster': { en: '/media/studio-guide/poster-en.webp', fr: '/media/studio-guide/poster-fr.webp', neutral: '/media/studio-guide/poster-en.webp' },
+  'walkthrough-captions': { en: '/media/studio-guide/captions-en.vtt', fr: '/media/studio-guide/captions-fr.vtt', neutral: '/media/studio-guide/captions-en.vtt' },
+  'guide-pdf': { en: '/media/studio-guide/guide-en.pdf', fr: '/media/studio-guide/guide-fr.pdf', neutral: '/media/studio-guide/guide-en.pdf' },
   social: { en: '/media/og-en.png', fr: '/media/og-fr.png', neutral: '/favicon.svg' },
 };
 export function localeAsset(id: string, locale: Locale): string {
   const asset = localizedAssets[id];
   if (!asset) throw new Error(`Unknown localized asset: ${id}`);
   return asset[locale] ?? asset.neutral;
+}
+// Verified manual screenshots use the same locale resolver as the interface.
+for (const screen of ['home', 'fitting', 'tokens', 'generate', 'moodboard', 'brandkit', 'feedback', 'editor', 'new', 'tailor', 'decompose', 'remix', 'settings', 'projects', 'materials', 'specimen']) {
+  localizedAssets[`guide-${screen}`] = { en: `/media/studio-guide/en/${screen}.webp`, fr: `/media/studio-guide/fr/${screen}.webp`, neutral: `/media/studio-guide/en/${screen}.webp` };
 }
 /** Static builds resume from English HTML, then apply the same locale policy. */
 export function browserLocale(url: URL): Locale {

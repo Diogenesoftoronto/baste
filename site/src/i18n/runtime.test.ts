@@ -32,7 +32,7 @@ test('deep-link locale propagation preserves project, view and anchor', () => {
 });
 test('bundled catalog parity, nonempty values, no English substitutes', () => {
   assert.deepEqual(Object.keys(catalogs.fr).sort(), Object.keys(catalogs.en).sort());
-  const approvedSame = new Set(['minimal','Texture','Abstraction','Documentation','Studio','Influences','Habitat','Personas','Notes','Collections','Palette','Films','Anime','dense','neutre','niches ·','bioluminescent','impermanence','texture','Collection','accent','surface']);
+  const approvedSame = new Set(['minimal','Texture','Abstraction','Documentation','Studio','Influences','Habitat','Personas','Notes','Collections','Palette','Films','Anime','dense','neutre','niches ·','bioluminescent','impermanence','texture','Collection','accent','surface','Obsessions','Format','Images','texture, palette','Culture','Source','Route']);
   for (const [key, value] of Object.entries(catalogs.fr)) {
     assert.ok(value.trim(), key);
     if (value === catalogs.en[key]) assert.ok(approvedSame.has(key) || key.includes('plural'), `Unreviewed unchanged French message: ${key}`);
@@ -42,6 +42,12 @@ test('locale assets point to actual variants and reject unknown entries', () => 
   assert.equal(localeAsset('social', 'fr'), '/media/og-fr.png');
   assert.equal(localeAsset('social', 'en'), '/media/og-en.png');
   assert.throws(() => localeAsset('missing', 'fr'));
+  for (const locale of ['en', 'fr'] as const) {
+    assert.equal(localeAsset('walkthrough', locale), `/media/studio-guide/walkthrough-${locale}.mp4`);
+    assert.equal(localeAsset('walkthrough-captions', locale), `/media/studio-guide/captions-${locale}.vtt`);
+    assert.equal(localeAsset('walkthrough-poster', locale), `/media/studio-guide/poster-${locale}.webp`);
+    assert.equal(localeAsset('guide-pdf', locale), `/media/studio-guide/guide-${locale}.pdf`);
+  }
 });
 
 test('built-in fitting display localizes without modifying authored personas or identifiers', () => {

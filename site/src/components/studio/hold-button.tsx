@@ -1,3 +1,5 @@
+import { useLocale } from '~/i18n/provider';
+import { text } from '~/i18n/runtime';
 import { component$, useSignal, type QRL } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { haptic, play, snipBurst } from "~/lib/juice";
@@ -17,6 +19,7 @@ interface HoldButtonProps {
  * Keyboard: hold Space/Enter the same way.
  */
 export const HoldButton = component$<HoldButtonProps>(({ label, holdingLabel = "Keep holding…", onConfirm$, ms = 900, class: cls }) => {
+  const locale = useLocale();
   const holding = useSignal(false);
   const timer = useSignal<number>();
   const btnEl = useSignal<HTMLButtonElement>();
@@ -25,7 +28,7 @@ export const HoldButton = component$<HoldButtonProps>(({ label, holdingLabel = "
     <button
       ref={btnEl}
       type="button"
-      aria-label={`${label} (press and hold)`}
+      aria-label={text(locale.value, "Hold to {label}", { label })}
       class={`${css({
         position: "relative",
         overflow: "hidden",
@@ -97,7 +100,7 @@ export const HoldButton = component$<HoldButtonProps>(({ label, holdingLabel = "
         <circle cx="6" cy="18" r="3" />
         <path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12" />
       </svg>
-      {holding.value ? holdingLabel : label}
+      {holding.value ? text(locale.value, holdingLabel) : label}
     </button>
   );
 });

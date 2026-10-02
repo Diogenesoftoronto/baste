@@ -1,3 +1,5 @@
+import { useLocale } from '~/i18n/provider';
+import { text } from '~/i18n/runtime';
 import { $, component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, toast } from "../context";
@@ -12,6 +14,7 @@ function tilt(id: string): number {
 
 export const MoodboardTab = component$(() => {
   const s = useContext(StudioCtx);
+  const locale = useLocale();
   const board = useSignal<Moodboard | null>(null);
   const src = useSignal("");
   const tags = useSignal("");
@@ -50,7 +53,7 @@ export const MoodboardTab = component$(() => {
       board.value = await s.client!.getMoodboard(s.selectedId);
       src.value = "";
       tags.value = "";
-      toast(s, "Pinned to the board");
+      toast(s, text(locale.value, "Pinned to the board"));
     } catch (err) {
       toast(s, errMsg(err), "error");
     }
@@ -63,14 +66,14 @@ export const MoodboardTab = component$(() => {
     <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", xl: "minmax(0, 1.4fr) minmax(300px, 0.6fr)" }, gap: 6, alignItems: "start" })}>
       <section aria-labelledby="mb-title" class={css({ display: "flex", flexDirection: "column", gap: 4, minW: 0 })}>
         <div>
-          <span class={kicker}>Pinboard</span>
-          <h2 id="mb-title" class={panelTitle}>References</h2>
+          <span class={kicker}>{text(locale.value, "Pinboard")}</span>
+          <h2 id="mb-title" class={panelTitle}>{text(locale.value, "References")}</h2>
         </div>
         {/* cork-ish board: muslin with a pin on every card */}
         {refs.length === 0 ? (
           <div class={emptyBox}>
-            <p class={css({ fontWeight: 600, color: "ink" })}>Nothing pinned yet.</p>
-            <p class={css({ fontSize: "14px" })}>Paste an image URL — a film still, a shop sign, a texture. Pinned references steer generation.</p>
+            <p class={css({ fontWeight: 600, color: "ink" })}>{text(locale.value, "Nothing pinned yet.")}</p>
+            <p class={css({ fontSize: "14px" })}>{text(locale.value, "Paste an image URL — a film still, a shop sign, a texture. Pinned references steer generation.")}</p>
           </div>
         ) : (
           <ul class={css({ listStyle: "none", columns: { base: 2, md: 3 }, columnGap: 5, p: 5, rounded: "lg", bg: "muslin", boxShadow: "inset 0 2px 8px rgba(60,45,20,0.15)" })}>
@@ -81,7 +84,7 @@ export const MoodboardTab = component$(() => {
                 style={{ transform: `rotate(${tilt(r.id)}deg)` }}
               >
                 {r.pinned && <span class="pin-head" style={{ left: "calc(50% - 7px)", top: "-6px" }} aria-hidden="true" />}
-                <img src={img(r.src)} alt={r.tags.join(", ") || "Reference"} loading="lazy" width={300} height={200} class={css({ display: "block", w: "100%", h: "auto", bg: "paper-deep", minH: "80px", objectFit: "cover" })} />
+                <img src={img(r.src)} alt={r.tags.join(", ") || text(locale.value, "Reference")} loading="lazy" width={300} height={200} class={css({ display: "block", w: "100%", h: "auto", bg: "paper-deep", minH: "80px", objectFit: "cover" })} />
                 <div class={css({ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 })}>
                   {r.tags.map((t) => (
                     <span key={t} class={css({ fontSize: "11px", fontFamily: "mono", color: "chalk" })}>#{t}</span>
@@ -93,16 +96,16 @@ export const MoodboardTab = component$(() => {
                     data-juice="pin"
                     aria-pressed={r.pinned}
                     onClick$={() =>
-                      save({ ...board.value!, references: board.value!.references.map((x) => (x.id === r.id ? { ...x, pinned: !x.pinned } : x)) }, r.pinned ? "Unpinned" : "Pinned")
+                      save({ ...board.value!, references: board.value!.references.map((x) => (x.id === r.id ? { ...x, pinned: !x.pinned } : x)) }, r.pinned ? text(locale.value, "Unpinned") : text(locale.value, "Pinned"))
                     }
                   >
-                    {r.pinned ? "Unpin" : "Pin"}
+                    {r.pinned ? text(locale.value, "Unpin") : text(locale.value, "Pin")}
                   </button>
-                  <button class={btn("ghost", btnSm)} onClick$={() => (splitSrc.value = r.src)}>Split</button>
+                  <button class={btn("ghost", btnSm)} onClick$={() => (splitSrc.value = r.src)}>{text(locale.value, "Split")}</button>
                   <button
                     class={btn("ghost", `${btnSm} ${css({ ml: "auto", color: "thread-ink" })}`)}
-                    aria-label="Remove reference"
-                    onClick$={() => save({ ...board.value!, references: board.value!.references.filter((x) => x.id !== r.id) }, "Removed")}
+                    aria-label={text(locale.value, "Remove reference")}
+                    onClick$={() => save({ ...board.value!, references: board.value!.references.filter((x) => x.id !== r.id) }, text(locale.value, "Removed"))}
                   >
                     ✕
                   </button>
@@ -115,31 +118,31 @@ export const MoodboardTab = component$(() => {
 
       <aside class={css({ display: "flex", flexDirection: "column", gap: 6 })}>
         <section class={panel} aria-labelledby="mb-add">
-          <h2 id="mb-add" class={panelTitle}>Pin a reference</h2>
+          <h2 id="mb-add" class={panelTitle}>{text(locale.value, "Pin a reference")}</h2>
           <div class={css({ display: "flex", flexDirection: "column", gap: 3, mt: 4 })}>
             <div>
-              <label class={fieldLabel} for="mb-src">Image URL</label>
+              <label class={fieldLabel} for="mb-src">{text(locale.value, "Image URL")}</label>
               <input id="mb-src" class={input} placeholder="https://…/still.jpg" bind:value={src} onKeyDown$={(e) => e.key === "Enter" && add()} />
             </div>
             <div>
-              <label class={fieldLabel} for="mb-tags">Tags</label>
-              <input id="mb-tags" class={input} placeholder="neon, wet asphalt, signage" bind:value={tags} />
+              <label class={fieldLabel} for="mb-tags">{text(locale.value, "Tags")}</label>
+              <input id="mb-tags" class={input} placeholder={text(locale.value, "neon, wet asphalt, signage")} bind:value={tags} />
             </div>
-            <button class={btn("primary")} data-juice="pin" disabled={!src.value.trim()} onClick$={add}>Pin it</button>
+            <button class={btn("primary")} data-juice="pin" disabled={!src.value.trim()} onClick$={add}>{text(locale.value, "Pin it")}</button>
           </div>
         </section>
 
         {board.value && (
           <section class={panel} aria-labelledby="mb-notes">
-            <h2 id="mb-notes" class={panelTitle}>Notes & vibe</h2>
-            <label class={fieldLabel} for="mb-vibe" style={{ marginTop: "16px" }}>Vibe words</label>
+            <h2 id="mb-notes" class={panelTitle}>{text(locale.value, "Notes & vibe")}</h2>
+            <label class={fieldLabel} for="mb-vibe" style={{ marginTop: "16px" }}>{text(locale.value, "Vibe words")}</label>
             <input
               id="mb-vibe"
               class={input}
               value={board.value.vibe.join(", ")}
-              onChange$={(_, el) => save({ ...board.value!, vibe: splitList(el.value) }, "Vibe saved")}
+              onChange$={(_, el) => save({ ...board.value!, vibe: splitList(el.value) }, text(locale.value, "Vibe saved"))}
             />
-            <label class={fieldLabel} for="mb-text" style={{ marginTop: "12px" }}>Notes</label>
+            <label class={fieldLabel} for="mb-text" style={{ marginTop: "12px" }}>{text(locale.value, "Notes")}</label>
             <textarea
               id="mb-text"
               class={textarea}
@@ -147,28 +150,24 @@ export const MoodboardTab = component$(() => {
               value={board.value.notes}
               onInput$={() => (notesDirty.value = true)}
               onBlur$={(_, el) => {
-                if (notesDirty.value) save({ ...board.value!, notes: el.value }, "Notes saved");
+                if (notesDirty.value) save({ ...board.value!, notes: el.value }, text(locale.value, "Notes saved"));
                 notesDirty.value = false;
               }}
             />
-            <p class={hint}>Saved when you leave the field.</p>
+            <p class={hint}>{text(locale.value, "Saved when you leave the field.")}</p>
           </section>
         )}
 
         <section class={panel} aria-labelledby="mb-split">
-          <h2 id="mb-split" class={panelTitle}>Split a sheet</h2>
-          <p class={hint}>Cut a contact sheet or icon grid into cells, ready for QuiverAI remakes.</p>
+          <h2 id="mb-split" class={panelTitle}>{text(locale.value, "Split a sheet")}</h2>
+          <p class={hint}>{text(locale.value, "Cut a contact sheet or icon grid into cells, ready for QuiverAI remakes.")}</p>
           <div class={css({ display: "flex", flexDirection: "column", gap: 3, mt: 3 })}>
-            <input class={input} aria-label="Sheet image URL" placeholder="Image URL or local path" bind:value={splitSrc} />
+            <input class={input} aria-label={text(locale.value, "Sheet image URL")} placeholder={text(locale.value, "Image URL or local path")} bind:value={splitSrc} />
             <div class={css({ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 })}>
-              <label class={css({ fontSize: "13px" })}>
-                Columns
-                <input type="range" min={1} max={8} value={cols.value} onInput$={(_, el) => (cols.value = Number(el.value))} class={css({ w: "100%", accentColor: "#D2402A" })} />
+              <label class={css({ fontSize: "13px" })}>{text(locale.value, "Columns")}<input type="range" min={1} max={8} value={cols.value} onInput$={(_, el) => (cols.value = Number(el.value))} class={css({ w: "100%", accentColor: "#D2402A" })} />
                 <span class={css({ fontFamily: "mono", fontSize: "12px" })}>{cols.value}</span>
               </label>
-              <label class={css({ fontSize: "13px" })}>
-                Rows
-                <input type="range" min={1} max={8} value={rows.value} onInput$={(_, el) => (rows.value = Number(el.value))} class={css({ w: "100%", accentColor: "#D2402A" })} />
+              <label class={css({ fontSize: "13px" })}>{text(locale.value, "Rows")}<input type="range" min={1} max={8} value={rows.value} onInput$={(_, el) => (rows.value = Number(el.value))} class={css({ w: "100%", accentColor: "#D2402A" })} />
                 <span class={css({ fontFamily: "mono", fontSize: "12px" })}>{rows.value}</span>
               </label>
             </div>
@@ -179,13 +178,12 @@ export const MoodboardTab = component$(() => {
               onClick$={async () => {
                 try {
                   split.value = await s.client!.split({ src: splitSrc.value.trim(), cols: cols.value, rows: rows.value, strategy: "grid" });
-                  toast(s, `${split.value.cells.length} cells cut`);
+                  toast(s, text(locale.value, "{count} cells cut", { count: split.value.cells.length }));
                 } catch (err) {
                   toast(s, errMsg(err), "error");
                 }
               }}
-            >
-              Cut into {cols.value * rows.value}
+            >{text(locale.value, "Cut into {count}", { count: cols.value * rows.value })}
             </button>
             {split.value && (
               <div class={css({ display: "grid", gap: "3px" })} style={{ gridTemplateColumns: `repeat(${cols.value}, 1fr)` }}>

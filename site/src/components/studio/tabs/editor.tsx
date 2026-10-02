@@ -1,3 +1,5 @@
+import { useLocale } from '~/i18n/provider';
+import { text } from '~/i18n/runtime';
 import { component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, loadTokens, toast } from "../context";
@@ -7,6 +9,7 @@ import type { OpenPencilDoc } from "~/lib/api-types";
 /** The persona's tokens as an editable OpenPencil document. */
 export const EditorTab = component$(() => {
   const s = useContext(StudioCtx);
+  const locale = useLocale();
   const doc = useSignal<OpenPencilDoc | null>(null);
   const saving = useSignal(false);
   const watching = useSignal(false);
@@ -44,9 +47,9 @@ export const EditorTab = component$(() => {
         <div class={css({ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 3, flexWrap: "wrap", mb: 4 })}>
           <div>
             <span class={kicker}>OpenPencil · v{d.version}</span>
-            <h2 id="op-title" class={panelTitle}>{d.tokens.length} editable tokens</h2>
+            <h2 id="op-title" class={panelTitle}>{text(locale.value, "{count} editable tokens", { count: d.tokens.length })}</h2>
           </div>
-          <input class={input} style={{ maxWidth: "220px" }} aria-label="Filter tokens" placeholder="Filter…" bind:value={filter} />
+          <input class={input} style={{ maxWidth: "220px" }} aria-label={text(locale.value, "Filter tokens")} placeholder={text(locale.value, "Filter…")} bind:value={filter} />
         </div>
         {[...groups.entries()].map(([cat, list]) => (
           <fieldset key={cat} class={css({ border: 0, p: 0, mb: 5 })}>
@@ -64,7 +67,7 @@ export const EditorTab = component$(() => {
                       {isColor && (
                         <input
                           type="color"
-                          aria-label={`${t.name} colour`}
+                          aria-label={text(locale.value, "{name} colour", { name: t.name })}
                           value={t.value.slice(0, 7)}
                           onInput$={(_, el) => {
                             doc.value = { ...d, tokens: d.tokens.map((x) => (x.id === t.id ? { ...x, value: el.value } : x)) };
@@ -91,9 +94,9 @@ export const EditorTab = component$(() => {
 
       <aside class={css({ display: "flex", flexDirection: "column", gap: 6 })}>
         <section class={panel} aria-labelledby="op-save">
-          <h2 id="op-save" class={panelTitle}>Save & sync</h2>
+          <h2 id="op-save" class={panelTitle}>{text(locale.value, "Save & sync")}</h2>
           <p class={hint}>
-            {custom ? "Saving writes these tokens back onto the persona." : "Base personas are read-only — saving writes a document you can open in OpenPencil."}
+            {custom ? text(locale.value, "Saving writes these tokens back onto the persona.") : text(locale.value, "Base personas are read-only — saving writes a document you can open in OpenPencil.")}
           </p>
           <div class={css({ display: "flex", flexDirection: "column", gap: 2, mt: 4 })}>
             <button
@@ -105,7 +108,7 @@ export const EditorTab = component$(() => {
                 try {
                   await s.client!.saveOpenPencil(s.selectedId, doc.value!);
                   await loadTokens(s, s.selectedId, true);
-                  toast(s, "Document saved");
+                  toast(s, text(locale.value, "Document saved"));
                 } catch (err) {
                   toast(s, errMsg(err), "error");
                 } finally {
@@ -113,7 +116,7 @@ export const EditorTab = component$(() => {
                 }
               }}
             >
-              {saving.value ? "Saving…" : "Save document"}
+              {saving.value ? text(locale.value, "Saving…") : text(locale.value, "Save document")}
             </button>
             <button
               class={btn("secondary")}
@@ -123,14 +126,12 @@ export const EditorTab = component$(() => {
                   const r = await s.client!.writeOpenPencilFile(s.selectedId);
                   filePath.value = r.path;
                   watching.value = r.watching;
-                  toast(s, `Written to ${r.path}`);
+                  toast(s, text(locale.value, "Written to {path}", { path: r.path }));
                 } catch (err) {
                   toast(s, errMsg(err), "error");
                 }
               }}
-            >
-              Write .op file
-            </button>
+            >{text(locale.value, "Write .op file")}</button>
             <button
               class={btn("ghost", btnSm)}
               disabled={hosted}
@@ -140,26 +141,26 @@ export const EditorTab = component$(() => {
                   const r = await s.client!.toggleOpenPencilWatch(s.selectedId, !watching.value);
                   watching.value = r.watching;
                   if (r.path) filePath.value = r.path;
-                  toast(s, r.watching ? "Watching for edits from OpenPencil" : "Stopped watching");
+                  toast(s, r.watching ? text(locale.value, "Watching for edits from OpenPencil") : text(locale.value, "Stopped watching"));
                 } catch (err) {
                   toast(s, errMsg(err), "error");
                 }
               }}
             >
               <i aria-hidden="true" class={css({ w: "8px", h: "8px", rounded: "full" })} style={{ background: watching.value ? "#2E7D5B" : "#A79E8D" }} />
-              {watching.value ? "Watching file" : "Watch file for changes"}
+              {watching.value ? text(locale.value, "Watching file") : text(locale.value, "Watch file for changes")}
             </button>
             {filePath.value && <p class={css({ fontFamily: "mono", fontSize: "11.5px", color: "ink-muted", wordBreak: "break-all" })}>{filePath.value}</p>}
-            {hosted && <p class={hint}>Document saving is available for your account. Native file export and watching require a local Baste server.</p>}
+            {hosted && <p class={hint}>{text(locale.value, "Document saving is available for your account. Native file export and watching require a local Baste server.")}</p>}
           </div>
         </section>
         {d.culturalContext?.rationale && (
           <section class={panel} aria-labelledby="op-why">
-            <h2 id="op-why" class={panelTitle}>Rationale</h2>
+            <h2 id="op-why" class={panelTitle}>{text(locale.value, "Rationale")}</h2>
             <p class={css({ fontSize: "13.5px", color: "ink-soft", mt: 2, lineHeight: 1.6 })}>{d.culturalContext.rationale}</p>
           </section>
         )}
-        <a href="https://openpencil.app" target="_blank" rel="noopener" class={btn("ghost", btnSm)}>Open OpenPencil ↗</a>
+        <a href="https://openpencil.app" target="_blank" rel="noopener" class={btn("ghost", btnSm)}>{text(locale.value, "Open OpenPencil ↗")}</a>
       </aside>
     </div>
   );

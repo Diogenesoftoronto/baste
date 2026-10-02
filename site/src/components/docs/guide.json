@@ -1,0 +1,285 @@
+[
+  {
+    "id": "orientation",
+    "title": "Find your way around",
+    "screen": "fitting",
+    "href": "/gui/",
+    "paragraphs": [
+      "The left rail is your wardrobe: choose a persona, create one, tailor a copy, decompose a site, or remix two personas. The selected persona supplies the seven tabs across the worktable. Settings and Projects open separate workroom views.",
+      "Check the connection indicator before working. Demo means the built-in client is running in this browser tab. Live means a Baste API answered the connection check; it does not by itself mean you are signed in or have generation credit.",
+      "Use the language selector for English or French. Links from this guide carry your language. Persona IDs, font names, code exports, model IDs and text you enter keep their original values.",
+      "Start with the Cyberbotanist fitting, try another base persona, then tailor a copy before changing measurements. Base personas are read-only. A browser reload resets the demo’s in-memory wardrobe, moodboard, feedback, jobs and documents."
+    ]
+  },
+  {
+    "id": "fitting",
+    "title": "Read the fitting",
+    "screen": "fitting",
+    "href": "/gui/?tab=fitting",
+    "paragraphs": [
+      "Fitting turns the persona into a visible system: palette roles, typography, spacing, edges, motion and an interface specimen. Compare the preview with the cultural measurements rather than choosing a palette in isolation.",
+      "Scroll through the specimen to inspect buttons, fields, cards, navigation, status and messaging. Hover interactive samples to feel motion. Changing the selected persona updates the fitting and the other tabs.",
+      "The fitting is a preview, not a deployed application. Contrast, content length and interactions still need validation in the interface where you will use the tokens. Demo custom personas borrow the nearest built-in token fixture; their measurements do not trigger fresh token generation."
+    ]
+  },
+  {
+    "id": "new-persona",
+    "title": "Create a persona",
+    "screen": "new",
+    "href": "/gui/?new=1",
+    "paragraphs": [
+      "Choose New persona. Enter a name, check its generated slug, add a region and a short description. The slug is a lowercase identifier used in routes and file names; it is separate from the display name.",
+      "Fill Culture with subcultures and values. In Influences, list films, anime or shows, music genres, musicians and visual artists. Habitat covers spaces, tools and obsessions. Behaviour captures software values and pet peeves. Separate list items with commas.",
+      "In The cut, choose the aesthetic axes, then add visual and mood keywords. Be concrete: a named film, a familiar place and an actual working habit give a clearer brief than a generic adjective. The completion meter counts filled measurements; it is not a quality score.",
+      "Select Add to wardrobe. A successful save selects the new persona and returns to Fitting. A name is required. Keep a unique slug to avoid replacing another custom persona. Cancel returns without saving the form."
+    ]
+  },
+  {
+    "id": "tailor",
+    "title": "Tailor, edit and remove",
+    "screen": "tailor",
+    "href": "/gui/?flow=tailor",
+    "paragraphs": [
+      "Tailor a selected base persona to open a prefilled copy. Give the copy its own name and slug, preserve useful influences, and replace the details that do not fit your audience. The original base persona remains unchanged.",
+      "Custom personas expose editing controls. Edit updates measurements while keeping the existing slug. Save measurements returns to the fitting. Form edits are not autosaved; cancel discards them.",
+      "Removal is available for custom personas through the hold-to-delete control in the selected persona’s header. Hold it deliberately; base personas cannot be removed. Demo deletions affect this tab only. Export anything you need before resetting the demo."
+    ]
+  },
+  {
+    "id": "tokens",
+    "title": "Export design tokens",
+    "screen": "tokens",
+    "href": "/gui/?tab=tokens",
+    "paragraphs": [
+      "Open Tokens and choose CSS variables, Tailwind, Panda or JSON. The code panel updates for the selected format. CSS produces .css, Tailwind .js, Panda .ts and JSON .json.",
+      "Copy sends the displayed export to the browser clipboard. Download saves a file named after the persona. If clipboard access is denied, use Download or select the code manually. The code and variable identifiers stay unchanged when the UI language changes.",
+      "The side panels show the spacing scale, radius and shadow samples, and easing curves. Hover an easing row to preview motion. These are integration references, not an automatic installation into your app.",
+      "Downloads survive a demo reset because they are browser files. In the demo, saving an OpenPencil document does not regenerate these exports; export tokens and the editable document are separate demo stores."
+    ]
+  },
+  {
+    "id": "generate",
+    "title": "Draft prompts and generate",
+    "screen": "generate",
+    "href": "/gui/?tab=generate",
+    "paragraphs": [
+      "Generate has an order form, progress panel, job history and prompt previews. Start with Dry run enabled. Choose Asset suite or Full UI kit, select an image provider, and leave the model empty for the configured server default or enter a supported model ID.",
+      "Use Draft the prompts, wait for Finished, then inspect the image, SVG and video briefs. The browser demo simulates a short job and displays fixture prompts. It makes no paid provider requests and creates no real assets, even when Dry run is unchecked.",
+      "On a local server, disabling Dry run starts real provider generation using server-side configuration. Confirm your selected persona, output type, provider and model first. Watch the job log for completion or an error; opening a job in history shows its recorded state.",
+      "Hosted Not Organic generation currently supports hero and background images with asset judging. A full kit still needs local SVG and video providers. No hosted generation, sign-in or billing was executed for this guide."
+    ]
+  },
+  {
+    "id": "budget",
+    "title": "Understand hosted run limits",
+    "screen": "generate",
+    "href": "/gui/?tab=generate",
+    "paragraphs": [
+      "Choose Not Organic to load the connected account’s authorized image models and wallet. If the catalog, judging model or verified balance is unavailable, follow the account prompt before attempting paid generation.",
+      "Iterations, Batch size and Per purpose determine how many candidates and final outputs the run explores. Maximum spend for this run is a USD ceiling, initially $1. The live plan counts image and judging requests before enabling a paid run.",
+      "If the plan exceeds your maximum, reduce candidate counts or explicitly raise the maximum. If it exceeds the operator’s server limit, reduce the maximum or candidates, or contact the operator. Insufficient or blocked wallet credit also prevents the run.",
+      "Conservative request ceilings are spending limits, not quoted provider prices. Refresh the account to verify a missing balance. Prompt drafts remain available when paid generation is blocked."
+    ]
+  },
+  {
+    "id": "moodboard",
+    "title": "Build a moodboard",
+    "screen": "moodboard",
+    "href": "/gui/?tab=moodboard",
+    "paragraphs": [
+      "Paste an image URL under Pin a reference, add comma-separated tags and select Pin it. The card appears on the board. Use your own or appropriately licensed references; Baste does not grant rights to external images.",
+      "Pin or Unpin changes priority; pinned cards sort first. Split copies a card’s URL into the sheet cutter. The remove control deletes the reference from the board, not the upstream image.",
+      "Edit Vibe words as a comma-separated list. Notes save when you leave the field, so click elsewhere after typing and check the saved message. These notes and references are associated with the selected persona.",
+      "The demo keeps the board in memory. External image loading depends on network access and the source host; a broken image does not prove the reference was not saved. This guide uses a synthetic local texture, without external image requests."
+    ]
+  },
+  {
+    "id": "split",
+    "title": "Cut a reference sheet",
+    "screen": "moodboard",
+    "href": "/gui/?tab=moodboard",
+    "paragraphs": [
+      "In Split a sheet, provide an image URL or local path and choose Columns and Rows, each from 1 to 8. Cut into shows the resulting cell count. A successful server response displays the cell grid.",
+      "Sheet cutting requires the local server. The demo can collect the URL and grid choices but returns a server-required error when you try to cut. It does not generate a fake grid. Check the connection before retrying."
+    ]
+  },
+  {
+    "id": "brandkit",
+    "title": "Inspect a brand kit",
+    "screen": "brandkit",
+    "href": "/gui/?tab=brandkit",
+    "paragraphs": [
+      "Brand Kit is populated by website decomposition. Its empty state for a built-in persona is expected: use Decompose a site to create a persona with an extracted kit.",
+      "A returned kit includes source URL and capture time, logo, description, palette roles, full palette, fonts and stylesheet signals, plus an Open Graph image and sampled imagery when found. Compare these with the original source before using them.",
+      "Extraction can miss dynamically loaded content, inaccessible fonts or protected images. A populated kit was not available in this browser demo; the screenshot documents the actual empty state, not an invented successful extraction."
+    ]
+  },
+  {
+    "id": "feedback",
+    "title": "Teach the next round",
+    "screen": "feedback",
+    "href": "/gui/?tab=feedback",
+    "paragraphs": [
+      "Enter the asset ID you are rating, explain Why, and add comma-separated Tags. Select More like this for a positive verdict or Less like this for a negative one. Without an asset ID, the form asks you to name it.",
+      "The learned-taste panel shows total, positive and negative counts, a net score, recent trends and common up/down tags. Recent verdicts retain the asset ID and your explanation. Open What gets injected into prompts to inspect the feedback document.",
+      "Ratings are guidance for later prompts, not image edits or a guarantee of model quality. The demo proves feedback storage and display in this tab; it does not prove that fixture prompt previews are regenerated from that feedback."
+    ]
+  },
+  {
+    "id": "editor",
+    "title": "Edit an OpenPencil document",
+    "screen": "editor",
+    "href": "/gui/?tab=editor",
+    "paragraphs": [
+      "Open the Editor tab to see tokens grouped by category. Filter tokens searches names and values. Edit the text value directly; recognized hex colours also have a colour picker. Names, IDs and code values are technical document data.",
+      "Select Save document explicitly. For base personas this saves a separate OpenPencil document; base measurements remain read-only. The local server can write edited tokens back onto custom personas. In the demo, document edits persist only in this tab and do not update token-export fixtures.",
+      "Write .op file asks the local server to create a native file and displays its returned path. Watch file for changes enables server-side synchronization with OpenPencil; stop watching when finished. These operations are unavailable in account mode and return a server-required error in the demo.",
+      "Rationale explains the document’s cultural context. Open OpenPencil is an external link; it does not install the application or automatically transfer a demo document."
+    ]
+  },
+  {
+    "id": "decompose",
+    "title": "Decompose a website",
+    "screen": "decompose",
+    "href": "/gui/?flow=decompose",
+    "paragraphs": [
+      "Provide the source URL. Slug and Display name are optional overrides; otherwise the server derives them from the domain and title. Seed the moodboard adds extracted imagery as references. Deep render runs page JavaScript through Playwright for sites that need it.",
+      "Mirror assets saves the logo, Open Graph image and thumbnails to disk. Start version history tracks later persona changes. Choose only the options you need, then Decompose. Progress labels describe the stages; a successful result offers See the fitting and Open brand kit.",
+      "The demo disables the submit button and explains how to start the server. Live extraction depends on source access and rendering support. This guide verified the disabled state; successful live extraction was not tested."
+    ]
+  },
+  {
+    "id": "remix",
+    "title": "Remix two personas",
+    "screen": "remix",
+    "href": "/gui/?flow=remix",
+    "paragraphs": [
+      "Choose two different personas as Warp and Weft. The woven swatch compares their primary palettes; it is a preview, not a generated asset. Enter an optional slug and name, or use the suggested combination.",
+      "Weave them together asks the server to create a new persona from crossed influences and brand kits, then selects its fitting. Selecting the same persona twice shows a validation message. Remix submission is disabled in the browser demo; live results were not tested."
+    ]
+  },
+  {
+    "id": "projects",
+    "title": "Keep a saved project",
+    "screen": "projects",
+    "href": "/gui/?flow=projects",
+    "paragraphs": [
+      "Projects separates the application brief from a design persona. Saving requires a live Baste server with the account integration configured and an authenticated account. The browser demo shows a connection gate instead of pretending to save a project.",
+      "The connected UI contains a project list, a name and brief form, optional audience selection, editable details and version history. Choosing an existing persona gives the project its own audience copy. Save brief and Save audience are explicit actions.",
+      "If a newer revision conflicts with your draft, load the latest saved version, compare it, then keep your draft for the next save or replace it with the saved version. Restore creates a revision from earlier content. These connected behaviors are documented from the current source; they were not exercised against a real account."
+    ]
+  },
+  {
+    "id": "settings",
+    "title": "Connect the workroom",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "Settings contains the account section, Connection and Generation defaults. API URL identifies the Baste server; Reconnect tries it and Default restores the default URL. A failed health check falls back to the browser demo. Reconnecting replaces the active client, so download important demo exports first.",
+      "Generation defaults controls the local image provider/model, QD generations and assets kept. Save defaults is disabled in demo mode and in hosted account mode. Hosted operator defaults are managed by the server operator; choose your available image model in Generate.",
+      "Provider keys stay in the server environment or local configuration, never in a Studio form. Do not paste an OpenAI, Google, QuiverAI or fal key into API URL. This guide’s screenshots contain no account data or keys."
+    ]
+  },
+  {
+    "id": "account",
+    "title": "Account, wallet and checkout",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "On a configured server, use Sign in / create profile in Settings. Not Organic creates or authenticates an account profile; a Baste design persona is a separate object. Manage your handle and account through the linked Not Organic portal.",
+      "The wallet displays verified available credit and only the offers advertised by the provider. Select an offer to open checkout and review its current price before paying. On return, refresh the wallet: a redirect alone does not prove payment or credit delivery.",
+      "The server holds the provider session and DPoP key. The browser receives an HttpOnly Baste cookie, CSRF token and the public DID and handle. Sessions expire after eight hours and a server restart requires signing in again.",
+      "This guide verified only the public demo’s unavailable account state. Sign-in, a funded wallet, checkout, account-scoped storage and payment return were not tested or photographed with real credentials."
+    ]
+  },
+  {
+    "id": "materials",
+    "title": "Use the material library",
+    "screen": "materials",
+    "href": "/materials/",
+    "paragraphs": [
+      "The Materials route is a separate public reference page. Inspect the material examples and their available controls, then return to Studio to use the persona’s tokens. Materials do not create a saved project or start provider generation.",
+      "Start from one of six studies: Thread current, Shot silk, Interference, Chalk islands, Oxide bath or Radial pleat. Choose a technique and seed, edit ground/warp/weft colours, and adjust hue, scale, density, distortion and dye strength. Palette presets and Shuffle explore alternatives. Pointer movement bends the preview; tapping sends a ripple.",
+      "The Specimen route is another public example of the visual system. These pages are useful for comparing typography, surfaces and component states outside the Studio; their remaining English copy is listed in the localization coverage note."
+    ]
+  },
+  {
+    "id": "persistence",
+    "title": "Know what is saved",
+    "screen": "tokens",
+    "href": "/gui/?tab=tokens",
+    "paragraphs": [
+      "Browser demo: persona edits, references, feedback, documents and simulated job history live in memory. Changing a tab keeps them; reloading or reconnecting loses them. Downloaded token files remain on your device. Do not use the demo as your only archive.",
+      "Local server: personas and outputs use local storage configured by the server. Local generated output includes SVGs, images, videos and a persona suite manifest under assets/output/. Native OpenPencil export returns the actual server file path.",
+      "Connected account: personas and assets belong to the authenticated DID’s separate directory; saved projects require the account service. Config writes and native file/watch operations are unavailable in account mode. Successful live storage was not tested for this guide."
+    ]
+  },
+  {
+    "id": "troubleshooting",
+    "title": "Troubleshoot a fitting",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "Unexpected demo mode: check that the server is running, inspect API URL and Reconnect, and confirm the /api proxy for your hosting setup. A public static site without a backend can only run the demo.",
+      "No new tokens after custom edits: in the demo this is a fixture limitation. No brand kit: built-in personas have no extracted website kit. Split or .op failure: these require the local server. Missing image: check the reference URL and source access.",
+      "Blocked hosted generation: refresh the account, model catalog and wallet; check the judging model, positive USD maximum, request budget, server ceiling and available credit. Reduce the candidate plan before retrying. Do not repeatedly launch jobs to diagnose billing.",
+      "API errors distinguish authentication (401), insufficient credit (402), denied access (403), busy providers (429) and unavailable services. For support, provide the route, connection mode, language, selected persona ID and a redacted error; exclude tokens, keys and private references."
+    ]
+  },
+  {
+    "id": "coverage",
+    "title": "What this guide verifies",
+    "screen": "docs",
+    "href": "/docs/",
+    "paragraphs": [
+      "The screenshots show the actual browser demo with synthetic content, captured in English and French. All seven Studio tabs and the new, tailor, decompose, remix, settings and projects views were opened. Downloads and supported demo interactions are checked in the accompanying verification report.",
+      "French localization covers this guide, the Studio shell, fitting, persona forms, tokens, moodboard, feedback, brand-kit empty state and editor controls. Account, payment, projects, generation, Materials and Specimen still contain English copy. French captures retain these real gaps rather than concealing them.",
+      "Server-only and authenticated success states are explained from current source, with their limitations stated in each chapter. No credentials were created, no published legal content changed, no paid generation executed and no site deployed for these captures."
+    ]
+  },
+  {
+    "id": "material-exports",
+    "title": "Keep a material recipe",
+    "screen": "materials",
+    "href": "/materials/",
+    "paragraphs": [
+      "Pause motion freezes the live preview. Motion controls are disabled when reduced motion is enabled. The live shader needs WebGL; if it is unavailable you can still edit colours and save a recipe. Reload after a lost WebGL context to resume the preview.",
+      "Export PNG downloads the current rendered background. Save recipe downloads the reusable JSON parameters; Load recipe reads that JSON file back. A recipe is editable configuration, not an image. Keep both if you want a finished image and the ability to revise it.",
+      "Material adjustments save in device storage, unlike the Studio demo’s in-memory personas. Use behind Baste stores a softer backdrop for this browser; Restore original linen removes that backdrop preference. Neither action changes the published site for other people."
+    ]
+  },
+  {
+    "id": "specimen",
+    "title": "Inspect the house specimen",
+    "screen": "specimen",
+    "href": "/specimen/",
+    "paragraphs": [
+      "The specimen itemises Baste’s three typefaces, eleven working colours, stitch/chalk/pin motifs, cloth shader, icon set and three persona fittings. It is a reference for Baste’s own visual system, not a separate persona editor.",
+      "In the cloth shader, adjust Warp and Weft colours, Fold depth, Weave relief, Thread width, Folds per screen and Dye. Reset restores the example’s defaults. These specimen changes are temporary; there is no save or export control on this page."
+    ]
+  },
+  {
+    "id": "development",
+    "title": "Run locally and configure providers",
+    "screen": null,
+    "href": null,
+    "paragraphs": [
+      "From a checkout with Nix and Devenv installed, enter the development shell, install locked dependencies, then start the API and site together. Studio runs at localhost:5173/gui/; its same-origin /api proxy reaches port 3456. BASTE_SITE_PORT and BASTE_API_PORT override those ports. Storybook is optional on port 6006.",
+      "Use devenv tasks list for individual commands and checks. baste gui --port 3456 starts the API and bundled GUI. Local provider generation uses OpenAI or Google for images, QuiverAI for SVG and the configured video provider. Copy .env.example to .env and configure only the services you use.",
+      "baste config --init creates baste.config.json. Model IDs must be supported by the chosen provider. The CLI uses local configuration and does not inherit the Studio account session. Hosted Studio requests use the connected account instead."
+    ],
+    "code": "devenv shell\ndevenv tasks run baste:install\ndevenv up\n\n# Environment on the server\nOPENAI_API_KEY=…\nQUIVER_API_KEY=…\nGOOGLE_API_KEY=…"
+  },
+  {
+    "id": "operators",
+    "title": "Configure an account server",
+    "screen": null,
+    "href": null,
+    "paragraphs": [
+      "Enable NOTORGANIC_ENABLED, set BASTE_PUBLIC_ORIGIN, and configure the issuer and authorization URL. Register Baste with Not Organic for its origin, callback, product audience, scopes and billing offers. Public checkout needs an HTTPS return origin.",
+      "The callback is /api/notorganic/callback on the Studio origin. Production hosting must proxy /api to the Baste server. Account routes require a session, and mutations require X-Baste-CSRF from the status response. Account storage is scoped to the authenticated DID.",
+      "The quality-diversity archive explores colour temperature, visual density and abstractness. Judging weights are persona alignment 30%, visual quality and uniqueness 20% each, coherence and usability 15% each. Review selected assets in their intended interface; scores are selection guidance."
+    ],
+    "code": "NOTORGANIC_ENABLED=true\nBASTE_PUBLIC_ORIGIN=http://localhost:5173\nNOTORGANIC_ISSUER=https://api.notorganic.info\nNOTORGANIC_AUTHORIZATION_URL=https://id.notorganic.info/authorize\n\nassets/output/\n  svg/\n  images/\n  videos/\n  {persona}-suite.json"
+  }
+]
