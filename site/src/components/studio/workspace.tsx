@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { component$, useContext, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, loadTokens, openView, refreshPersonas, syncUrl, toast, type PersonaTab } from "./context";
@@ -23,6 +25,7 @@ const TABS: Array<{ id: PersonaTab; label: string }> = [
 ];
 
 export const Workspace = component$(() => {
+  const locale = useLocale();
   const s = useContext(StudioCtx);
   const persona = s.personas.find((p) => p.id === s.selectedId);
   const tokens = persona ? s.tokens[persona.id] : undefined;
@@ -46,18 +49,18 @@ export const Workspace = component$(() => {
   if (!persona) {
     if (s.account.status?.configured && !s.account.status.authenticated) return (
       <div class={emptyBox}>
-        <h1 class="display" style={{ fontSize: "34px" }}>Connect your workroom.</h1>
-        <p>Sign in or create a Not Organic profile to open your personas, models and wallet on this server.</p>
-        <button class={btn("primary")} onClick$={() => openView(s, "settings")}>Sign in / create profile</button>
+        <h1 class="display" style={{ fontSize: "34px" }}>{text(locale.value, "Connect your workroom.")}</h1>
+        <p>{text(locale.value, "Sign in or create a Not Organic profile to open your personas, models and wallet on this server.")}</p>
+        <button class={btn("primary")} onClick$={() => openView(s, "settings")}>{text(locale.value, "Sign in / create profile")}</button>
       </div>
     );
     return (
       <div class={emptyBox}>
-        <h1 class="display" style={{ fontSize: "34px" }}>The wardrobe is empty.</h1>
-        <p>Measure a new persona, or draft one from a site you admire.</p>
+        <h1 class="display" style={{ fontSize: "34px" }}>{text(locale.value, "The wardrobe is empty.")}</h1>
+        <p>{text(locale.value, "Measure a new persona, or draft one from a site you admire.")}</p>
         <div class={css({ display: "flex", gap: 2, flexWrap: "wrap" })}>
-          <button class={btn("primary")} onClick$={() => openView(s, "new")}>New persona</button>
-          <button class={btn("secondary")} onClick$={() => openView(s, "decompose")}>Decompose a site</button>
+          <button class={btn("primary")} onClick$={() => openView(s, "new")}>{text(locale.value, "New persona")}</button>
+          <button class={btn("secondary")} onClick$={() => openView(s, "decompose")}>{text(locale.value, "Decompose a site")}</button>
         </div>
       </div>
     );
@@ -68,7 +71,7 @@ export const Workspace = component$(() => {
   return (
     <div class={css({ display: "flex", flexDirection: "column", gap: 6, maxW: "1280px" })}>
       {/* Persona header: a strip of the persona's own cloth behind its name */}
-      <header class={css({ position: "relative", rounded: "lg", overflow: "hidden", border: "1px solid token(colors.rule)", bg: "card", boxShadow: "sheet" })}>
+      <header key={persona.id} class={css({ position: "relative", rounded: "lg", overflow: "hidden", border: "1px solid token(colors.rule)", bg: "card", boxShadow: "sheet" })}>
         <div class={css({ position: "absolute", inset: 0, opacity: 0.9 })} aria-hidden="true">
           {tokens && <Fabric look={lookFromTokens(tokens, persona.aesthetic.density)} quality={0.5} />}
         </div>
@@ -77,25 +80,25 @@ export const Workspace = component$(() => {
           style={{ background: "rgba(251,249,244,0.94)", backdropFilter: "blur(6px)", boxShadow: "0 12px 30px -12px rgba(20,14,6,0.4)" }}
         >
           <div class={css({ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap" })}>
-            <span class={kicker}>{custom ? "Bespoke persona" : "Base persona"}</span>
+            <span class={kicker}>{custom ? text(locale.value, "Bespoke persona") : text(locale.value, "Base persona")}</span>
             <span class={css({ fontFamily: "mono", fontSize: "11.5px", color: "ink-muted" })}>· {persona.id}</span>
           </div>
-          <h1 class="display" style={{ fontSize: "clamp(30px, 3.6vw, 46px)" }}>{persona.name}</h1>
-          <p class={css({ color: "ink-soft", fontSize: "15px", maxW: "62ch" })}>{persona.summary}</p>
+          <h1 class="display" style={{ fontSize: "clamp(30px, 3.6vw, 46px)" }}>{personaText(locale.value, persona, persona.name)}</h1>
+          <p class={css({ color: "ink-soft", fontSize: "15px", maxW: "62ch" })}>{personaText(locale.value, persona, persona.summary)}</p>
           <div class={css({ display: "flex", gap: 2, flexWrap: "wrap", mt: 1 })}>
-            <button class={btn("primary", btnSm)} onClick$={() => { s.tab = "generate"; syncUrl(s); }}>Generate assets</button>
+            <button class={btn("primary", btnSm)} onClick$={() => { s.tab = "generate"; syncUrl(s); }}>{text(locale.value, "Generate assets")}</button>
             <button class={btn("secondary", btnSm)} onClick$={() => openView(s, custom ? "edit" : "tailor")}>
-              {custom ? "Edit measurements" : "Tailor a copy"}
+              {custom ? text(locale.value, "Edit measurements") : text(locale.value, "Tailor a copy")}
             </button>
             {custom && (
               <HoldButton
-                label="Unpick"
-                holdingLabel="Unpicking…"
+                label={text(locale.value, "Unpick")}
+                holdingLabel={text(locale.value, "Unpicking…")}
                 onConfirm$={async () => {
                   if (!s.client) return;
                   try {
                     await s.client.deletePersona(persona.id);
-                    toast(s, `Unpicked ${persona.name} — personas/${persona.id}.json removed`);
+                    toast(s, text(locale.value, "Unpicked {name} — personas/{id}.json removed", { name: persona.name, id: persona.id }));
                     s.selectedId = "";
                     await refreshPersonas(s);
                   } catch (err) {
@@ -111,7 +114,7 @@ export const Workspace = component$(() => {
       {/* Tabs */}
       <div
         role="tablist"
-        aria-label="Persona workspace"
+        aria-label={text(locale.value, "Persona workspace")}
         class={css({ display: "flex", gap: 1, overflowX: "auto", borderBottom: "1px solid token(colors.rule)", scrollbarWidth: "none", maskImage: { base: "linear-gradient(90deg, #000 85%, transparent)", md: "none" } })}
       >
         {TABS.map((t) => (
@@ -148,7 +151,7 @@ export const Workspace = component$(() => {
               },
             })}
           >
-            {t.label}
+            {text(locale.value, t.label)}
           </button>
         ))}
       </div>

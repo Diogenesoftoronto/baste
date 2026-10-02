@@ -1,9 +1,12 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText, localeHref } from "~/i18n/runtime";
 import { component$, useContext } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { StudioCtx, openView, selectPersona } from "./context";
 import { kicker } from "./ui";
 
 export const Rail = component$(() => {
+  const locale = useLocale();
   const s = useContext(StudioCtx);
   const base = s.personas.filter((p) => p._source !== "custom");
   const custom = s.personas.filter((p) => p._source === "custom");
@@ -51,11 +54,11 @@ export const Rail = component$(() => {
                   )}
                 </span>
                 <span class={css({ minW: 0 })}>
-                  <span class={css({ display: "block", fontSize: "14px", fontWeight: 600, color: "ink", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" })}>
-                    {p.name.replace(/^The /, "")}
+                  <span class={css({ display: "block", fontSize: "14px", fontWeight: 600, color: "ink", overflowWrap: "break-word", lineHeight: 1.3 })}>
+                    {personaText(locale.value, p, p.name.replace(/^The /, ""))}
                   </span>
                   <span class={css({ display: "block", fontFamily: "mono", fontSize: "11px", color: "ink-muted", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" })}>
-                    {p.aesthetic?.colorTemperature} · {p.aesthetic?.density}
+                    {text(locale.value, p.aesthetic?.colorTemperature ?? "")} · {text(locale.value, p.aesthetic?.density ?? "")}
                   </span>
                 </span>
               </button>
@@ -108,7 +111,7 @@ export const Rail = component$(() => {
       )}
       <nav
         id="studio-rail"
-        aria-label="Wardrobe"
+        aria-label={text(locale.value, "Wardrobe")}
         data-open={s.railOpen ? "true" : "false"}
         class={css({
           position: { base: "fixed", lg: "sticky" },
@@ -131,27 +134,27 @@ export const Rail = component$(() => {
         })}
       >
         <div>
-          {action("Projects", "projects", "▤", "Keep a brief and its design history")}
+          {action(text(locale.value, "Projects"), "projects", "▤", text(locale.value, "Keep a brief and its design history"))}
         </div>
         {s.loading && s.personas.length === 0 ? (
-          <div class={css({ display: "flex", flexDirection: "column", gap: 2, p: 2 })} aria-busy="true" aria-label="Loading personas">
+          <div class={css({ display: "flex", flexDirection: "column", gap: 2, p: 2 })} aria-busy="true" aria-label={text(locale.value, "Loading personas")}>
             {[0, 1, 2].map((i) => (
               <div key={i} class={css({ h: "50px", rounded: "base", bg: "paper-deep", opacity: 0.7 })} />
             ))}
           </div>
         ) : (
           <>
-            {group("Wardrobe", base)}
-            {custom.length > 0 && group("Bespoke", custom)}
+            {group(text(locale.value, "Wardrobe"), base)}
+            {custom.length > 0 && group(text(locale.value, "Bespoke"), custom)}
           </>
         )}
 
         <div class={css({ display: "flex", flexDirection: "column", gap: 1, mt: "auto", pt: 4, borderTop: "1px dashed token(colors.rule-strong)" })}>
-          <h2 class={kicker} style={{ padding: "0 10px", marginBottom: "4px" }}>Start a fitting</h2>
-          <a href="/materials/" class={css({ display: "block", px: "10px", py: 3, fontSize: "14px", color: "thread-ink", textDecoration: "none", _hover: { textDecoration: "underline" } })}>Material room →</a>
-          {action("New persona", "new", "+", "Write one from scratch")}
-          {action("Decompose a site", "decompose", "⌗", "Draft from a live URL")}
-          {action("Remix two", "remix", "×", "Cross two personas")}
+          <h2 class={kicker} style={{ padding: "0 10px", marginBottom: "4px" }}>{text(locale.value, "Start a fitting")}</h2>
+          <a href={localeHref("/materials/", locale.value)} class={css({ display: "block", px: "10px", py: 3, fontSize: "14px", color: "thread-ink", textDecoration: "none", _hover: { textDecoration: "underline" } })}>{text(locale.value, "Material room →")}</a>
+          {action(text(locale.value, "New persona"), "new", "+", text(locale.value, "Write one from scratch"))}
+          {action(text(locale.value, "Decompose a site"), "decompose", "⌗", text(locale.value, "Draft from a live URL"))}
+          {action(text(locale.value, "Remix two"), "remix", "×", text(locale.value, "Cross two personas"))}
         </div>
       </nav>
     </>

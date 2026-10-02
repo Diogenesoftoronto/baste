@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import type { DesignTokens, PersonaRecord } from "~/lib/api-types";
@@ -18,6 +20,7 @@ interface FittingRoomProps {
  * measurements that changed so the difference reads as a decision.
  */
 export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, autoplay = true }) => {
+  const locale = useLocale();
   const index = useSignal(0);
   const touched = useSignal(false);
   const stage = useSignal<HTMLDivElement>();
@@ -71,15 +74,15 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
     { k: "display face", v: primaryFamily(t.typography.fontFamily.heading) },
     { k: "primary", v: t.colors.primary.toUpperCase(), swatch: t.colors.primary },
     { k: "ground", v: t.colors.background.toUpperCase(), swatch: t.colors.background },
-    { k: "radius", v: `${t.borders.radius.base} · ${a.edgeStyle}` },
-    { k: "density", v: a.density },
-    { k: "motion", v: `${t.motion.duration.base} · ${a.motionStyle}` },
+    { k: "radius", v: `${t.borders.radius.base} · ${text(locale.value, a.edgeStyle)}` },
+    { k: "density", v: text(locale.value, a.density) },
+    { k: "motion", v: `${t.motion.duration.base} · ${text(locale.value, a.motionStyle)}` },
   ];
 
   return (
     <div class={css({ display: "flex", flexDirection: "column", gap: 6 })}>
       {/* Garment tags — persona switcher */}
-      <div role="tablist" aria-label="Fit for persona" class={css({ display: "flex", gap: 2, flexWrap: "wrap" })}>
+      <div role="tablist" aria-label={text(locale.value, "Fit for persona")} class={css({ display: "flex", gap: 2, flexWrap: "wrap" })}>
         {personas.map((p, i) => {
           const pt = tokens[p.id];
           const selected = i === index.value;
@@ -119,7 +122,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
                   />
                 ))}
               </span>
-              {p.name.replace(/^The /, "")}
+              {personaText(locale.value, p, p.name.replace(/^The /, ""))}
               {selected && !touched.value && (
                 <span
                   aria-hidden="true"
@@ -140,7 +143,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
             style={{ transform: "rotate(-1.6deg) translate(var(--shift-x, 0), var(--shift-y, 0))", transition: "transform 0.6s cubic-bezier(0.22,1,0.36,1)" }}
           >
             <div class={`pinked ${css({ position: "absolute", inset: 0 })}`}>
-              <Fabric look={lookFromTokens(t, a.density)} quality={0.75} label={`${persona.name} cloth`} />
+              <Fabric look={lookFromTokens(t, a.density)} quality={0.75} label={text(locale.value, "{name} cloth", { name: personaText(locale.value, persona, persona.name) })} />
             </div>
           </div>
 
@@ -163,7 +166,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
 
         {/* Chalk notes */}
         <dl
-          aria-label={`Measurements for ${persona.name}`}
+          aria-label={text(locale.value, "Measurements for {name}", { name: personaText(locale.value, persona, persona.name) })}
           class={css({
             display: "grid",
             gridTemplateColumns: { base: "repeat(2, 1fr)", sm: "repeat(3, 1fr)", lg: "1fr" },
@@ -175,7 +178,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
         >
           {notes.map((n) => (
             <div key={n.k} class={css({ display: "flex", flexDirection: "column", gap: "2px", pl: 3, borderLeft: "1.5px dashed token(colors.chalk)" })}>
-              <dt class={css({ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase" })}>{n.k}</dt>
+              <dt class={css({ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase" })}>{text(locale.value, n.k)}</dt>
               <dd class={css({ display: "flex", alignItems: "center", gap: 2, color: "ink", fontWeight: 500 })}>
                 {n.swatch && (
                   <i class={css({ w: "12px", h: "12px", rounded: "xs", border: "1px solid token(colors.rule-strong)", flexShrink: 0 })} style={{ background: n.swatch }} />
