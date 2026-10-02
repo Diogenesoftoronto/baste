@@ -20,7 +20,7 @@ Utilisez Baste légalement, avec des contenus et des systèmes pour lesquels vou
 
 N’exploitez pas les enfants, ne harcelez pas autrui, ne portez pas atteinte aux droits d’autrui, n’usurpez pas une identité de façon trompeuse, ne diffusez pas de contenu malveillant, n’accédez pas sans autorisation aux systèmes et ne perturbez pas le service. Ces conditions ne limitent pas vos droits découlant des licences logicielles applicables.
 
-Si vous concluez ultérieurement un contrat d’achat ou de compte, vous devez avoir la capacité juridique ou une autorisation juridiquement suffisante lorsque cela est permis. [Avant adoption : déterminer les âges visés et tout mécanisme d’autorisation parentale; la démonstration actuelle ne vérifie pas l’âge.]
+Baste s’adresse aux personnes de 14 ans et plus. Vous devez aussi respecter tout âge minimal plus élevé imposé par la loi applicable ou un fournisseur connecté. Cet âge minimal du produit ne vous rend pas majeur et ne vous donne pas la capacité de conclure tout contrat. Si vous êtes mineur, impliquez votre parent ou tuteur et obtenez toute autorisation ou représentation nécessaire pour la fonctionnalité ou l’accord. Un futur compte ou achat exige la capacité juridique ou une autorisation juridiquement suffisante. La démonstration actuelle ne vérifie pas l’âge et ne recueille pas d’autorisation parentale.
 
 ## Vos contenus et les résultats
 

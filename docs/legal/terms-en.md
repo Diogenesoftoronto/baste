@@ -20,7 +20,7 @@ Use Baste lawfully and only with material and systems you are authorized to use.
 
 Do not exploit children, harass people, infringe rights, deceptively impersonate others, distribute malicious content, gain unauthorized access or interfere with the service. These terms do not restrict rights you hold under applicable software licences.
 
-If you later enter a purchase or account agreement, you must have legal capacity or legally sufficient authorization where permitted. [Before adoption: decide the intended user ages and any parental authorization process; the present demo has no age verification.]
+Baste is intended for people aged 14 and over. You must also meet any higher minimum required by applicable law or a connected provider. This product minimum does not make you an adult or establish capacity to enter every contract. If you are below the age of majority, involve your parent or tutor and obtain any authorization or representation required for the feature or agreement. A future account or purchase requires legal capacity or legally sufficient authorization. The current demo does not verify age or collect parental authorization.
 
 ## Your material and output
 

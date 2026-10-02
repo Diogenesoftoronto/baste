@@ -21,9 +21,15 @@ Railway/nginx is identified as Baste’s public deployment configuration. Option
 
 The inspected current release remains the free static public demo. Hosted or paid deployment is a separate gate below, rather than an unresolved description of this release. Naming the shared operator does not prove Baste provider registration or functioning shared login/payment.
 
+## Minimum-age implementation gate
+
+The 14+ audience decision is resolved; implementation is not. Optional external-reference, chosen-server/account, and personal-content paths have no age boundary or adapted consent process. Initial hosting and Google Fonts requests happen before any age check; even the static demo is not a zero-collection service. Recommended minimum work is a privacy-preserving age-band checkpoint before optional features, simple EN/FR just-in-time notices/choices, avoidance of unnecessary identifiers, and a documented under-14 response process. An age assertion is not proof of contract capacity, and no single checkbox or full-birth-date/identity-document collection is represented as legally required or sufficient. Confirm/minimize initial technical logs and review whether self-hosting fonts is appropriate. No age or consent flow is implemented in this task.
+
+For a future paid or hosted launch, determine whether the actual agreement is within a minor’s lawful capacity; if not, have the tutor enter/authorize it in the manner required. Do not presume a recurring subscription is an ordinary/usual need, and do not use a statement that the minor is an adult to waive statutory protections.
+
 ## Owner choices before adoption
 
-- Choose intended audience ages and whether any child use is permitted. Define parental authorization and incident handling if relevant. The draft has deliberately not selected an unsupported 13, 14, 16 or 18 minimum age.
+- Minimum audience age is now 14+, following the owner’s instruction to raise the initial 13+ preference to the lowest supported age for independent privacy consent in Québec. Age 14 does not establish adult contract capacity or valid consent to every use. Implement the product boundary, understandable privacy choices and an under-14 information-response process before adoption; decide authorization/representation arrangements for minors before any account or paid launch. See age-review.md for the official sources, collection map and operational recommendation.
 - Choose the adoption/effective date and contracting method, with legal review of scope and governing-law wording if desired. A footer link does not create informed acceptance. This patch adds no acceptance tracking.
 - Confirm that the modest input-processing permission and no additional output-ownership claim reflect intent. No blanket training permission, perpetual content licence, indemnity, liability cap, forced arbitration or consumer-rights waiver has been added.
 - Decide whether to keep Google Fonts requests or commission self-hosting, and whether external moodboard URLs need a notice before loading. The present patch discloses current behavior; it does not change it.
@@ -55,7 +61,7 @@ Sources were opened on 2 October 2026. The observations below are limited guidan
 - [Québec consumer office pre-purchase information](https://www.opc.gouv.qc.ca/consommateur/sujet/achat/internet/conseils), [written contract](https://www.opc.gouv.qc.ca/consommateur/sujet/achat/internet/contrat), and [online cancellation](https://www.opc.gouv.qc.ca/consommateur/sujet/achat/internet/annulation): a future paid offer needs identifiable seller, price and delivery/payment terms, an opportunity to correct/refuse, a retainable contract and applicable cancellation/refund remedies. Current free-demo terms do not substitute for checkout implementation.
 - [OQLF language-of-contract guidance](https://www.oqlf.gouv.qc.ca/charte/changementslegislatifs/): since 1 June 2023, applicable adhesion contracts require delivery of the French version before an express choice to be bound in another language, subject to the relevant exceptions. The patch includes complete French static text; no English-precedence or blanket language waiver is included.
 
-Direct official consolidated statute fetches returned gateway errors during this run. Current regulator pages were read instead; a final adopting reviewer should verify applicable statutory provisions and any recent amendments. No assertion of legal compliance or lawyer review is made.
+Earlier direct consolidated-statute fetches returned gateway errors. The minimum-age follow-up obtained the current official private-sector statute through web browsing and the official Civil Code PDF (updated 12 August 2026); age-review.md records the specific sections. The final adopting reviewer should verify applicable amendments and the actual release configuration. No assertion of legal compliance or lawyer review is made.
 
 ## Patch integration
 

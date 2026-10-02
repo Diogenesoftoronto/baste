@@ -27,7 +27,7 @@ Source review included the separate uncommitted local Baste working tree. It est
 
 The initial 16-combination Chromium pass blocked font requests for deterministic fallback-layout checks; the additional eight styled previews allowed and confirmed the actual fonts. The source and public markup establish Google Fonts requests; provider processing, regions, retention and contracts remain unverified. Local browser checks are not a full accessibility audit or a live deployment test.
 
-Direct official consolidated statute retrieval returned gateway errors; current authoritative CAI, Canadian OPC, Québec consumer office and OQLF guidance was read and linked in owner-review.md. Adopting legal review should confirm the applicable statutes and amendments.
+Initial direct statute retrieval returned gateway errors. The age follow-up successfully read the current official Québec private-sector privacy Act and the Civil Code PDF through web browsing; direct archival downloads still returned 403. Current CAI, Canadian OPC, Québec consumer office and OQLF guidance is linked in owner-review.md and age-review.md. Adoption review should confirm the applicable rules for the actual offering.
 
 ## Shared-baseline content revision
 
@@ -36,3 +36,9 @@ After the owner’s direction to align with Not Organic/Twyne, their five curren
 The revision changes policy JSON and synchronized EN/FR Markdown, source inventory and owner checklist. Styled LegalPage, Nav, Footer, routes, Studio, docs/video and i18n catalogs remain unchanged from 9f37f0fa403444db75be7b829b15ee359556814d. No account, paid request, email message or publication was performed. Mailbox publication is verified; delivery/monitoring and a public mailing address remain unresolved.
 
 Policy synchronization and EN/FR section IDs/paragraph-count parity passed (legal-baseline-content-report.json). Production build, TypeScript, lint, locale runtime tests and i18n checks passed for this revision. Browser verification again covers 16 route/language/viewport/JavaScript combinations, French footer links and all six standalone review-pack articles. Eight full-font EN/FR desktop/mobile previews are regenerated and replace the same Library screenshot identities. Coverage remains layout/content checks, not legal certification, live hosted-feature validation or a complete accessibility audit.
+
+## Minimum-age revision
+
+The owner’s conditional direction to use the lowest supported independent-consent age is reflected as 14+ in both language drafts. The current Québec Act (sections 4.1 and 14), current CAI consent guidance, Canadian OPC guidance and Civil Code articles 153 and 155–158/165 were read. Privacy consent is distinguished from adulthood and minors’ contract capacity. No worldwide threshold or automatic capacity at 14 is claimed. Existing source shows no age/parental-consent flow; an implementation checkpoint, purpose-specific explanations, accidental-information process and assessment of initial host/font requests remain adoption gates. No flow or public deployment was changed.
+
+The age revision passed production build, TypeScript, lint, the existing locale runtime test file and the 732-message i18n check. JSON/Markdown/pack synchronization and bilingual section/paragraph parity were checked again. The 16 route/language/viewport/JavaScript checks and eight styled full-font desktop/mobile views were rerun on this build; their exact output is included in the kit. Coverage is bounded as above.
