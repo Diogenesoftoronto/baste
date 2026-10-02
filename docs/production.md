@@ -1,12 +1,12 @@
 # Public Baste deployment
 
-This release serves the committed public Qwik site at https://baste.love. The public `/gui/` page explains local Studio installation. No Baste API, provider credentials, project files, account sessions, checkout, or generation runs in the container. The newer uncommitted local Studio and atelier redesign are separate from this release.
+This release serves the current public atelier design and browser Studio demo, intended for https://baste.love after DNS cutover. Demo edits stay in the current tab and generation is simulated. No Baste API, provider credentials, private project files, account sessions, checkout, or real generation runs in the container.
 
 ## Pipeline and checks
 
 Reuse Railway project `996bc181-df20-435a-b5f4-685e2c0fee0b`, service `d32a4c18-d6d6-4c14-9b27-926204fa9db5`, environment `production`. Set the non-secret service variable `PORT=80` to match nginx and Railway health checks. Keep nginx at two workers to avoid sizing memory use to the host CPU count. Connect its existing GitHub integration to `Diogenesoftoronto/baste`, branch `main`. Pushes build the locked site dependencies, Panda styles, client assets, and static pages using the root Dockerfile. GitHub CI checks CLI types, site types, lint and the same static build, retaining a public-site artifact. No CI deployment credential is needed.
 
-Run `npm ci`, `npm run typecheck`, `npm run build`; then `npm ci --prefix site`, `npm --prefix site run build:production`, `npm --prefix site run build.types`, and `npm --prefix site run lint`. Build the container with `docker build -t baste-public .`; run it with `docker run --rm -p 127.0.0.1:18080:80 baste-public`.
+Run `npm ci`, `npm run typecheck`, `npm run build`; then `npm ci --prefix site`, `npm --prefix site run build:production`, `npm --prefix site run build.types`, `npm --prefix site run lint`, and `npm --prefix site test`. Build the container with `docker build -t baste-public .`; run it with `docker run --rm -p 127.0.0.1:18080:80 baste-public`.
 
 Expected: `/health`, `/`, `/gui/` return 200; `/api/config`, `/.env`, and missing paths return 404. The final image contains nginx and generated public files. No API proxy or fallback to the home page is installed. Verify the exact remote commit in Railway deployment metadata.
 
@@ -25,3 +25,9 @@ Existing service and subscription, one replica, no volume, idle sleeping enabled
 Record the verified deployment ID and commit with `railway deployment list --project 996bc181-df20-435a-b5f4-685e2c0fee0b -e production -s baste-site --json`. Failed builds should not displace a healthy deployment. To return to an earlier verified image use `railway api 'mutation { deploymentRollback(id: "VERIFIED_DEPLOYMENT_ID") }'`, then verify deployment status and HTTPS again. The latest good image can be redeployed with `railway deployment redeploy --project 996bc181-df20-435a-b5f4-685e2c0fee0b -e production -s baste-site --yes --json`. Before the first successful release there is no healthy prior Baste deployment to restore.
 
 Hosted Studio requires a separate release: provider-approved origin, same-origin API proxy, protected assets, suitable session storage and real-account verification. Do not enable hosted signup, payment, or generation without that review and authorized credential configuration. Preserve local development work when integrating these production files.
+
+## Current public design
+
+The public release includes the current atelier homepage, pattern book, material lab, documentation and browser Studio demo. When `/api/health` is unavailable, Studio uses bundled sample personas and keeps edits in the current tab. Generation is simulated; saved projects, sign-in, checkout, provider secrets and real generation require a separately reviewed server deployment. No API server or private project stores are included in the static image.
+
+The atelier sources were curated from the local working checkout; backend, private stores, environment files, generated build files and Storybook output were excluded. Install instructions point to this repository because the npm name `baste` belongs to an unrelated package.

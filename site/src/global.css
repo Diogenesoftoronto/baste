@@ -1,113 +1,352 @@
 @layer reset, base, tokens, recipes, utilities;
 
+/* ─── Atelier ground ────────────────────────────────────────────────────
+   Pattern paper: warm stock with a faint drafting grid. Everything else in
+   the house style is ink, basting thread and tailor's chalk. */
 @layer base {
+  :root {
+    --paper: #F1ECE2;
+    --ink: #1C1B19;
+    --thread: #D2402A;
+    --chalk: #2F55A4;
+    --rule: #CFC7B8;
+    --grid: rgba(28, 27, 25, 0.045);
+    --ease-thread: cubic-bezier(0.22, 1, 0.36, 1);
+    color-scheme: light;
+  }
+
+  /* The paper + grid here is the no-WebGL fallback; the live linen
+     backdrop (components/fx/fabric) paints over it. */
   html {
     scroll-behavior: smooth;
-    background: #0A0A12;
-    color: #F5F5F2;
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Instrument Sans', 'Helvetica Neue', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    position: relative;
-    background:
-      radial-gradient(circle at 12% 18%, rgba(138, 0, 255, 0.18) 0%, transparent 45%),
-      radial-gradient(circle at 88% 82%, rgba(255, 0, 184, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(198, 255, 0, 0.05) 0%, transparent 60%),
-      #0A0A12;
+    background: transparent;
   }
 
-  /* Layered atmosphere — splatter frame fixed behind content */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: url("/bg-frame.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.35;
-    mix-blend-mode: screen;
-  }
-
-  body > * {
-    position: relative;
-    z-index: 1;
+  /* ─── Cursor: a needle; a dressmaker's pin over anything you can press ── */
+  @media (pointer: fine) {
+    html[data-cursor="needle"],
+    html[data-cursor="needle"] body {
+      cursor: url("/assets/cursors/needle.svg") 3 29, auto;
+    }
+    html[data-cursor="needle"] :is(a, button, [role="tab"], select, summary, label[for], input[type="checkbox"], input[type="radio"], input[type="range"]) {
+      cursor: url("/assets/cursors/pin.svg") 4 4, pointer;
+    }
+    html[data-cursor="needle"] :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, [contenteditable]) {
+      cursor: text;
+    }
+    html[data-cursor="needle"] :is(button:disabled, [aria-disabled="true"]) {
+      cursor: not-allowed;
+    }
   }
 
   ::selection {
-    background: rgba(198, 255, 0, 0.4);
-    color: #0A0A0A;
+    background: #F0C534;
+    color: var(--ink);
   }
 
-  /* TMNT spray-paint scrollbar */
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: #15101F; }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #C6FF00 0%, #8A00FF 100%);
-    border-radius: 6px;
+  :focus-visible {
+    outline: 2px solid var(--chalk);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
-  .baste-graffiti {
-    font-family: 'Bowlby One', 'Space Grotesk', sans-serif;
-    letter-spacing: 0.02em;
+  a { color: inherit; }
+
+  /* Didone display face: tighten at size, let the optical axis do its work */
+  .display {
+    font-family: 'Bodoni Moda', 'Didot', Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
   }
 
-  .baste-drip-text {
-    background: linear-gradient(180deg, #C6FF00 0%, #7BFF36 60%, #00E676 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 28px rgba(198, 255, 0, 0.35);
+  .label {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  .baste-purple-glow {
-    box-shadow:
-      0 0 0 2px #0A0A0A,
-      0 0 0 4px #8A00FF,
-      0 0 24px rgba(138, 0, 255, 0.6);
-  }
-
-  /* Reusable layered-bg utility classes */
-  .baste-bg-grid {
-    background-image: url("/bg-grid.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .baste-bg-frame {
-    background-image: url("/bg-frame.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .baste-bg-splatter {
-    background-image: url("/bg-splatter.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  /* Drop these onto a relatively-positioned container as a layer */
-  .baste-bg-layer {
+  .skip-link {
     position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.55;
-    mix-blend-mode: screen;
+    left: 12px;
+    top: -60px;
+    z-index: 100;
+    padding: 8px 14px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .skip-link:focus { top: 12px; }
+}
+
+/* ─── Basting stitch — the signature mark ───────────────────────────────
+   Long loose red stitches. Used for rules, outlines and "sewn-in" reveals. */
+@layer base {
+  .stitch-rule {
+    height: 2px;
+    border: 0;
+    background-image: linear-gradient(90deg, var(--thread) 0 12px, transparent 12px 20px);
+    background-size: 20px 2px;
+    background-repeat: repeat-x;
+  }
+  .stitch-rule--chalk {
+    background-image: linear-gradient(90deg, var(--chalk) 0 4px, transparent 4px 9px);
+    background-size: 9px 1px;
+    height: 1px;
   }
 
-  .baste-noise::before {
+  .stitch-box {
+    position: relative;
+  }
+  .stitch-box::before {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      linear-gradient(90deg, var(--thread) 50%, transparent 0) top / 18px 1.5px repeat-x,
+      linear-gradient(90deg, var(--thread) 50%, transparent 0) bottom / 18px 1.5px repeat-x,
+      linear-gradient(0deg, var(--thread) 50%, transparent 0) left / 1.5px 18px repeat-y,
+      linear-gradient(0deg, var(--thread) 50%, transparent 0) right / 1.5px 18px repeat-y;
+    opacity: 0.9;
+  }
+
+  /* SVG thread that sews itself in when it scrolls into view */
+  .thread-path {
+    fill: none;
+    stroke: var(--thread);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 10 8;
+  }
+  .sew-in {
+    animation: sew-in 1.6s var(--ease-thread) both;
+  }
+  @keyframes sew-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  .rise {
+    animation: rise 0.7s var(--ease-thread) both;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll reveals (components/fx/reveal) — only once JS has opted in */
+  .motion [data-reveal] {
+    opacity: 0;
+    transform: translateY(26px) rotate(var(--reveal-rot, 0deg));
+    transition: opacity 0.9s var(--ease-thread), transform 1.1s var(--ease-thread);
+  }
+  .motion [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+  .motion [data-reveal="sheet"] {
+    transform: translateY(40px) rotate(-1.4deg) scale(0.98);
+    transform-origin: 20% 100%;
+  }
+  .motion [data-reveal="sheet"][data-revealed] { transform: rotate(var(--rest-rot, 0deg)); }
+  [data-depth] { translate: 0 var(--depth-y, 0); will-change: translate; }
+
+  /* Juice: every press squashes a little and springs back past rest */
+  .motion :is(button, a[class], [role="tab"], [role="radio"]):not(:disabled) {
+    transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  }
+  .motion :is(button, [role="tab"], [role="radio"]):not(:disabled):active,
+  .motion a[class]:active {
+    transform: translateY(1px) scale(0.965, 0.94);
+    transition-duration: 60ms;
+  }
+  .motion [data-juice="snip"]:not(:disabled):hover {
+    animation: juice-wobble 0.5s var(--ease-thread);
+  }
+  @keyframes juice-wobble {
+    0% { transform: rotate(0); }
+    30% { transform: rotate(-1.6deg) scale(1.02); }
+    60% { transform: rotate(1deg); }
+    100% { transform: rotate(0); }
+  }
+  /* idle easter egg: a pin drops onto the page and sticks */
+  .idle-pin {
+    position: fixed !important;
+    top: 0;
+    z-index: 9000;
+    animation: pin-drop 0.9s cubic-bezier(0.5, 0, 0.75, 0) both, pin-stick 0.4s 0.9s var(--ease-thread) both;
+  }
+  @keyframes pin-drop {
+    from { transform: translateY(-40px) rotate(-30deg); }
+    to   { transform: translateY(62vh) rotate(8deg); }
+  }
+  @keyframes pin-stick {
+    0%   { transform: translateY(62vh) rotate(8deg) scale(1.15, 0.85); }
+    100% { transform: translateY(62vh) rotate(0deg) scale(1); }
+  }
+  /* view transitions: the outgoing fitting slides off like a sheet */
+  ::view-transition-old(root) { animation: 0.35s var(--ease-thread) both vt-out; }
+  ::view-transition-new(root) { animation: 0.45s var(--ease-thread) both vt-in; }
+  @keyframes vt-out { to { opacity: 0; transform: translateY(-8px); } }
+  @keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+
+  /* Pinking-shears edge: the zig-zag a tailor cuts so cloth won't fray */
+  .pinked {
+    --pink: 9px;
+    -webkit-mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--pink) * 2) 51% repeat-x,
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--pink) * 2) 51% repeat-x;
+    mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--pink) * 2) 51% repeat-x,
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--pink) * 2) 51% repeat-x;
+  }
+
+  /* Dressmaker's pin, pushed through a sheet */
+  .pin-head {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #F38A74, #D2402A 55%, #8E2615);
+    box-shadow: 2px 4px 5px rgba(28, 27, 25, 0.35);
+    z-index: 4;
+  }
+  .pin-head::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    width: 1.5px;
+    height: 16px;
+    background: linear-gradient(#9C978C, #6E6A61);
+    transform: rotate(-28deg);
+    transform-origin: top;
+    z-index: -1;
+  }
+}
+
+/* ─── Fitting — a scope dressed entirely in one persona's tokens ────────
+   Set --f-* custom properties on the element (see lib/fitting.ts). */
+@layer base {
+  .fitting {
+    --f-bg: #fff;
+    --f-surface: #fff;
+    --f-text: #111;
+    --f-muted: #666;
+    --f-border: #ddd;
+    --f-primary: #333;
+    --f-on-primary: #fff;
+    --f-secondary: #555;
+    --f-accent: #777;
+    --f-radius: 8px;
+    --f-radius-lg: 12px;
+    --f-gap: 16px;
+    --f-pad: 20px;
+    --f-heading: inherit;
+    --f-body: inherit;
+    --f-mono: monospace;
+    --f-ease: ease;
+    --f-dur: 200ms;
+    --f-border-style: solid;
+    position: relative;
+    isolation: isolate;
+    background: var(--f-bg);
+    color: var(--f-text);
+    font-family: var(--f-body);
+    transition:
+      background-color 600ms var(--ease-thread),
+      color 600ms var(--ease-thread);
+  }
+  .fitting * {
+    transition-property: background-color, color, border-color, border-radius, padding, gap;
+    transition-duration: 600ms;
+    transition-timing-function: var(--ease-thread);
+  }
+  .fitting[data-texture="noisy"]::after,
+  .fitting[data-texture="grainy"]::after,
+  .fitting[data-texture="textured"]::after {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 5;
     pointer-events: none;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+  }
+  .fitting[data-texture="grainy"]::after { opacity: 0.5; }
+  .fitting[data-texture="textured"]::after { opacity: 0.22; }
+
+  .fitting .f-heading { font-family: var(--f-heading); }
+  .fitting .f-mono { font-family: var(--f-mono); }
+  .fitting .f-surface {
+    background: var(--f-surface);
+    border: 1px var(--f-border-style) var(--f-border);
+    border-radius: var(--f-radius-lg);
+  }
+  .fitting .f-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: calc(var(--f-gap) * 0.6) calc(var(--f-gap) * 1.2);
+    border-radius: var(--f-radius);
+    background: var(--f-primary);
+    color: var(--f-on-primary);
+    font-weight: 600;
+    border: 0;
+    cursor: pointer;
+    transition: transform var(--f-dur) var(--f-ease), filter var(--f-dur) var(--f-ease);
+  }
+  .fitting .f-btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  .fitting .f-btn--ghost {
+    background: transparent;
+    color: var(--f-text);
+    border: 1px var(--f-border-style) var(--f-border);
+  }
+  .fitting .f-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    border: 1px var(--f-border-style) var(--f-border);
+    color: var(--f-muted);
+    background: color-mix(in oklab, var(--f-surface) 70%, var(--f-accent) 12%);
+    white-space: nowrap;
+  }
+}
+
+/* ─── Reduced motion: keep the craft, drop the movement ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

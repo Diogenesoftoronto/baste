@@ -1,97 +1,116 @@
 import { component$ } from "@builder.io/qwik";
+import { useLocation } from "@builder.io/qwik-city";
 import { css } from "styled-system/css";
-import { flex, hstack } from "styled-system/patterns";
 import { BasteLogo } from "./baste-logo";
+import { SoundToggle } from "~/components/fx/juice";
+
+export const GITHUB_URL = "https://github.com/Diogenesoftoronto/baste";
+
+const LINKS = [
+  { label: "Fitting room", href: "/#fitting" },
+  { label: "Method", href: "/#method" },
+  { label: "Wardrobe", href: "/#wardrobe" },
+  { label: "Pattern book", href: "/specimen" },
+  { label: "Materials", href: "/materials/" },
+  { label: "Docs", href: "/docs/" },
+];
 
 export const Nav = component$(() => {
+  const loc = useLocation();
+  const path = loc.url.pathname;
   return (
-    <nav
-      class={css({
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-        bg: "rgba(10,10,18,0.85)",
-        backdropBlur: "xl",
-        borderBottom: "2px solid",
-        borderColor: "electric-purple",
-        boxShadow: "0 4px 0 rgba(138,0,255,0.3)",
-      })}
-    >
-      <div
-        class={flex({
-          maxW: "7xl",
-          mx: "auto",
-          px: 6,
-          h: 16,
-          align: "center",
-          justify: "space-between",
+    <>
+      <a href="#main" class="skip-link">Skip to content</a>
+      <header
+        class={css({
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          bg: "rgba(241,236,226,0.88)",
+          backdropFilter: "saturate(1.4) blur(10px)",
+          borderBottom: "1px solid token(colors.rule)",
         })}
       >
-        <a href="/" class={hstack({ gap: 2, textDecoration: "none" })}>
-          <BasteLogo size={40} withWord />
-        </a>
-
-        <div
-          class={hstack({
-            gap: 8,
-            fontSize: "sm",
-            display: { base: "none", md: "flex" },
+        <nav
+          aria-label="Primary"
+          class={css({
+            maxW: "1240px",
+            mx: "auto",
+            px: { base: 4, md: 8 },
+            h: "60px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 6,
           })}
         >
-          {[
-            { label: "Personas", href: "/#personas" },
-            { label: "How It Works", href: "/#how-it-works" },
-            { label: "Install", href: "/#installation" },
-            { label: "Studio", href: "/gui" },
-            { label: "GitHub", href: "https://github.com/Diogenesoftoronto/baste" },
-          ].map((link) => (
+          <a href="/" aria-label="Baste home" class={css({ textDecoration: "none" })}>
+            <BasteLogo size={26} />
+          </a>
+
+          <div class={css({ display: { base: "none", md: "flex" }, alignItems: "center", gap: 5 })}>
+            {LINKS.map((l) => {
+              const active = l.href.replace(/\/$/, "") === path.replace(/\/$/, "") || (l.href.startsWith("/specimen") && path.startsWith("/specimen"));
+              return (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  aria-current={active ? "page" : undefined}
+                  class={css({
+                    fontSize: "14px",
+                    color: "ink-soft",
+                    textDecoration: "none",
+                    py: 1,
+                    backgroundImage: "linear-gradient(90deg, token(colors.thread) 0 6px, transparent 6px 10px)",
+                    backgroundSize: "0 1.5px",
+                    backgroundRepeat: "repeat-x",
+                    backgroundPosition: "0 100%",
+                    transition: "background-size 0.35s token(easings.thread), color 0.2s",
+                    _hover: { color: "ink", backgroundSize: "10px 1.5px" },
+                    "&[aria-current=page]": { color: "ink", backgroundSize: "10px 1.5px" },
+                  })}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
             <a
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith("http") ? "_blank" : undefined}
-              class={css({
-                color: "text-muted",
-                fontWeight: "semibold",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                _hover: { color: "acid-lime", textShadow: "0 0 12px rgba(198,255,0,0.7)" },
-                transition: "all 0.2s",
-              })}
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener"
+              class={css({ fontSize: "14px", color: "ink-soft", textDecoration: "none", _hover: { color: "ink" } })}
             >
-              {link.label}
+              GitHub
             </a>
-          ))}
+          </div>
+
+          <div class={css({ display: "flex", alignItems: "center", gap: 2 })}>
+          <SoundToggle />
           <a
             href="/gui"
+            data-juice="snip"
             class={css({
-              px: 5,
-              py: 2,
-              rounded: "lg",
-              bg: "acid-lime",
-              color: "ink-black",
-              fontSize: "sm",
-              fontWeight: "bold",
-              fontFamily: "graffiti",
-              textTransform: "uppercase",
-              letterSpacing: "0.04em",
-              border: "2px solid",
-              borderColor: "ink-black",
-              boxShadow: "drip",
-              transition: "all 0.15s",
-              _hover: {
-                bg: "neon-fuchsia",
-                color: "off-white",
-                transform: "translate(-2px,-2px)",
-                boxShadow: "6px 8px 0 #0A0A0A",
-              },
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 2,
+              px: 4,
+              h: "36px",
+              rounded: "base",
+              bg: "ink",
+              color: "paper",
+              fontSize: "14px",
+              fontWeight: 600,
+              textDecoration: "none",
+              transition: "background 0.2s",
+              _hover: { bg: "thread-ink" },
             })}
           >
-            Start Co-creating »
+            Open Studio
+            <span aria-hidden="true">→</span>
           </a>
-        </div>
-      </div>
-    </nav>
+          </div>
+        </nav>
+      </header>
+    </>
   );
 });
