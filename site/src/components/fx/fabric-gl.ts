@@ -398,15 +398,21 @@ export function mountFabric(
   let visible = true;
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2) * quality;
-    w = Math.max(1, Math.round(rect.width * dpr));
-    h = Math.max(1, Math.round(rect.height * dpr));
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-    }
+    const nextDpr = Math.min(window.devicePixelRatio || 1, 2) * quality;
+    const nextW = Math.max(1, Math.round(rect.width * nextDpr));
+    const nextH = Math.max(1, Math.round(rect.height * nextDpr));
+    if (w === nextW && h === nextH && dpr === nextDpr) return;
+    dpr = nextDpr;
+    w = nextW;
+    h = nextH;
+    if (canvas.width !== w) canvas.width = w;
+    if (canvas.height !== h) canvas.height = h;
     gl.viewport(0, 0, w, h);
-    needsFrame = true;
+    // Changing the backing size clears this opaque WebGL buffer to black.
+    // ResizeObserver runs after rAF and before paint: deferring the redraw to
+    // rAF exposes that cleared buffer for a frame (also on mobile chrome resize).
+    draw(performance.now());
+    needsFrame = false;
     kick();
   };
 
@@ -460,6 +466,8 @@ export function mountFabric(
   canvas.addEventListener("pointerdown", onDown);
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
+  // A monitor/zoom DPR change can leave the CSS box unchanged.
+  window.addEventListener("resize", resize);
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     if (visible) kick();
@@ -481,7 +489,9 @@ export function mountFabric(
 
   const ease = (a: number, b: number, k: number) => a + (b - a) * k;
   const draw = (now: number) => {
-    const dt = Math.min(0.05, (now - last) / 1000);
+    // A resize draw uses performance.now(); an already queued rAF can carry
+    // an earlier frame timestamp. Never run the easing/motion clock backwards.
+    const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
     const k = reduced || !motion ? 1 : 1 - Math.exp(-dt * 6);
     if (active()) elapsed += dt * speed;
@@ -630,6 +640,7 @@ export function mountFabric(
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", resize);
       media.removeEventListener("change", onPreference);
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("webglcontextlost", onLost);
