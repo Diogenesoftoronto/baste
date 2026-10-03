@@ -1,0 +1,9 @@
+hey is there a documentnation page?
+
+---
+
+are the dependencies all updataed?
+
+---
+
+are there devenv tasks for running things? is there devenv up? is there integration with notorganic for profile creation and sign in, models and payment?
