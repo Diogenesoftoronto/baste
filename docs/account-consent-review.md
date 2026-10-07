@@ -1,6 +1,6 @@
 # Baste account age and acceptance checkpoint
 
-Prepared for owner/code review on 2 October 2026. Isolated, unpublished implementation. No effective policy adoption, remote push, credentials change, real account enrollment, payment, age-verification submission or deployment occurred.
+Prepared for owner/code review on 2 October 2026. That implementation was isolated and unpublished. The owner authorized deployment on 7 October 2026; see release-2026-10-07.md for integration and release evidence. No effective policy adoption, credentials change, real account enrollment, payment or age-verification submission is part of this release.
 
 ## Result and current deployment
 
