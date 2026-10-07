@@ -16,7 +16,9 @@ COPY site/ ./
 RUN npm run build:production
 
 FROM node:22-alpine
-RUN apk add --no-cache nginx && mkdir -p /run/nginx /app/data
+RUN apk add --no-cache nginx && mkdir -p /run/nginx /app/data \
+    && sed -i 's/worker_processes  auto;/worker_processes  2;/' /etc/nginx/nginx.conf
+COPY package.json /app/package.json
 WORKDIR /app/data
 # Only the account manager, built-in Node modules and policy copies are shipped.
 COPY --from=account-builder /app/dist/src/notorganic/server.js /app/dist/src/notorganic/consent.js /app/dist/src/notorganic/dpop.js /app/dist/src/notorganic/
