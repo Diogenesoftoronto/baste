@@ -1,6 +1,6 @@
 # Conditions d’utilisation de Baste
 
-Les présentes conditions proposées visent le site public de Baste et la démonstration de Studio dans le navigateur à baste.love. Elles expliquent la démonstration, le logiciel local, votre contenu et les limites des outils de conception par IA. Préparées pour examen par le propriétaire le 2 octobre 2026; non publiées et non en vigueur. Lire ou essayer ce projet ne vaut pas acceptation d’un nouvel accord.
+Les présentes conditions proposées visent le site public de Baste et la démonstration de Studio dans le navigateur à baste.love. Elles expliquent la démonstration, le logiciel local, votre contenu et les limites des outils de conception par IA. Préparées pour examen par le propriétaire le 2 octobre 2026; publication examinée le 7 octobre 2026. Publiées pour examen, non en vigueur. Lire ou essayer ce projet ne vaut pas acceptation d’un nouvel accord.
 
 ## Exploitant et portée
 

@@ -1,6 +1,6 @@
 # Baste Terms of Service
 
-These proposed terms cover the Baste public website and browser Studio demo at baste.love. They explain the demo, local software, your content and the limits of AI design tools. Prepared for owner review on 2 October 2026; unpublished and not effective. Reading or trying this draft does not accept a new agreement.
+These proposed terms cover the Baste public website and browser Studio demo at baste.love. They explain the demo, local software, your content and the limits of AI design tools. Prepared for owner review on 2 October 2026; release reviewed on 7 October 2026. Published for review, not effective. Reading or trying this draft does not accept a new agreement.
 
 ## Operator and scope
 
