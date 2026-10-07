@@ -47,7 +47,7 @@ export function guardOrigin(req: IncomingMessage, mutation: boolean): void {
 }
 export class AccountManager {
   private sessions = new Map<string, Session>();
-  constructor(private fetcher: typeof fetch = (...args) => fetch(...args), private consent = new ConsentService(), private authorizationScopes = SCOPE) {}
+  constructor(private fetcher: typeof fetch = (...args) => fetch(...args), private consent = new ConsentService(), private authorizationScopes = SCOPE, private runtimeCapabilities?: Record<string, boolean>) {}
   private requireConsent(session: Session) {
     if (!session.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
     if (!this.consent.allowed(session.profile.did)) throw new AccountError(428, "Complete the current Baste age and account confirmations before continuing.", "baste_consent_required");
@@ -160,7 +160,7 @@ export class AccountManager {
       if (route === "status" && req.method === "GET") {
         let reason: string | undefined;
         if (session.profile) { try { await this.active(session); } catch (e) { session.profile = undefined; reason = e instanceof AccountError ? e.message : "Account service is unavailable."; } }
-        send(res, { enabled: accountEnabled(), configured: accountEnabled(), authenticated: !!session.profile, csrfToken: session.csrf, consent: this.consent.status(session.profile?.did), accessGranted: !!session.profile && this.consent.allowed(session.profile.did), profile: session.profile ?? null, manageAccountUrl: settings().manage, capabilities: { profileEdit: false, imageGeneration: true, videoGeneration: false, serverConfigEdit: !accountEnabled(), externalFileEdit: !accountEnabled(), serverCropSave: !accountEnabled() }, ...(reason ? { reason } : {}) }); return true;
+        send(res, { enabled: accountEnabled(), configured: accountEnabled(), authenticated: !!session.profile, csrfToken: session.csrf, consent: this.consent.status(session.profile?.did), accessGranted: !!session.profile && this.consent.allowed(session.profile.did), profile: session.profile ?? null, manageAccountUrl: settings().manage, capabilities: { profileEdit: false, imageGeneration: true, videoGeneration: false, serverConfigEdit: !accountEnabled(), externalFileEdit: !accountEnabled(), serverCropSave: !accountEnabled(), ...this.runtimeCapabilities }, ...(reason ? { reason } : {}) }); return true;
       }
       if (!accountEnabled()) throw new AccountError(503, "Not Organic is not enabled on this Baste server.");
       if (route === "login" && req.method === "POST") {

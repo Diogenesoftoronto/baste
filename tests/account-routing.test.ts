@@ -20,7 +20,7 @@ test('account-only runtime serves policies and keeps review login, data and fore
   const headers={Host:'localhost:3456'};
   try {
     const status=await fetch(base+'/api/notorganic/status',{headers});assert.equal(status.status,200);
-    const s=await status.json();assert.equal(s.authenticated,false);assert.equal(s.accessGranted,false);assert.equal(s.consent.canAccept,false);
+    const s=await status.json();assert.equal(s.authenticated,false);assert.equal(s.accessGranted,false);assert.equal(s.consent.canAccept,false);assert.equal(s.capabilities.imageGeneration,false);assert.equal(s.capabilities.serverConfigEdit,false);
     const cookie=status.headers.get('set-cookie')!.split(';')[0];assert.match(cookie,/^baste_session=/);
     const policy=await fetch(base+'/api/notorganic/consent/policy',{headers});assert.equal(policy.status,200);
     const p=await policy.json();assert.equal(p.policy.status,'review');assert.equal(p.policy.mode,null);assert.ok(p.copies.terms.fr.sections.length);assert.ok(p.copies.privacy.en.sections.length);
