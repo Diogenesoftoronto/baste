@@ -1,6 +1,6 @@
 # Baste account routing handoff — 7 October 2026
 
-Prepared on `prepare/account-routing-oct7`, based on the deployed legal release `9883d942f5a5d333336203163ca322459bf12d4c`. Local source/preparation only; active Dockerfile, railway.toml, live routes and policy manifest are unchanged. Do not enable a backend until coordinating with provider/admin thread `01a0ff85-5bdd-74e1-a94d-617d907bf02f`. This execution context does not expose cloud-thread messaging; the parent must relay the request below.
+Prepared on `prepare/account-routing-oct7`, based on the deployed legal release `9883d942f5a5d333336203163ca322459bf12d4c`. Initially prepared separately from production; follow-up selects this runtime for the existing service while the policy manifest remains review-only. The exact deployed commit/results are reported separately. The parent relayed coordination on 7 October: provider/admin deployment finished at `cfa23128c99b27b9231f2167aec3c52a22c1165a`, with checkout disabled and webhook 503. The owner then explicitly instructed “get the account backend shipped.” Baste-only runtime deployment may proceed without provider mutations; the registration/scope verification request below remains for that thread. This execution context does not expose cloud-thread messaging directly.
 
 ## Technical finding
 
