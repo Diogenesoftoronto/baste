@@ -1,0 +1,32 @@
+# syntax=docker/dockerfile:1
+FROM node:22-alpine AS account-builder
+WORKDIR /app
+COPY package*.json tsconfig.json ./
+RUN npm ci --no-audit --no-fund
+COPY src ./src
+COPY site/src/lib/account-policy.json ./site/src/lib/account-policy.json
+COPY site/src/components/legal/policies.json ./site/src/components/legal/policies.json
+RUN npm run build
+
+FROM node:22-alpine AS site-builder
+WORKDIR /app/site
+COPY site/package*.json ./
+RUN npm ci --no-audit --no-fund
+COPY site/ ./
+RUN npm run build:production
+
+FROM node:22-alpine
+RUN apk add --no-cache nginx && mkdir -p /run/nginx /app/data
+WORKDIR /app/data
+# Only the account manager, built-in Node modules and policy copies are shipped.
+COPY --from=account-builder /app/dist/src/notorganic/server.js /app/dist/src/notorganic/consent.js /app/dist/src/notorganic/dpop.js /app/dist/src/notorganic/
+COPY --from=account-builder /app/dist/site/src /app/dist/site/src
+COPY --from=site-builder /app/site/dist /usr/share/nginx/html
+COPY deployment/nginx.account.conf /etc/nginx/http.d/default.conf
+COPY deployment/account-api.mjs deployment/start-account-site.sh /app/deployment/
+ENV BASTE_PUBLIC_ORIGIN=https://baste.love NOTORGANIC_ENABLED=true BASTE_CONSENT_PREVIEW=false
+# In-memory sessions intentionally require sign-in again after restart; persistent
+# consent receipts need an approved durable mount before policy adoption.
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=3s CMD node -e "fetch('http://127.0.0.1/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["sh", "/app/deployment/start-account-site.sh"]

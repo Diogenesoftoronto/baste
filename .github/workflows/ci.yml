@@ -39,3 +39,21 @@ jobs:
         with:
           name: baste-public-site
           path: site/dist
+
+  account-container:
+    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/prepare/account-routing-')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f deployment/Dockerfile.account -t baste-account-review .
+      - run: docker run -d --name baste-account-review --network none baste-account-review
+      - name: Verify container without provider network access
+        run: |
+          for attempt in $(seq 1 30); do
+            if docker exec baste-account-review node -e "fetch('http://127.0.0.1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"; then break; fi
+            sleep 1
+          done
+          docker cp deployment/check-account-container.mjs baste-account-review:/app/check-account-container.mjs
+          docker exec baste-account-review node /app/check-account-container.mjs
+      - if: always()
+        run: docker rm -f baste-account-review
