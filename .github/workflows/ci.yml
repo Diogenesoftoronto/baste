@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: cmp Dockerfile deployment/Dockerfile.account
       - run: docker build -f deployment/Dockerfile.account -t baste-account-review .
       - run: docker run -d --name baste-account-review --network none baste-account-review
       - name: Verify container without provider network access

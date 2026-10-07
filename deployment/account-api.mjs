@@ -6,7 +6,7 @@ import { AccountManager, publicOrigin } from '../dist/src/notorganic/server.js';
 
 // This entry point intentionally imports no local GUI/project/filesystem API.
 const routes = new Set(['GET status', 'GET consent/policy', 'POST login', 'GET callback', 'POST consent', 'POST logout']);
-export function createAccountAPIServer(manager = new AccountManager(undefined, undefined, 'wallet:read'), port = 3456) {
+export function createAccountAPIServer(manager = new AccountManager(undefined, undefined, 'wallet:read', { imageGeneration:false, videoGeneration:false, profileEdit:false, serverConfigEdit:false, externalFileEdit:false, serverCropSave:false }), port = 3456) {
   const allowedHosts = new Set([new URL(publicOrigin()).host, `127.0.0.1:${port}`, `localhost:${port}`]);
   return createServer(async (req, res) => {
     res.setHeader('Cache-Control', 'no-store');
