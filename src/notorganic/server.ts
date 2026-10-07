@@ -47,7 +47,7 @@ export function guardOrigin(req: IncomingMessage, mutation: boolean): void {
 }
 export class AccountManager {
   private sessions = new Map<string, Session>();
-  constructor(private fetcher: typeof fetch = (...args) => fetch(...args), private consent = new ConsentService()) {}
+  constructor(private fetcher: typeof fetch = (...args) => fetch(...args), private consent = new ConsentService(), private authorizationScopes = SCOPE) {}
   private requireConsent(session: Session) {
     if (!session.profile) throw new AccountError(401, "Sign in to Not Organic to continue.");
     if (!this.consent.allowed(session.profile.did)) throw new AccountError(428, "Complete the current Baste age and account confirmations before continuing.", "baste_consent_required");
@@ -170,7 +170,7 @@ export class AccountManager {
         const verifier = random(); const state = random();
         session.transaction = { verifier, state, created: Date.now(), locale };
         const config = settings(); const authorization = new URL(config.authorization);
-        for (const [key, value] of Object.entries({ client_id: config.origin, redirect_uri: config.redirect, response_type: "code", code_challenge_method: "S256", code_challenge: hash(verifier), scope: SCOPE, state, product: "baste", prompt: "select_account" })) authorization.searchParams.set(key, value);
+        for (const [key, value] of Object.entries({ client_id: config.origin, redirect_uri: config.redirect, response_type: "code", code_challenge_method: "S256", code_challenge: hash(verifier), scope: this.authorizationScopes, state, product: "baste", prompt: "select_account" })) authorization.searchParams.set(key, value);
         send(res, { url: authorization.toString() }); return true;
       }
       if (route === "callback" && req.method === "GET") {
