@@ -16,6 +16,7 @@ export const AccountSection = component$(() => {
   const busy = useSignal(false);
   const account = s.account;
   const status = account.status;
+  const backendAvailable = s.status === 'live' || status?.configured === true;
   const balance = availableBalance(account.wallet);
   const checkout = account.wallet?.checkout;
 
@@ -46,10 +47,10 @@ export const AccountSection = component$(() => {
     <section class={panel} aria-labelledby="st-account" aria-busy={account.loading || busy.value}>
       <div class={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 3, flexWrap: 'wrap' })}>
         <h2 id="st-account" class={panelTitle}>{t.title}</h2>
-        <button class={btn('ghost')} disabled={s.status !== 'live' || account.loading || busy.value}
+        <button class={btn('ghost')} disabled={!backendAvailable || account.loading || busy.value}
           onClick$={() => refreshAccount(s)}>{t.refresh}</button>
       </div>
-      {s.status !== 'live' ? <><p class={hint}>{t.demo}</p><p class={hint}>{t.minimum}</p></>
+      {!backendAvailable ? <><p class={hint}>{t.demo}</p><p class={hint}>{t.minimum}</p></>
         : account.loading ? <p class={hint} role="status">{t.checking}</p>
         : account.error ? <p class={hint} role="alert">{t.unavailable}</p>
         : !status?.configured ? <p class={hint}>{t.notConfigured} <a href={localeHref('/docs/#notorganic', locale.value)}>{t.setup}</a>.</p>

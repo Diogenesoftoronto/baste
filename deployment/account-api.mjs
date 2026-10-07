@@ -13,8 +13,8 @@ export function createAccountAPIServer(manager = new AccountManager(undefined, u
     res.setHeader('X-Content-Type-Options', 'nosniff');
     if (!allowedHosts.has(req.headers.host ?? '')) { res.writeHead(403); res.end('Invalid host'); return; }
     const url = new URL(req.url ?? '/', publicOrigin());
-    if (req.method === 'GET' && url.pathname === '/health') {
-      res.writeHead(200, {'Content-Type':'application/json'}); res.end('{"status":"ok","service":"baste-account-api"}'); return;
+    if (req.method === 'GET' && ['/health','/api/health'].includes(url.pathname)) {
+      res.writeHead(200, {'Content-Type':'application/json'}); res.end('{"status":"ok","version":"0.2.0","service":"baste-account-api","mode":"account-only"}'); return;
     }
     const prefix = '/api/notorganic/';
     if (!url.pathname.startsWith(prefix) || !routes.has(`${req.method} ${url.pathname.slice(prefix.length)}`)) {

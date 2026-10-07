@@ -29,6 +29,7 @@ test('account-only runtime serves policies and keeps review login, data and fore
     const crossOrigin=await fetch(base+'/api/notorganic/login',{method:'POST',headers:{...headers,Origin:'https://attacker.invalid',Cookie:cookie,'X-Baste-CSRF':s.csrfToken},body:'{}'});assert.equal(crossOrigin.status,403);
     for(const path of ['/api/personas','/api/projects','/api/config','/api/notorganic/wallet','/api/notorganic/models','/api/notorganic/checkout','/gui/','/.env'])assert.equal((await fetch(base+path,{headers})).status,404,path);
     assert.equal((await fetch(base+'/health',{headers})).status,200);
+    const health=await fetch(base+'/api/health',{headers});assert.equal(health.status,200);assert.equal((await health.json()).mode,'account-only');
     assert.equal((await fetch(base+'/api/notorganic/status',{headers:{Host:'attacker.invalid'}})).status,403);
   } finally {server.closeAllConnections();await new Promise<void>(r=>server.close(()=>r()));}
 });
