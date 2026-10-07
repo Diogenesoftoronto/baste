@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {request} from 'node:http';
 const get = path => new Promise((resolve,reject)=>{const req=request('http://127.0.0.1'+path,{headers:{Host:'baste.love'}},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>resolve(new Response(Buffer.concat(chunks),{status:res.statusCode})));});req.on('error',reject);req.end();});
 const origin='http://127.0.0.1';
-for (const path of ['/health','/terms/','/privacy/']) assert.equal((await get(path)).status,200,path);
+for (const path of ['/health','/api/health','/terms/','/privacy/']) assert.equal((await get(path)).status,200,path);
 const status=await get('/api/notorganic/status');
 assert.equal(status.status,200);const body=await status.json();assert.equal(body.consent.canAccept,false);assert.equal(body.authenticated,false);
 const policy=await get('/api/notorganic/consent/policy');assert.equal(policy.status,200);assert.ok((await policy.json()).copies.terms.fr.sections.length);

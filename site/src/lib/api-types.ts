@@ -426,6 +426,6 @@ export interface SuccessResult { success: true }
 export interface PersonaWriteResult extends SuccessResult { id: string }
 export interface GenerateResponse { jobId: string; status: 'started' }
 export interface RankResult extends SuccessResult { total: number }
-export interface HealthResult { status: 'ok'; version: string }
+export interface HealthResult { status: 'ok'; version: string; mode?: 'account-only' }
 export interface OpenPencilFileResult { path: string; watching: boolean }
 export interface OpenPencilWatchResult { watching: boolean; path?: string }
