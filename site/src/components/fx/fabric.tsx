@@ -13,6 +13,7 @@ import {
 } from "~/lib/materials";
 import { css } from "styled-system/css";
 import type { DesignTokens } from "~/lib/api-types";
+import { DraftingGrid } from "./drafting-grid";
 import {
   LINEN,
   mountFabric,
@@ -145,6 +146,7 @@ export const FabricBackdrop = component$(() => {
         inset: 0,
         zIndex: -1,
         pointerEvents: "none",
+        overflow: "hidden",
       })}
     >
       <Fabric
@@ -175,19 +177,7 @@ export const FabricBackdrop = component$(() => {
           }}
         />
       )}
-      {/* drafting grid printed on the cloth, fading toward the edges */}
-      <div
-        class={css({ position: "absolute", inset: 0 })}
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(28,27,25,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(28,27,25,0.05) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-          maskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 90%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 90%)",
-        }}
-      />
+      <DraftingGrid />
     </div>
   );
 });
