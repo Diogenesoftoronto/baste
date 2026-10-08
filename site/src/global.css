@@ -15,18 +15,13 @@
     color-scheme: light;
   }
 
-  /* The paper + grid here is the no-WebGL fallback; the live linen
-     backdrop (components/fx/fabric) paints over it. */
+  /* Paper remains without WebGL; the SVG drafting grid in FabricBackdrop
+     renders independently of the live linen. */
   html {
     scroll-behavior: smooth;
     color: var(--ink);
     -webkit-text-size-adjust: 100%;
     background-color: var(--paper);
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 32px 32px;
-    background-position: -1px -1px;
   }
 
   body {
