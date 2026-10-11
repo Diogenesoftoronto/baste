@@ -1,0 +1,17 @@
+.image-detail-trigger { display: block; padding: 0; border: 0; background: transparent; cursor: zoom-in; max-width: 100%; border-radius: 6px; }
+.image-detail-trigger:focus-visible { outline: 2px solid #2F55A4; outline-offset: 3px; }
+.image-detail-panel {
+  position: fixed; inset: auto; margin: 0; padding: 12px; width: min(460px, calc(100vw - 24px));
+  box-sizing: border-box; overflow: visible; border: 1px solid #CFC7B8; border-radius: 12px;
+  background: #FBF9F4; color: #1C1B19; font: 13px/1.4 "IBM Plex Sans", sans-serif;
+}
+.image-detail-panel:popover-open { animation: detail-arrive 160ms ease-out; }
+.image-detail-blob { position: absolute; top: -13px; left: calc(50% - 25px); width: 50px; height: 25px; border-radius: 56% 44% 38% 62% / 65% 70% 30% 35%; background: #FBF9F4; border-top: 1px solid #CFC7B8; pointer-events: none; }
+/* Override thumbnail treatments inherited from the icon rail and garment. */
+.image-detail-panel img.image-detail-full { position: static; display: block; width: 100%; height: min(300px, 55dvh); max-width: 100%; padding: 12px; box-sizing: border-box; object-fit: contain; aspect-ratio: auto; border-radius: 6px; background: #fff; box-shadow: none; transform: none; filter: none; }
+.image-detail-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 6px; }
+.image-detail-caption button { flex-shrink: 0; width: 36px; height: 36px; border: 0; background: transparent; color: inherit; font-size: 24px; cursor: pointer; border-radius: 6px; }
+.image-detail-caption button:focus-visible { outline: 2px solid #2F55A4; }
+.fitting-archive .image-detail-trigger { width: 100%; height: 100%; }
+@keyframes detail-arrive { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .image-detail-panel:popover-open { animation: none; } }

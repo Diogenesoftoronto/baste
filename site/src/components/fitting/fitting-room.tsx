@@ -5,6 +5,7 @@ import { css } from "styled-system/css";
 import type { DesignTokens, PersonaRecord } from "~/lib/api-types";
 import { primaryFamily } from "~/lib/fonts";
 import { Fabric, lookFromTokens } from "~/components/fx/fabric";
+import { FittingGallery } from "./fitting-gallery";
 import { Garment } from "./garment";
 
 interface FittingRoomProps {
@@ -188,6 +189,9 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
             </div>
           ))}
         </dl>
+      </div>
+      <div onPointerOver$={() => { touched.value = true; }} onFocusIn$={() => { touched.value = true; }}>
+        <FittingGallery key={persona.id} personaId={persona.id} name={personaText(locale.value, persona, persona.name)} />
       </div>
     </div>
   );
