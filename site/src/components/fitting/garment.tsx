@@ -3,6 +3,7 @@ import { text, personaText } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import type { DesignTokens, Persona } from "~/lib/api-types";
+import { fittingIcons } from "~/lib/fitting-icons";
 import { fittingVars } from "~/lib/fitting";
 
 interface GarmentProps {
@@ -91,7 +92,7 @@ export const Garment = component$<GarmentProps>(({ persona, tokens, size = "full
             </p>
           )}
           <div class={css({ display: "flex", gap: 2, flexWrap: "wrap", mt: 1 })}>
-            <span class="f-btn" style={{ fontSize: "13px" }}>{text(locale.value, "Start a collection")}</span>
+            <span class="f-btn" style={{ fontSize: "13px" }}>{fittingIcons[persona.id] && <img src={fittingIcons[persona.id]["icon-collection"].src} alt="" width={20} height={20} style={{ background: "var(--f-surface)", borderRadius: "4px" }} />}{text(locale.value, "Start a collection")}</span>
             <span class="f-btn f-btn--ghost" style={{ fontSize: "13px" }}>{text(locale.value, "Browse")}</span>
           </div>
         </div>

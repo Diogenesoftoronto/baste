@@ -1,0 +1,8 @@
+.fitting-gallery { display: flex; align-items: start; gap: 18px; padding-top: 16px; border-top: 1px dashed #CFC7B8; }
+.fitting-gallery-icons { display: flex; gap: 8px; flex-shrink: 0; }
+.fitting-gallery-icons > button > img { width: 56px; height: 56px; padding: 6px; border-radius: 8px; background: #FFFBF9; }
+.fitting-gallery-studies { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 6px; list-style: none; margin: 0; padding: 0; flex: 1; }
+.fitting-gallery-studies li { min-width: 0; }
+.fitting-gallery-studies .image-detail-trigger { width: 100%; }
+.fitting-gallery-studies button > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 5px; }
+@media (max-width: 480px) { .fitting-gallery { flex-direction: column; } .fitting-gallery-studies { width: 100%; } }

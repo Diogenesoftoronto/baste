@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <title>Herbarium collection</title>
+  <g stroke="#254E40" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 6H3.5v14A1.5 1.5 0 0 0 5 21.5h12V20"/>
+    <rect x="6.5" y="2.5" width="14" height="16" rx="2"/>
+    <path d="M13.5 15V9m0 3.5c-3.5 0-5-1.8-5-4.5 3.5 0 5 1.8 5 4.5Zm0-3c0-2.7 1.5-4 4.5-4 0 2.7-1.5 4-4.5 4Z" fill="#D8E8C5"/>
+  </g>
+</svg>
