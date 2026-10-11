@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.11.3",
+  "checkpoint_id": "5aca372fc9c7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "site/src/components/fitting/fitting-room.tsx",
+    "site/src/components/fitting/garment.tsx",
+    "site/src/components/sections/hero.tsx"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5a/ca372fc9c7/0/metadata.json",
+      "transcript": "/5a/ca372fc9c7/0/full.jsonl",
+      "compact_transcript": "/5a/ca372fc9c7/0/transcript.jsonl",
+      "content_hash": "/5a/ca372fc9c7/0/content_hash.txt",
+      "prompt": "/5a/ca372fc9c7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 870,
+    "cache_creation_tokens": 34604688,
+    "cache_read_tokens": 121078266,
+    "output_tokens": 1018404,
+    "api_call_count": 432
+  }
+}
