@@ -1,0 +1,52 @@
+{
+  "cli_version": "0.11.3",
+  "checkpoint_id": "ea22ca5c2ec7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "scripts/narrate-tour.mjs",
+    "site/src/components/converse/conversation.tsx",
+    "site/src/components/fitting/archive-map.css",
+    "site/src/components/fitting/archive-map.tsx",
+    "site/src/components/fitting/fitting-room.css",
+    "site/src/components/fitting/garment.css",
+    "site/src/components/fx/fabric-gl.ts",
+    "site/src/components/fx/shader-canvas.tsx",
+    "site/src/components/fx/smooth-scroll.tsx",
+    "site/src/components/materials/graphite-studies.tsx",
+    "site/src/components/materials/material-lab.css",
+    "site/src/components/materials/material-lab.tsx",
+    "site/src/components/materials/material-room.css",
+    "site/src/components/materials/material-room.tsx",
+    "site/src/components/method/method-run.css",
+    "site/src/components/method/method-run.tsx",
+    "site/src/global.css",
+    "site/src/lib/converse.ts",
+    "site/src/lib/recorded-runs.ts",
+    "site/src/routes/materials/index.tsx",
+    "site/src/routes/method/index.tsx",
+    "src/assets/fal.ts",
+    "src/evaluation/fal-judge.ts",
+    "src/gui/converse.ts",
+    "tests/fal.test.ts",
+    "videos/baste-tour/BRIEF.md",
+    "videos/baste-tour/SCRIPT.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ea/22ca5c2ec7/0/metadata.json",
+      "transcript": "/ea/22ca5c2ec7/0/full.jsonl",
+      "compact_transcript": "/ea/22ca5c2ec7/0/transcript.jsonl",
+      "content_hash": "/ea/22ca5c2ec7/0/content_hash.txt",
+      "prompt": "/ea/22ca5c2ec7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 972,
+    "cache_creation_tokens": 38362929,
+    "cache_read_tokens": 131460464,
+    "output_tokens": 1805562,
+    "api_call_count": 484
+  }
+}
