@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import type { DesignTokens, PersonaRecord } from "~/lib/api-types";
@@ -10,13 +12,14 @@ import { primaryFamily } from "~/lib/fonts";
  */
 export const PersonaCard = component$<{ persona: PersonaRecord; tokens: DesignTokens; href?: string }>(
   ({ persona, tokens, href }) => {
+  const locale = useLocale();
     const c = tokens.colors;
     const heading = primaryFamily(tokens.typography.fontFamily.heading);
     const body = primaryFamily(tokens.typography.fontFamily.body);
     return (
       <a
         href={href ?? `/gui?persona=${persona.id}`}
-        aria-label={`${persona.name} — open in Studio`}
+        aria-label={text(locale.value, "{name} — open in Studio", { name: personaText(locale.value, persona, persona.name) })}
         class={`fitting ${css({
           display: "flex",
           flexDirection: "column",
@@ -44,17 +47,17 @@ export const PersonaCard = component$<{ persona: PersonaRecord; tokens: DesignTo
               class="f-mono"
               style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", padding: "3px 8px", borderRadius: "var(--f-radius)", background: c.primary, color: onColor(c.primary) }}
             >
-              {persona._source === "custom" ? "Custom" : "Base"}
+              {text(locale.value, persona._source === "custom" ? "Custom" : "Base")}
             </span>
           </div>
           <h3 class="f-heading" style={{ fontSize: "30px", lineHeight: 1.04, fontWeight: 700, textWrap: "balance" }}>
-            {persona.name.replace(/^The /, "")}
+            {personaText(locale.value, persona, persona.name.replace(/^The /, ""))}
           </h3>
-          <p style={{ fontSize: "14px", lineHeight: 1.55, color: "var(--f-muted)" }}>{persona.summary}</p>
+          <p style={{ fontSize: "14px", lineHeight: 1.55, color: "var(--f-muted)" }}>{personaText(locale.value, persona, persona.summary)}</p>
 
           <div class={css({ display: "flex", gap: "6px", flexWrap: "wrap" })}>
             {persona.aesthetic.visualKeywords.slice(0, 3).map((k) => (
-              <span key={k} class="f-chip">{k}</span>
+              <span key={k} class="f-chip">{personaText(locale.value, persona, k)}</span>
             ))}
           </div>
 
@@ -63,24 +66,24 @@ export const PersonaCard = component$<{ persona: PersonaRecord; tokens: DesignTo
             style={{ borderTop: "1px var(--f-border-style) var(--f-border)" }}
           >
             <div>
-              <dt style={{ color: "var(--f-muted)" }}>Display</dt>
+              <dt style={{ color: "var(--f-muted)" }}>{text(locale.value, "Display")}</dt>
               <dd class="f-heading" style={{ fontSize: "15px", fontWeight: 600 }}>{heading}</dd>
             </div>
             <div>
-              <dt style={{ color: "var(--f-muted)" }}>Text</dt>
+              <dt style={{ color: "var(--f-muted)" }}>{text(locale.value, "Text")}</dt>
               <dd style={{ fontSize: "15px" }}>{body}</dd>
             </div>
             <div>
-              <dt style={{ color: "var(--f-muted)" }}>Edges</dt>
-              <dd class="f-mono">{persona.aesthetic.edgeStyle} · {tokens.borders.radius.base}</dd>
+              <dt style={{ color: "var(--f-muted)" }}>{text(locale.value, "Edges")}</dt>
+              <dd class="f-mono">{text(locale.value, persona.aesthetic.edgeStyle)} · {tokens.borders.radius.base}</dd>
             </div>
             <div>
-              <dt style={{ color: "var(--f-muted)" }}>Motion</dt>
-              <dd class="f-mono">{persona.aesthetic.motionStyle} · {tokens.motion.duration.base}</dd>
+              <dt style={{ color: "var(--f-muted)" }}>{text(locale.value, "Motion")}</dt>
+              <dd class="f-mono">{text(locale.value, persona.aesthetic.motionStyle)} · {tokens.motion.duration.base}</dd>
             </div>
           </dl>
           <span style={{ fontSize: "13px", fontWeight: 600, color: "var(--f-text)", marginTop: "6px" }}>
-            Open in Studio →
+            {text(locale.value, "Open in Studio →")}
           </span>
         </div>
       </a>

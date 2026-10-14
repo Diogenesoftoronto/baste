@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { component$, useSignal } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { CodeView } from "~/components/ui/code-view";
@@ -22,6 +24,7 @@ const OUTPUTS = [
 ];
 
 export const DeliverablesSection = component$(() => {
+  const locale = useLocale();
   const persona = useSignal(DEMO_PERSONAS[1]?.id ?? DEMO_PERSONAS[0].id);
   const format = useSignal<TokenFormat>("css");
   const code = DEMO_TOKEN_EXPORTS[persona.value]?.[format.value] ?? "";
@@ -30,9 +33,9 @@ export const DeliverablesSection = component$(() => {
     <Section id="deliverables" tone="night">
       <SectionHead
         tone="night"
-        kicker="04 — Off the table"
-        title="Finished pieces, ready to wear."
-        lede="Generation ends in files you can ship: assets in assets/output/{svg,images,videos}, tokens for whichever stack you use, and a manifest that says why each piece exists."
+        kicker={text(locale.value, "04 — Off the table")}
+        title={text(locale.value, "Finished pieces, ready to wear.")}
+        lede={text(locale.value, "Generation ends in files you can ship: assets in assets/output/{svg,images,videos}, tokens for whichever stack you use, and a manifest that says why each piece exists.")}
       />
 
       <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", lg: "0.9fr 1.1fr" }, gap: { base: 10, lg: 14 }, mt: 12 })}>
@@ -43,15 +46,15 @@ export const DeliverablesSection = component$(() => {
                 <span>{o.via}</span>
                 <span>{o.f}</span>
               </span>
-              <span class={css({ fontWeight: 600, fontSize: "16px" })}>{o.k}</span>
-              <span class={css({ fontSize: "13.5px", color: "night-muted", lineHeight: 1.5 })}>{o.d}</span>
+              <span class={css({ fontWeight: 600, fontSize: "16px" })}>{text(locale.value, o.k)}</span>
+              <span class={css({ fontSize: "13.5px", color: "night-muted", lineHeight: 1.5 })}>{text(locale.value, o.d)}</span>
             </li>
           ))}
         </ul>
 
         <div class={css({ display: "flex", flexDirection: "column", gap: 3, minW: 0 })}>
           <div class={css({ display: "flex", justifyContent: "space-between", gap: 3, flexWrap: "wrap" })}>
-            <div role="tablist" aria-label="Token format" class={css({ display: "flex", gap: 1, flexWrap: "wrap" })}>
+            <div role="tablist" aria-label={text(locale.value, "Token format")} class={css({ display: "flex", gap: 1, flexWrap: "wrap" })}>
               {FORMATS.map((f) => (
                 <button
                   key={f.id}
@@ -65,25 +68,25 @@ export const DeliverablesSection = component$(() => {
                     "&[aria-selected=true], &[aria-selected=true]:hover": { color: "night", bg: "night-text" },
                   })}
                 >
-                  {f.label}
+                  {text(locale.value, f.label)}
                 </button>
               ))}
             </div>
             <label class={css({ display: "flex", alignItems: "center", gap: 2, fontSize: "13px", color: "night-muted" })}>
-              for
+              {text(locale.value, "for")}
               <select
                 value={persona.value}
                 onChange$={(_, el) => (persona.value = el.value)}
                 class={css({ h: "32px", px: 2, rounded: "sm", bg: "night-raised", color: "night-text", border: "1px solid #3A372F", fontSize: "13px" })}
               >
                 {DEMO_PERSONAS.map((p) => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
+                  <option key={p.id} value={p.id}>{personaText(locale.value, p, p.name)}</option>
                 ))}
               </select>
             </label>
           </div>
           <div style={{ border: "1px solid #3A372F", borderRadius: "4px" }}>
-            <CodeView code={code} label={`${format.value} tokens`} maxHeight="440px" />
+            <CodeView code={code} label={`${text(locale.value, "Token format")} : ${format.value}`} maxHeight="440px" />
           </div>
           <p class={css({ fontFamily: "mono", fontSize: "12px", color: "night-muted" })}>
             $ baste tokens {persona.value} --format {format.value}

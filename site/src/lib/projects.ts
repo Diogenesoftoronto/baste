@@ -1,7 +1,7 @@
-import type { CreateProjectRequest, ProjectCommand, ProjectDetail, ProjectSummary } from "../../../src/projects/contracts";
+import type { CreateProjectRequest, ProjectCommand, ProjectDetail, ProjectSummary } from "./project-contracts";
 
-export { PROJECT_LIMITS } from "../../../src/projects/contracts";
-export type { CreateProjectRequest, DesignProject, ProjectCommand, ProjectDetail, ProjectSummary } from "../../../src/projects/contracts";
+export { PROJECT_LIMITS } from "./project-contracts";
+export type { CreateProjectRequest, DesignProject, ProjectCommand, ProjectDetail, ProjectSummary } from "./project-contracts";
 
 export class ProjectRequestError extends Error {
   constructor(message: string, readonly status: number) {

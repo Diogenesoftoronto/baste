@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createHash, createPublicKey, verify } from "node:crypto";
 import { AccountManager, normalizeWallet } from "../dist/src/notorganic/server.js";
+import { ConsentService, FileReceiptStore, policyContentHash } from "../dist/src/notorganic/consent.js";
 import { createDpopKey, dpopProof } from "../dist/src/notorganic/dpop.js";
 import { accountScope, accountPath } from "../dist/src/notorganic/scope.js";
 import { getPersona, listPersonas, savePersona } from "../dist/src/notorganic/personas.js";
@@ -16,13 +17,19 @@ import { generationPlan, assertJudgementCeiling } from "../dist/src/notorganic/b
 import { safeFetch, assertSafePublicUrl } from "../dist/src/shared/url.js";
 
 function environment(t: any) {
-  for (const [key, value] of Object.entries({ NOTORGANIC_ENABLED: "true", BASTE_PUBLIC_ORIGIN: "http://localhost:5173", NOTORGANIC_ISSUER: "https://api.notorganic.info", NOTORGANIC_AUTHORIZATION_URL: "https://id.notorganic.info/authorize" })) {
+  for (const [key, value] of Object.entries({ NOTORGANIC_ENABLED: "true", BASTE_PUBLIC_ORIGIN: "http://localhost:5173", NOTORGANIC_ISSUER: "http://127.0.0.1:9998", NOTORGANIC_AUTHORIZATION_URL: "http://127.0.0.1:9998/authorize", BASTE_CONSENT_PREVIEW: "true" })) {
     const previous = process.env[key]; process.env[key] = value;
     t.after(() => previous === undefined ? delete process.env[key] : process.env[key] = previous);
   }
 }
+function isolatedConsent(t: any) {
+  const dir = mkdtempSync(join(tmpdir(), "baste-legacy-consent-"));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  return new ConsentService(new FileReceiptStore(dir));
+}
+
 function token(did = "did:plc:alice", product = "baste") {
-  return { token_type: "DPoP", expires_in: 300, access_token: `header.${Buffer.from(JSON.stringify({ sub: did, product, iss: "https://api.notorganic.info" })).toString("base64url")}.signature`, refresh_token: "server-held-refresh", refresh_expires_in: 3600 };
+  return { token_type: "DPoP", expires_in: 300, access_token: `header.${Buffer.from(JSON.stringify({ sub: did, product, iss: process.env.NOTORGANIC_ISSUER })).toString("base64url")}.signature`, refresh_token: "server-held-refresh", refresh_expires_in: 3600 };
 }
 async function request(manager: AccountManager, route: string, options: { body?: unknown; cookie?: string; csrf?: string; method?: string; origin?: string } = {}) {
   const req = Readable.from(options.body === undefined ? [] : [JSON.stringify(options.body)]) as any;
@@ -41,6 +48,17 @@ async function transaction(manager: AccountManager) {
   return { cookie: status.cookie, csrf: status.data.csrfToken, authorization, state: authorization.searchParams.get("state")! };
 }
 
+async function completeOnboarding(manager: AccountManager, cookie: string) {
+  const status = await request(manager, "status", { cookie });
+  const policy = status.data.consent;
+  await request(manager, "consent/policy", { cookie });
+  const accepted = await request(manager, "consent", { cookie, csrf: status.data.csrfToken, body: {
+    version: policy.version, contentSha256: policy.contentSha256, locale: "en", contractLanguage: "fr", frenchProvided: true,
+    age14OrOlder: true, termsAccepted: true, necessaryProcessingAccepted: true,
+  } });
+  assert.equal(accepted.status, 200);
+}
+
 test("PKCE, browser-bound one-time state, rotation and issuer-authenticated DID keep credentials server-side", async t => {
   environment(t); const calls: Array<{ url: string; init: RequestInit }> = [];
   const manager = new AccountManager((async (input, init) => {
@@ -50,17 +68,18 @@ test("PKCE, browser-bound one-time state, rotation and issuer-authenticated DID 
     if (String(input).endsWith("/models")) return Response.json({ data: [{ id: "image" }, { id: "judgement" }] });
     if (String(input).endsWith("/device/revoke")) return new Response(null, { status: 204 });
     throw new Error("Unexpected upstream request");
-  }) as typeof fetch);
+  }) as typeof fetch, isolatedConsent(t));
   const tx = await transaction(manager);
-  assert.equal(tx.authorization.origin, "https://id.notorganic.info");
+  assert.equal(tx.authorization.origin, "http://127.0.0.1:9998");
   assert.equal(tx.authorization.searchParams.get("redirect_uri"), "http://localhost:5173/api/notorganic/callback");
   const callback = await request(manager, `callback?state=${tx.state}&code=one-time-code`, { cookie: tx.cookie });
-  assert.equal(callback.headers.get("location"), "/gui/?flow=settings&account=connected");
+  assert.equal(callback.headers.get("location"), "/gui/?flow=settings&lang=en&account=onboarding");
   assert.notEqual(callback.cookie, tx.cookie);
   assert.match(callback.headers.get("set-cookie"), /HttpOnly; SameSite=Lax/);
   const exchange = JSON.parse(String(calls[0].init.body));
   assert.equal(createHash("sha256").update(exchange.code_verifier).digest("base64url"), tx.authorization.searchParams.get("code_challenge"));
   assert.equal(exchange.dpop_jwk.d, undefined);
+  await completeOnboarding(manager, callback.cookie);
   const status = await request(manager, "status", { cookie: callback.cookie });
   assert.equal(status.data.profile.did, "did:plc:alice");
   assert.equal(status.data.authenticated, true);
@@ -79,7 +98,7 @@ test("PKCE, browser-bound one-time state, rotation and issuer-authenticated DID 
 
 test("CSRF, cross-origin attempts and callbacks without their original cookie cannot authorize requests", async t => {
   environment(t); let calls = 0;
-  const manager = new AccountManager((async () => { calls++; throw new Error("Never call provider"); }) as typeof fetch);
+  const manager = new AccountManager((async () => { calls++; throw new Error("Never call provider"); }) as typeof fetch, isolatedConsent(t));
   const status = await request(manager, "status");
   assert.equal((await request(manager, "login", { cookie: status.cookie, body: {} })).status, 403);
   assert.equal((await request(manager, "login", { cookie: status.cookie, csrf: status.data.csrfToken, body: {}, origin: "https://evil.test" })).status, 403);
@@ -95,7 +114,7 @@ test("another product or mismatched account fails closed and provider errors do 
     const manager = new AccountManager((async (input) => {
       if (String(input).endsWith("/public/token")) return scenario === "raw-error" ? Response.json({ error: "secret-provider-key=do-not-leak" }, { status: 500 }) : Response.json(token("did:plc:alice", scenario === "other-product" ? "keating" : "baste"));
       return Response.json({ account: { did: "did:plc:mallory" } });
-    }) as typeof fetch);
+    }) as typeof fetch, isolatedConsent(t));
     const tx = await transaction(manager);
     const callback = await request(manager, `callback?state=${tx.state}&code=code`, { cookie: tx.cookie });
     assert.match(callback.headers.get("location"), /account=error/);
@@ -154,10 +173,11 @@ test("concurrent requests share one bound refresh and rotated sessions retain th
     if (url.endsWith("/public/token")) return Response.json(token());
     if (url.endsWith("/account")) return Response.json({ account: { did: "did:plc:alice" } });
     return Response.json({ data: [{ id: "image" }] });
-  }) as typeof fetch);
+  }) as typeof fetch, isolatedConsent(t));
   const tx = await transaction(manager);
   const callback = await request(manager, `callback?state=${tx.state}&code=code`, { cookie: tx.cookie });
   now += 295000;
+  await completeOnboarding(manager, callback.cookie);
   const responses = await Promise.all([request(manager, "models", { cookie: callback.cookie }), request(manager, "models", { cookie: callback.cookie })]);
   assert.ok(responses.every(response => response.status === 200)); assert.equal(refreshes, 1);
 });
@@ -165,6 +185,9 @@ test("concurrent requests share one bound refresh and rotated sessions retain th
 test("checkout accepts only advertised stable ids and a server-fixed HTTPS return address", async t => {
   environment(t); process.env.BASTE_PUBLIC_ORIGIN = "https://baste.example";
   let checkouts = 0;
+  const receiptDir = mkdtempSync(join(tmpdir(), "baste-checkout-consent-"));
+  t.after(() => rmSync(receiptDir, { recursive: true, force: true }));
+  const testConsent = new ConsentService(new FileReceiptStore(receiptDir), () => ({ product: "baste", minimumAge: 14, status: "adopted", version: "test-checkout-1", effectiveAt: "2020-01-01T00:00:00Z", contentSha256: policyContentHash, termsUrl: "/terms/", privacyUrl: "/privacy/" }));
   const manager = new AccountManager((async (input, init) => {
     const url = String(input);
     if (url.endsWith("/public/token")) return Response.json(token());
@@ -177,9 +200,10 @@ test("checkout accepts only advertised stable ids and a server-fixed HTTPS retur
       return Response.json({ url: "https://checkout.paddle.com/test-checkout" });
     }
     throw new Error("Unexpected checkout request");
-  }) as typeof fetch);
+  }) as typeof fetch, testConsent);
   const tx = await transaction(manager); const callback = await request(manager, `callback?state=${tx.state}&code=code`, { cookie: tx.cookie });
   assert.match(callback.headers.get("set-cookie"), /Secure/);
+  await completeOnboarding(manager, callback.cookie);
   const status = await request(manager, "status", { cookie: callback.cookie });
   const options = { cookie: callback.cookie, csrf: status.data.csrfToken };
   assert.equal((await request(manager, "checkout", { ...options, body: { packId: "forbidden" } })).status, 400);
@@ -216,6 +240,12 @@ test("Studio routes isolate personas, moodboards, jobs and feedback and reject u
   assert.equal((await request(api, "../personas")).status, 401);
   const aliceTx = await transaction(api);
   const aliceCallback = await request(api, `callback?state=${aliceTx.state}&code=code`, { cookie: aliceTx.cookie });
+  for (const route of ["../personas", "../config", "../projects", "models", "wallet"]) {
+    assert.equal((await request(api, route, { cookie: aliceCallback.cookie })).status, 428, route);
+  }
+  assert.equal((await request(api, "../generate/cyberbotanist", { cookie: aliceCallback.cookie, csrf: aliceTx.csrf, body: { dryRun: true } })).status, 428);
+  assert.equal(imageCalls, 0); assert.equal(judgementCalls, 0);
+  await completeOnboarding(api, aliceCallback.cookie);
   const aliceStatus = await request(api, "status", { cookie: aliceCallback.cookie });
   const alice = { cookie: aliceCallback.cookie, csrf: aliceStatus.data.csrfToken };
   assert.equal((await request(api, "../personas", { cookie: alice.cookie, body: { ...basePersonas.cyberbotanist, id: "private-persona" } })).status, 403);
@@ -267,6 +297,7 @@ test("Studio routes isolate personas, moodboards, jobs and feedback and reject u
   currentDid = "did:plc:api-bob";
   const bobTx = await transaction(api);
   const bobCallback = await request(api, `callback?state=${bobTx.state}&code=code`, { cookie: bobTx.cookie });
+  await completeOnboarding(api, bobCallback.cookie);
   const bob = { cookie: bobCallback.cookie };
   assert.equal((await request(api, "../personas/private-persona", bob)).status, 404);
   assert.equal((await request(api, "../moodboard/private-persona", bob)).data.notes, "");

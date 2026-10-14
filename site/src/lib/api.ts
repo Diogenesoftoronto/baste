@@ -148,6 +148,7 @@ export async function connect(base: string): Promise<BasteClient> {
     });
     const health = await Promise.race([client.health(), timeout]);
     if (health.status !== 'ok') throw new Error('Baste health check failed');
+    if (health.mode === 'account-only') return createDemoClient();
     return client;
   } catch {
     return createDemoClient();

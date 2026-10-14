@@ -10,7 +10,7 @@ export default function (opts: RenderToStreamOptions) {
     manifest,
     ...opts,
     containerAttributes: {
-      lang: "en-us",
+      lang: String(opts.serverData?.locale ?? "en"),
       ...opts.containerAttributes,
     },
   });

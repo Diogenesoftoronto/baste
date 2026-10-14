@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText, localeHref } from "~/i18n/runtime";
 import { $, component$, sync$, useSignal, useStyles$, useVisibleTask$ } from "@builder.io/qwik";
 import type { DesignTokens, PersonaRecord } from "~/lib/api-types";
 import { primaryFamily } from "~/lib/fonts";
@@ -5,6 +7,7 @@ import { voiceOf } from "~/lib/converse";
 import fittings from "~/lib/fittings.json";
 import { fittingIcons } from "~/lib/fitting-icons";
 import { Fabric, lookFromTokens } from "~/components/fx/fabric";
+import { FittingGallery } from "./fitting-gallery";
 import { Garment } from "./garment";
 import { ImageDetail } from "./image-detail";
 import styles from "./fitting-room.css?inline";
@@ -39,6 +42,7 @@ interface Art {
  * the icons Baste drew for them, and the spread of variants its search kept.
  */
 export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, autoplay = true, showMeasurements = true }) => {
+  const locale = useLocale();
   useStyles$(styles);
   const index = useSignal(0);
   const touched = useSignal(false);
@@ -94,7 +98,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
 
   return (
     <div class="fitting-room" data-measurements={showMeasurements ? "true" : "false"}>
-      <div role="tablist" aria-label="Fit for persona" class="fitting-tabs">
+      <div role="tablist" aria-label={text(locale.value, "Fit for persona")} class="fitting-tabs">
         {personas.map((p, i) => {
           const pt = tokens[p.id];
           const selected = i === index.value;
@@ -123,7 +127,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
               <img src={`/assets/companions/${p.id}.webp`} alt="" width={40} height={40} loading="lazy" decoding="async" />
               <span>
                 <strong>{voiceOf(p.id).handle}</strong>
-                <small>{p.name.replace(/^The /, "")}</small>
+                <small>{personaText(locale.value, p, p.name.replace(/^The /, ""))}</small>
               </span>
               {autoplay && selected && !touched.value && <i class="fitting-tab-timer" aria-hidden="true" />}
             </button>
@@ -135,7 +139,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
         <div ref={stage} class="fitting-stage">
           <div aria-hidden="true" class="fitting-cloth">
             <div class="pinked fitting-cloth-cut">
-              <Fabric look={lookFromTokens(t, a.density)} quality={0.75} label={`${persona.name} cloth`} />
+              <Fabric look={lookFromTokens(t, a.density)} quality={0.75} label={text(locale.value, "{name} cloth", { name: personaText(locale.value, persona, persona.name) })} />
             </div>
           </div>
           <div id="fitting-panel" role="tabpanel" aria-labelledby={`fit-${persona.id}`} class="fitting-garment">
@@ -146,19 +150,19 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
         </div>
 
         {showMeasurements && (
-          <aside class="fitting-spec" aria-label={`Measurements for ${persona.name}`} onPointerOver$={() => { touched.value = true; }} onFocusIn$={() => { touched.value = true; }}>
+          <aside class="fitting-spec" aria-label={text(locale.value, "Measurements for {name}", { name: personaText(locale.value, persona, persona.name) })} onPointerOver$={() => { touched.value = true; }} onFocusIn$={() => { touched.value = true; }}>
             <section>
-              <h3 class="fitting-spec-title">Type</h3>
+              <h3 class="fitting-spec-title">{text(locale.value, "Type")}</h3>
               <div class="fitting-type">
                 <span class="fitting-type-sample" style={{ fontFamily: t.typography.fontFamily.heading }}>Aa</span>
                 <dl>
-                  <div><dt>Display</dt><dd>{primaryFamily(t.typography.fontFamily.heading)}</dd></div>
-                  <div><dt>Text</dt><dd>{primaryFamily(t.typography.fontFamily.body)}</dd></div>
+                  <div><dt>{text(locale.value, "Display")}</dt><dd>{primaryFamily(t.typography.fontFamily.heading)}</dd></div>
+                  <div><dt>{text(locale.value, "Text")}</dt><dd>{primaryFamily(t.typography.fontFamily.body)}</dd></div>
                 </dl>
               </div>
             </section>
             <section>
-              <h3 class="fitting-spec-title">Colour</h3>
+              <h3 class="fitting-spec-title">{text(locale.value, "Colour")}</h3>
               <ul class="fitting-swatches">
                 {swatches.map((s) => (
                   <li key={s.role}>
@@ -171,19 +175,19 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
             </section>
             <section class="fitting-metrics">
               <div>
-                <h3 class="fitting-spec-title">Radius</h3>
+                <h3 class="fitting-spec-title">{text(locale.value, "Radius")}</h3>
                 <span class="fitting-radius" style={{ borderRadius: t.borders.radius.lg }} aria-hidden="true" />
-                <code>{t.borders.radius.base} · {a.edgeStyle}</code>
+                <code>{t.borders.radius.base} · {text(locale.value, a.edgeStyle)}</code>
               </div>
               <div>
-                <h3 class="fitting-spec-title">Motion</h3>
+                <h3 class="fitting-spec-title">{text(locale.value, "Motion")}</h3>
                 <span class="fitting-motion" style={{ "--motion": t.motion.duration.slow, "--ease": t.motion.easing.default }} aria-hidden="true"><i /></span>
-                <code>{t.motion.duration.base} · {a.motionStyle}</code>
+                <code>{t.motion.duration.base} · {text(locale.value, a.motionStyle)}</code>
               </div>
             </section>
             {(art.icon || art["icon-collection"]) && (
               <section>
-                <h3 class="fitting-spec-title">Icons drawn for {voiceOf(persona.id).handle}</h3>
+                <h3 class="fitting-spec-title">{text(locale.value, "Icons drawn for")} {voiceOf(persona.id).handle}</h3>
                 <div class="fitting-icons">
                   {[art.icon, art["icon-collection"]].filter(Boolean).map((icon) => (
                     <ImageDetail key={icon!.src} src={icon!.src} label={icon!.label ?? `${voiceOf(persona.id).handle} icon`} width={72} height={72} />
@@ -194,8 +198,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
             {art.archive && art.archive.length > 1 && (
               <section>
                 <h3 class="fitting-spec-title">
-                  {art.archive.length} variants kept from {art.run?.candidates} tried
-                </h3>
+                  {art.archive.length}{" "}{text(locale.value, "variants kept from")} {art.run?.candidates}{" "}{text(locale.value, "tried")} </h3>
                 <ul class="fitting-archive">
                   {art.archive.slice(0, 8).map((c) => (
                     <li key={c.src}>
@@ -203,11 +206,14 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
                     </li>
                   ))}
                 </ul>
-                <a class="fitting-spec-link" href="/method/#archive">How the archive is searched <span aria-hidden="true">→</span></a>
+                <a class="fitting-spec-link" href={localeHref("/method/#archive", locale.value)}>{text(locale.value, "How the archive is searched")} <span aria-hidden="true">→</span></a>
               </section>
             )}
           </aside>
         )}
+      </div>
+      <div onPointerOver$={() => { touched.value = true; }} onFocusIn$={() => { touched.value = true; }}>
+        <FittingGallery key={persona.id} personaId={persona.id} name={personaText(locale.value, persona, persona.name)} />
       </div>
     </div>
   );

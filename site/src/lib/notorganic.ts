@@ -1,7 +1,10 @@
+import type { AccountConsentStatus } from "./account-consent";
 /** Same-origin account bridge. Provider tokens and keys never enter browser state. */
 export interface NotOrganicStatus {
   configured: boolean;
   authenticated: boolean;
+  accessGranted?: boolean;
+  consent?: AccountConsentStatus;
   csrfToken?: string;
   profile?: { did: string; handle?: string };
   manageAccountUrl?: string;
@@ -70,7 +73,7 @@ export async function refreshHostedAccount(base: string, account: HostedAccount)
     const status = await accountRequest<NotOrganicStatus>(base, 'status');
     if (!current()) return;
     account.status = status;
-    if (!account.status.authenticated) return;
+    if (!account.status.authenticated || account.status.accessGranted !== true) return;
     await Promise.all([
       accountRequest<{ data: HostedModel[] }>(base, 'models').then((data) => {
         if (!current()) return;
@@ -105,4 +108,9 @@ export function walletBlocked(wallet: HostedWallet | null): boolean {
 
 export function formatBalance(micros: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(micros / 1_000_000);
+}
+
+/** Identity authentication alone never grants account workspace access. */
+export function needsAccountOnboarding(status: NotOrganicStatus | null): boolean {
+  return status?.configured === true && status.authenticated && status.accessGranted !== true;
 }

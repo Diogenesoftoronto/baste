@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, localeHref } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { PersonaCard } from "~/components/fitting/persona-card";
@@ -5,13 +7,14 @@ import { Section, SectionHead } from "~/components/ui/section";
 import { DEMO_PERSONAS, DEMO_TOKENS } from "~/lib/demo-data";
 
 export const WardrobeSection = component$(() => {
+  const locale = useLocale();
   return (
     <Section id="wardrobe" tone="deep">
       <div class={css({ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 8, flexWrap: "wrap" })}>
         <SectionHead
-          kicker="03 — The wardrobe"
-          title="Three people, three fittings."
-          lede="Baste ships with three base personas. Each card is set in that persona's generated design system, not ours."
+          kicker={text(locale.value, "03 — The wardrobe")}
+          title={text(locale.value, "Three people, three fittings.")}
+          lede={text(locale.value, "Baste ships with three base personas. Each card is set in that persona's generated design system, not ours.")}
         />
       </div>
 
@@ -36,16 +39,15 @@ export const WardrobeSection = component$(() => {
             bg: "rgba(251,249,244,0.5)",
           })}
         >
-          <span class="label" style={{ color: "#6E6A61" }}>Bespoke</span>
-          <h3 class="display" style={{ fontSize: "30px" }}>Measure your own.</h3>
+          <span class="label" style={{ color: "#6E6A61" }}>{text(locale.value, "Bespoke")}</span>
+          <h3 class="display" style={{ fontSize: "30px" }}>{text(locale.value, "Measure your own.")}</h3>
           <p class={css({ fontSize: "14px", color: "ink-soft" })}>
-            Write a persona from scratch, extend a base one, cross two together, or start from a
-            website you admire. Baste decomposes its palette, type and imagery into a draft persona.
+            {text(locale.value, "Write a persona from scratch, extend a base one, cross two together, or start from a website you admire. Baste decomposes its palette, type and imagery into a draft persona.")}
           </p>
           <div class={css({ display: "flex", flexDirection: "column", gap: 2, mt: "auto" })}>
-            <a href="/gui?new=1" class={ghostLink}>New persona <span aria-hidden="true">→</span></a>
-            <a href="/gui?flow=decompose" class={ghostLink}>Decompose a website <span aria-hidden="true">→</span></a>
-            <a href="/gui?flow=remix" class={ghostLink}>Remix two personas <span aria-hidden="true">→</span></a>
+            <a href={localeHref("/gui?new=1", locale.value)} class={ghostLink}>{text(locale.value, "New persona")} <span aria-hidden="true">→</span></a>
+            <a href={localeHref("/gui?flow=decompose", locale.value)} class={ghostLink}>{text(locale.value, "Decompose a website")} <span aria-hidden="true">→</span></a>
+            <a href={localeHref("/gui?flow=remix", locale.value)} class={ghostLink}>{text(locale.value, "Remix two personas")} <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>

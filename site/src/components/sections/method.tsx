@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { QDArchive } from "~/components/fitting/qd-archive";
@@ -20,12 +22,13 @@ const JUDGE = [
 ];
 
 export const MethodSection = component$(() => {
+  const locale = useLocale();
   return (
     <Section id="method">
       <SectionHead
-        kicker="02 — Method"
-        title="Baste first. Cut later."
-        lede="Tailors tack a garment together loosely, try it on, and only then sew it for good. Baste does the same with design: it explores many loose options, fits them to the persona, and only then produces the finished assets."
+        kicker={text(locale.value, "02 — Method")}
+        title={text(locale.value, "Baste first. Cut later.")}
+        lede={text(locale.value, "Tailors tack a garment together loosely, try it on, and only then sew it for good. Baste does the same with design: it explores many loose options, fits them to the persona, and only then produces the finished assets.")}
       />
 
       <ol class={css({ listStyle: "none", display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", sm: "repeat(2, 1fr)", lg: "repeat(5, 1fr)" }, gap: { base: 6, lg: 0 }, mt: 14, position: "relative" })}>
@@ -40,8 +43,8 @@ export const MethodSection = component$(() => {
               </span>
               {i < STEPS.length - 1 && <span class={`stitch-rule ${css({ flex: 1, display: { base: "none", lg: "block" } })}`} aria-hidden="true" />}
             </div>
-            <h3 class="display" style={{ fontSize: "28px" }}>{s.t}</h3>
-            <p class={css({ fontSize: "14px", color: "ink-soft", lineHeight: 1.55 })}>{s.d}</p>
+            <h3 class="display" style={{ fontSize: "28px" }}>{text(locale.value, s.t)}</h3>
+            <p class={css({ fontSize: "14px", color: "ink-soft", lineHeight: 1.55 })}>{text(locale.value, s.d)}</p>
           </li>
         ))}
       </ol>
@@ -49,18 +52,18 @@ export const MethodSection = component$(() => {
       <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", lg: "1.15fr 0.85fr" }, gap: { base: 10, lg: 14 }, mt: 20 })}>
         <div data-reveal="sheet" class={css({ bg: "card", border: "1px solid token(colors.rule)", rounded: "sm", p: { base: 5, md: 7 }, boxShadow: "sheet" })}>
           <div class={css({ display: "flex", flexDirection: "column", gap: 1, mb: 5 })}>
-            <span class="label" style={{ color: "#A9311E" }}>Step 03 · the archive</span>
-            <h3 class="display" style={{ fontSize: "28px" }}>Many fittings, not one answer.</h3>
+            <span class="label" style={{ color: "#A9311E" }}>{text(locale.value, "Step 03 · the archive")}</span>
+            <h3 class="display" style={{ fontSize: "28px" }}>{text(locale.value, "Many fittings, not one answer.")}</h3>
           </div>
           <QDArchive />
         </div>
 
         <div class={css({ display: "flex", flexDirection: "column", gap: 5 })}>
           <div class={css({ display: "flex", flexDirection: "column", gap: 1 })}>
-            <span class="label" style={{ color: "#A9311E" }}>Step 04 · the judge</span>
-            <h3 class="display" style={{ fontSize: "28px" }}>Scored for fit before finish.</h3>
+            <span class="label" style={{ color: "#A9311E" }}>{text(locale.value, "Step 04 · the judge")}</span>
+            <h3 class="display" style={{ fontSize: "28px" }}>{text(locale.value, "Scored for fit before finish.")}</h3>
           </div>
-          <div class={css({ display: "flex", h: "14px", rounded: "xs", overflow: "hidden" })} role="img" aria-label="Judge weights: persona alignment 30%, visual quality 20%, uniqueness 20%, coherence 15%, usability 15%">
+          <div class={css({ display: "flex", h: "14px", rounded: "xs", overflow: "hidden" })} role="img" aria-label={text(locale.value, "Judge weights: persona alignment 30%, visual quality 20%, uniqueness 20%, coherence 15%, usability 15%")}>
             {JUDGE.map((j) => (
               <span key={j.k} style={{ width: `${j.w}%`, background: j.c }} />
             ))}
@@ -70,8 +73,8 @@ export const MethodSection = component$(() => {
               <li key={j.k} class={css({ display: "grid", gridTemplateColumns: "14px 1fr auto", gap: 3, alignItems: "baseline", py: 3, borderBottom: "1px solid token(colors.rule)" })}>
                 <i class={css({ w: "10px", h: "10px", rounded: "xs" })} style={{ background: j.c }} />
                 <span>
-                  <span class={css({ fontWeight: 600 })}>{j.k}</span>
-                  <span class={css({ display: "block", fontSize: "13px", color: "ink-muted" })}>{j.q}</span>
+                  <span class={css({ fontWeight: 600 })}>{text(locale.value, j.k)}</span>
+                  <span class={css({ display: "block", fontSize: "13px", color: "ink-muted" })}>{text(locale.value, j.q)}</span>
                 </span>
                 <span class={css({ fontFamily: "mono", fontSize: "14px" })}>{j.w}%</span>
               </li>

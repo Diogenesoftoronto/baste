@@ -1,7 +1,10 @@
+import { useLocale } from "~/i18n/provider";
+import { text, localeHref } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 
 export const ClosingSection = component$(() => {
+  const locale = useLocale();
   return (
     <section class={css({ maxW: "1240px", mx: "auto", px: { base: 4, md: 8 }, pt: { base: 8, md: 12 }, pb: { base: 4, md: 8 } })}>
       <div
@@ -28,13 +31,12 @@ export const ClosingSection = component$(() => {
           <path class="thread-path" d="M-20 250 C 200 180, 340 300, 560 230 S 900 120, 1220 170" />
         </svg>
         <div class={css({ position: "relative", display: "flex", flexDirection: "column", gap: 4 })}>
-          <h2 class="display" style={{ fontSize: "clamp(36px, 5vw, 68px)" }}>
-            Who are you <em style={{ color: "#A9311E" }}>designing for?</em>
+          <h2 class="display" style={{ fontSize: "clamp(36px, 5vw, 68px)" }}>{text(locale.value, "Who are you")} <em style={{ color: "#A9311E" }}>{text(locale.value, "designing for?")}</em>
           </h2>
         </div>
         <div class={css({ position: "relative", display: "flex", flexDirection: "column", gap: 3, alignItems: { base: "start", md: "end" } })}>
           <a
-            href="/gui?new=1"
+            href={localeHref("/gui?new=1", locale.value)}
             data-juice="snip"
             class={css({
               display: "inline-flex", alignItems: "center", gap: 2, px: 6, h: "50px", rounded: "base",
@@ -42,9 +44,9 @@ export const ClosingSection = component$(() => {
               _hover: { bg: "thread-ink" },
             })}
           >
-            Start a fitting <span aria-hidden="true">→</span>
+            {text(locale.value, "Start a fitting")} <span aria-hidden="true">→</span>
           </a>
-          <span class={css({ fontSize: "14px", color: "ink-muted" })}>Bring a few references. Find a direction together.</span>
+          <span class={css({ fontSize: "14px", color: "ink-muted" })}>{text(locale.value, "Bring a few references. Find a direction together.")}</span>
         </div>
       </div>
     </section>

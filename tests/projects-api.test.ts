@@ -8,7 +8,7 @@ import { handleAPIRequest } from "../dist/src/gui/api.js";
 import type { ProjectDetail, ProjectSummary } from "../src/projects/contracts.ts";
 
 const ORIGIN = "http://localhost:5173";
-const ISSUER = "https://api.notorganic.info";
+const ISSUER = "http://127.0.0.1:9998";
 const ALICE = "did:plc:projects-alice";
 const BOB = "did:plc:projects-bob";
 
@@ -59,7 +59,8 @@ function setup(t: TestContext) {
     NOTORGANIC_ENABLED: "true",
     BASTE_PUBLIC_ORIGIN: ORIGIN,
     NOTORGANIC_ISSUER: ISSUER,
-    NOTORGANIC_AUTHORIZATION_URL: "https://id.notorganic.info/authorize",
+    NOTORGANIC_AUTHORIZATION_URL: "http://127.0.0.1:9998/authorize",
+    BASTE_CONSENT_PREVIEW: "true",
   })) {
     const previous = process.env[key];
     process.env[key] = value;
@@ -109,10 +110,17 @@ function setup(t: TestContext) {
     assert.ok(state);
     const callback = await request(`/api/notorganic/callback?state=${encodeURIComponent(state)}&code=fixture-code`, { cookie: initial.cookie });
     assert.equal(callback.status, 303);
-    assert.equal(callback.headers.get("location"), "/gui/?flow=settings&account=connected");
+    assert.equal(callback.headers.get("location"), "/gui/?flow=settings&lang=en&account=onboarding");
     assert.ok(callback.cookie);
     const connected = await request("/api/notorganic/status", { cookie: callback.cookie });
     assert.equal(connected.data.profile.did, did);
+    await request("/api/notorganic/consent/policy", { cookie: callback.cookie });
+    const policy = connected.data.consent;
+    const accepted = await request("/api/notorganic/consent", { cookie: callback.cookie, csrf: connected.data.csrfToken, body: {
+      version: policy.version, contentSha256: policy.contentSha256, locale: "en", contractLanguage: "fr", frenchProvided: true,
+      age14OrOlder: true, termsAccepted: true, necessaryProcessingAccepted: true,
+    } });
+    assert.equal(accepted.status, 200);
     return { cookie: callback.cookie, csrf: connected.data.csrfToken };
   };
 }

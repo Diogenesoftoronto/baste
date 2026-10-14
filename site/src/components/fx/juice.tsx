@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { chalkPuff, haptic, play, setSoundEnabled, snipBurst, soundEnabled, type Sound } from "~/lib/juice";
@@ -105,6 +107,7 @@ export const Juice = component$(() => {
 
 /** Sound on/off. Juice is optional; the choice persists. */
 export const SoundToggle = component$<{ tone?: "paper" | "night" }>(({ tone = "paper" }) => {
+  const locale = useLocale();
   const on = useSignal(true);
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
@@ -117,8 +120,8 @@ export const SoundToggle = component$<{ tone?: "paper" | "night" }>(({ tone = "p
     <button
       type="button"
       aria-pressed={on.value}
-      aria-label={on.value ? "Interface sounds on — turn off" : "Interface sounds off — turn on"}
-      title={on.value ? "Interface sounds on" : "Interface sounds off"}
+      aria-label={on.value ? text(locale.value, "Interface sounds on — turn off") : text(locale.value, "Interface sounds off — turn on")}
+      title={on.value ? text(locale.value, "Interface sounds on") : text(locale.value, "Interface sounds off")}
       onClick$={() => {
         // setSoundEnabled broadcasts "baste:sound", which the listener above
         // writes back into `on`; set it once from a fixed value, never toggle twice.

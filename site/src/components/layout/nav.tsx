@@ -1,3 +1,5 @@
+import { LanguageSelect, useLocale } from "~/i18n/provider";
+import { text, localeHref } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
 import { css } from "styled-system/css";
@@ -15,11 +17,12 @@ const LINKS = [
 ];
 
 export const Nav = component$(() => {
+  const locale = useLocale();
   const loc = useLocation();
   const path = loc.url.pathname;
   return (
     <>
-      <a href="#main" class="skip-link">Skip to content</a>
+      <a href="#main" class="skip-link">{text(locale.value, "Skip to content")}</a>
       <header
         class={css({
           position: "sticky",
@@ -31,7 +34,7 @@ export const Nav = component$(() => {
         })}
       >
         <nav
-          aria-label="Primary"
+          aria-label={text(locale.value, "Primary")}
           class={css({
             maxW: "1240px",
             mx: "auto",
@@ -43,7 +46,7 @@ export const Nav = component$(() => {
             gap: 6,
           })}
         >
-          <a href="/" aria-label="Baste home" class={css({ textDecoration: "none" })}>
+          <a href={localeHref("/", locale.value)} aria-label={text(locale.value, "Baste home")} class={css({ textDecoration: "none" })}>
             <BasteLogo size={26} />
           </a>
 
@@ -53,7 +56,7 @@ export const Nav = component$(() => {
               return (
                 <a
                   key={l.href}
-                  href={l.href}
+                  href={localeHref(l.href, locale.value)}
                   aria-current={active ? "page" : undefined}
                   class={css({
                     fontSize: "14px",
@@ -69,22 +72,23 @@ export const Nav = component$(() => {
                     "&[aria-current=page]": { color: "ink", backgroundSize: "10px 1.5px" },
                   })}
                 >
-                  {l.label}
+                  {text(locale.value, l.label)}
                 </a>
               );
             })}
           </div>
 
           <div class={css({ display: "flex", alignItems: "center", gap: 2 })}>
+          <LanguageSelect />
           <SoundToggle />
           <details class={css({ display: { base: "block", lg: "none" } })}>
-            <summary aria-label="Site menu" class={css({ minH: "44px", display: "flex", alignItems: "center", px: 2, fontSize: "14px", listStyle: "none", _hover: { color: "thread-ink" } })}>Menu</summary>
+            <summary aria-label="Site menu" class={css({ minH: "44px", display: "flex", alignItems: "center", px: 2, fontSize: "14px", listStyle: "none", _hover: { color: "thread-ink" } })}>{text(locale.value, "Menu")}</summary>
             <div class={css({ position: "absolute", top: "60px", right: 4, left: 4, bg: "card", border: "1px solid token(colors.rule-strong)", p: 3, display: "flex", flexDirection: "column", gap: 1 })}>
-              {LINKS.map((link) => <a key={link.href} href={link.href} onClick$={(_, el) => el.closest("details")?.removeAttribute("open")} class={css({ px: 3, py: 3, textDecoration: "none", _hover: { bg: "paper" } })}>{link.label}</a>)}
+              {LINKS.map((link) => <a key={link.href} href={localeHref(link.href, locale.value)} onClick$={(_, el) => el.closest("details")?.removeAttribute("open")} class={css({ px: 3, py: 3, textDecoration: "none", _hover: { bg: "paper" } })}>{text(locale.value, link.label)}</a>)}
             </div>
           </details>
           <a
-            href="/gui"
+            href={localeHref("/gui", locale.value)}
             data-juice="snip"
             class={css({
               display: "inline-flex",
@@ -102,7 +106,7 @@ export const Nav = component$(() => {
               _hover: { bg: "thread-ink" },
             })}
           >
-            Open Studio
+            {text(locale.value, "Open Studio")}
             <span aria-hidden="true">→</span>
           </a>
           </div>

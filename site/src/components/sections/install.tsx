@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 import { CopyCommand } from "~/components/ui/copy-command";
@@ -36,6 +38,7 @@ const GROUPS: Array<{ t: string; rows: Array<[string, string]> }> = [
 ];
 
 export const InstallSection = component$(() => {
+  const locale = useLocale();
   return (
     <Section id="install">
       <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", lg: "0.8fr 1.2fr" }, gap: { base: 10, lg: 16 } })}>
@@ -53,7 +56,7 @@ export const InstallSection = component$(() => {
         <div class={css({ display: "flex", flexDirection: "column", gap: 8 })}>
           {GROUPS.map((g) => (
             <div key={g.t}>
-              <h3 class="label" style={{ color: "#2F55A4", marginBottom: "10px" }}>{g.t}</h3>
+              <h3 class="label" style={{ color: "#2F55A4", marginBottom: "10px" }}>{text(locale.value, g.t)}</h3>
               <dl class={css({ display: "flex", flexDirection: "column" })}>
                 {g.rows.map(([cmd, what]) => (
                   <div
@@ -70,7 +73,7 @@ export const InstallSection = component$(() => {
                       <span aria-hidden="true" style={{ color: "#A9311E" }}>$ </span>
                       {cmd}
                     </dt>
-                    <dd class={css({ fontSize: "14px", color: "ink-muted" })}>{what}</dd>
+                    <dd class={css({ fontSize: "14px", color: "ink-muted" })}>{text(locale.value, what)}</dd>
                   </div>
                 ))}
               </dl>

@@ -12,7 +12,7 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [
       staticAdapter({
-        origin: "https://baste.dev",
+        origin: "https://baste.love",
       }),
     ],
   };
