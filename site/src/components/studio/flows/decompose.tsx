@@ -69,7 +69,7 @@ export const DecomposeFlow = component$(() => {
             <div class={css({ display: "flex", gap: 2, flexWrap: { base: "wrap", sm: "nowrap" } })}>
               <input id="dc-url" type="url" required class={input} placeholder="https://qwik.dev" value={f.url} onInput$={(_, el) => (f.url = el.value)} />
               <button type="submit" aria-busy={running.value} class={act("cut", css({ flexShrink: 0 }))} data-juice="snip" disabled={running.value || s.status !== "live"}>
-                {running.value ? "Unpicking…" : "Decompose"}
+                {running.value ? text(locale.value, "Unpicking…") : text(locale.value, "Decompose")}
               </button>
             </div>
           </div>

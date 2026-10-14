@@ -50,7 +50,7 @@ for (const p of [{id:'cyberbotanist',_source:'custom'}, {id:'private',_source:'b
 }
 assert.equal(calls.length, count, 'Custom/unknown content must not reach translation');
 const wiring = {
-  'components/fitting/garment.tsx': ['personaText(locale.value, persona, inf.obsessions[0])', 'personaText(locale.value, persona, inf.spaces[0])', 'personaText(locale.value, persona, s)', 'personaText(locale.value, persona, persona.culture.region)', 'personaText(locale.value, persona, inf.music.genres[0])'],
+  'components/fitting/garment.tsx': ['personaText(locale.value, persona, inf.obsessions[0])', 'personaText(locale.value, persona, inf.spaces[0])', 'personaText(locale.value, persona, s)', 'personaText(locale.value, persona, persona.culture.region ?? "")', 'personaText(locale.value, persona, inf.music.genres[0])'],
   'components/fitting/fitting-room.tsx': ['text(locale.value, a.edgeStyle)', 'text(locale.value, a.motionStyle)', 'personaText(locale.value, p, p.name.replace', 'text(locale.value, "Measurements for {name}"', 'text(locale.value, "{name} cloth"'],
   'components/studio/workspace.tsx': ['personaText(locale.value, persona, persona.name)', 'personaText(locale.value, persona, persona.summary)', 'text(locale.value, "Unpicked {name}'],
   'components/studio/tabs/fitting.tsx': ['name: personaText(locale.value, persona, persona.name.replace', 'text(locale.value, grade)'],

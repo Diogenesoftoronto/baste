@@ -17,7 +17,7 @@ export const HeroSection = component$(() => {
       <div class={`rise ${css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", lg: "minmax(0, 1.2fr) minmax(0, 1fr)" }, gap: { base: 6, lg: 12 }, alignItems: "end", pb: { base: 8, md: 12 } })}`}>
         <div class={css({ display: "flex", flexDirection: "column", gap: 5 })}>
           <span class="label" style={{ color: "#A9311E" }}>{text(locale.value, "Persona-driven design generation")}</span>
-          <h1 id="hero-title" class="display" style={{ fontSize: "clamp(48px, 7vw, 104px)" }}>{text(locale.value, "Cut to fit")} <em class={css({ fontStyle: "italic", color: "thread-ink" })}>{text(locale.value, "one")}</em>{text(locale.value, "person.")} </h1>
+          <h1 id="hero-title" class="display" style={{ fontSize: "clamp(48px, 7vw, 104px)" }}>{text(locale.value, "Cut to fit")} <em class={css({ fontStyle: "italic", color: "thread-ink" })}>{text(locale.value, "one")}</em>{" "}{text(locale.value, "person.")} </h1>
         </div>
         <div class={css({ display: "flex", flexDirection: "column", gap: 5, pb: { lg: 3 } })}>
           <p class={css({ fontSize: { base: "18px", md: "20px" }, color: "ink-soft", maxW: "38ch", lineHeight: 1.5 })}>{text(locale.value, "Start with their favourite film. The room they feel at home in. The things they can’t stand in an app. Baste turns that particular taste into an interface.")} </p>
