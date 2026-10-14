@@ -1,10 +1,55 @@
 # Baste
 
-**Persona-Driven Asset Generation for Unique UIs**
+**Interfaces cut to fit one person.**
 
-Baste transforms generic interfaces into culturally rich, personally meaningful experiences by using AI to generate custom SVGs, images, and video assets tailored to a specific persona's aesthetic DNA.
+![One interface, fitted to three personas](docs/fitting-loop.gif)
+
+**[Watch the 74-second tour](site/public/media/tour/baste-tour.mp4)**: measure a person, re-cut one screen for
+three people, judge two dozen drafts, keep the files. It plays on the site's home page and in the Studio guide
+(`/docs/`), with English and French captions.
+
+*Baste (v.) — to tack a garment together with long, loose stitches so it can be fitted before the final cut.*
+
+Baste takes a persona's films, music, rooms, tools and obsessions, and from them drafts the design system, icons,
+images and motion that fit. Palettes and typefaces are derived from the persona's cultural references, so no two
+personas come out the same. Then it explores many candidates with quality-diversity search, judges them for
+persona fit, and cuts the winners into production assets.
 
 Now with **semantic version control for design systems** and **OpenPencil bridge** for editable design components.
+
+## The Studio
+
+```bash
+npx baste gui        # local API on :3456 — then open the site's /gui route
+```
+
+The Studio (`site/`, route `/gui`) puts one persona at the centre: see it **wearing its own design** (a live
+try-on of the same screen in its tokens, with contrast checks), export tokens, draft prompts and generate assets
+with a staged progress view, pin a moodboard, read a decomposed brand kit, teach it your taste, and edit tokens
+as an OpenPencil document. Without a local server it runs in demo mode on the built-in personas.
+
+Start the API and Qwik Studio together from the repository root:
+
+```bash
+devenv tasks run baste:install
+devenv up
+```
+
+Open `http://localhost:5173/gui/` for the Studio and `http://localhost:5173/docs/` for documentation.
+The site proxies `/api` to the Baste API on port 3456. Storybook is opt-in.
+See [local development](docs/development.md) for tasks, port overrides and verification boundaries.
+
+## Not Organic accounts
+
+Studio Settings includes profile creation/sign-in through Not Organic, the authorized model catalog,
+wallet credit and advertised checkout offers. Hosted image generation and Jev judging use server-held
+PKCE/DPoP authorization. Design personas are separate from the public account profile, and account-owned
+design files are isolated by DID. Local CLI generation continues to use your selected provider keys.
+
+Enable `NOTORGANIC_ENABLED=true` with an exact `BASTE_PUBLIC_ORIGIN` after registering Baste's product
+and origin on the provider. Payments require provider-configured offers and an HTTPS return origin.
+Source integration does not establish that a deployed sign-in or paid checkout works.
+See [Not Organic integration](docs/notorganic.md) for the configuration and API contract.
 
 ## Quick Start
 
@@ -51,6 +96,12 @@ baste ui-kit nightmarketcoder --output-dir ./my-app/assets
 
 # Dry run (see prompts without calling APIs)
 baste generate cyberbotanist --dry-run
+
+# One fal key for everything: Seedream images, Recraft SVG, Seedance video, a vision judge
+baste generate cyberbotanist --provider fal
+
+# Or choose per stage
+baste generate cyberbotanist --image-provider fal --svg-provider quiver --judge openai
 
 # Export design tokens
 baste tokens liminalweeb --format css   # css, tailwind, json
@@ -367,10 +418,21 @@ The `.baste` format is a shared, version-controlled design system that can be pa
 ## Environment Variables
 
 ```bash
-OPENAI_API_KEY=sk-...     # Image generation + LLM judge
+OPENAI_API_KEY=sk-...      # GPT Image 2.5 + fallback OpenAI judge
 QUIVER_API_KEY=qv-...      # SVG generation
-GOOGLE_API_KEY=AIza...     # Video generation (optional)
+ARK_API_KEY=...           # Seedance video generation (default)
+TYPESAFE_API_KEY=...      # TypeSafe System One (Jev) judge, auto-selected when set
+GOOGLE_API_KEY=AIza...     # Gemini images / Veo video (optional)
+FAL_KEY=...                # fal: --provider fal for every stage, and companion voice
 ```
+
+## The tour video
+
+The tour is a [HyperFrames](https://hyperframes.heygen.com/) composition in `videos/baste-tour/`, cut from
+screens recorded on this site. `scripts/record-tour.mjs` records them, `scripts/narrate-tour.mjs` and
+`scripts/score-tour.mjs` make the narration and music on fal, `build.mjs` composes it, and `publish.mjs` puts the
+video, captions and the Studio guide's chapter clips into `site/public/media/tour/`. See
+[local development](docs/development.md#tour-video) for the commands.
 
 ## Architecture
 

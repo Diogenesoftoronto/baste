@@ -1,0 +1,103 @@
+--- a/packages/contracts/src/catalog.ts
++++ b/packages/contracts/src/catalog.ts
+@@ -12,6 +12,7 @@
+   "interleave",
+   "stich",
+   "voxq",
++  "baste",
+   // The provider's own account portal. It is a first-party client of this
+   // gateway rather than a billable product: wallet, usage, and account are
+   // keyed by DID, and its Creem catalog is empty unless an operator adds one.
+@@ -37,6 +38,8 @@
+   // No domain aliases: voxq has no public host of its own yet, and a guessed
+   // one accepted here would become a trust-boundary input we cannot serve.
+   voxq: "voxq",
++  baste: "baste",
++  "baste.dev": "baste",
+   notorganic: "notorganic",
+   "notorganic.info": "notorganic",
+ } as const satisfies Record<string, ProductId>;
+--- a/packages/emails/src/theme.ts
++++ b/packages/emails/src/theme.ts
+@@ -330,6 +330,14 @@
+     "repeating-linear-gradient(90deg, rgba(193,68,14,0.28) 0 2px, rgba(193,68,14,0) 2px 7px, rgba(193,68,14,0.28) 7px 9px, rgba(193,68,14,0) 9px 14px, rgba(193,68,14,0.28) 14px 16px, rgba(193,68,14,0) 16px 21px, rgba(193,68,14,0.28) 21px 23px, rgba(193,68,14,0) 23px 44px)",
+ };
+ 
++// Baste uses the provider's verified account mark until a dedicated email PNG is published.
++export const baste: ProductTheme = {
++  ...notorganic,
++  id: "baste", name: "Baste", tagline: "Interfaces cut to fit one person.",
++  url: "https://baste.dev", host: "baste.dev",
++  accent: "#AC3120", accentText: "#AC3120", onAccent: "#FFFFFF",
++};
++
+ export const THEMES: Record<ProductId, ProductTheme> = {
+   notorganic,
+   twyne,
+@@ -337,6 +345,7 @@
+   interleave,
+   stich,
+   voxq,
++  baste,
+ };
+ 
+ export function themeFor(product: ProductId): ProductTheme {
+--- a/apps/gateway/src/main.ts
++++ b/apps/gateway/src/main.ts
+@@ -265,6 +265,9 @@
+     interleave: Object.entries(paddleCatalog)
+       .filter(([, entry]) => entry.product === "interleave")
+       .map(([id]) => id),
++    baste: Object.entries(paddleCatalog)
++      .filter(([, entry]) => entry.product === "baste")
++      .map(([id]) => id),
+     stich: Object.entries(paddleCatalog)
+       .filter(([, entry]) => entry.product === "stich")
+       .map(([id]) => id),
+@@ -275,7 +278,7 @@
+       .map(([id]) => id),
+   },
+   paddlePricesByGrantProgram: Object.fromEntries(
+-    (["twyne", "keating", "interleave", "stich", "notorganic"] as const).map(
++    (["twyne", "keating", "interleave", "stich", "baste", "notorganic"] as const).map(
+       (product) => [
+         product,
+         Object.fromEntries(
+--- a/packages/core/src/grants.ts
++++ b/packages/core/src/grants.ts
+@@ -146,6 +146,15 @@
+     cadence: "once",
+     productScope: null,
+     rolloverIntervals: null,
++  },
++  baste_credit_10: {
++    amountMicrousd: 10_000_000, cadence: "once", productScope: null, rolloverIntervals: null,
++  },
++  baste_credit_25: {
++    amountMicrousd: 25_000_000, cadence: "once", productScope: null, rolloverIntervals: null,
++  },
++  baste_credit_50: {
++    amountMicrousd: 50_000_000, cadence: "once", productScope: null, rolloverIntervals: null,
+   },
+   stich_credit_10: {
+     amountMicrousd: 10_000_000,
+@@ -306,6 +315,9 @@
+ 
+ /** Standalone prepaid AI credit; no subscription, expiry, or automatic renewal. */
+ export const CREDIT_PACK_CATALOG = {
++  baste_credit_10: { product: "baste", priceUsd: 10, creditMicrousd: 10_000_000 },
++  baste_credit_25: { product: "baste", priceUsd: 25, creditMicrousd: 25_000_000 },
++  baste_credit_50: { product: "baste", priceUsd: 50, creditMicrousd: 50_000_000 },
+   keating_pack_10: { product: "keating", priceUsd: 10, creditMicrousd: 10_000_000 },
+   keating_pack_25: { product: "keating", priceUsd: 25, creditMicrousd: 25_000_000 },
+   keating_pack_50: { product: "keating", priceUsd: 50, creditMicrousd: 50_000_000 },
+--- a/apps/gateway/src/types.ts
++++ b/apps/gateway/src/types.ts
+@@ -19,6 +19,7 @@
+   "interleave",
+   "stich",
+   "voxq",
++  "baste",
+   "notorganic",
+ ] as const;
+ export type Product = ProductId;

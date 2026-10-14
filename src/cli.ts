@@ -27,12 +27,15 @@ import {
 } from "./persona/store.js";
 import { buildPersona, extendPersona, type PersonaDraft } from "./persona/builder.js";
 import { generateAssetSuite, generateUIKit } from "./baste.js";
+import type { GeneratedAsset } from "./assets/generators.js";
+import type { EvaluationResult } from "./evaluation/judge.js";
 import { defaultAssetFeatures } from "./generation/qd.js";
 import {
   resolveConfig,
   toBasteConfig,
   loadConfigFile,
   type BasteUserConfig,
+  type EvaluatorConfig,
 } from "./config/baste-config.js";
 import { startGUIServer } from "./gui/server.js";
 import { DesignVersionRegistry } from "./versioning/registry.js";
@@ -80,6 +83,9 @@ Export/Share:
   baste export <persona-id> [path]          Export .baste file
   baste import <path>                       Import .baste file
   baste openpencil <persona-id> [path]      Export .pen for OpenPencil
+  baste lint-palette <persona-id>           WCAG contrast check on persona's brand kit
+                                              --against <#hex>    bg color to test against
+                                              --min-ratio <n>     override 4.5 default
 
 Create options:
   --name <name>                             Display name for the persona
@@ -100,6 +106,11 @@ Global options:
   --batch-size <n>                          Batch size per iteration
   --output-count <n>                        Final assets to generate
   --model <model>                           Evaluator model
+  --provider fal                            Use fal for images, SVG, video and the judge (FAL_KEY)
+  --image-provider <openai|gemini|fal>      Image provider for this run
+  --svg-provider <quiver|fal>               SVG provider for this run
+  --video-provider <seedance|veo|fal>       Video provider for this run
+  --judge <openai|typesafe|fal>             Judge for this run; fal looks at the images
   --dry-run                                 Show prompts without generating
 
 Examples:
@@ -141,9 +152,28 @@ function parseArgs(args: string[]): Record<string, string | boolean> {
   return options;
 }
 
+/** A suite manifest entry: where the asset is, how it was made, and how the judge scored it. */
+function manifestAsset(a: GeneratedAsset, scores: Record<string, EvaluationResult>) {
+  const score = scores[a.id];
+  return {
+    id: a.id, purpose: a.metadata.assetPurpose, path: a.content, service: a.metadata.service, model: a.metadata.model, prompt: a.prompt,
+    ...(score ? { score: { overall: score.overall, criteria: score.criteria, features: score.features, feedback: score.feedback } } : {}),
+  };
+}
+
 function buildBasteConfig(options: Record<string, string | boolean>, explicitConfig?: BasteUserConfig) {
   const fileConfig = explicitConfig || resolveConfig();
-  const base = toBasteConfig(fileConfig);
+  // --provider fal routes every stage through one FAL_KEY; per-stage flags override it.
+  const all = typeof options.provider === "string" ? options.provider : undefined;
+  const pick = (flag: unknown) => typeof flag === "string" ? flag : all;
+  const base = toBasteConfig(fileConfig, {
+    imageProvider: pick(options.imageprovider),
+    imageModel: typeof options.imagemodel === "string" ? options.imagemodel : undefined,
+    svgProvider: pick(options.svgprovider),
+    videoProvider: pick(options.videoprovider),
+    videoModel: typeof options.videomodel === "string" ? options.videomodel : undefined,
+    evaluatorProvider: pick(options.judge) as EvaluatorConfig["provider"],
+  });
 
   return {
     generation: {
@@ -267,10 +297,11 @@ async function main() {
           {
             persona: { id: suite.persona.id, name: suite.persona.name },
             assets: {
-              svgs: suite.assets.svgs.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-              images: suite.assets.images.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-              videos: suite.assets.videos.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
+              svgs: suite.assets.svgs.map((a) => manifestAsset(a, suite.finalScores)),
+              images: suite.assets.images.map((a) => manifestAsset(a, suite.finalScores)),
+              videos: suite.assets.videos.map((a) => manifestAsset(a, suite.finalScores)),
             },
+            archive: suite.candidates,
             metadata: suite.metadata,
           },
           null,
@@ -300,10 +331,11 @@ async function main() {
           {
             persona: { id: suite.persona.id, name: suite.persona.name },
             assets: {
-              svgs: suite.assets.svgs.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose })),
-              images: suite.assets.images.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose })),
-              videos: suite.assets.videos.map((a) => ({ id: a.id, purpose: a.metadata.assetPurpose })),
+              svgs: suite.assets.svgs.map((a) => manifestAsset(a, suite.finalScores)),
+              images: suite.assets.images.map((a) => manifestAsset(a, suite.finalScores)),
+              videos: suite.assets.videos.map((a) => manifestAsset(a, suite.finalScores)),
             },
+            archive: suite.candidates,
             metadata: suite.metadata,
           },
           null,
@@ -1005,6 +1037,56 @@ async function main() {
       console.log(`   Persona: ${persona.name}`);
       console.log(`   Open in OpenPencil to edit design tokens and cultural board`);
       break;
+    }
+
+    case "lint-palette": {
+      const personaId = String(options._positional || args[1]);
+      const persona = getPersona(personaId);
+      if (!persona) {
+        console.error(`Unknown persona: ${personaId}`);
+        process.exit(1);
+      }
+      const { lintPalette, contrastRatio, parseColor } = await import("./assets/contrast.js");
+      const { loadBrandKit } = await import("./decompose/store.js");
+      const kit = loadBrandKit(personaId);
+      if (!kit) {
+        console.error(`No brand kit for ${personaId}. Run "baste decompose <url> --id ${personaId}" first.`);
+        process.exit(1);
+      }
+      const palette = kit.palette;
+      const against = options.against ? String(options.against) : undefined;
+      const minRatio = options.minratio ? Number(options.minratio) : 4.5;
+      const issues = lintPalette(palette, { minRatio, against });
+
+      console.log(`\nPalette lint — ${persona.name} (${personaId})`);
+      console.log(`  Colors:    ${palette.length}`);
+      console.log(`  Against:   ${against ?? "(lightest in palette)"}`);
+      console.log(`  Threshold: ${minRatio}:1 (WCAG AA body text)`);
+      console.log("");
+      // Show every pairwise ratio so the user can read it.
+      const parsed = palette.map((c) => ({ c, rgb: parseColor(c) })).filter((x) => x.rgb);
+      const bg = against
+        ? { c: against, rgb: parseColor(against) }
+        : parsed.slice().sort((a, b) => (b.rgb!.r + b.rgb!.g + b.rgb!.b) - (a.rgb!.r + a.rgb!.g + a.rgb!.b))[0];
+      if (bg?.rgb) {
+        console.log(`  Ratios (foreground on ${bg.c}):`);
+        for (const fg of parsed) {
+          if (fg.c === bg.c) continue;
+          const r = contrastRatio(fg.rgb!, bg.rgb!);
+          const tag = r >= 7 ? "AAA" : r >= 4.5 ? "AA " : r >= 3 ? "A+ " : "FAIL";
+          console.log(`    ${fg.c.padEnd(8)} → ${r.toFixed(2).padStart(5)}:1  ${tag}`);
+        }
+      }
+      console.log("");
+      if (issues.length === 0) {
+        console.log(`  ✓ All colors pass ${minRatio}:1 against ${bg?.c ?? against}.`);
+        process.exit(0);
+      }
+      console.log(`  ✗ ${issues.length} pair(s) below ${minRatio}:1:`);
+      for (const i of issues) {
+        console.log(`    ${i.pair[0]} on ${i.pair[1]}  ${i.ratio}:1  (${i.level})`);
+      }
+      process.exit(2);
     }
 
     default:

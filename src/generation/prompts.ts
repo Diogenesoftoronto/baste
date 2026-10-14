@@ -90,10 +90,18 @@ function generateImagePrompt(
   aesthetic: AestheticProfile,
   asset: AssetType
 ): GeneratedPrompt {
-  const baseStyle = buildStyleDescription(aesthetic);
+  const baseStyle = buildStyleDescription(aesthetic, { palette: false });
   const influence = selectRandomInfluence(persona.influences);
+  const [temperature, density, rendering] = axisStart(aesthetic);
 
+  // The three variation lines come first so they steer the image; QD mutation
+  // moves them along the archive's axes (see mutatePrompt).
   const prompt = `${asset.purpose === "hero" ? "Stunning hero image" : "Detailed illustration"}: ${asset.description}
+
+Variation:
+- ${temperature} color temperature
+- ${density} visual density
+- ${rendering} rendering
 
 Style: ${baseStyle}
 
@@ -104,8 +112,6 @@ Channeling ${persona.name}'s aesthetic universe:
 - Subculture notes: ${persona.culture.subcultures.slice(0, 2).join(", ")}
 
 Technical specs:
-- ${aesthetic.colorTemperature} color temperature
-- ${aesthetic.density} visual density
 - ${aesthetic.edgeStyle} edge treatment
 - ${aesthetic.textureStyle} surface quality
 - Aspect ratio: ${asset.constraints?.aspectRatio || "16:9"}
@@ -167,8 +173,9 @@ Looped seamlessly. No text, no characters, pure visual atmosphere.
 /**
  * Build a coherent style description from aesthetic profile
  */
-function buildStyleDescription(aesthetic: AestheticProfile): string {
+function buildStyleDescription(aesthetic: AestheticProfile, opts: { palette?: boolean } = {}): string {
   const descriptors: string[] = [];
+  const palette = opts.palette ?? true;
 
   // Color temperature
   const colorMap: Record<string, string> = {
@@ -178,12 +185,12 @@ function buildStyleDescription(aesthetic: AestheticProfile): string {
     "high-contrast": "bold high-contrast with deep blacks and pure whites",
     muted: "soft muted pastels with desaturated elegance",
   };
-  descriptors.push(colorMap[aesthetic.colorTemperature] || "balanced color palette");
+  if (palette) descriptors.push(colorMap[aesthetic.colorTemperature] || "balanced color palette");
 
   // Density
-  if (aesthetic.density === "minimal") descriptors.push("generous negative space and breathing room");
-  if (aesthetic.density === "maximalist") descriptors.push("rich visual density with layered elements");
-  if (aesthetic.density === "dense") descriptors.push("information-dense with clear hierarchy");
+  if (palette && aesthetic.density === "minimal") descriptors.push("generous negative space and breathing room");
+  if (palette && aesthetic.density === "maximalist") descriptors.push("rich visual density with layered elements");
+  if (palette && aesthetic.density === "dense") descriptors.push("information-dense with clear hierarchy");
 
   // Texture
   const textureMap: Record<string, string> = {
@@ -233,12 +240,57 @@ function selectRandomInfluence(influences: Persona["influences"]): string {
  * Mutate a prompt for QD exploration
  * Slightly alter style elements while keeping core concept
  */
+/**
+ * The QD archive's three axes, each as ordered steps a prompt can move along.
+ * The persona's own position is where a fitting starts; mutation explores its
+ * neighbours so the archive fills with real alternatives, not one look repeated.
+ */
+const TEMPERATURE = ["icy blue and violet", "cool teal and slate", "muted, desaturated", "neutral, balanced", "warm amber and terracotta", "deep ember orange and red"];
+const DENSITY = ["almost empty, one subject", "sparse, generous negative space", "balanced", "rich, layered", "dense, packed with detail", "maximalist, every surface busy"];
+const RENDERING = ["literal, photographic", "cinematic, lightly stylised", "illustrative, painterly", "graphic, flat-shaded", "abstract, pattern-led"];
+
+/** Where a persona's own aesthetic sits on each axis: the centre of its fitting. */
+function axisStart(aesthetic: AestheticProfile): [string, string, string] {
+  const temperature = { cool: 1, muted: 2, neutral: 3, "high-contrast": 3, warm: 4 }[aesthetic.colorTemperature] ?? 3;
+  const density = { minimal: 1, rich: 3, dense: 4, maximalist: 5 }[aesthetic.density] ?? 3;
+  const rendering = aesthetic.density === "minimal" ? 2 : 1;
+  return [TEMPERATURE[temperature], DENSITY[density], RENDERING[rendering]];
+}
+
+/** Move one axis line up or down its scale by one or two steps, bouncing off either end. */
+function stepAxis(prompt: string, line: RegExp, steps: string[], suffix: string): string {
+  const match = line.exec(prompt);
+  if (!match) return prompt;
+  const found = steps.indexOf(match[1]);
+  const from = found >= 0 ? found : Math.floor(steps.length / 2);
+  const size = Math.random() < 0.3 ? 2 : 1;
+  let to = from + (Math.random() < 0.5 ? -size : size);
+  if (to < 0 || to >= steps.length) to = from + (to < 0 ? size : -size);
+  return prompt.replace(line, `- ${steps[to]} ${suffix}`);
+}
+
 export function mutatePrompt(
   basePrompt: string,
   persona: Persona,
   mutationRate: number
 ): string {
   let mutated = basePrompt;
+
+  // Explore the archive's feature space: colour temperature, density, abstraction.
+  const axes: Array<[RegExp, string[], string]> = [
+    [/^- (.+) color temperature$/m, TEMPERATURE, "color temperature"],
+    [/^- (.+) visual density$/m, DENSITY, "visual density"],
+    [/^- (.+) rendering$/m, RENDERING, "rendering"],
+  ];
+  const before = mutated;
+  for (const [line, steps, suffix] of axes) {
+    if (Math.random() < mutationRate) mutated = stepAxis(mutated, line, steps, suffix);
+  }
+  // Every child moves somewhere in feature space, or the archive cannot grow.
+  if (mutated === before) {
+    const [line, steps, suffix] = axes[Math.floor(Math.random() * axes.length)];
+    mutated = stepAxis(mutated, line, steps, suffix);
+  }
 
   // Swap visual keywords
   if (Math.random() < mutationRate) {
@@ -261,10 +313,9 @@ export function mutatePrompt(
   // Swap influence
   if (Math.random() < mutationRate) {
     const newInfluence = selectRandomInfluence(persona.influences);
-    mutated = mutated.replace(
-      /Inspired by .+\n/,
-      `Inspired by ${newInfluence}\n`
-    );
+    mutated = mutated
+      .replace(/Inspired by .+\n/, `Inspired by ${newInfluence}\n`)
+      .replace(/- Visual influences: .+/, `- Visual influences: ${newInfluence}`);
   }
 
   return mutated;

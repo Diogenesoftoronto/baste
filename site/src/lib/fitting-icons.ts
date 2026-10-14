@@ -1,5 +1,5 @@
-/** Art-directed UI replacements. Keep the original generated assets and judge
- * scores in fittings.json for recorded-run playback and downloads. */
+/** Art-directed UI replacements, used by the fitting room and the recorded-run replay.
+ * The original generated assets and judge scores stay in fittings.json. */
 export const fittingIcons: Record<string, {
   icon: { src: string; label: string };
   "icon-collection": { src: string; label: string };

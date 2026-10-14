@@ -1,113 +1,711 @@
 @layer reset, base, tokens, recipes, utilities;
 
+/*
+ * Bodoni Moda arrives from Google Fonts a beat after first paint. Until then a
+ * local Times-metric serif stands in, scaled to Bodoni's advance width and
+ * line box so headlines wrap the same way and nothing jumps when it swaps.
+ * (Measured: Bodoni Moda 500 runs 1.143x wider than Times; ascent 1.13em,
+ * descent 0.40em. Overrides are divided by size-adjust.)
+ */
+@font-face {
+  font-family: "Bodoni Moda Fallback";
+  src: local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"), local("Tinos");
+  size-adjust: 114.3%;
+  ascent-override: 98.9%;
+  descent-override: 35%;
+  line-gap-override: 0%;
+}
+
+/* ─── Atelier ground ────────────────────────────────────────────────────
+   Pattern paper: warm stock with a faint drafting grid. Everything else in
+   the house style is ink, basting thread and tailor's chalk. */
 @layer base {
+  :root {
+    --paper: #F1ECE2;
+    --ink: #1C1B19;
+    --thread: #D2402A;
+    --chalk: #2F55A4;
+    --rule: #CFC7B8;
+    --grid: rgba(28, 27, 25, 0.045);
+    --ease-thread: cubic-bezier(0.22, 1, 0.36, 1);
+    color-scheme: light;
+  }
+
+  /* Paper remains without WebGL; the SVG drafting grid in FabricBackdrop
+     renders independently of the live linen. */
   html {
     scroll-behavior: smooth;
-    background: #0A0A12;
-    color: #F5F5F2;
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--paper);
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Instrument Sans', 'Helvetica Neue', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    position: relative;
-    background:
-      radial-gradient(circle at 12% 18%, rgba(138, 0, 255, 0.18) 0%, transparent 45%),
-      radial-gradient(circle at 88% 82%, rgba(255, 0, 184, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(198, 255, 0, 0.05) 0%, transparent 60%),
-      #0A0A12;
-  }
-
-  /* Layered atmosphere — splatter frame fixed behind content */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: url("/bg-frame.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.35;
-    mix-blend-mode: screen;
-  }
-
-  body > * {
-    position: relative;
-    z-index: 1;
+    background: transparent;
   }
 
   ::selection {
-    background: rgba(198, 255, 0, 0.4);
-    color: #0A0A0A;
+    background: #F0C534;
+    color: var(--ink);
   }
 
-  /* TMNT spray-paint scrollbar */
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: #15101F; }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #C6FF00 0%, #8A00FF 100%);
-    border-radius: 6px;
+  :focus-visible {
+    outline: 2px solid var(--chalk);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
-  .baste-graffiti {
-    font-family: 'Bowlby One', 'Space Grotesk', sans-serif;
-    letter-spacing: 0.02em;
+  a { color: inherit; }
+
+  /* Didone display face: tighten at size, let the optical axis do its work */
+  .display {
+    font-family: 'Bodoni Moda', 'Bodoni Moda Fallback', 'Didot', Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
   }
 
-  .baste-drip-text {
-    background: linear-gradient(180deg, #C6FF00 0%, #7BFF36 60%, #00E676 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 0 28px rgba(198, 255, 0, 0.35);
+  .label {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  .baste-purple-glow {
-    box-shadow:
-      0 0 0 2px #0A0A0A,
-      0 0 0 4px #8A00FF,
-      0 0 24px rgba(138, 0, 255, 0.6);
-  }
-
-  /* Reusable layered-bg utility classes */
-  .baste-bg-grid {
-    background-image: url("/bg-grid.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .baste-bg-frame {
-    background-image: url("/bg-frame.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .baste-bg-splatter {
-    background-image: url("/bg-splatter.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  /* Drop these onto a relatively-positioned container as a layer */
-  .baste-bg-layer {
+  .skip-link {
     position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.55;
-    mix-blend-mode: screen;
+    left: 12px;
+    top: -60px;
+    z-index: 100;
+    padding: 8px 14px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    text-decoration: none;
   }
+  .skip-link:focus { top: 12px; }
+}
 
-  .baste-noise::before {
+/* ─── Action verbs ──────────────────────────────────────────────────────
+   Every control says what kind of thing it does before you press it, and
+   answers in kind when you do (sound + press shader in fx/juice):
+     cut    — commit: save, create, generate. Ink; a cut line waits underneath.
+     spend  — a cut that costs credit. Ink with a tape-measure tab.
+     baste  — a safe try: drafts, previews, dry runs. Loose stitches that run.
+     pin    — select or toggle. A pin head appears where it will press.
+     chalk  — copy, export, download. Chalk-blue, with a chalk smear.
+     go     — move somewhere else. Quiet; its arrow leans the way it goes.
+     unpick — remove. Thread-red, confirmed by holding.
+   The hover cues are decoration on top of the label, never instead of it. */
+@layer recipes {
+  .act { position: relative; isolation: isolate; }
+
+  /* cut: a dashed cut line with shears that travel along it on hover */
+  .act-cut::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(241, 236, 226, 0.7) 0 4px, transparent 4px 7px) 0 0 / 7px 1px repeat-x;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-thread);
+    pointer-events: none;
+  }
+  .act-cut:not(:disabled):hover::after { transform: scaleX(1); }
+
+  /* spend: same cut, plus a strip of tape measure on the leading edge */
+  .act-spend { padding-left: 22px !important; }
+  .act-spend::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    border-radius: inherit;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background:
+      repeating-linear-gradient(180deg, rgba(28, 27, 25, 0.55) 0 1px, transparent 1px 5px) right 2px top 0 / 4px 100% no-repeat,
+      #F0C534;
+    pointer-events: none;
+  }
+  .act-spend::after {
+    content: "";
+    position: absolute;
+    left: 22px;
+    right: 10px;
+    bottom: 5px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(240, 197, 52, 0.85) 0 4px, transparent 4px 7px) 0 0 / 7px 1px repeat-x;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-thread);
+  }
+  .act-spend:not(:disabled):hover::after { transform: scaleX(1); }
+
+  /* baste: loose running stitches round the edge, which run on hover */
+  .act-baste { border-color: transparent !important; }
+  .act-baste::before,
+  .act-unpick::before {
     content: "";
     position: absolute;
     inset: 0;
+    border-radius: inherit;
     pointer-events: none;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    --stitch: rgba(210, 64, 42, 0.75);
+    background-image:
+      linear-gradient(90deg, var(--stitch) 50%, transparent 0),
+      linear-gradient(90deg, var(--stitch) 50%, transparent 0),
+      linear-gradient(0deg, var(--stitch) 50%, transparent 0),
+      linear-gradient(0deg, var(--stitch) 50%, transparent 0);
+    background-size: 12px 1.5px, 12px 1.5px, 1.5px 12px, 1.5px 12px;
+    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   }
+  .act-baste:not(:disabled):hover::before {
+    --stitch: var(--thread);
+    animation: stitch-run 0.9s linear infinite;
+  }
+  @keyframes stitch-run {
+    to { background-position: 12px 0, -12px 100%, 0 -12px, 100% 12px; }
+  }
+
+  /* pin: a dressmaker's pin head appears where the press will land */
+  .act-pin::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #F08A74, var(--thread) 55%, #8E2615);
+    box-shadow: 0 1px 2px rgba(28, 27, 25, 0.35);
+    transform: scale(0) translateY(-4px);
+    transition: transform 0.3s var(--ease-thread);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .act-pin:not(:disabled):hover::before,
+  .act-pin[aria-pressed="true"]::before,
+  .act-pin[aria-current="true"]::before { transform: none; }
+
+  /* chalk: a textured chalk smear under the label */
+  .act-chalk::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 4px;
+    height: 5px;
+    background:
+      repeating-linear-gradient(100deg, rgba(47, 85, 164, 0.35) 0 1px, transparent 1px 3px),
+      linear-gradient(90deg, rgba(47, 85, 164, 0.08), rgba(47, 85, 164, 0.3) 30%, rgba(47, 85, 164, 0.18));
+    border-radius: 3px 1px 4px 2px;
+    transform: scaleX(0) skewX(-12deg);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-thread);
+    pointer-events: none;
+  }
+  .act-chalk:not(:disabled):hover::after { transform: scaleX(1) skewX(-12deg); }
+
+  /* go: the arrow leans toward where it goes */
+  .act-go [data-arrow] { display: inline-block; transition: transform 0.3s var(--ease-thread); }
+  .act-go:hover [data-arrow] { transform: translateX(3px); }
+  .act-go:hover [data-arrow="out"] { transform: translate(2px, -2px); }
+
+  /* unpick: the solid edge loosens into short stitches on hover */
+  .act-unpick::before { opacity: 0; --stitch: var(--thread); background-size: 6px 1px, 6px 1px, 1px 6px, 1px 6px; transition: opacity 0.2s; }
+  .act-unpick:not(:disabled):hover { border-color: transparent !important; }
+  .act-unpick:not(:disabled):hover::before { opacity: 1; }
+
+  /* working: a thread runs along the bottom edge while the action is under way */
+  .act[aria-busy="true"]::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 3px;
+    height: 2px;
+    transform: none;
+    background: linear-gradient(90deg, var(--thread) 0 7px, transparent 7px 11px) 0 0 / 11px 2px repeat-x;
+    animation: thread-run 0.6s linear infinite;
+  }
+  @keyframes thread-run { to { background-position: 11px 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .act-baste:hover::before, .act[aria-busy="true"]::after { animation: none; }
+  }
+}
+
+/* ─── Basting stitch — the signature mark ───────────────────────────────
+   Long loose red stitches. Used for rules, outlines and "sewn-in" reveals. */
+@layer base {
+  .stitch-rule {
+    height: 2px;
+    border: 0;
+    background-image: linear-gradient(90deg, var(--thread) 0 12px, transparent 12px 20px);
+    background-size: 20px 2px;
+    background-repeat: repeat-x;
+  }
+  .stitch-rule--chalk {
+    background-image: linear-gradient(90deg, var(--chalk) 0 4px, transparent 4px 9px);
+    background-size: 9px 1px;
+    height: 1px;
+  }
+
+  .stitch-box {
+    position: relative;
+  }
+  .stitch-box::before {
+    content: "";
+    position: absolute;
+    inset: -7px;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+      linear-gradient(90deg, var(--thread) 50%, transparent 0) top / 18px 1.5px repeat-x,
+      linear-gradient(90deg, var(--thread) 50%, transparent 0) bottom / 18px 1.5px repeat-x,
+      linear-gradient(0deg, var(--thread) 50%, transparent 0) left / 1.5px 18px repeat-y,
+      linear-gradient(0deg, var(--thread) 50%, transparent 0) right / 1.5px 18px repeat-y;
+    opacity: 0.9;
+  }
+
+  /* SVG thread that sews itself in when it scrolls into view */
+  .thread-path {
+    fill: none;
+    stroke: var(--thread);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 10 8;
+  }
+  .sew-in {
+    animation: sew-in 1.6s var(--ease-thread) both;
+  }
+  @keyframes sew-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  .rise {
+    animation: rise 0.7s var(--ease-thread) both;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Entrances start only when observed. Content is always readable by default. */
+  .motion [data-reveal][data-revealed] {
+    animation: reveal-rise 650ms var(--ease-thread) both;
+  }
+  .motion [data-reveal="sheet"][data-revealed] {
+    animation-name: reveal-sheet;
+  }
+  @keyframes reveal-rise {
+    from { transform: translateY(18px); }
+    to { transform: none; }
+  }
+  @keyframes reveal-sheet {
+    from { transform: translateY(24px) rotate(-1deg); }
+    to { transform: rotate(var(--rest-rot, 0deg)); }
+  }
+  /* React Bits BlurText-inspired word treatment, adapted to Qwik. */
+  [data-words] .w { display: inline-block; }
+  .motion [data-words][data-revealed] .w {
+    animation: word-focus 600ms var(--ease-thread) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+  @keyframes word-focus {
+    from { filter: blur(2px); transform: translateY(5px); }
+    to { filter: blur(0); transform: none; }
+  }
+  [data-depth] { translate: 0 var(--depth-y, 0); }
+
+  /* Juice: every press squashes a little and springs back past rest */
+  .motion :is(button, a[class], [role="tab"], [role="radio"]):not(:disabled) {
+    transition-property: transform, background-color, border-color, color, box-shadow, opacity;
+  }
+  .motion :is(button, [role="tab"], [role="radio"]):not(:disabled):active,
+  .motion a[class]:active {
+    transform: translateY(1px) scale(0.965, 0.94);
+    transition-duration: 60ms;
+  }
+  .motion [data-juice="snip"]:not(:disabled):hover {
+    animation: juice-wobble 0.5s var(--ease-thread);
+  }
+  @keyframes juice-wobble {
+    0% { transform: rotate(0); }
+    30% { transform: rotate(-1.6deg) scale(1.02); }
+    60% { transform: rotate(1deg); }
+    100% { transform: rotate(0); }
+  }
+  /* idle easter egg: a pin drops onto the page and sticks */
+  .idle-pin {
+    position: fixed !important;
+    top: 0;
+    z-index: 9000;
+    animation: pin-drop 0.9s cubic-bezier(0.5, 0, 0.75, 0) both, pin-stick 0.4s 0.9s var(--ease-thread) both;
+  }
+  @keyframes pin-drop {
+    from { transform: translateY(-40px) rotate(-30deg); }
+    to   { transform: translateY(62vh) rotate(8deg); }
+  }
+  @keyframes pin-stick {
+    0%   { transform: translateY(62vh) rotate(8deg) scale(1.15, 0.85); }
+    100% { transform: translateY(62vh) rotate(0deg) scale(1); }
+  }
+  /* view transitions: the outgoing fitting slides off like a sheet */
+  ::view-transition-old(root) { animation: 0.35s var(--ease-thread) both vt-out; }
+  ::view-transition-new(root) { animation: 0.45s var(--ease-thread) both vt-in; }
+  @keyframes vt-out { to { opacity: 0; transform: translateY(-8px); } }
+  @keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+
+  /* Pinking-shears edge: the zig-zag a tailor cuts so cloth won't fray */
+  .pinked {
+    --pink: 9px;
+    -webkit-mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--pink) * 2) 51% repeat-x,
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--pink) * 2) 51% repeat-x;
+    mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--pink) * 2) 51% repeat-x,
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--pink) * 2) 51% repeat-x;
+  }
+
+  /* Dressmaker's pin, pushed through a sheet */
+  .pin-head {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #F38A74, #D2402A 55%, #8E2615);
+    box-shadow: 2px 4px 5px rgba(28, 27, 25, 0.35);
+    z-index: 4;
+  }
+  .pin-head::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 9px;
+    width: 1.5px;
+    height: 16px;
+    background: linear-gradient(#9C978C, #6E6A61);
+    transform: rotate(-28deg);
+    transform-origin: top;
+    z-index: -1;
+  }
+}
+
+/* ─── Fitting — a scope dressed entirely in one persona's tokens ────────
+   Set --f-* custom properties on the element (see lib/fitting.ts). */
+@layer base {
+  .fitting {
+    --f-bg: #fff;
+    --f-surface: #fff;
+    --f-text: #111;
+    --f-muted: #666;
+    --f-border: #ddd;
+    --f-primary: #333;
+    --f-on-primary: #fff;
+    --f-secondary: #555;
+    --f-accent: #777;
+    --f-radius: 8px;
+    --f-radius-lg: 12px;
+    --f-gap: 16px;
+    --f-pad: 20px;
+    --f-heading: inherit;
+    --f-body: inherit;
+    --f-mono: monospace;
+    --f-ease: ease;
+    --f-dur: 200ms;
+    --f-border-style: solid;
+    position: relative;
+    isolation: isolate;
+    background: var(--f-bg);
+    color: var(--f-text);
+    font-family: var(--f-body);
+    transition:
+      background-color 600ms var(--ease-thread),
+      color 600ms var(--ease-thread);
+  }
+  .fitting * {
+    transition-property: background-color, color, border-color, border-radius, padding, gap;
+    transition-duration: 600ms;
+    transition-timing-function: var(--ease-thread);
+  }
+  .fitting[data-texture="noisy"]::after,
+  .fitting[data-texture="grainy"]::after,
+  .fitting[data-texture="textured"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+  }
+  .fitting[data-texture="grainy"]::after { opacity: 0.5; }
+  .fitting[data-texture="textured"]::after { opacity: 0.22; }
+
+  .fitting .f-heading { font-family: var(--f-heading); }
+  .fitting .f-mono { font-family: var(--f-mono); }
+  .fitting .f-surface {
+    background: var(--f-surface);
+    border: 1px var(--f-border-style) var(--f-border);
+    border-radius: var(--f-radius-lg);
+  }
+  .fitting .f-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: calc(var(--f-gap) * 0.6) calc(var(--f-gap) * 1.2);
+    border-radius: var(--f-radius);
+    background: var(--f-primary);
+    color: var(--f-on-primary);
+    font-weight: 600;
+    border: 0;
+    transition: transform var(--f-dur) var(--f-ease), filter var(--f-dur) var(--f-ease);
+  }
+  .fitting .f-btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  .fitting .f-btn--ghost {
+    background: transparent;
+    color: var(--f-text);
+    border: 1px var(--f-border-style) var(--f-border);
+  }
+  .fitting .f-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    border: 1px var(--f-border-style) var(--f-border);
+    color: var(--f-muted);
+    background: color-mix(in oklab, var(--f-surface) 70%, var(--f-accent) 12%);
+    white-space: nowrap;
+  }
+}
+
+/* ─── Reduced motion: keep the craft, drop the movement ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Unlayered so component utility classes cannot replace semantic cursors. */
+  /* ─── Cursor vocabulary ──────────────────────────────────────────────────
+     The one source of truth for every cursor on the site. Components never
+     set `cursor` themselves; they use the right element or role (or a
+     data-cursor hint) and inherit from here, so the same kind of target
+     always answers with the same cursor:
+       needle   — reading, resting. The default everywhere.
+       pin      — anything you can press, pick or toggle.
+       text     — anything you can type into.
+       grab     — anything you can drag (data-cursor="grab"); grabbing while held.
+       progress — a control or panel that is working (aria-busy).
+       not-allowed — a control you cannot use right now.
+     Coarse pointers keep the platform cursor. */
+  :root {
+    --cursor-needle: url("/assets/cursors/needle.svg") 3 29, default;
+    --cursor-pin: url("/assets/cursors/pin.svg") 4 4, pointer;
+  }
+  @media (any-hover: hover) and (any-pointer: fine) {
+    html, body { cursor: var(--cursor-needle); }
+    :where(p, h1, h2, h3, h4, pre, code, blockquote) { cursor: text; }
+    /* :where() keeps these at zero specificity so the states below always win */
+    :where(
+      a[href], button, summary, select, label[for],
+      label:has(input:is([type="checkbox"], [type="radio"])),
+      input:is([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="submit"], [type="button"], [type="reset"]),
+      [role="button"], [role="link"], [role="tab"], [role="radio"], [role="checkbox"], [role="switch"], [role="option"], [role="menuitem"],
+      [data-cursor="press"]
+    ) {
+      cursor: var(--cursor-pin);
+    }
+    :where(a[href], button, summary, [role="button"], [role="tab"], [data-cursor="press"]) :where(*) { cursor: inherit; }
+    :where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"], [type="submit"], [type="button"], [type="reset"]), textarea, [contenteditable]:not([contenteditable="false"])) {
+      cursor: text;
+    }
+    [data-cursor="grab"] { cursor: grab; }
+    [data-cursor="grab"]:active, html[data-dragging] * { cursor: grabbing !important; }
+    [aria-busy="true"] { cursor: progress; }
+    :is(:disabled, [aria-disabled="true"]),
+    label:has(input:disabled) { cursor: not-allowed; }
+    :is(:disabled, [aria-disabled="true"]) * { cursor: inherit; }
+  }
+
+
+/* Companion conversation follows the recovered workroom studies: a visible
+   character, open exchanges and one generous writing surface. */
+.meet-section { background: #f8f6f0; scroll-margin-top: 76px; }
+.meet-layout { max-width: 1240px; margin-inline: auto; padding: 48px 32px 40px; }
+.meet-intro { display: flex; align-items: center; justify-content: space-between; gap: 48px; margin-bottom: 28px; }
+.meet-intro h2 { font-size: clamp(36px, 3.7vw, 48px); text-wrap: balance; }
+.meet-intro p { max-width: 42ch; color: #4a4741; font-size: 16px; line-height: 1.65; padding-bottom: 2px; }
+.companion-choices { display: flex; gap: 32px; border-bottom: 1px solid #d7d2c8; margin-bottom: 28px; }
+.companion-choice { display: flex; align-items: center; gap: 12px; padding: 0 12px 16px 0; color: #4a4741; border-bottom: 2px solid transparent; margin-bottom: -1px; min-height: 66px; text-align: left; transition: color 180ms, border-color 180ms; }
+.companion-choice img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; }
+.companion-choice strong { display: block; font-size: 16px; font-weight: 600; }
+.companion-choice small { display: block; font-size: 12px; line-height: 1.5; }
+.companion-choice:hover { color: #1c1b19; border-color: #b8b0a2; }
+.companion-choice[aria-selected=true] { color: #1c1b19; border-color: #ae3522; }
+.companion-selected { color: #ae3522; opacity: 0; padding-left: 8px; }
+.companion-choice[aria-selected=true] .companion-selected { opacity: 1; }
+.conversation-panel { display: grid; grid-template-columns: minmax(0, .72fr) minmax(0, 1.4fr); gap: clamp(32px, 5vw, 64px); color: #25231f; }
+.companion-profile { min-width: 0; }
+.companion-portrait { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 3px; }
+.companion-profile-copy { padding-top: 18px; }
+.companion-world { font-size: 12px; color: #625d55; margin-bottom: 8px; }
+.companion-profile h3 { font-family: var(--fonts-display, Georgia, serif); font-size: 28px; line-height: 1.2; font-weight: 400; text-wrap: balance; }
+.companion-influences { margin-top: 20px; display: grid; gap: 10px; font-size: 12px; line-height: 1.5; }
+.companion-influences > div { display: grid; grid-template-columns: 100px 1fr; gap: 12px; }
+.companion-influences dt { color: #625d55; }
+.companion-influences dd { color: #3e3b35; }
+.companion-dialogue { display: flex; flex-direction: column; min-width: 0; min-height: 0; height: clamp(640px, 80svh, 720px); border-left: 1px solid #d7d2c8; padding-left: clamp(24px, 3vw, 40px); }
+.companion-dialogue-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding-bottom: 22px; }
+.companion-dialogue-heading h3 { font-size: 20px; font-weight: 500; line-height: 1.35; }
+.companion-dialogue-heading p { font-size: 13px; color: #625d55; margin-top: 4px; }
+.conversation-mode { font-size: 11px; color: #625d55; white-space: nowrap; padding-top: 5px; }
+.companion-log { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 14px; padding-bottom: 20px; scroll-padding: 20px; }
+.companion-message { max-width: 60ch; margin-top: 24px; }
+.companion-message:first-child { margin-top: 0; }
+.companion-message[data-grouped=true] { margin-top: 10px; }
+.companion-speaker { display: block; font-size: 12px; font-weight: 600; color: #56613f; margin-bottom: 7px; }
+.companion-message p { font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; white-space: pre-wrap; }
+.companion-message[data-from=you] { background: #ede9e0; padding: 14px 18px; border-radius: 4px; }
+.companion-message[data-from=you] .companion-speaker { color: #2f55a4; }
+.companion-attachment { margin-top: 14px; }
+.companion-attachment.fitting { background: transparent; }
+.conversation-palette { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; max-width: 440px; font-family: 'Instrument Sans', system-ui, sans-serif; }
+.conversation-palette > span { display: flex; flex-direction: column; gap: 5px; font-size: 11px; color: #625d55; }
+.conversation-palette i { display: block; height: 40px; border: 1px solid #0002; border-radius: 3px; }
+.companion-reply { padding-top: 16px; border-top: 1px solid #ded9cf; }
+.companion-suggestions { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-bottom: 12px; }
+.companion-suggestions button { display: inline-flex; align-items: center; gap: 10px; color: #2f55a4; min-height: 36px; font-size: 13px; text-align: left; }
+.companion-suggestions button:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 4px; }
+.companion-composer { background: #fffefa; border: 1px solid #bfb9ac; border-radius: 6px; transition: border-color 180ms; }
+.companion-composer:focus-within { border-color: #2f55a4; outline: 1px solid #2f55a4; }
+.companion-composer textarea { display: block; width: 100%; min-height: 80px; max-height: 180px; resize: vertical; padding: 14px 16px 8px; font: inherit; font-size: 16px; line-height: 1.5; color: #25231f; outline: none; border: none; background: transparent; }
+.companion-composer textarea::placeholder { color: #686157; opacity: 1; }
+.companion-composer-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 8px 8px 16px; }
+.companion-composer-actions > span { font-size: 11px; color: #686157; }
+.companion-composer-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 16px; height: 40px; padding: 0 16px; border-radius: 4px; background: #ae3522; color: #fffefa; font-size: 14px; transition: background 160ms; }
+.companion-composer-actions button:hover:not(:disabled) { background: #852817; }
+.companion-composer-actions button:disabled { background: #ded8cf; color: #625d55; }
+.companion-composer-actions .companion-microphone { background: #eeeae1; color: #3e3b35; gap: 7px; padding-inline: 12px; min-height: 44px; }
+.companion-composer-actions .companion-microphone:hover:not(:disabled) { background: #e2dfd3; }
+.companion-composer-actions .companion-microphone[aria-pressed=true] { background: #e7edf6; color: #244981; }
+.companion-portrait-frame { overflow: hidden; border-radius: 3px; background: #e7e3d9; }
+.companion-portrait-frame img { display: block; }
+.companion-presence { display: flex; align-items: center; gap: 9px; min-height: 44px; margin: -9px 0 16px; font-size: 12px; color: #625d55; flex-wrap: wrap; }
+.companion-presence > [role=status] { margin-right: auto; }
+.companion-presence button { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: #2f55a4; }
+.companion-presence button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.companion-presence-indicator { display: flex; align-items: center; justify-content: center; width: 26px; height: 24px; gap: 3px; color: #697052; }
+.companion-presence-indicator i { display: block; width: 2px; height: 4px; border-radius: 1px; background: currentColor; }
+[data-voice-state=listening] .companion-presence-indicator { color: #2f55a4; }
+[data-voice-state=speaking] .companion-presence-indicator { color: #ae3522; }
+[data-voice-state=paused] .companion-presence-indicator { color: #625d55; }
+[data-voice-state=paused] .companion-presence-indicator i { height: 12px; }
+[data-voice-state=paused] .companion-presence-indicator i:nth-child(odd) { visibility: hidden; }
+[data-voice-state=listening] .companion-presence-indicator i,
+[data-voice-state=speaking] .companion-presence-indicator i { height: calc(4px + var(--voice-level, 0) * 16px); }
+[data-voice-state=listening] .companion-presence-indicator i:nth-child(even),
+[data-voice-state=speaking] .companion-presence-indicator i:nth-child(even) { height: calc(4px + var(--voice-level, 0) * 9px); }
+.voice-timer { color: #2f55a4; font-variant-numeric: tabular-nums; }
+.companion-voice-options { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; margin-top: 4px; }
+.companion-voice-options button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 12px; color: #625d55; }
+.companion-voice-options button:hover:not(:disabled) { color: #2f55a4; }
+.companion-voice-options button[aria-pressed=true] { color: #2f55a4; }
+.companion-voice-options button:disabled { color: #777065; }
+.voice-help { color: #625d55; font-size: 11px; line-height: 1.5; }
+.companion-voice-error, .companion-voice-notice { font-size: 12px; line-height: 1.5; margin: 4px 0 8px; }
+.companion-voice-error { color: #8b2f21; }
+.companion-voice-notice { color: #2f55a4; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-voice-state=speaking] .companion-portrait { transform: scale(calc(1 + var(--voice-level, 0) * .008)); transform-origin: 50% 65%; }
+  [data-voice-state=thinking] .companion-presence-indicator,
+  [data-voice-state=preparing] .companion-presence-indicator,
+  [data-voice-state=transcribing] .companion-presence-indicator { animation: voice-consider 1.8s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-voice-state=listening] .companion-presence-indicator i,
+  [data-voice-state=speaking] .companion-presence-indicator i { height: 10px; }
+}
+@keyframes voice-consider { 50% { opacity: .45; } }
+.conversation-note { color: #625d55; font-size: 11px; line-height: 1.5; margin-top: 10px; }
+.companion-colophon { border-top: 1px solid #d7d2c8; margin-top: 30px; padding-top: 18px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #625d55; }
+.companion-colophon a { color: #2f55a4; text-underline-offset: 4px; }
+.companion-colophon a:hover { text-decoration: underline; }
+.companion-conversation :focus-visible { outline: 2px solid #2f55a4; outline-offset: 4px; }
+.companion-conversation textarea:focus-visible { outline: none; }
+.companion-suggestions button:disabled { color: #777065; }
+.conversation-error { color: #8b2f21; font-size: 13px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.conversation-error button { text-decoration: underline; text-underline-offset: 3px; flex-shrink: 0; min-height: 40px; }
+.companion-typing { display: flex; align-items: center; gap: 5px; color: #625d55; font-size: 12px; margin-top: 18px; }
+.companion-typing > span { margin-right: 6px; }
+.msg-in { animation: message-arrive 200ms var(--ease-thread); }
+@keyframes message-arrive { from { transform: translateY(5px); } to { transform: none; } }
+.typing-dot { display: block; width: 4px; height: 4px; border-radius: 50%; background: #625d55; animation: typing-beat 1s ease-in-out infinite; }
+.typing-dot:nth-last-child(2) { animation-delay: 120ms; }
+.typing-dot:last-child { animation-delay: 240ms; }
+@keyframes typing-beat { 0%, 80%, 100% { opacity: .5; transform: none; } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (min-width: 1024px) {
+  [data-measurements="true"] { grid-template-columns: minmax(0, 1fr) 150px; }
+}
+@media (max-width: 767px) {
+  .meet-layout { padding: 40px 20px 32px; }
+  .meet-intro { display: block; margin-bottom: 28px; }
+  .meet-intro h2 { max-width: 16ch; margin-bottom: 16px; }
+  .meet-intro p { font-size: 15px; max-width: 44ch; }
+  .companion-choices { gap: 12px; margin-bottom: 24px; }
+  .companion-choice { flex: 1; min-width: 0; gap: 8px; padding-right: 0; }
+  .companion-choice img { width: 36px; height: 44px; }
+  .companion-choice strong { font-size: 14px; }
+  .companion-choice small, .companion-selected { display: none; }
+  .conversation-panel { display: block; }
+  .companion-profile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: center; margin-bottom: 28px; }
+  .companion-portrait { aspect-ratio: 4/5; }
+  .companion-profile-copy { padding: 0; }
+  .companion-profile h3 { font-size: 24px; }
+  .companion-world { font-size: 11px; }
+  .companion-influences { display: none; }
+  .companion-dialogue { height: 690px; min-height: 600px; border-left: 0; border-top: 1px solid #d7d2c8; padding: 22px 0 0; }
+  .companion-dialogue-heading { padding-bottom: 20px; gap: 8px; }
+  .companion-dialogue-heading h3 { font-size: 17px; }
+  .companion-dialogue-heading p { font-size: 12px; }
+  .conversation-mode { font-size: 10px; padding-top: 3px; }
+  .companion-log { padding-right: 6px; }
+  .companion-message p { font-size: 15px; }
+  .companion-suggestions { gap: 0 16px; }
+  .companion-suggestions button { font-size: 12px; }
+  .companion-composer-actions > span { display: none; }
+  .companion-colophon { font-size: 11px; margin-top: 24px; }
+}
+@media (pointer: coarse) {
+  /* Touch scrolling changes the visual viewport continuously. Keep the page
+     ground in CSS; the drafting grid still supplies its gentle movement. */
+  [data-fabric-backdrop] canvas { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-depth] { translate: none !important; }
+  [data-reveal], [data-words] .w { animation: none !important; transform: none !important; filter: none !important; }
 }

@@ -1,0 +1,76 @@
+{
+  "src": "/media/tour/baste-tour.mp4",
+  "poster": "/media/tour/poster.webp",
+  "captions": {
+    "en": "/media/tour/captions-en.vtt",
+    "fr": "/media/tour/captions-fr.vtt"
+  },
+  "duration": 74,
+  "recorded": "2026-10-10",
+  "chapters": [
+    {
+      "id": "why",
+      "start": 0,
+      "title": "A person",
+      "titleFr": "Une personne",
+      "text": "Most interfaces are cut for “users aged twenty-five to thirty-four.” Nobody in that bracket has taste. A person does.",
+      "textFr": "La plupart des interfaces sont taillées pour « les 25 à 34 ans ». Personne dans cette tranche n’a de goût. Une personne, si."
+    },
+    {
+      "id": "measure",
+      "start": 8.73,
+      "title": "Measure",
+      "titleFr": "Mesurer",
+      "text": "Baste starts with one person: the films they rewatch, the music they work to, the rooms they feel at home in, and the things they can’t stand in an app.",
+      "textFr": "Baste part d’une seule personne : les films qu’elle revoit, la musique sur laquelle elle travaille, les lieux où elle se sent chez elle, et ce qu’elle ne supporte pas dans une appli."
+    },
+    {
+      "id": "fitting",
+      "start": 19.27,
+      "title": "Fitting room",
+      "titleFr": "Cabine d’essayage",
+      "text": "Then it fits an interface to them. Same screen, three people. The layout, the type, the colour and the motion all change.",
+      "textFr": "Puis il lui ajuste une interface. Même écran, trois personnes. La mise en page, la typographie, la couleur et le mouvement changent tous."
+    },
+    {
+      "id": "baste",
+      "start": 27.37,
+      "title": "Baste",
+      "titleFr": "Bâtir",
+      "text": "To find a direction, Baste tries dozens of loose versions, warm and cool, sparse and dense, and a vision judge looks at every one.",
+      "textFr": "Pour trouver une direction, Baste essaie des dizaines de versions à grands traits, chaudes et froides, aérées et denses, et un juge visuel les examine toutes."
+    },
+    {
+      "id": "fit",
+      "start": 37.3,
+      "title": "Fit",
+      "titleFr": "Ajuster",
+      "text": "It keeps the best in each region, not one winner. So you see the real range of options before anything is final.",
+      "textFr": "Il garde la meilleure de chaque région, pas un seul gagnant. Vous voyez ainsi le véritable éventail des options avant que rien ne soit arrêté."
+    },
+    {
+      "id": "cut",
+      "start": 45.03,
+      "title": "Cut",
+      "titleFr": "Couper",
+      "text": "What comes out is ready to use: images, vector icons, ambient loops, and design tokens for CSS, Tailwind or Panda.",
+      "textFr": "Ce qui en sort est prêt à l’emploi : images, icônes vectorielles, boucles d’ambiance, et jetons de design pour CSS, Tailwind ou Panda."
+    },
+    {
+      "id": "talk",
+      "start": 54.93,
+      "title": "Talk",
+      "titleFr": "Parler",
+      "text": "And you can ask the persona why. They’ll tell you, in their own words, what they love and what would make a design feel like theirs.",
+      "textFr": "Et vous pouvez demander au persona pourquoi. Il vous dira, avec ses propres mots, ce qu’il aime et ce qui ferait qu’un design lui ressemble."
+    },
+    {
+      "id": "yours",
+      "start": 63.9,
+      "title": "Yours",
+      "titleFr": "À vous",
+      "text": "Bring your own people. Measure them in the Studio, and cut something that fits.",
+      "textFr": "Amenez vos propres personnes. Mesurez-les dans le Studio, et taillez quelque chose qui leur va."
+    }
+  ]
+}

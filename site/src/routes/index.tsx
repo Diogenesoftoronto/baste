@@ -3,25 +3,23 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { Nav } from "~/components/layout/nav";
 import { Footer } from "~/components/layout/footer";
 import { HeroSection } from "~/components/sections/hero";
-import { WhySection } from "~/components/sections/why";
-import { PersonasSection } from "~/components/sections/personas";
-import { HowItWorksSection } from "~/components/sections/how-it-works";
-import { InstallationSection } from "~/components/sections/installation";
-import { FeaturesSection } from "~/components/sections/features";
-import { CTASection } from "~/components/sections/cta";
+import { TourSection } from "~/components/sections/tour";
+import { MeetSection } from "~/components/sections/meet";
+import { ClosingSection } from "~/components/sections/closing";
+import { PageSeam } from "~/components/fx/page-seam";
+import { SmoothScroll } from "~/components/fx/smooth-scroll";
 
 export default component$(() => {
   return (
     <>
       <Nav />
-      <main>
+      <PageSeam />
+      <SmoothScroll />
+      <main id="main">
         <HeroSection />
-        <WhySection />
-        <PersonasSection />
-        <HowItWorksSection />
-        <InstallationSection />
-        <FeaturesSection />
-        <CTASection />
+        <TourSection />
+        <MeetSection />
+        <ClosingSection />
       </main>
       <Footer />
     </>
@@ -29,12 +27,12 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: "Baste — Persona-Driven Asset Generation",
+  title: "Baste — interfaces cut to fit one person",
   meta: [
     {
       name: "description",
       content:
-        "Generate unique UI assets and design systems from cultural personas. Go from generic interfaces to something that feels like it came from someone's imagination.",
+        "Meet a persona, ask about their taste, and see their films, music, spaces and obsessions become an interface. Make your own fitting in Baste.",
     },
   ],
 };

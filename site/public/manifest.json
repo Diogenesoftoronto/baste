@@ -1,0 +1,29 @@
+{
+  "name": "Baste — Persona-Driven Design Generation",
+  "short_name": "Baste",
+  "description": "Interfaces cut to fit one person — design systems and assets from a persona's cultural influences.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F1ECE2",
+  "theme_color": "#F1ECE2",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+/* ─── Garment: one app screen, cut to each persona ──────────────────────────
+   Every value below reads the persona's --f-* tokens (lib/fitting.ts), so the
+   same structure takes on colour, type, radius and rhythm. The three layouts
+   (notes, board, quiet) follow the persona's density, so the difference is in
+   composition as well as paint. */
+
+/* The frame is the size container, so layouts answer to the space they get,
+   not the viewport: the same garment sits in the hero, a chat bubble and the Studio. */
+.garment-frame { container-type: inline-size; min-width: 0; }
+
+.garment {
+  --g-pad: clamp(16px, 2.4vw, 28px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--f-radius-lg);
+  border: 1px var(--f-border-style) var(--f-border);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: left;
+}
+.garment img { display: block; max-width: 100%; }
+.garment h3 { margin: 0; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+.garment p { margin: 0; color: var(--f-muted); }
+.garment ul, .garment ol { list-style: none; margin: 0; padding: 0; }
+.garment figure { margin: 0; }
+
+.garment-chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--g-pad);
+  border-bottom: 1px var(--f-border-style) var(--f-border);
+  background: var(--f-surface);
+  font-size: 12px;
+  color: var(--f-muted);
+}
+.garment-dots { display: flex; gap: 5px; }
+.garment-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--f-border); }
+.garment-dots i:first-child { background: var(--f-primary); }
+.garment-dots i:nth-child(2) { background: var(--f-secondary); }
+.garment-dots i:last-child { background: var(--f-accent); }
+.garment-url { opacity: 0.85; }
+.garment-tabs { margin-left: auto; display: flex; gap: 14px; }
+.garment-tabs [aria-current] { color: var(--f-text); font-weight: 600; }
+
+.garment-body { padding: var(--g-pad); display: grid; gap: var(--f-gap); }
+.garment-eyebrow { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--f-primary); }
+.garment-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.garment-actions .f-btn { font-size: 13px; }
+.garment-actions .f-btn img { width: 20px; height: 20px; border-radius: 4px; background: var(--f-surface); }
+
+/* ── Notes: rich and organic. A plate beside the lead, specimens beneath. ── */
+.garment--notes .garment-body {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-areas: "plate lead" "plate specimens" "margin margin";
+  align-items: start;
+  column-gap: calc(var(--f-gap) * 1.5);
+}
+.garment--notes .garment-plate {
+  grid-area: plate;
+  position: relative;
+  align-self: stretch;
+  min-height: 260px;
+  border-radius: calc(var(--f-radius-lg) * 1.4) var(--f-radius) calc(var(--f-radius-lg) * 1.6) var(--f-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 0 var(--f-border), 0 18px 30px -22px color-mix(in oklab, var(--f-primary) 70%, transparent);
+}
+.garment--notes .garment-plate img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.garment--notes .garment-plate figcaption {
+  position: absolute; left: 10px; bottom: 10px; padding: 3px 8px; font-size: 10.5px;
+  border-radius: 99px; background: color-mix(in oklab, var(--f-bg) 82%, transparent); color: var(--f-text);
+}
+.garment--notes .garment-lead { grid-area: lead; display: grid; gap: 10px; }
+.garment--notes h3 { font-size: clamp(22px, 2.6vw, 32px); line-height: 1.05; font-weight: 600; }
+.garment--notes .garment-lead p { font-size: 14px; max-width: 36ch; }
+.garment--notes .garment-specimens { grid-area: specimens; display: grid; gap: 8px; align-self: end; }
+.garment--notes .garment-specimens li {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 10px;
+  padding: 8px 12px; border-radius: var(--f-radius);
+}
+.garment--notes .garment-specimens .f-mono { font-size: 10.5px; color: var(--f-muted); }
+.garment--notes .garment-specimens strong { font-weight: 600; font-size: 13px; }
+.garment--notes .garment-specimens small {
+  font-size: 11px; padding: 1px 8px; border-radius: 99px;
+  background: color-mix(in oklab, var(--f-secondary) 16%, transparent); color: var(--f-secondary);
+}
+.garment--notes .garment-specimens li:first-child small { background: color-mix(in oklab, var(--f-accent) 28%, transparent); color: var(--f-text); }
+.garment--notes .garment-margin { grid-area: margin; font-size: 11px; color: var(--f-muted); border-top: 1px dashed var(--f-border); padding-top: 10px; }
+
+/* ── Board: maximalist. A ticker and a packed grid of cells. ── */
+.garment--board { font-size: 13px; }
+.garment--board .garment-body { padding: 0; gap: 0; }
+.garment-ticker {
+  overflow: hidden; white-space: nowrap; font-size: 10.5px; letter-spacing: 0.08em;
+  padding: 6px var(--g-pad); background: var(--f-primary); color: var(--f-on-primary);
+}
+.garment-ticker span { display: inline-block; animation: garment-ticker 22s linear infinite; }
+@keyframes garment-ticker { to { transform: translateX(-50%); } }
+.garment-board {
+  display: grid; gap: 6px; padding: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(54px, auto);
+}
+.garment-feature {
+  grid-column: span 4; grid-row: span 3; position: relative; overflow: hidden;
+  border-radius: var(--f-radius); min-height: 190px;
+}
+.garment-feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.garment-feature::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, color-mix(in oklab, var(--f-bg) 92%, transparent) 0 38%, transparent 78%);
+}
+.garment-feature-copy { position: relative; z-index: 1; display: grid; gap: 10px; padding: 16px; max-width: 62%; }
+.garment--board h3 { font-size: clamp(22px, 2.8vw, 34px); line-height: 0.98; text-transform: uppercase; letter-spacing: 0; }
+.garment--board .garment-eyebrow { color: var(--f-secondary); }
+.garment-cell {
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 8px;
+  align-content: center; padding: 8px 10px; border-radius: var(--f-radius-sm);
+}
+.garment-cell .f-mono:first-child { grid-row: span 2; align-self: center; font-size: 11px; color: var(--f-accent); }
+.garment-cell strong { font-size: 12px; line-height: 1.15; }
+.garment-price { font-size: 11px; color: var(--f-secondary); }
+.garment-cell--1 { grid-column: span 2; background: color-mix(in oklab, var(--f-surface) 70%, var(--f-primary) 18%); }
+.garment-cell--2 .f-mono:first-child { color: var(--f-secondary); }
+
+/* ── Quiet: minimal and soft. An off-centre window, a short index, lots of floor. ── */
+.garment--quiet .garment-body {
+  gap: calc(var(--f-gap) * 1.2) calc(var(--f-gap) * 2.4);
+  padding: calc(var(--g-pad) * 1.4) calc(var(--g-pad) * 1.6);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-areas: "lead window" "index window" "actions window";
+  align-items: start;
+}
+.garment--quiet .garment-lead { grid-area: lead; display: grid; gap: 10px; max-width: 40ch; }
+.garment--quiet h3 { font-size: clamp(30px, 4vw, 46px); line-height: 0.95; font-weight: 400; }
+.garment--quiet .garment-eyebrow { color: var(--f-muted); }
+.garment-window {
+  grid-area: window; align-self: center; margin-top: calc(var(--g-pad) * 1.2);
+  position: relative; border: 1px var(--f-border-style) var(--f-border); border-radius: var(--f-radius);
+  padding: 6px; background: var(--f-surface);
+}
+.garment-window img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: calc(var(--f-radius) - 4px); filter: saturate(0.9) contrast(0.96); }
+.garment-window figcaption {
+  position: absolute; right: 14px; bottom: 12px; padding: 1px 7px; border-radius: 3px; font-size: 13px;
+  background: color-mix(in oklab, var(--f-bg) 78%, transparent); color: var(--f-accent);
+  text-shadow: 0 0 6px color-mix(in oklab, var(--f-accent) 50%, transparent);
+}
+.garment-index { grid-area: index; display: grid; gap: 0; font-size: 15px; }
+.garment-index li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px var(--f-border-style) var(--f-border); color: var(--f-muted); }
+.garment-index li span:first-child { color: var(--f-text); }
+.garment--quiet .garment-actions { grid-area: actions; }
+
+/* ── Compact: the small preview in conversation and on narrow frames ── */
+.garment--compact { font-size: 12.5px; }
+.garment--compact .garment-tabs, .garment--compact .garment-margin, .garment--compact .garment-index { display: none; }
+.garment--compact.garment--quiet .garment-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "lead" "window" "actions"; }
+.garment--compact .garment-window { margin-top: 0; }
+.garment--compact .garment-window img { aspect-ratio: 16 / 9; }
+.garment--compact.garment--notes .garment-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "plate" "lead" "specimens"; }
+.garment--compact.garment--notes .garment-plate { min-height: 0; aspect-ratio: 16 / 9; }
+.garment--compact .garment-specimens li:nth-child(n + 3) { display: none; }
+.garment--compact .garment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.garment--compact .garment-feature { grid-column: span 2; }
+.garment--compact .garment-cell--1 { grid-column: span 1; }
+/* nth-of-type counts the feature too: keep four cells, an even pair of rows */
+.garment--compact .garment-cell:nth-of-type(n + 6) { display: none; }
+.garment--compact .garment-feature-copy { max-width: 80%; }
+
+@container (max-width: 560px) {
+  .garment--notes .garment-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "plate" "lead" "specimens" "margin"; }
+  .garment--notes .garment-plate { min-height: 0; aspect-ratio: 16 / 9; }
+  .garment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .garment-feature { grid-column: span 2; }
+  .garment-cell--1 { grid-column: span 1; }
+  .garment-feature-copy { max-width: 86%; }
+  .garment-tabs { display: none; }
+  .garment--quiet .garment-body { grid-template-columns: minmax(0, 1fr); grid-template-areas: "lead" "window" "index" "actions"; }
+  .garment-window { margin-top: 0; }
+  .garment-window img { aspect-ratio: 16 / 9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garment-ticker span { animation: none; }
+}

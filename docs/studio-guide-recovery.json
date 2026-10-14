@@ -1,0 +1,24 @@
+{
+  "recovered_from_commit": "da12cec",
+  "recovered_from_ref": "origin/main at f801bbd9728eb7aecaf19854f9127fbce4fa083c",
+  "published_at": "2026-10-02",
+  "source": "https://baste.love/docs/",
+  "local_base_before_recovery": "00e21ea3b8fcbc3f488d65cd78c2e6b78294966f",
+  "scope": [
+    "Guide text and published media restored from Git",
+    "Studio instructions updated for Material, Taste, and OpenPencil inside Tokens",
+    "Developer setup, providers, CLI and API moved to /docs/developers/",
+    "Existing PDFs preserved as the published October 2 edition"
+  ],
+  "current_recording": {
+    "path": "site/public/media/studio-guide/current/current-studio.mp4",
+    "duration": 29.12,
+    "captions": [
+      "current-en.vtt",
+      "current-fr.vtt"
+    ],
+    "capture_report": "site/public/media/studio-guide/current/capture.json",
+    "script": "site/scripts/record-studio-guide.mjs",
+    "boundary": "Read-only navigation of public base persona on local server; no generation, account, checkout or saving exercised."
+  }
+}

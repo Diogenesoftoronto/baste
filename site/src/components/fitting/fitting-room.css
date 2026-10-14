@@ -1,0 +1,113 @@
+/* ─── Fitting room: persona tabs, the pinned screen, and the spec rail ─────── */
+
+.fitting-room { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+
+/* Persona tabs: a portrait, a name, the persona's own colours as a seam */
+.fitting-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.fitting-tab {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 16px 5px 5px; min-height: 52px;
+  border: 1px solid #CFC7B8; border-radius: 999px;
+  background: #FBF9F4; color: #45423C;
+  font: inherit; text-align: left;
+  transition: border-color .25s var(--ease-thread), background .25s var(--ease-thread), color .25s var(--ease-thread), box-shadow .25s var(--ease-thread);
+}
+.fitting-tab img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #FBF9F4, 0 0 0 3px var(--tab-primary); }
+.fitting-tab span { display: flex; flex-direction: column; line-height: 1.15; }
+.fitting-tab strong { font-size: 14px; color: #1C1B19; }
+.fitting-tab small { font-size: 11.5px; color: #6E6A61; }
+.fitting-tab:hover { border-color: #1C1B19; }
+.fitting-tab[aria-selected="true"] {
+  background: #1C1B19; border-color: #1C1B19; color: #F1ECE2;
+  box-shadow: 0 1px 0 rgba(28,27,25,.06), 0 10px 22px -14px rgba(60,45,20,.5);
+}
+.fitting-tab[aria-selected="true"] strong { color: #F1ECE2; }
+.fitting-tab[aria-selected="true"] small { color: #CFC7B8; }
+.fitting-tab[aria-selected="true"] img { box-shadow: 0 0 0 2px #1C1B19, 0 0 0 3px var(--tab-accent); }
+.fitting-tab:focus-visible { outline: 2px solid #2F55A4; outline-offset: 3px; }
+.fitting-tab-timer {
+  position: absolute; left: 24px; right: 24px; bottom: -1px; height: 2px; border-radius: 2px;
+  background: #F0C534; transform-origin: left; animation: fitting-timer 5.6s linear;
+}
+@keyframes fitting-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Stage + spec rail */
+.fitting-stage-grid { display: grid; gap: 28px; align-items: start; }
+.fitting-room[data-measurements="true"] .fitting-stage-grid { grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); }
+
+.fitting-stage { position: relative; padding: 26px 30px 34px 22px; perspective: 1400px; }
+.fitting-cloth {
+  position: absolute; inset: 0; z-index: 0;
+  transform: rotate(-1.4deg) translate(var(--shift-x, 0), var(--shift-y, 0));
+  transition: transform .8s var(--ease-thread);
+}
+.fitting-cloth-cut { position: absolute; inset: 0; filter: drop-shadow(0 18px 24px rgba(60,45,20,.24)); }
+.fitting-garment {
+  position: relative; z-index: 1;
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) rotate(.4deg);
+  transform-style: preserve-3d;
+  transition: transform .5s var(--ease-thread);
+  box-shadow: 0 1px 0 rgba(28,27,25,.06), 0 30px 50px -28px rgba(30,22,10,.55);
+  border-radius: 16px;
+}
+.fitting-garment .garment { animation: fitting-in .55s var(--ease-thread); }
+@keyframes fitting-in { from { opacity: .4; transform: translateY(6px) scale(.992); } }
+
+/* The spec rail reads like a redline on the pattern */
+.fitting-spec {
+  display: flex; flex-direction: column; gap: 18px;
+  padding: 18px 0 0 18px; border-left: 1.5px dashed #2F55A4;
+  font-size: 12.5px; color: #45423C;
+}
+.fitting-spec section { display: flex; flex-direction: column; gap: 8px; }
+.fitting-spec-title {
+  margin: 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: #2F55A4;
+}
+.fitting-spec code, .fitting-spec dd { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; color: #1C1B19; margin: 0; }
+.fitting-type { display: flex; align-items: center; gap: 14px; }
+.fitting-type-sample { font-size: 46px; line-height: 1; color: #1C1B19; min-width: 64px; }
+.fitting-type dl { margin: 0; display: grid; gap: 4px; }
+.fitting-type dl div { display: grid; grid-template-columns: 52px 1fr; }
+.fitting-type dt { color: #6E6A61; }
+
+.fitting-swatches { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 6px; }
+.fitting-swatches li { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.fitting-swatches i { display: block; height: 28px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(28,27,25,.14); transition: background .6s var(--ease-thread); }
+.fitting-swatches span { font-size: 10.5px; color: #6E6A61; text-transform: capitalize; }
+.fitting-swatches code { font-size: 10.5px; }
+
+.fitting-metrics { display: grid !important; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fitting-metrics > div { display: flex; flex-direction: column; gap: 8px; }
+.fitting-radius { width: 42px; height: 30px; border: 1.5px solid #1C1B19; border-left-color: transparent; border-bottom-color: transparent; transition: border-radius .6s var(--ease-thread); }
+.fitting-motion { position: relative; width: 100%; height: 30px; border-bottom: 1px dashed #A79E8D; }
+.fitting-motion i {
+  position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; border-radius: 50%; background: #D2402A;
+  animation: fitting-motion calc(var(--motion) * 2.4) var(--ease) infinite alternate;
+}
+@keyframes fitting-motion { to { left: calc(100% - 8px); } }
+
+.fitting-icons { display: flex; gap: 8px; }
+.fitting-icons img { width: 64px; height: 64px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1px rgba(28,27,25,.1); padding: 4px; }
+
+.fitting-archive { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.fitting-archive li { aspect-ratio: 16 / 10; border-radius: 4px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(28,27,25,.1); }
+.fitting-archive img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s var(--ease-thread); }
+.fitting-archive li:hover img { transform: scale(1.06); }
+.fitting-spec-link { color: #2F55A4; font-size: 12px; text-decoration: none; }
+.fitting-spec-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 1100px) {
+  .fitting-room[data-measurements="true"] .fitting-stage-grid { grid-template-columns: minmax(0, 1fr); }
+  .fitting-spec { border-left: 0; border-top: 1.5px dashed #2F55A4; padding: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+}
+@media (max-width: 640px) {
+  .fitting-stage { padding: 14px 12px 22px 10px; }
+  .fitting-tab { padding-right: 12px; }
+  .fitting-tab small { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fitting-garment .garment, .fitting-motion i, .fitting-tab-timer { animation: none; }
+  .fitting-cloth, .fitting-garment { transition: none; }
+}

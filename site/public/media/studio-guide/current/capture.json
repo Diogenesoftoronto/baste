@@ -1,0 +1,57 @@
+{
+  "base": "http://localhost:5173",
+  "recordedAt": "2026-10-10T09:20:48.491Z",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "interactions": "Read-only navigation; no generation or account changes",
+  "cues": [
+    {
+      "id": "fitting",
+      "start": 4.818,
+      "caption": "Choose a persona. Fitting previews its colours, type, and interface.",
+      "fr": "Choisissez un persona. Fitting présente ses couleurs, sa typographie et son interface."
+    },
+    {
+      "id": "material",
+      "start": 12.993,
+      "caption": "Material changes the persona’s cloth. Adjustments stay in this browser.",
+      "fr": "Material permet de modifier le tissu du persona. Les réglages restent dans ce navigateur."
+    },
+    {
+      "id": "tokens",
+      "start": 20.119,
+      "caption": "Tokens lets you copy or download the design system. OpenPencil is inside this tab.",
+      "fr": "Tokens permet de copier ou télécharger le système de design. OpenPencil se trouve dans cet onglet."
+    },
+    {
+      "id": "moodboard",
+      "start": 24.964,
+      "caption": "Moodboard keeps references, notes, and influences beside the persona.",
+      "fr": "Moodboard rassemble les références, notes et influences du persona."
+    },
+    {
+      "id": "feedback",
+      "start": 30.843,
+      "caption": "Taste records what you want more or less of, and why.",
+      "fr": "Taste conserve ce que vous souhaitez voir davantage ou moins souvent, et pourquoi."
+    }
+  ],
+  "duration": 32.92,
+  "errors": [],
+  "publishedVideo": {
+    "path": "current-studio.mp4",
+    "duration": 29.12,
+    "trimStart": 3.8,
+    "encoding": "H.264 yuv420p, faststart",
+    "captionStarts": [
+      0,
+      8,
+      14.2,
+      19.2,
+      24.6
+    ],
+    "timingVerification": "Transitions located in actual video frames at 3.8, 11.8, 18.0, 23.0 and 28.4 seconds, then shifted by the trimmed opening."
+  }
+}

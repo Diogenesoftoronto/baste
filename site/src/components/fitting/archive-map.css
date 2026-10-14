@@ -1,0 +1,39 @@
+/* ─── Archive map: real QD candidates in the engine's temperature × density grid ─── */
+
+.archive-map { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.archive-map-head {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: #6E6A61;
+}
+.archive-map-head strong { color: #1C1B19; font-weight: 600; }
+.archive-map-frame { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px 8px; }
+.archive-map-axis {
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: #2F55A4;
+}
+.archive-map-axis--y { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; }
+.archive-map-axis--x { display: flex; justify-content: space-between; }
+
+.archive-map-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px;
+}
+.archive-map-cell {
+  position: relative; aspect-ratio: 16 / 10; border-radius: 5px; overflow: hidden;
+  border: 1px dashed #CFC7B8; background: color-mix(in oklab, #FBF9F4 60%, transparent);
+}
+.archive-map-cell[data-filled="true"] { border: 0; box-shadow: 0 1px 0 rgba(28,27,25,.06), 0 6px 14px -10px rgba(30,22,10,.6); }
+.archive-map-cell img { display: block; width: 100%; height: 100%; object-fit: cover; animation: archive-in .5s var(--ease-thread); }
+.archive-map-cell[data-fresh="true"] { outline: 2px solid #D2402A; outline-offset: 2px; }
+.archive-map-score, .archive-map-tried {
+  position: absolute; bottom: 4px; padding: 0 4px; border-radius: 3px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; line-height: 1.5;
+  background: rgba(251,249,244,.92); color: #1C1B19;
+}
+.archive-map-score { left: 4px; }
+.archive-map-tried { right: 4px; color: #6E6A61; }
+@keyframes archive-in { from { opacity: 0; transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-map-cell img { animation: none; }
+}

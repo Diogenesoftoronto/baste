@@ -35,6 +35,18 @@ export const HeroSection = component$(() => {
             >
               Meet a persona <span aria-hidden="true">↓</span>
             </a>
+            <a
+              href="#tour"
+              class={css({
+                display: "inline-flex", alignItems: "center", gap: 2.5, h: "46px", color: "ink", fontWeight: 600, fontSize: "15px",
+                textDecoration: "none", transition: "color 0.2s", _hover: { color: "thread-ink" },
+              })}
+            >
+              <span aria-hidden="true" class={css({ display: "grid", placeItems: "center", w: "32px", h: "32px", pl: "2px", rounded: "full", border: "1.5px solid currentColor" })}>
+                <svg width="10" height="12" viewBox="0 0 14 16"><path d="M1.5 1.6 L12.6 8 L1.5 14.4 Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" /></svg>
+              </span>
+              Watch the tour <span class={css({ fontFamily: "mono", fontSize: "12px", fontWeight: 400, color: "ink-muted" })}>1:14</span>
+            </a>
             <a href="/gui?new=1" class={css({ color: "ink-soft", fontSize: "15px", py: 3, textUnderlineOffset: "4px", _hover: { color: "thread-ink" } })}>Start your own fitting</a>
           </div>
         </div>

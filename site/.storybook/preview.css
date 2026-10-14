@@ -1,0 +1,10 @@
+/* Enough room to tune full fittings while keeping compact stories readable. */
+#storybook-root {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+body.sb-show-main {
+  background-color: #f1ece2;
+}

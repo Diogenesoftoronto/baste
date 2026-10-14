@@ -3,6 +3,7 @@ dist/
 *.log
 .DS_Store
 .env
+.baste/
 personas/*.json
 baste.config.json
 .vscode/
@@ -22,3 +23,12 @@ baste.config.json
 # PandaCSS generated files
 site/styled-system
 site/styled-system-studio
+
+# Tour video build products (videos/baste-tour): rebuild with its scripts; the site serves site/public/media/tour/
+videos/baste-tour/footage*/
+videos/baste-tour/renders/
+videos/baste-tour/snapshots/
+videos/baste-tour/.work/
+videos/baste-tour/music/bed-source.*
+site/public/media/studio-guide/walkthrough-en.source.mp4
+media/studio-guide-narration/

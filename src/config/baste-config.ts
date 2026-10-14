@@ -17,7 +17,7 @@ import type { GenerationConfig } from "../assets/generators.js";
 export interface GeneratorConfig {
   /** SVG generator settings */
   svg?: {
-    provider: "quiver" | "openai" | "local";
+    provider: "quiver" | "fal" | "openai" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
@@ -25,7 +25,7 @@ export interface GeneratorConfig {
 
   /** Image generator settings */
   image?: {
-    provider: "openai" | "gemini" | "stability" | "local";
+    provider: "openai" | "gemini" | "notorganic" | "fal" | "stability" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
@@ -36,16 +36,24 @@ export interface GeneratorConfig {
 
   /** Video generator settings */
   video?: {
-    provider: "veo" | "runway" | "local";
+    provider: "seedance" | "veo" | "fal" | "runway" | "local";
     model?: string;
     apiKey?: string;
     baseUrl?: string;
     duration?: number;
+    ratio?: string;
     quality?: string;
   };
 }
 
 export interface EvaluatorConfig {
+  /**
+   * Omitted: TypeSafe when TYPESAFE_API_KEY is set, otherwise OpenAI.
+   * "fal" judges the generated pixels with a vision model through fal (FAL_KEY).
+   */
+  provider?: "typesafe" | "openai" | "notorganic" | "fal";
+  /** Server-only, request-scoped authorization; not part of saved configuration. */
+  notOrganicFetch?: GenerationConfig["notOrganicFetch"];
   /** LLM model for judging assets */
   model: string;
   /** API key (falls back to env vars) */
@@ -138,8 +146,8 @@ export const defaultConfig: Required<BasteUserConfig> = {
   personaDir: "./personas",
   generators: {
     svg: { provider: "quiver" },
-    image: { provider: "openai" as const, model: "gpt-image-2", size: "1024x1024", quality: "high" as const, style: "vivid" as const },
-    video: { provider: "veo", model: "veo-3", duration: 5, quality: "1080p" },
+    image: { provider: "openai" as const, model: "gpt-image-2.5", size: "1024x1024", quality: "high" as const, style: "vivid" as const },
+    video: { provider: "seedance", model: "seedance-1-0-pro-250528", duration: 5, ratio: "16:9", quality: "1080p" },
   },
   evaluator: {
     model: "gpt-4o",
@@ -161,38 +169,17 @@ export const defaultConfig: Required<BasteUserConfig> = {
   ],
 };
 
-/**
- * Resolve API keys from environment variables.
- */
-function resolveEnvKeys(config: BasteUserConfig): BasteUserConfig {
-  const resolved: BasteUserConfig = { ...config };
-
-  if (!resolved.generators) resolved.generators = {};
-
-  if (!resolved.generators.svg?.apiKey && process.env.QUIVER_API_KEY) {
-    resolved.generators.svg = { ...(resolved.generators.svg || {}), apiKey: process.env.QUIVER_API_KEY } as GeneratorConfig["svg"];
-  }
-  // OpenAI key for OpenAI image provider
-  if (!resolved.generators.image?.apiKey && resolved.generators.image?.provider !== "gemini" && process.env.OPENAI_API_KEY) {
-    resolved.generators.image = { ...(resolved.generators.image || {}), apiKey: process.env.OPENAI_API_KEY } as GeneratorConfig["image"];
-  }
-  // Google key for Gemini image provider
-  if (!resolved.generators.image?.apiKey && resolved.generators.image?.provider === "gemini" && process.env.GOOGLE_API_KEY) {
-    resolved.generators.image = { ...(resolved.generators.image || {}), apiKey: process.env.GOOGLE_API_KEY } as GeneratorConfig["image"];
-  }
-  if (!resolved.generators.video?.apiKey && process.env.GOOGLE_API_KEY) {
-    resolved.generators.video = { ...(resolved.generators.video || {}), apiKey: process.env.GOOGLE_API_KEY } as GeneratorConfig["video"];
-  }
-  if (!resolved.evaluator?.apiKey && process.env.OPENAI_API_KEY) {
-    resolved.evaluator = { ...(resolved.evaluator || {}), apiKey: process.env.OPENAI_API_KEY } as EvaluatorConfig;
-  }
-
-  return resolved;
+export function resolveEvaluatorProvider(config: Pick<EvaluatorConfig, "provider"> = {}): "typesafe" | "openai" | "notorganic" | "fal" {
+  return config.provider ?? (process.env.TYPESAFE_API_KEY ? "typesafe" : "openai");
 }
 
 export interface GenerationOverrides {
   imageProvider?: string;
   imageModel?: string;
+  videoProvider?: string;
+  videoModel?: string;
+  svgProvider?: string;
+  evaluatorProvider?: EvaluatorConfig["provider"];
 }
 
 /**
@@ -206,34 +193,63 @@ export function toBasteConfig(
   generation: GenerationConfig;
   qd: QDConfig;
   outputCount: number;
-  evaluator: { model: string; apiKey?: string; baseUrl?: string; temperature?: number; weights?: Record<string, number> };
+  evaluator: EvaluatorConfig;
 } {
-  const envResolved = resolveEnvKeys(userConfig);
-  const qdCfg = { ...defaultConfig.qd, ...(envResolved.qd || {}) };
-  const evalCfg = { ...defaultConfig.evaluator, ...(envResolved.evaluator || {}) };
-  const imgCfg = envResolved.generators?.image ?? defaultConfig.generators.image;
-  const svgCfg = envResolved.generators?.svg ?? defaultConfig.generators.svg;
-  const vidCfg = envResolved.generators?.video ?? defaultConfig.generators.video;
+  const qdCfg = { ...defaultConfig.qd, ...(userConfig.qd || {}) };
+  const evalCfg = { ...defaultConfig.evaluator, ...(userConfig.evaluator || {}) };
+  const imgCfg = userConfig.generators?.image ?? defaultConfig.generators.image;
+  const svgCfg = userConfig.generators?.svg ?? defaultConfig.generators.svg;
+  const vidCfg = userConfig.generators?.video ?? defaultConfig.generators.video;
 
-  const imageProvider = (overrides?.imageProvider ?? imgCfg?.provider ?? "openai") as "openai" | "gemini";
-  const imageModel = overrides?.imageModel ?? imgCfg?.model;
+  const imageProvider = (overrides?.imageProvider ?? imgCfg?.provider ?? "openai") as "openai" | "gemini" | "notorganic" | "fal";
+  if (!["openai", "gemini", "notorganic", "fal"].includes(imageProvider)) throw new Error(`Unsupported image provider: ${imageProvider}`);
+  // Saved configs may name SVG providers that were never implemented; those keep using QuiverAI.
+  if (overrides?.svgProvider && !["quiver", "fal"].includes(overrides.svgProvider)) throw new Error(`Unsupported SVG provider: ${overrides.svgProvider}`);
+  const svgProvider: "quiver" | "fal" = (overrides?.svgProvider ?? svgCfg?.provider) === "fal" ? "fal" : "quiver";
+  const imageModel = overrides?.imageModel ?? (imageProvider === imgCfg?.provider ? imgCfg.model : undefined);
+  const videoProvider = overrides?.videoProvider ?? vidCfg?.provider ?? "seedance";
+  if (!["seedance", "veo", "fal", "runway", "local"].includes(videoProvider)) {
+    throw new Error(`Unsupported video provider: ${videoProvider}`);
+  }
+  const videoModel = overrides?.videoModel ?? (videoProvider === vidCfg?.provider ? vidCfg.model : undefined);
+  const videoApiKey = (videoProvider === vidCfg?.provider ? vidCfg.apiKey : undefined) ??
+    (videoProvider === "seedance" ? process.env.ARK_API_KEY : videoProvider === "veo" ? process.env.GOOGLE_API_KEY : videoProvider === "fal" ? process.env.FAL_KEY : undefined);
+  const evaluatorProvider = overrides?.evaluatorProvider ?? resolveEvaluatorProvider(userConfig.evaluator);
+  // A saved model or key belongs to the saved provider; never hand it to a different one.
+  const savedEvaluator = !overrides?.evaluatorProvider || overrides.evaluatorProvider === userConfig.evaluator?.provider;
 
   // Resolve the right API key for the chosen image provider
-  const imageApiKey = imgCfg?.apiKey ??
+  const imageApiKey = (imageProvider === imgCfg?.provider ? imgCfg.apiKey : undefined) ??
     (imageProvider === "gemini"
-      ? (vidCfg?.apiKey ?? process.env.GOOGLE_API_KEY)
-      : process.env.OPENAI_API_KEY);
+      ? process.env.GOOGLE_API_KEY
+      : imageProvider === "fal" ? process.env.FAL_KEY : process.env.OPENAI_API_KEY);
+  // fal-backed providers share one key; the first configured one wins.
+  const falApiKey = [
+    imageProvider === "fal" && imgCfg?.provider === "fal" ? imgCfg.apiKey : undefined,
+    svgProvider === "fal" && svgCfg?.provider === "fal" ? svgCfg.apiKey : undefined,
+    videoProvider === "fal" && vidCfg?.provider === "fal" ? vidCfg.apiKey : undefined,
+  ].find(Boolean) ?? process.env.FAL_KEY;
 
   return {
     generation: {
-      outputDir: envResolved.outputDir ?? defaultConfig.outputDir,
+      outputDir: userConfig.outputDir ?? defaultConfig.outputDir,
       imageProvider,
       imageModel,
       imageSize: imgCfg?.size,
       imageQuality: imgCfg?.quality,
       imageStyle: imgCfg?.style,
       openaiApiKey: imageProvider === "openai" ? imageApiKey : undefined,
-      googleApiKey: imageProvider === "gemini" ? imageApiKey : (vidCfg?.apiKey ?? process.env.GOOGLE_API_KEY),
+      googleApiKey: imageProvider === "gemini" ? imageApiKey : process.env.GOOGLE_API_KEY,
+      falApiKey,
+      svgProvider,
+      svgModel: svgProvider === svgCfg?.provider ? svgCfg?.model : undefined,
+      videoProvider: videoProvider as GenerationConfig["videoProvider"],
+      videoModel,
+      videoApiKey,
+      videoBaseUrl: videoProvider === vidCfg?.provider ? vidCfg.baseUrl : undefined,
+      videoDuration: vidCfg?.duration,
+      videoRatio: vidCfg?.ratio,
+      videoResolution: vidCfg?.quality,
       quiverApiKey: svgCfg?.apiKey ?? process.env.QUIVER_API_KEY,
       quiverBaseUrl: svgCfg?.baseUrl,
     },
@@ -244,11 +260,15 @@ export function toBasteConfig(
       mutationRate: qdCfg.mutationRate!,
       qualityThreshold: qdCfg.qualityThreshold!,
     },
-    outputCount: envResolved.outputCount ?? defaultConfig.outputCount,
+    outputCount: userConfig.outputCount ?? defaultConfig.outputCount,
     evaluator: {
-      model: evalCfg.model!,
-      apiKey: evalCfg.apiKey,
-      baseUrl: evalCfg.baseUrl,
+      provider: evaluatorProvider,
+      model: (savedEvaluator ? userConfig.evaluator?.model : undefined)
+        ?? { notorganic: "judgement", typesafe: "jev-latest", fal: "google/gemini-2.5-flash" }[evaluatorProvider as string]
+        ?? defaultConfig.evaluator.model,
+      apiKey: (savedEvaluator ? evalCfg.apiKey : undefined)
+        ?? (evaluatorProvider === "typesafe" ? process.env.TYPESAFE_API_KEY : evaluatorProvider === "fal" ? falApiKey : process.env.OPENAI_API_KEY),
+      baseUrl: savedEvaluator ? evalCfg.baseUrl : undefined,
       temperature: evalCfg.temperature,
       weights: evalCfg.weights,
     },
