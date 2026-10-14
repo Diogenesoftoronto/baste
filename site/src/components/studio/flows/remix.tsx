@@ -89,7 +89,7 @@ export const RemixFlow = component$(() => {
           </div>
         </div>
         <button class={act("cut", css({ mt: 5 }))} data-juice="snip" disabled={busy.value || f.a === f.b || s.status !== "live"} onClick$={run}>
-          {busy.value ? "Weaving…" : "Weave them together"}
+          {busy.value ? text(locale.value, "Weaving…") : text(locale.value, "Weave them together")}
         </button>
       </section>
     </div>

@@ -13,9 +13,9 @@ export const ConnectionPill = component$(() => {
   const locale = useLocale();
   const s = useContext(StudioCtx);
   const meta = {
-    connecting: { dot: "#A79E8D", label: "Connecting…", title: `Looking for a Baste server at ${s.apiBase}` },
-    live: { dot: "#2E7D5B", label: "Live", title: `Connected to ${s.apiBase}` },
-    demo: { dot: "#F0C534", label: "Demo", title: "No local server found — changes stay in this tab. Run `npx baste gui` to connect." },
+    connecting: { dot: "#A79E8D", label: text(locale.value, "Connecting…"), title: text(locale.value, "Looking for a Baste server at {url}", { url: s.apiBase }) },
+    live: { dot: "#2E7D5B", label: text(locale.value, "Live"), title: text(locale.value, "Connected to {url}", { url: s.apiBase }) },
+    demo: { dot: "#F0C534", label: text(locale.value, "Demo"), title: text(locale.value, "No local server found — changes stay in this tab. Run `baste gui` to connect.") },
   }[s.status];
   return (
     <button
@@ -93,20 +93,20 @@ export const Topbar = component$(() => {
         <LanguageSelect />
         <SoundToggle />
         {/* links that leave the Studio carry an out-arrow; everything inside stays a quiet "go" */}
-        <a href={localeHref("/materials/", locale.value)} title="Baste's own material room — leaves the Studio" class={act("go", outLink)}>{text(locale.value, "Material room")} <span data-arrow="out" aria-hidden="true">↗</span>
+        <a href={localeHref("/materials/", locale.value)} title={text(locale.value, "Baste's own material room — leaves the Studio")} class={act("go", outLink)}>{text(locale.value, "Material room")} <span data-arrow="out" aria-hidden="true">↗</span>
         </a>
-        <a href={localeHref("/docs/", locale.value)} title="Studio guide — leaves the Studio" class={act("go", outLink)}>{text(locale.value, "Guide")} <span data-arrow="out" aria-hidden="true">↗</span>
+        <a href={localeHref("/docs/", locale.value)} title={text(locale.value, "Studio guide — leaves the Studio")} class={act("go", outLink)}>{text(locale.value, "Guide")} <span data-arrow="out" aria-hidden="true">↗</span>
         </a>
         {/* one door to the workroom: account, connection and defaults all live there */}
         <button
           type="button"
           onClick$={() => openView(s, "settings")}
           aria-current={s.view === "settings" ? "page" : undefined}
-          aria-label={s.account.status?.authenticated ? "Workroom — account and settings" : "Sign in — account and settings"}
+          aria-label={s.account.status?.authenticated ? text(locale.value, "Workroom — account and settings") : text(locale.value, "Sign in — account and settings")}
           class={act("go", cx(btnSm, css({ "&[aria-current=page]": { color: "ink", bg: "paper-deep" } })))}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3" /><path d="M5 21v-2a7 7 0 0 1 14 0v2" /></svg>
-          <span class={css({ display: { base: "none", md: "inline" } })}>{s.account.status?.authenticated ? "Workroom" : "Sign in"}</span>
+          <span class={css({ display: { base: "none", md: "inline" } })}>{s.account.status?.authenticated ? text(locale.value, "Workroom") : text(locale.value, "Sign in")}</span>
         </button>
       </div>
     </header>

@@ -152,9 +152,9 @@ export const Rail = component$(() => {
 
         <div class={css({ display: "flex", flexDirection: "column", gap: 1, mt: "auto", pt: 4, borderTop: "1px dashed token(colors.rule-strong)" })}>
           <h2 class={kicker} style={{ padding: "0 10px", marginBottom: "4px" }}>{text(locale.value, "Start a fitting")}</h2>
-          {action("New persona", "new", "+", "Write one from scratch")}
-          {action("Decompose a site", "decompose", "⌗", "Draft from a live URL")}
-          {action("Remix two", "remix", "×", "Cross two personas")}
+          {action(text(locale.value, "New persona"), "new", "+", text(locale.value, "Write one from scratch"))}
+          {action(text(locale.value, "Decompose a site"), "decompose", "⌗", text(locale.value, "Draft from a live URL"))}
+          {action(text(locale.value, "Remix two"), "remix", "×", text(locale.value, "Cross two personas"))}
         </div>
       </nav>
     </>

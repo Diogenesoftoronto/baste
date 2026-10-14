@@ -239,7 +239,7 @@ export const PersonaForm = component$(() => {
       <div class={css({ position: "sticky", bottom: 4, display: "flex", gap: 3, justifyContent: "flex-end", p: 3, rounded: "lg", bg: "rgba(251,249,244,0.92)", backdropFilter: "blur(8px)", border: "1px solid token(colors.rule)", boxShadow: "lift" })}>
         <button type="button" class={act("go")} onClick$={() => (s.view = "persona")}>{text(locale.value, "Cancel")}</button>
         <button type="submit" aria-busy={f.busy} class={act("cut")} disabled={f.busy}>
-          {f.busy ? "Stitching…" : editing ? "Save measurements" : "Add to wardrobe"}
+          {text(locale.value, f.busy ? "Stitching…" : editing ? "Save measurements" : "Add to wardrobe")}
         </button>
       </div>
     </form>

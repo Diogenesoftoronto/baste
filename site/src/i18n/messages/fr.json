@@ -821,5 +821,11 @@
   "The current Studio recording shows Fitting, Material, Tokens, Moodboard and Taste. It is a silent, read-only tour with captions describing each step.": "L’enregistrement du Studio actuel présente Fitting, Material, Tokens, Moodboard et Taste. Cette visite silencieuse, sans modification de données, comporte des sous-titres décrivant chaque étape.",
   "The narrated English and French tours were published on October 2, 2026. Their tab arrangement is older: OpenPencil now lives inside Tokens, and Material has its own tab. The instructions here use the current names. The downloadable published edition retains its original screenshots and developer appendix.": "Les visites commentées en anglais et en français ont été publiées le 2 octobre 2026. Leur disposition d’onglets est plus ancienne : OpenPencil se trouve désormais dans Tokens et Material dispose de son propre onglet. Les instructions utilisent les noms actuels. L’édition publiée téléchargeable conserve ses captures d’origine et son annexe développeur.",
   "No.": "Nº",
-  "ON AIR": "À L’ANTENNE"
+  "ON AIR": "À L’ANTENNE",
+  "Baste's own material room — leaves the Studio": "L’atelier de matières de Baste — quitter le Studio",
+  "Meet the personas": "Rencontrer les personas",
+  "Sign in — account and settings": "Connexion — compte et paramètres",
+  "Studio guide — leaves the Studio": "Guide du Studio — quitter le Studio",
+  "Workroom": "Atelier",
+  "Workroom — account and settings": "Atelier — compte et paramètres"
 }
