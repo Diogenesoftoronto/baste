@@ -99,13 +99,23 @@ test("property: documented IPv4 private ranges are always private", () => {
   }
 });
 
-test("property: clearly-public IPv4 (1.x / 8.x / 203.x) is never private", () => {
+test("property: public IPv4 ranges excluding reserved documentation addresses are never private", () => {
   const r = rng(6);
   for (let i = 0; i < RUNS; i++) {
     const x = () => randInt(r, 0, 255);
     assert.equal(isPrivateAddress(`8.${x()}.${x()}.${x()}`), false);
     assert.equal(isPrivateAddress(`1.${randInt(r, 1, 255)}.${x()}.${x()}`), false);
-    assert.equal(isPrivateAddress(`203.0.113.${x()}`), false);
+    assert.equal(isPrivateAddress(`203.${randInt(r, 1, 255)}.${x()}.${x()}`), false);
+  }
+});
+
+test("property: documentation, benchmark and multicast IPv4 ranges are not safe public fetch targets", () => {
+  const r = rng(8);
+  for (let i = 0; i < RUNS; i++) {
+    const x = () => randInt(r, 0, 255);
+    for (const prefix of ["192.0.2", "198.51.100", "203.0.113"]) assert.equal(isPrivateAddress(`${prefix}.${x()}`), true);
+    assert.equal(isPrivateAddress(`198.${randInt(r, 18, 19)}.${x()}.${x()}`), true);
+    assert.equal(isPrivateAddress(`${randInt(r, 224, 255)}.${x()}.${x()}.${x()}`), true);
   }
 });
 

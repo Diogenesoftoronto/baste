@@ -1,0 +1,271 @@
+[
+  {
+    "id": "orientation",
+    "title": "Se repérer dans le Studio",
+    "screen": "fitting",
+    "href": "/gui/",
+    "paragraphs": [
+      "La garde-robe contient vos personas. Choisissez-en un, ou utilisez New persona pour décrire votre propre personne. Fitting montre comment ses films, sa musique, ses lieux et ses habitudes prennent forme dans une interface.",
+      "La table de travail comprend deux groupes : Measure contient Fitting, Material et Tokens ; Make contient Generate, Moodboard et Taste. OpenPencil se trouve dans Tokens. Brand kit apparaît pour les personas personnalisés. Projects et Settings ouvrent des vues séparées.",
+      "Vérifiez l’indicateur de connexion. Le travail en mode Demo reste dans cet onglet et disparaît au rechargement. Live indique que Studio a joint son serveur ; consultez Settings pour votre compte et les services disponibles. Téléchargez ce que vous souhaitez garder avant de quitter une démo."
+    ]
+  },
+  {
+    "id": "conversation",
+    "title": "Parler avec un compagnon",
+    "href": "/#meet",
+    "paragraphs": [
+      "Rencontrez Moss, Ren et Ada sur la page d’accueil. Chacun présente un univers culturel et des goûts différents. Une étiquette précise si vous explorez une conversation écrite à l’avance ou une conversation avec l’IA.",
+      "Lorsque la voix est disponible, appuyez sur Talk et autorisez le microphone. Appuyez sur Finish une fois votre message terminé, dans la limite de 45 secondes. Votre audio est envoyé à fal pour transcription. Relisez ou modifiez le texte, puis appuyez sur Send. Cancel supprime l’enregistrement.",
+      "Activez Spoken replies pour écouter les prochaines réponses, ou choisissez Listen to reply pour la dernière. L’indicateur distingue l’écoute, la réflexion, la préparation de la voix, la parole et la pause. Pause conserve votre position ; Resume reprend la lecture ; Stop l’arrête. Changer de compagnon ou quitter l’onglet arrête le microphone et l’audio.",
+      "Vous pouvez toujours écrire si la voix est indisponible ou si l’accès au microphone est refusé. Chaque compagnon conserve ses messages et son brouillon pendant vos échanges, mais ceux-ci ne sont pas sauvegardés après le rechargement de la page."
+    ]
+  },
+  {
+    "id": "fitting",
+    "title": "Lire l’essayage",
+    "screen": "fitting",
+    "href": "/gui/?tab=fitting",
+    "paragraphs": [
+      "L’essayage rend le système visible : rôles de la palette, typographie, espacement, bords, mouvement et exemple d’interface. Comparez l’aperçu aux mesures culturelles plutôt que de choisir une palette seule.",
+      "Parcourez l’exemple pour examiner boutons, champs, cartes, navigation, états et messages. Survolez les éléments pour ressentir le mouvement. Changer de persona actualise l’essayage et les autres onglets.",
+      "L’essayage est un aperçu, pas une application déployée. Vérifiez contraste, longueur des contenus et interactions dans l’interface finale. Dans la démo, les personas personnalisés reprennent les jetons de l’exemple intégré le plus proche ; leurs mesures ne déclenchent pas une nouvelle génération."
+    ]
+  },
+  {
+    "id": "new-persona",
+    "title": "Créer un persona",
+    "screen": "new",
+    "href": "/gui/?new=1",
+    "paragraphs": [
+      "Choisissez Nouveau persona. Saisissez un nom, vérifiez l’identifiant généré, ajoutez une région et une courte description. L’identifiant en minuscules sert aux routes et aux fichiers ; il est distinct du nom affiché.",
+      "Dans Culture, indiquez sous-cultures et valeurs. Influences regroupe films, anime ou séries, genres musicaux, musiciens et artistes visuels. Habitat couvre lieux, outils et obsessions. Comportement décrit valeurs logicielles et irritants. Séparez les éléments par des virgules.",
+      "Dans La coupe, choisissez les axes esthétiques, puis les mots-clés visuels et d’ambiance. Soyez concret : un film précis, un lieu familier et une habitude réelle donnent une consigne plus claire qu’un adjectif générique. L’indicateur compte les mesures remplies ; ce n’est pas une note de qualité.",
+      "Choisissez Ajouter à la garde-robe. L’enregistrement sélectionne le nouveau persona et revient à l’essayage. Le nom est obligatoire. Utilisez un identifiant unique pour éviter de remplacer un autre persona personnalisé. Annuler quitte le formulaire sans l’enregistrer."
+    ]
+  },
+  {
+    "id": "tailor",
+    "title": "Adapter, modifier et retirer",
+    "screen": "tailor",
+    "href": "/gui/?flow=tailor",
+    "paragraphs": [
+      "Adaptez un persona de base pour ouvrir une copie préremplie. Donnez-lui un nom et un identifiant distincts, conservez les influences utiles et remplacez les détails inadaptés à votre public. Le persona de base reste inchangé.",
+      "Les personas personnalisés proposent des commandes de modification. Modifier ajuste les mesures en conservant l’identifiant. Enregistrer les mesures revient à l’essayage. Le formulaire n’est pas enregistré automatiquement ; annuler abandonne les changements.",
+      "Le retrait des personas personnalisés utilise la commande à maintenir dans l’en-tête du persona sélectionné. Maintenez-la volontairement ; les personas de base ne peuvent pas être retirés. Dans la démo, la suppression concerne cet onglet seulement. Exportez ce que vous souhaitez garder avant de réinitialiser la démo."
+    ]
+  },
+  {
+    "id": "material",
+    "title": "Changer le tissu",
+    "screen": "material",
+    "href": "/gui/?tab=material",
+    "paragraphs": [
+      "Ouvrez Material, ou choisissez Change the cloth dans l’en-tête du persona. La matière initiale découle de sa palette et de son profil esthétique. Ajustez technique, couleurs, échelle et densité en observant l’aperçu.",
+      "Les modifications actualisent l’en-tête du persona et restent dans ce navigateur. Utilisez Pause motion pour examiner une image fixe. Export PNG conserve une image ; Save recipe conserve les réglages pour les recharger et les modifier plus tard."
+    ]
+  },
+  {
+    "id": "tokens",
+    "title": "Exporter les jetons de design",
+    "screen": "tokens",
+    "href": "/gui/?tab=tokens",
+    "paragraphs": [
+      "Ouvrez Jetons et choisissez Variables CSS, Tailwind, Panda ou JSON. Le panneau de code s’adapte au format. CSS produit .css, Tailwind .js, Panda .ts et JSON .json.",
+      "Copier envoie l’export affiché dans le presse-papiers du navigateur. Télécharger enregistre un fichier nommé d’après le persona. Si le navigateur refuse le presse-papiers, téléchargez le fichier ou sélectionnez le code. Le code et ses identifiants ne changent pas avec la langue de l’interface.",
+      "Les panneaux latéraux montrent l’échelle d’espacement, les rayons et ombres, puis les courbes d’accélération. Survolez une ligne pour voir le mouvement. Ces références facilitent l’intégration ; elles n’installent rien automatiquement dans votre application.",
+      "Les téléchargements survivent à la réinitialisation de la démo car ce sont des fichiers du navigateur. Dans la démo, enregistrer un document OpenPencil ne régénère pas ces exports ; les jetons exportés et le document modifiable sont stockés séparément."
+    ]
+  },
+  {
+    "id": "generate",
+    "title": "Préparer les consignes et générer",
+    "screen": "generate",
+    "href": "/gui/?tab=generate",
+    "paragraphs": [
+      "Ouvrez Generate et laissez Dry run activé pour votre premier essai. Choisissez Asset suite ou Full UI kit, puis Draft the prompts. Lisez les briefs d’images, de SVG et de vidéos avant de lancer une génération.",
+      "Dans la démo du navigateur, les personas intégrés rejouent une génération enregistrée, comme dans l’enregistrement ci-dessous, et vos propres personas ne préparent que les prompts ; rien de nouveau n’est généré. Si la génération est disponible, choisissez un modèle d’image et vérifiez votre limite de dépense avant de désactiver Dry run. Suivez la progression et rouvrez les tâches précédentes depuis l’historique.",
+      "La génération hébergée couvre les images et leur évaluation. Un kit complet nécessite aussi des services SVG et vidéo. Si un service est indisponible, vous pouvez préparer les prompts et affiner votre persona."
+    ]
+  },
+  {
+    "id": "budget",
+    "title": "Comprendre les limites d’une génération hébergée",
+    "screen": "generate",
+    "href": "/gui/?tab=generate",
+    "paragraphs": [
+      "Choisissez Not Organic pour charger les modèles autorisés et le portefeuille du compte connecté. Si le catalogue, le modèle d’évaluation ou le solde vérifié sont indisponibles, suivez les indications du compte avant une génération payante.",
+      "Iterations, Batch size et Per purpose déterminent les candidats explorés et les sorties finales. Maximum spend for this run est un plafond en dollars américains, initialement de 1 $. Le plan compte les requêtes d’images et d’évaluation avant d’autoriser une génération payante.",
+      "Si le plan dépasse votre plafond, réduisez les candidats ou augmentez explicitement le plafond. S’il dépasse la limite du serveur, réduisez le plafond ou les candidats, ou contactez l’opérateur. Un crédit insuffisant ou un portefeuille bloqué empêche aussi la génération.",
+      "Les plafonds prudents des requêtes sont des limites de dépense, pas des prix annoncés par le fournisseur. Actualisez le compte pour vérifier un solde manquant. Les brouillons de consignes restent accessibles lorsque la génération payante est bloquée."
+    ]
+  },
+  {
+    "id": "moodboard",
+    "title": "Construire un tableau d’inspiration",
+    "screen": "moodboard",
+    "href": "/gui/?tab=moodboard",
+    "paragraphs": [
+      "Collez l’URL d’une image dans Ajouter une référence, ajoutez des étiquettes séparées par des virgules, puis cliquez sur Ajouter. La carte apparaît sur le tableau. Utilisez vos images ou des références autorisées ; Baste ne vous accorde pas de droits sur les images externes.",
+      "Épingler ou Désépingler change la priorité ; les cartes épinglées apparaissent d’abord. Découper copie l’URL dans l’outil de découpe. Retirer supprime la référence du tableau, pas l’image d’origine.",
+      "Modifiez les Mots d’ambiance sous forme de liste séparée par des virgules. Les Notes s’enregistrent lorsque vous quittez le champ : cliquez ailleurs après la saisie et vérifiez le message. Notes et références sont liées au persona sélectionné.",
+      "Les moodboards de démo disparaissent au rechargement. Si une image ne s’affiche pas, vérifiez son URL ; votre note peut être conservée."
+    ]
+  },
+  {
+    "id": "split",
+    "title": "Découper une planche de références",
+    "screen": "moodboard",
+    "href": "/gui/?tab=moodboard",
+    "paragraphs": [
+      "Dans Découper une planche, indiquez une URL d’image ou un chemin local, puis choisissez de 1 à 8 Colonnes et Lignes. Découper en affiche le nombre de cellules. Une réponse réussie du serveur affiche la grille.",
+      "La découpe nécessite le serveur local. La démo accepte l’URL et les dimensions, mais affiche une erreur de serveur requis lors de la découpe. Elle ne fabrique pas de grille. Vérifiez la connexion avant de réessayer."
+    ]
+  },
+  {
+    "id": "brandkit",
+    "title": "Examiner une identité de marque",
+    "screen": "brandkit",
+    "href": "/gui/?tab=brandkit",
+    "paragraphs": [
+      "Brand kit apparaît pour les personas personnalisés. Il rassemble couleurs, polices, logo et images lorsque vous créez un persona à partir d’un site web. Un kit vide signifie qu’aucun site n’a été capturé pour ce persona.",
+      "Comparez les références collectées avec le site d’origine avant de les utiliser. Certaines polices ou images peuvent manquer si la source bloque leur accès ou les charge plus tard."
+    ]
+  },
+  {
+    "id": "feedback",
+    "title": "Affiner leurs goûts",
+    "screen": "feedback",
+    "href": "/gui/?tab=feedback",
+    "paragraphs": [
+      "Ouvrez Taste. Saisissez l’identifiant de l’élément, expliquez Why et ajoutez des tags si nécessaire. Choisissez More like this ou Less like this. Un commentaire utile précise ce qui convient ou non à cette personne.",
+      "Les avis récents conservent votre explication. Le panneau learned-taste rassemble les tendances de vos retours pour les prochains essais. Une évaluation guide le travail futur ; elle ne modifie pas l’image évaluée. Les retours de la démo disparaissent au rechargement."
+    ]
+  },
+  {
+    "id": "editor",
+    "title": "Modifier un document OpenPencil",
+    "screen": "editor",
+    "href": "/gui/?tab=editor",
+    "paragraphs": [
+      "Ouvrez Tokens, puis choisissez Edit in OpenPencil. Filter tokens recherche les noms et les valeurs. Modifiez une valeur directement, ou utilisez le sélecteur pour une couleur. Choisissez Save document pour conserver les modifications.",
+      "Un persona de base conserve ses mesures d’origine ; son document modifiable est distinct. Les modifications du document de démo restent dans cet onglet et ne changent pas les exemples de tokens téléchargeables. L’export natif et la surveillance de fichiers nécessitent une installation locale."
+    ]
+  },
+  {
+    "id": "decompose",
+    "title": "Décomposer un site",
+    "screen": "decompose",
+    "href": "/gui/?flow=decompose",
+    "paragraphs": [
+      "Indiquez l’URL source. Identifiant et Nom affiché sont des remplacements facultatifs ; sinon, le serveur utilise domaine et titre. Alimenter le tableau d’inspiration ajoute les visuels extraits. Rendu complet exécute JavaScript avec Playwright pour les sites qui en ont besoin.",
+      "Copier les visuels enregistre logo, image Open Graph et miniatures sur disque. Activer l’historique suit les changements du persona. Choisissez les options utiles, puis Décomposer. La progression décrit les étapes ; un résultat réussi propose Voir l’essayage et Ouvrir l’identité de marque.",
+      "La capture de sites nécessite un service connecté. Si Decompose est indisponible, gardez l’URL sur votre moodboard et continuez avec votre propre persona."
+    ]
+  },
+  {
+    "id": "remix",
+    "title": "Croiser deux personas",
+    "screen": "remix",
+    "href": "/gui/?flow=remix",
+    "paragraphs": [
+      "Choisissez deux personas différents pour Chaîne et Trame. L’échantillon entrelacé compare leurs palettes principales ; c’est un aperçu, pas un visuel généré. Indiquez un identifiant et un nom facultatifs ou utilisez la combinaison suggérée.",
+      "Weave them together crée un persona à partir des deux ensembles d’influences lorsque le service est disponible. Choisissez des personas différents. Remix est indisponible dans la démo du navigateur."
+    ]
+  },
+  {
+    "id": "projects",
+    "title": "Conserver un projet enregistré",
+    "screen": "projects",
+    "href": "/gui/?flow=projects",
+    "paragraphs": [
+      "Projets sépare la description de l’application du persona de design. L’enregistrement nécessite un serveur Baste, l’intégration de compte configurée et un compte authentifié. La démo affiche une invitation à se connecter au lieu de prétendre enregistrer un projet.",
+      "L’interface connectée comprend liste de projets, formulaire de nom et description, public facultatif, détails modifiables et historique. Choisir un persona existant donne au projet sa propre copie du public. Save brief et Save audience sont des actions explicites.",
+      "Si une nouvelle version entre en conflit avec votre brouillon, chargez-la, comparez-la, puis conservez le brouillon pour l’enregistrement suivant ou remplacez-le. Restore crée une version à partir d’un contenu antérieur. Ces comportements sont documentés depuis le code actuel ; ils n’ont pas été testés avec un compte réel."
+    ]
+  },
+  {
+    "id": "settings",
+    "title": "Connecter l’atelier",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "Ouvrez Settings pour vérifier votre connexion et votre compte. Si l’indicateur affiche Demo, les modifications restent dans cet onglet. Téléchargez vos exports de tokens avant de vous reconnecter, car la reconnexion démarre une nouvelle session.",
+      "Dans un Studio hébergé, choisissez un modèle disponible dans Generate. Les adresses de connexion, clés de fournisseurs et réglages du serveur sont expliqués dans Developer docs pour les personnes qui gèrent leur installation."
+    ]
+  },
+  {
+    "id": "account",
+    "title": "Compte, portefeuille et paiement",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "Dans Settings, choisissez Sign in / create profile lorsque cette option est disponible. Votre compte vous permet de retrouver votre travail. Un persona est la personne pour laquelle vous concevez ; il est distinct de votre profil de compte.",
+      "Votre portefeuille affiche le crédit disponible et les offres d’achat. Vérifiez le prix lors du paiement. De retour dans Studio, actualisez le portefeuille pour vérifier que le crédit est arrivé avant de lancer une génération.",
+      "Si la connexion ou le paiement est indisponible, utilisez la démo et téléchargez vos exports. Les visites enregistrées ne montrent ni achat ni génération payante."
+    ]
+  },
+  {
+    "id": "materials",
+    "title": "Utiliser la matériauthèque",
+    "screen": "materials",
+    "href": "/materials/",
+    "paragraphs": [
+      "La route Matériaux est une page publique de référence distincte. Examinez les exemples et leurs commandes, puis revenez au Studio pour utiliser les jetons du persona. Les matériaux ne créent pas de projet enregistré et ne lancent pas de génération.",
+      "Commencez par l’une des six études : Thread current, Shot silk, Interference, Chalk islands, Oxide bath ou Radial pleat. Choisissez technique et graine, modifiez les couleurs de fond, chaîne et trame, puis teinte, échelle, densité, distorsion et intensité de teinture. Palettes et Shuffle explorent des variantes. Le pointeur déforme l’aperçu ; un clic crée une onde."
+    ]
+  },
+  {
+    "id": "persistence",
+    "title": "Savoir ce qui est enregistré",
+    "screen": "tokens",
+    "href": "/gui/?tab=tokens",
+    "paragraphs": [
+      "Les personas, références, retours et documents de la démo restent dans l’onglet actuel. Changer d’onglet dans Studio les conserve ; recharger ou se reconnecter les efface. Les fichiers téléchargés restent sur votre appareil.",
+      "Les réglages de matière sont enregistrés dans ce navigateur. Save recipe fournit un fichier réutilisable ; Export PNG fournit une image. Conservez les deux pour pouvoir modifier la matière plus tard.",
+      "Utilisez Projects avec un compte connecté pour conserver un brief et son historique. Vérifiez la confirmation d’enregistrement avant de fermer la page. Si l’enregistrement échoue, conservez votre brouillon et réessayez une fois la connexion rétablie."
+    ]
+  },
+  {
+    "id": "troubleshooting",
+    "title": "Résoudre un problème",
+    "screen": "settings",
+    "href": "/gui/?flow=settings",
+    "paragraphs": [
+      "Travail manquant après un rechargement : vérifiez si vous utilisiez Demo. Cette session est temporaire, mais les fichiers téléchargés et recettes de matières restent disponibles.",
+      "Pas de nouvelles couleurs après modification d’un persona dans Demo : la démo réutilise ses exemples intégrés. Un Brand kit vide signifie qu’aucun site n’a été capturé. Une image de moodboard manquante peut nécessiter une nouvelle URL.",
+      "Génération bloquée : actualisez votre compte et vérifiez le modèle, le solde et la dépense maximale. Réduisez le nombre de candidats si le plan dépasse votre limite. Vous pouvez continuer à préparer des prompts pendant cette indisponibilité."
+    ]
+  },
+  {
+    "id": "coverage",
+    "title": "À propos des enregistrements",
+    "screen": "docs",
+    "href": null,
+    "paragraphs": [
+      "L’enregistrement du Studio actuel présente Fitting, Material, Tokens, Moodboard et Taste. Cette visite silencieuse, sans modification de données, comporte des sous-titres décrivant chaque étape.",
+      "Les visites commentées en anglais et en français ont été publiées le 2 octobre 2026. Leur disposition d’onglets est plus ancienne : OpenPencil se trouve désormais dans Tokens et Material dispose de son propre onglet. Les instructions utilisent les noms actuels. L’édition publiée téléchargeable conserve ses captures d’origine et son annexe développeur."
+    ]
+  },
+  {
+    "id": "material-exports",
+    "title": "Conserver une recette de matériau",
+    "screen": "materials",
+    "href": "/materials/",
+    "paragraphs": [
+      "Pause motion fige l’aperçu. Les commandes de mouvement sont désactivées si la réduction des animations est active. Le rendu nécessite WebGL ; sans lui, vous pouvez modifier les couleurs et enregistrer une recette. Rechargez après une perte du contexte WebGL.",
+      "Export PNG télécharge le fond rendu. Save recipe télécharge les paramètres JSON réutilisables ; Load recipe recharge ce fichier. La recette est une configuration modifiable, pas une image. Conservez les deux pour disposer du rendu et pouvoir le modifier.",
+      "Les ajustements de matériaux sont conservés sur l’appareil, contrairement aux personas en mémoire de la démo. Use behind Baste enregistre un fond adouci dans ce navigateur ; Restore original linen retire cette préférence. Ces actions ne modifient pas le site publié pour les autres."
+    ]
+  },
+  {
+    "id": "specimen",
+    "title": "Examiner le spécimen maison",
+    "screen": "specimen",
+    "href": "/specimen/",
+    "paragraphs": [
+      "Le spécimen présente les trois polices, onze couleurs, motifs de couture/craie/épingle, rendu de tissu, icônes et trois essayages de Baste. C’est une référence du système visuel maison, pas un autre éditeur de persona.",
+      "Dans le rendu de tissu, réglez couleurs de chaîne et trame, profondeur des plis, relief, largeur des fils, plis par écran et teinture. Reset rétablit les valeurs de l’exemple. Ces changements sont temporaires ; cette page ne propose ni enregistrement ni export."
+    ]
+  }
+]

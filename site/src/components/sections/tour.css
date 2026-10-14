@@ -1,0 +1,76 @@
+/* The screening: the one dark band on the landing page, so the tour reads as a lit screen.
+   Cursors keep the shared vocabulary; both carry a paper outline that holds on ink. */
+.tour { position: relative; background: #1C1B19; color: #F1ECE2; scroll-margin-top: 76px; }
+.tour :focus-visible { outline-color: #F0C534; }
+.tour a { color: #F1ECE2; text-underline-offset: 3px; }
+.tour a:hover { color: #F0C534; }
+.tour-layout { max-width: 1240px; margin-inline: auto; padding: 72px 32px 64px; }
+.tour-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: 34px; }
+.tour-kicker { color: #F0C534; margin-bottom: 16px; }
+.tour-intro h2 { font-size: clamp(36px, 3.7vw, 48px); text-wrap: balance; }
+.tour-intro h2 em { font-style: italic; color: #E2553E; }
+.tour-intro > p { max-width: 44ch; color: #CFC7B8; font-size: 16px; line-height: 1.65; padding-bottom: 4px; }
+
+.tour-film { margin: 0; }
+.tour-screen {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: #F1ECE2;
+  box-shadow: 0 0 0 1px rgba(241, 236, 226, 0.08), 0 40px 90px -50px rgba(0, 0, 0, 0.9);
+}
+.tour-screen video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+.tour-screen video::cue { background: rgba(28, 27, 25, 0.86); color: #F6F1E7; font-family: 'Instrument Sans', system-ui, sans-serif; }
+
+/* Before the first play the whole poster is the button; the pill says what pressing does. */
+.tour-play {
+  position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: flex-start;
+  padding: clamp(14px, 3vw, 32px); border: 0; color: #F6F1E7; font: inherit; text-align: left;
+  background: linear-gradient(180deg, rgba(28, 27, 25, 0) 58%, rgba(28, 27, 25, 0.34));
+}
+.tour-play-pill {
+  display: inline-flex; align-items: center; gap: 12px; min-height: 54px; padding: 8px 20px 8px 8px; border-radius: 999px;
+  background: rgba(28, 27, 25, 0.86); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background 0.2s, transform 0.45s var(--ease-thread);
+}
+.tour-play:hover .tour-play-pill { background: #A9311E; transform: translateY(-2px); }
+.tour-play:focus-visible { outline: none; }
+.tour-play:focus-visible .tour-play-pill { outline: 2px solid #F0C534; outline-offset: 3px; }
+.tour-play-icon { display: grid; place-items: center; width: 38px; height: 38px; padding-left: 3px; border-radius: 50%; background: #F6F1E7; color: #1C1B19; }
+.tour-play-label { font-size: 15px; font-weight: 600; }
+.tour-play-time { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: #CFC7B8; }
+
+/* Chapters as a measured rule: each one as long as it plays, basted until it has been watched. */
+.tour-chapters { display: flex; list-style: none; margin: 22px 0 0; padding: 0; }
+.tour-chapters li { position: relative; flex: var(--d) 1 0; min-width: 0; padding-top: 14px; }
+.tour-chapters li::before,
+.tour-chapters li::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; }
+.tour-chapters li::before { background: linear-gradient(90deg, #5A564E 0 12px, transparent 12px 20px) 0 0 / 20px 2px repeat-x; }
+.tour-chapters li::after { background: #D2402A; transform: scaleX(var(--f, 0)); transform-origin: 0 50%; transition: transform 0.28s linear; }
+.tour-chapters button {
+  width: 100%; display: flex; flex-direction: column; gap: 3px; padding: 4px 12px 6px 10px; text-align: left;
+  border: 0; border-left: 1px solid #45423C; background: none; color: #A8A196; font: inherit; font-size: 14px; line-height: 1.3;
+  transition: color 0.2s;
+}
+.tour-chapters button:hover { color: #F1ECE2; }
+.tour-chapters button[aria-current="true"] { color: #F1ECE2; border-left-color: #D2402A; }
+.tour-chapter-time { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.04em; color: #8F897E; }
+.tour-chapters button[aria-current="true"] .tour-chapter-time { color: #F0C534; }
+.tour-chapter-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tour-film figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; margin-top: 22px; font-size: 13px; color: #A8A196; }
+.tour-links { display: inline-flex; flex-wrap: wrap; gap: 6px 20px; }
+.tour-links a { min-height: 32px; display: inline-flex; align-items: center; }
+
+@media (max-width: 899px) {
+  .tour-intro { display: block; }
+  .tour-intro h2 { margin-bottom: 16px; }
+  /* Eight proportional chapters do not fit a phone: scroll the rule sideways instead of squeezing it. */
+  .tour-chapters { overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .tour-chapters::-webkit-scrollbar { display: none; }
+  .tour-chapters li { flex: var(--d) 0 calc(var(--d) * 13px); min-width: 118px; scroll-snap-align: start; }
+}
+@media (max-width: 767px) {
+  .tour-layout { padding: 52px 20px 44px; }
+  .tour-intro > p { font-size: 15px; }
+  .tour-play-time { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-play-pill, .tour-chapters li::after { transition: none; }
+}

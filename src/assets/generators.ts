@@ -1,14 +1,17 @@
 /**
  * Asset Generation Services
  *
- * SVG: QuiverAI only — no fallback. Requires QUIVER_API_KEY.
- * Image: OpenAI (gpt-image-2 / dall-e-3) or Google Gemini (Imagen 3 / Gemini Flash).
- * Video: Veo 3 via Google API.
+ * SVG: QuiverAI (QUIVER_API_KEY), or Recraft vector on fal (FAL_KEY).
+ * Image: OpenAI (gpt-image-2.5 / gpt-image-2 / dall-e-3), Google Gemini, or any fal image model.
+ * Video: Seedance via BytePlus ModelArk, Veo via Google API, or Seedance/Kling on fal.
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";
-import type { Persona } from "../persona/types.js";
+import type { AestheticProfile, Persona } from "../persona/types.js";
 import type { AssetType, GeneratedPrompt } from "../generation/prompts.js";
+import { assertSafePublicUrl } from "../shared/url.js";
+import { generateDesignTokens } from "./design-system.js";
+import { falDownload, falRun, sizeForRatio } from "./fal.js";
 
 export interface GeneratedAsset {
   id: string;
@@ -22,6 +25,8 @@ export interface GeneratedAsset {
     assetPurpose: string;
     seed?: number;
     generationTime: number;
+    /** Provider-hosted original, kept for provenance and for judges that look at pixels. */
+    sourceUrl?: string;
   };
 }
 
@@ -30,29 +35,60 @@ export interface GenerationConfig {
   quiverApiKey?: string;
   quiverBaseUrl?: string;
   googleApiKey?: string;
+  /** One key for every fal-backed provider. */
+  falApiKey?: string;
   outputDir: string;
-  imageProvider?: "openai" | "gemini";
+  svgProvider?: "quiver" | "fal";
+  svgModel?: string;
+  imageProvider?: "openai" | "gemini" | "notorganic" | "fal";
+  /** Request-scoped, server-held Not Organic authorization. Never serialized. */
+  notOrganicFetch?: (path: string, init?: RequestInit) => Promise<Response>;
   imageModel?: string;
   imageSize?: string;
   imageQuality?: "standard" | "high";
   imageStyle?: "vivid" | "natural";
+  videoProvider?: "seedance" | "veo" | "runway" | "local" | "fal";
+  videoModel?: string;
+  videoApiKey?: string;
+  videoBaseUrl?: string;
+  videoDuration?: number;
+  videoRatio?: string;
+  videoResolution?: string;
+  videoPollIntervalMs?: number;
+  videoTimeoutMs?: number;
 }
 
 // ── QuiverAI SVG Generator ────────────────────────────────────────────────────
+
+/** Recraft's vector substyles closest to each icon style. */
+const RECRAFT_VECTOR_STYLE: Record<AestheticProfile["iconStyle"], string> = {
+  line: "vector_illustration/line_art",
+  filled: "vector_illustration/vivid_shapes",
+  "hand-drawn": "vector_illustration/marker_outline",
+  geometric: "vector_illustration/segmented_colors",
+  abstract: "vector_illustration",
+};
 
 export class SVGGenerator {
   private apiKey: string | undefined;
   private baseUrl: string;
   private outputDir: string;
+  private provider: "quiver" | "fal";
+  private falKey: string | undefined;
+  private falModel: string;
 
   constructor(config: GenerationConfig) {
     this.apiKey = config.quiverApiKey || process.env.QUIVER_API_KEY;
     this.baseUrl = config.quiverBaseUrl || process.env.QUIVER_BASE_URL || "https://api.quiverai.com";
+    this.provider = config.svgProvider ?? "quiver";
+    this.falKey = config.falApiKey;
+    this.falModel = config.svgModel ?? "fal-ai/recraft/v3/text-to-image";
     this.outputDir = `${config.outputDir}/svg`;
     mkdirSync(this.outputDir, { recursive: true });
   }
 
   async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
+    if (this.provider === "fal") return this.generateFal(persona, asset, prompt);
     if (!this.apiKey) {
       throw new Error(
         "QuiverAI API key required for SVG generation. Set QUIVER_API_KEY environment variable or configure generators.svg.apiKey in baste.config.json."
@@ -60,7 +96,7 @@ export class SVGGenerator {
     }
 
     const startTime = Date.now();
-    const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
+    const id = `${persona.id}-${asset.purpose}-${stamp()}`;
 
     const svgContent = await this.callQuiverAPI(prompt);
 
@@ -79,6 +115,37 @@ export class SVGGenerator {
         assetPurpose: asset.purpose,
         generationTime: Date.now() - startTime,
       },
+    };
+  }
+
+  /**
+   * Recraft V3 draws real vector output. The persona's own palette goes in as
+   * preferred colours, so icons arrive already dressed in its tokens.
+   * https://fal.ai/models/fal-ai/recraft/v3/text-to-image/api
+   */
+  private async generateFal(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
+    const startTime = Date.now();
+    const id = `${persona.id}-${asset.purpose}-${stamp()}`;
+    const { colors } = generateDesignTokens(persona);
+    const palette = [colors.primary, colors.secondary, colors.accent, colors.background].map(hexToRgb).filter((c) => c !== null);
+    const result = await falRun<{ images?: Array<{ url?: string; content_type?: string }> }>(this.falModel, {
+      // Recraft caps prompts at 1,000 characters. The engine's SVG brief ends in
+      // instructions for code-writing models, which a drawing model does not need.
+      prompt: clipPrompt(prompt.prompt.replace(/\n?Output as clean SVG code[^\n]*/, ""), 1000),
+      style: RECRAFT_VECTOR_STYLE[persona.aesthetic.iconStyle] ?? "vector_illustration",
+      image_size: "square_hd",
+      colors: palette,
+    }, { key: this.falKey });
+    const image = result.images?.[0];
+    if (!image?.url || (image.content_type && image.content_type !== "image/svg+xml")) throw new Error("fal returned no SVG.");
+    const outputPath = `${this.outputDir}/${id}.svg`;
+    const sourceUrl = await falDownload(image.url, outputPath, 5 * 1024 * 1024);
+    return {
+      id,
+      type: "svg",
+      content: outputPath,
+      prompt: prompt.prompt,
+      metadata: { service: "fal", model: this.falModel, personaId: persona.id, assetPurpose: asset.purpose, generationTime: Date.now() - startTime, sourceUrl },
     };
   }
 
@@ -118,7 +185,9 @@ export class SVGGenerator {
 export class ImageGenerator {
   private openaiKey: string | undefined;
   private googleKey: string | undefined;
-  private provider: "openai" | "gemini";
+  private falKey: string | undefined;
+  private provider: "openai" | "gemini" | "notorganic" | "fal";
+  private notOrganicFetch?: GenerationConfig["notOrganicFetch"];
   private model: string;
   private size: string;
   private quality: "standard" | "high";
@@ -128,8 +197,15 @@ export class ImageGenerator {
   constructor(config: GenerationConfig) {
     this.openaiKey = config.openaiApiKey || process.env.OPENAI_API_KEY;
     this.googleKey = config.googleApiKey || process.env.GOOGLE_API_KEY;
+    this.falKey = config.falApiKey;
     this.provider = config.imageProvider ?? "openai";
-    this.model = config.imageModel ?? (this.provider === "gemini" ? "imagen-3.0-generate-002" : "gpt-image-2");
+    this.notOrganicFetch = config.notOrganicFetch;
+    this.model = config.imageModel ?? {
+      notorganic: "image",
+      gemini: "imagen-3.0-generate-002",
+      fal: "fal-ai/bytedance/seedream/v4/text-to-image",
+      openai: "gpt-image-2.5",
+    }[this.provider];
     this.size = config.imageSize ?? "1024x1024";
     this.quality = config.imageQuality ?? "high";
     this.style = config.imageStyle ?? "vivid";
@@ -139,12 +215,21 @@ export class ImageGenerator {
 
   async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
     const startTime = Date.now();
-    const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
+    const id = `${persona.id}-${asset.purpose}-${stamp()}`;
 
     let outputPath: string;
     let service: string;
+    let sourceUrl: string | undefined;
 
-    if (this.provider === "gemini") {
+    if (this.provider === "fal") {
+      ({ outputPath, sourceUrl } = await this.generateFal(asset, prompt, id));
+      service = "fal";
+    } else if (this.provider === "notorganic") {
+      if (!this.notOrganicFetch) throw new Error("Sign in to Not Organic before generating hosted images.");
+      outputPath = `${this.outputDir}/${id}.png`;
+      await this.generateNotOrganic(prompt, outputPath);
+      service = "notorganic";
+    } else if (this.provider === "gemini") {
       if (!this.googleKey) {
         throw new Error(
           "Google API key required for Gemini image generation. Set GOOGLE_API_KEY environment variable or configure generators.image.apiKey."
@@ -175,11 +260,62 @@ export class ImageGenerator {
         personaId: persona.id,
         assetPurpose: asset.purpose,
         generationTime: Date.now() - startTime,
+        ...(sourceUrl ? { sourceUrl } : {}),
       },
     };
   }
 
+  /** Any fal text-to-image model that takes `image_size` and returns `images[]`. */
+  private async generateFal(asset: AssetType, prompt: GeneratedPrompt, id: string): Promise<{ outputPath: string; sourceUrl: string }> {
+    const ratio = asset.constraints?.aspectRatio ?? (typeof prompt.parameters?.aspectRatio === "string" ? prompt.parameters.aspectRatio : undefined);
+    const result = await falRun<{ images?: Array<{ url?: string; content_type?: string }> }>(this.model, {
+      prompt: prompt.prompt,
+      image_size: sizeForRatio(ratio),
+      num_images: 1,
+      enable_safety_checker: true,
+    }, { key: this.falKey });
+    const image = result.images?.[0];
+    if (!image?.url) throw new Error("fal returned no image.");
+    const extension = { "image/jpeg": "jpg", "image/webp": "webp" }[image.content_type ?? ""] ?? "png";
+    const outputPath = `${this.outputDir}/${id}.${extension}`;
+    return { outputPath, sourceUrl: await falDownload(image.url, outputPath, 40 * 1024 * 1024) };
+  }
+
+  private async generateNotOrganic(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    if (this.model !== "image") throw new Error("Choose the available Not Organic image model.");
+    const response = await this.notOrganicFetch!("/v1/images/generations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(180_000),
+      body: JSON.stringify({ model: this.model, prompt: prompt.prompt, size: prompt.parameters?.size ?? this.size, n: 1 }),
+    });
+    if (!response.ok) {
+      if (response.status === 402) throw new Error("Not Organic needs more credit or a higher request budget. Open your wallet in Settings.");
+      if (response.status === 401 || response.status === 403) throw new Error("Not Organic image access is unavailable. Sign in again and check your account permissions.");
+      throw new Error(`Not Organic image generation failed (${response.status}).`);
+    }
+    const data = await response.json() as { data?: Array<{ b64_json?: string; url?: string }> };
+    const result = data.data?.[0];
+    if (typeof result?.b64_json === "string" && result.b64_json) {
+      writeFileSync(outputPath, Buffer.from(result.b64_json, "base64"));
+    } else if (typeof result?.url === "string") {
+      const url = await assertSafePublicUrl(result.url);
+      if (url.protocol !== "https:" || url.username || url.password) throw new Error("Not Organic returned an invalid image URL.");
+      // Download the provider's HTTPS artifact; credentials are never forwarded.
+      const response = await fetch(url, { signal: AbortSignal.timeout(60_000), redirect: "error" });
+      if (!response.ok) throw new Error(`Not Organic image download failed (${response.status}).`);
+      writeFileSync(outputPath, Buffer.from(await response.arrayBuffer()));
+    } else {
+      throw new Error("Not Organic returned no image data.");
+    }
+  }
+
   private async generateOpenAI(prompt: GeneratedPrompt, outputPath: string): Promise<void> {
+    // https://developers.openai.com/api/docs/guides/image-generation
+    // Docs confirm 2.5 Sunburst/Flare, not the bare gpt-image-2.5 alias.
+    // Keep the GPT Image 2 shape for that requested alias pending confirmation.
+    // GPT Image uses low/medium/high and base64; style is DALL-E-only.
+    const isGPTImage = this.model.startsWith("gpt-image-");
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -190,8 +326,8 @@ export class ImageGenerator {
         model: this.model,
         prompt: prompt.prompt,
         size: prompt.parameters?.size || this.size,
-        quality: this.quality,
-        style: this.style,
+        quality: isGPTImage && this.quality === "standard" ? "medium" : this.quality,
+        ...(isGPTImage ? {} : { style: this.style }),
         n: 1,
       }),
     });
@@ -286,27 +422,41 @@ export class ImageGenerator {
   }
 }
 
-// ── Video Generator (Veo 3) ───────────────────────────────────────────────────
+// ── Video Generator (Seedance / Veo) ──────────────────────────────────────────
 
 export class VideoGenerator {
   private apiKey: string | undefined;
   private outputDir: string;
+  private provider: NonNullable<GenerationConfig["videoProvider"]>;
+  private model: string;
+  private config: GenerationConfig;
 
   constructor(config: GenerationConfig) {
-    this.apiKey = config.googleApiKey || process.env.GOOGLE_API_KEY;
+    this.config = config;
+    this.provider = config.videoProvider ?? "seedance";
+    this.model = config.videoModel ?? { seedance: "seedance-1-0-pro-250528", fal: "fal-ai/bytedance/seedance/v1/pro/text-to-video" }[this.provider as string] ?? "veo-3";
+    this.apiKey = config.videoApiKey || (this.provider === "seedance" ? process.env.ARK_API_KEY : this.provider === "fal" ? config.falApiKey : config.googleApiKey || process.env.GOOGLE_API_KEY);
     this.outputDir = `${config.outputDir}/videos`;
     mkdirSync(this.outputDir, { recursive: true });
   }
 
   async generate(persona: Persona, asset: AssetType, prompt: GeneratedPrompt): Promise<GeneratedAsset> {
+    if (this.provider !== "seedance" && this.provider !== "veo" && this.provider !== "fal") {
+      throw new Error(`Video provider ${this.provider} is not implemented. Choose seedance, veo or fal.`);
+    }
     if (!this.apiKey) {
-      throw new Error("Google API key required for video generation. Set GOOGLE_API_KEY.");
+      throw new Error({ seedance: "Seedance needs ARK_API_KEY", fal: "fal needs FAL_KEY" }[this.provider as string] ?? "Google API key required for video generation. Set GOOGLE_API_KEY.");
     }
 
     const startTime = Date.now();
-    const id = `${persona.id}-${asset.purpose}-${Date.now()}`;
+    const id = `${persona.id}-${asset.purpose}-${stamp()}`;
+    let sourceUrl: string | undefined;
 
-    const videoResult = await this.callVeoAPI(prompt);
+    const videoResult = this.provider === "seedance"
+      ? await this.callSeedanceAPI(persona, asset, prompt, `${this.outputDir}/${id}.mp4`)
+      : this.provider === "fal"
+        ? await this.callFal(persona, asset, prompt, `${this.outputDir}/${id}.mp4`).then((r) => { sourceUrl = r.sourceUrl; return r.outputPath; })
+        : await this.callVeoAPI(prompt);
 
     return {
       id,
@@ -314,13 +464,103 @@ export class VideoGenerator {
       content: videoResult,
       prompt: prompt.prompt,
       metadata: {
-        service: "google",
-        model: "veo-3",
+        service: { seedance: "byteplus", fal: "fal" }[this.provider as string] ?? "google",
+        model: this.model,
         personaId: persona.id,
         assetPurpose: asset.purpose,
         generationTime: Date.now() - startTime,
+        ...(sourceUrl ? { sourceUrl } : {}),
       },
     };
+  }
+
+  /**
+   * Seedance or Kling through fal's queue. Both take a text prompt, a whole-second
+   * duration and an aspect ratio; Seedance also takes a resolution.
+   * https://fal.ai/models/fal-ai/bytedance/seedance/v1/pro/text-to-video/api
+   */
+  private async callFal(persona: Persona, asset: AssetType, prompt: GeneratedPrompt, outputPath: string): Promise<{ outputPath: string; sourceUrl: string }> {
+    const duration = Number(this.config.videoDuration ?? prompt.parameters?.duration ?? 5);
+    const ratio = String(asset.constraints?.aspectRatio ?? this.config.videoRatio ?? prompt.parameters?.aspectRatio ?? "16:9");
+    const kling = this.model.includes("kling");
+    if (kling ? ![5, 10].includes(duration) : !Number.isInteger(duration) || duration < 2 || duration > 12) {
+      throw new Error(kling ? "Kling on fal renders 5 or 10 seconds." : "Seedance duration must be an integer between 2 and 12 seconds.");
+    }
+    const result = await falRun<{ video?: { url?: string } }>(this.model, {
+      prompt: `${prompt.prompt}\nMotion: ${motionPhrase(persona)}. Seamless ambient loop; no text.`,
+      duration: String(duration),
+      aspect_ratio: ratio,
+      ...(kling ? {} : { resolution: String(this.config.videoResolution ?? "1080p"), enable_safety_checker: true }),
+    }, { key: this.apiKey, timeoutMs: this.config.videoTimeoutMs ?? 15 * 60_000, pollIntervalMs: this.config.videoPollIntervalMs ?? 5_000 });
+    if (!result.video?.url) throw new Error("fal returned no video.");
+    return { outputPath, sourceUrl: await falDownload(result.video.url, outputPath) };
+  }
+
+  private async callSeedanceAPI(persona: Persona, asset: AssetType, prompt: GeneratedPrompt, outputPath: string): Promise<string> {
+    // Official create + retrieve contracts (Bearer ARK_API_KEY; id/status/content.video_url):
+    // https://docs.byteplus.com/en/docs/modelark/create-video-generation-task-api
+    // https://docs.byteplus.com/en/docs/modelark/get-video-generation-task-api
+    // Model ID: https://docs.byteplus.com/en/docs/modelark/recommended-models-seedance-1-0-pro
+    // fal also hosts Seedance: https://fal.ai/models/bytedance/seedance-2.0/text-to-video/api
+    // This adapter uses BytePlus directly; it does not use the fal queue protocol.
+    const base = (this.config.videoBaseUrl ?? "https://ark.ap-southeast.bytepluses.com/api/v3").replace(/\/$/, "");
+    const endpoint = `${base}/contents/generations/tasks`;
+    const timeoutMs = this.config.videoTimeoutMs ?? 10 * 60_000;
+    const intervalMs = this.config.videoPollIntervalMs ?? 5_000;
+    if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || !Number.isFinite(intervalMs) || intervalMs < 0) {
+      throw new Error("Seedance polling requires a positive timeout and nonnegative interval.");
+    }
+    const signal = AbortSignal.timeout(timeoutMs);
+    const headers = { Authorization: `Bearer ${this.apiKey}`, "Content-Type": "application/json" };
+    const motion = motionPhrase(persona);
+    const duration = this.config.videoDuration ?? prompt.parameters?.duration ?? 5;
+    const ratio = asset.constraints?.aspectRatio ?? this.config.videoRatio ?? prompt.parameters?.aspectRatio ?? "16:9";
+    const resolution = this.config.videoResolution ?? prompt.parameters?.quality ?? "1080p";
+    // 1.0 Pro accepts whole seconds 2–12 and the listed ratios. Do not silently
+    // rewrite explicit parameters for other configured models/endpoints.
+    if (this.model.startsWith("seedance-1-0-") && (!Number.isInteger(duration) || Number(duration) < 2 || Number(duration) > 12)) {
+      throw new Error("Seedance 1.0 duration must be an integer between 2 and 12 seconds.");
+    }
+    if (!["16:9", "4:3", "1:1", "3:4", "9:16", "21:9", "adaptive"].includes(String(ratio))) {
+      throw new Error(`Unsupported Seedance ratio: ${ratio}`);
+    }
+    const created = await fetch(endpoint, {
+      method: "POST", headers, signal,
+      body: JSON.stringify({ model: this.model, content: [{ type: "text", text: `${prompt.prompt}\nMotion: ${motion}. Seamless ambient loop; no text.` }], duration, ratio, resolution }),
+    });
+    if (!created.ok) throw new Error(`Seedance create task API error ${created.status}`);
+    const task = await created.json();
+    if (typeof task.id !== "string" || !task.id) throw new Error("Seedance returned no task ID.");
+
+    while (!signal.aborted) {
+      const response = await fetch(`${endpoint}/${encodeURIComponent(task.id)}`, { headers, signal });
+      if (!response.ok) throw new Error(`Seedance poll task API error ${response.status}`);
+      const result = await response.json();
+      if (result.status === "succeeded") {
+        if (typeof result.content?.video_url !== "string" || !result.content.video_url) {
+          throw new Error("Seedance succeeded without a video URL.");
+        }
+        // Signed download URL; never forward the ARK key to storage hosts.
+        const download = await fetch(result.content.video_url, { signal });
+        if (!download.ok) throw new Error(`Seedance video download failed: ${download.status}`);
+        writeFileSync(outputPath, Buffer.from(await download.arrayBuffer()));
+        return outputPath;
+      }
+      if (["failed", "cancelled", "expired"].includes(result.status)) {
+        throw new Error(`Seedance task ${result.status}${result.error?.code ? ` (${result.error.code})` : ""}`);
+      }
+      if (result.status !== "queued" && result.status !== "running") {
+        throw new Error("Seedance returned an unknown task status.");
+      }
+      await new Promise<void>((resolve, reject) => {
+        const done = () => { signal.removeEventListener("abort", abort); resolve(); };
+        const timer = setTimeout(done, intervalMs);
+        const abort = () => { clearTimeout(timer); reject(new Error("Seedance task polling timed out.")); };
+        signal.addEventListener("abort", abort, { once: true });
+        if (signal.aborted) abort();
+      });
+    }
+    throw new Error("Seedance task polling timed out.");
   }
 
   private async callVeoAPI(prompt: GeneratedPrompt): Promise<string> {
@@ -348,6 +588,43 @@ export class VideoGenerator {
     const data = await response.json();
     return data.video?.uri ?? data.videoUrl ?? "";
   }
+}
+
+let lastStamp = 0;
+/**
+ * Millisecond timestamp for asset ids, unique within this process. QD runs a
+ * batch of candidates concurrently; two started in the same millisecond must
+ * not write to the same file.
+ */
+function stamp(): number {
+  const now = Date.now();
+  lastStamp = now > lastStamp ? now : lastStamp + 1;
+  return lastStamp;
+}
+
+function motionPhrase(persona: Persona): string {
+  return {
+    smooth: "Slow, smooth movement with gentle continuous pacing",
+    liquid: "Flowing organic movement, fluid morphs and soft transitions",
+    snappy: "Crisp, brief motion accents with readable pauses",
+    mechanical: "Precise, rhythmic mechanical movement",
+  }[persona.aesthetic.motionStyle];
+}
+
+/** Trim a prompt to a model's limit at the last whole line that fits. */
+export function clipPrompt(prompt: string, max: number): string {
+  const text = prompt.trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const line = cut.lastIndexOf("\n");
+  return (line > max * 0.6 ? cut.slice(0, line) : cut).trim();
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return null;
+  const n = parseInt(m[1], 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
 }
 
 // ── Unified Asset Generator ───────────────────────────────────────────────────

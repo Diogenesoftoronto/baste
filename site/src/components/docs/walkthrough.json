@@ -1,0 +1,32 @@
+[
+  {
+    "id": "fit",
+    "title": "Design for a person.",
+    "paragraph": "Make an interface feel like it belongs to someone. In Baste, start with a persona’s films, music, spaces and working habits. The fitting makes that world visible through colour, type and interface details."
+  },
+  {
+    "id": "measure",
+    "title": "Take specific measurements.",
+    "paragraph": "Tailor a copy or measure a new persona. Give it a name and a clear description. Add concrete influences, values and software preferences. Choose the aesthetic axes and visual keywords. Save deliberately; the completion meter measures filled fields, not design quality."
+  },
+  {
+    "id": "tokens",
+    "title": "Keep a usable pattern.",
+    "paragraph": "In Tokens, compare spacing, edges and motion, then export CSS, Tailwind, Panda or JSON. Downloaded files stay on your device. The demo uses built-in token examples; custom measurements do not start fresh generation."
+  },
+  {
+    "id": "taste",
+    "title": "Show it what fits.",
+    "paragraph": "Build a moodboard from image references, tags and notes. Pin the important references; leave the notes field to save it. In Taste, name an asset, explain your verdict and ask for more or less of that style. Inspect the feedback that later prompts can use."
+  },
+  {
+    "id": "draft",
+    "title": "Draft before you generate.",
+    "paragraph": "Start Generate with a dry run and inspect the prompt. This browser demo simulates jobs and makes no paid calls. OpenPencil edits a separate document. Real generation, website decomposition, native files and saved projects need the appropriate server or account connection."
+  },
+  {
+    "id": "keep",
+    "title": "Keep the work. Know the limits.",
+    "paragraph": "Explore the material room, save a recipe and reload it when you want another fitting. Remember: reloading Studio clears demo work, while downloads and material preferences survive. The full English and French guide documents every screen, export and connection boundary."
+  }
+]

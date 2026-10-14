@@ -25,13 +25,17 @@ export function isPrivateAddress(addr: string): boolean {
   const v = isIP(addr);
   if (v === 4) {
     const parts = addr.split(".").map(Number);
-    const [a, b] = parts;
+    const [a, b, c] = parts;
     if (a === 10) return true;
     if (a === 127) return true;
     if (a === 0) return true;
     if (a === 169 && b === 254) return true;
     if (a === 172 && b >= 16 && b <= 31) return true;
     if (a === 192 && b === 168) return true;
+    if (a === 192 && b === 0 && (c === 0 || c === 2)) return true;
+    if (a === 198 && (b === 18 || b === 19 || (b === 51 && c === 100))) return true;
+    if (a === 203 && b === 0 && c === 113) return true;
+    if (a >= 224) return true;
     if (a === 100 && b >= 64 && b <= 127) return true;
     return false;
   }
@@ -40,7 +44,17 @@ export function isPrivateAddress(addr: string): boolean {
     if (low === "::1" || low === "::") return true;
     if (low.startsWith("fc") || low.startsWith("fd")) return true;
     if (low.startsWith("fe8") || low.startsWith("fe9") || low.startsWith("fea") || low.startsWith("feb")) return true;
-    if (low.startsWith("::ffff:")) return isPrivateAddress(low.slice(7));
+    if (low.startsWith("::ffff:")) {
+      const mapped = low.slice(7);
+      if (isIP(mapped) === 4) return isPrivateAddress(mapped);
+      const parts = mapped.split(":");
+      if (parts.length === 2) {
+        const n = parseInt(parts[0], 16) * 65536 + parseInt(parts[1], 16);
+        return isPrivateAddress(`${(n >>> 24) & 255}.${(n >>> 16) & 255}.${(n >>> 8) & 255}.${n & 255}`);
+      }
+      return true;
+    }
+    if (low.startsWith("ff") || low.startsWith("2001:db8:")) return true;
     return false;
   }
   return false;
@@ -58,10 +72,11 @@ export async function assertSafePublicUrl(rawUrl: string, opts: { allowPrivateHo
   if (u.protocol !== "http:" && u.protocol !== "https:") {
     throw new Error(`Refusing non-http(s) URL: ${u.protocol}`);
   }
+  if (u.username || u.password) throw new Error("Refusing a URL containing credentials.");
   if (opts.allowPrivateHosts) return u;
 
-  const host = u.hostname.toLowerCase();
-  if (PRIVATE_HOSTS.has(host)) {
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.$/, "");
+  if (PRIVATE_HOSTS.has(host) || host.endsWith(".localhost") || host.endsWith(".local")) {
     throw new Error(`Refusing local hostname: ${host}`);
   }
   if (isIP(host)) {
@@ -83,20 +98,29 @@ export async function assertSafePublicUrl(rawUrl: string, opts: { allowPrivateHo
 }
 
 export async function safeFetch(rawUrl: string, opts: SafeFetchOptions = {}): Promise<Response> {
-  const u = await assertSafePublicUrl(rawUrl, { allowPrivateHosts: opts.allowPrivateHosts });
-  const ctrl = new AbortController();
   const timeoutMs = opts.timeoutMs ?? 10_000;
-  const timer = setTimeout(() => ctrl.abort(new Error(`Request timed out after ${timeoutMs}ms`)), timeoutMs);
-  try {
+  // Keep one deadline through redirect handling AND body consumption. Validate
+  // every Location before sending a request; public URLs can redirect to LANs.
+  const signal = AbortSignal.timeout(timeoutMs);
+  let target = rawUrl;
+  for (let redirects = 0; redirects <= 5; redirects++) {
+    const u = await assertSafePublicUrl(target, { allowPrivateHosts: opts.allowPrivateHosts });
     const res = await fetch(u.toString(), {
-      redirect: "follow",
-      signal: ctrl.signal,
+      redirect: "manual",
+      signal,
       headers: { "User-Agent": DEFAULT_UA, ...(opts.headers ?? {}) },
     });
+    if ([301, 302, 303, 307, 308].includes(res.status)) {
+      const location = res.headers.get("location");
+      if (!location) return res;
+      await res.body?.cancel();
+      if (redirects === 5) throw new Error("Too many redirects.");
+      target = new URL(location, u).toString();
+      continue;
+    }
     return res;
-  } finally {
-    clearTimeout(timer);
   }
+  throw new Error("Too many redirects.");
 }
 
 export async function safeFetchText(rawUrl: string, opts: SafeFetchOptions = {}): Promise<string> {

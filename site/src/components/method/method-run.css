@@ -1,0 +1,282 @@
+/* ─── Method hero: one real run as a darkroom contact sheet ──────────────────
+   One number drives the scene: --p, the pinned scroll progress that
+   fx/smooth-scroll publishes as --pin. Every phase derives from it in CSS, so
+   nothing plays on its own and scrolling back rewinds the run.
+     develop  each draft develops on its film strip in the order it was made
+     judge    the judge's score prints on the film edge under each frame
+     cut      grease pencil circles the kept drafts; the brief gives way to the pick
+   Without room to pin, or with reduced motion, the finished sheet shows (--p: 1).
+   Phase timings match LAND_*, JUDGE_START and CUT_START in method-run.tsx. */
+
+.method-run {
+  --nav-h: 61px;
+  --p: var(--pin, 0);
+  --judge: clamp(0, calc((var(--p) - 0.62) / 0.12), 1);
+  --cut: clamp(0, calc((var(--p) - 0.78) / 0.12), 1);
+  --amber: #E3A548;
+  --grease: #EF4A33;
+  position: relative;
+}
+@media (min-width: 1180px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .method-run { height: 290vh; }
+  .method-run-stage { position: sticky; top: var(--nav-h); height: calc(100vh - var(--nav-h)); }
+  .method-run-table { --tw: min(100cqw, calc((100vh - var(--nav-h) - 110px) * 1.4)); }
+}
+@media not ((min-width: 1180px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)) {
+  .method-run { --p: 1; }
+  .method-run-hint { display: none; }
+}
+
+/* The copy sits on the site's 1240px grid; the table bleeds toward the right edge.
+   Both columns hang from the top, so a late font swap in the copy never moves the table. */
+.method-run-stage {
+  box-sizing: border-box;
+  padding: clamp(18px, 3vh, 36px) clamp(16px, 2.5vw, 40px) clamp(18px, 3vh, 36px) max(clamp(16px, 2.5vw, 40px), calc((100vw - 1240px) / 2 + 32px));
+  display: grid; grid-template-columns: minmax(300px, 0.66fr) minmax(0, 1.6fr);
+  gap: clamp(24px, 3vw, 52px); align-items: start; align-content: start;
+}
+@media (min-width: 1180px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  .method-run-stage { padding-top: clamp(24px, 6vh, 64px); }
+}
+@media (max-width: 1179px) {
+  .method-run-stage { grid-template-columns: minmax(0, 1fr); padding-top: 32px; padding-bottom: 56px; }
+}
+
+/* ── Copy ── */
+.method-run-copy { display: flex; flex-direction: column; gap: clamp(10px, 1.7vh, 18px); min-width: 0; }
+.method-run-back { color: #2F55A4; font-size: 14px; text-decoration: none; width: fit-content; }
+.method-run-back:hover { text-decoration: underline; text-underline-offset: 4px; }
+.method-run-kicker { color: #A9311E; }
+.method-run h1 { font-size: clamp(40px, 4.3vw, 68px); line-height: 0.98; text-wrap: balance; margin: 0; }
+.method-run h1 em { font-style: italic; color: #A9311E; }
+.method-run-lede { margin: 0; font-size: clamp(15px, 1.12vw, 17px); line-height: 1.55; color: #45423C; max-width: 46ch; }
+
+.method-run-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.method-run-tab {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; min-height: 40px;
+  border: 1px solid #CFC7B8; border-radius: 999px; background: #FBF9F4; color: #1C1B19;
+  font: inherit; font-size: 14px; font-weight: 600;
+  transition: background .25s var(--ease-thread), border-color .25s var(--ease-thread), color .25s var(--ease-thread);
+}
+.method-run-tab img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.method-run-tab:hover { border-color: #1C1B19; }
+.method-run-tab[aria-selected="true"] { background: #1C1B19; border-color: #1C1B19; color: #F1ECE2; }
+.method-run-tab[aria-selected="true"] img { box-shadow: 0 0 0 2px #1C1B19, 0 0 0 3.5px var(--tab-accent); }
+.method-run-tab:focus-visible { outline: 2px solid #2F55A4; outline-offset: 3px; }
+
+.method-run-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.method-run-steps li {
+  --a: 0;
+  position: relative; display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 8px 0 8px 14px;
+  font-size: 14px; line-height: 1.45; color: #45423C;
+  opacity: calc(0.38 + var(--a) * 0.62);
+}
+.method-run-steps strong { font-family: "Bodoni Moda", Georgia, serif; font-size: 19px; font-weight: 500; color: #1C1B19; line-height: 1.2; }
+.method-run-steps li::before {
+  content: ""; position: absolute; left: 0; top: 9px; bottom: 9px; width: 2px; border-radius: 2px;
+  background: #D2402A; transform-origin: top; transform: scaleY(var(--a));
+}
+.method-run-steps [data-step="1"] { --a: calc(1 - var(--judge)); }
+.method-run-steps [data-step="2"] { --a: calc(var(--judge) * (1 - var(--cut))); }
+.method-run-steps [data-step="3"] { --a: var(--cut); }
+@media not ((min-width: 1180px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)) {
+  .method-run-steps li { --a: 1 !important; opacity: 1; }
+  .method-run-steps li::before { background: #CFC7B8; }
+}
+.method-run-counter { margin: 0; font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; color: #6E6A61; }
+.method-run-counter strong { color: #1C1B19; font-weight: 600; }
+
+/* ── The darkroom table: a contact sheet on the left, the brief or the pick on the right ── */
+.method-run-table-wrap { container-type: inline-size; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.method-run-table {
+  --tw: 100cqw;
+  --u: calc(var(--tw) / 100);
+  --paper: calc(1.3 * var(--u));
+  --strip-x: calc(1.2 * var(--u));
+  --gap: calc(0.75 * var(--u));
+  --band: calc(1.15 * var(--u));
+  --edge: calc(1.75 * var(--u));
+  --frame-w: calc((54 * var(--u) - 2 * var(--paper) - 2 * var(--strip-x) - 3 * var(--gap)) / 4);
+  position: relative; isolation: isolate; overflow: hidden;
+  width: var(--tw);
+  display: grid; grid-template-columns: calc(54 * var(--u)) minmax(0, 1fr);
+  gap: calc(3 * var(--u)); align-items: start;
+  padding: calc(2.4 * var(--u)) calc(2.6 * var(--u));
+  box-sizing: border-box;
+  border-radius: 18px;
+  background: #0c0a09;
+  box-shadow: 0 1px 0 rgba(28,27,25,.08), 0 40px 70px -40px rgba(20,14,8,.75), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.method-run-glow { z-index: -1; }
+
+/* The print: cream paper, six film strips */
+.method-run-sheet {
+  position: relative; display: flex; flex-direction: column; gap: calc(0.9 * var(--u));
+  padding: var(--paper); background: #EEE8DD; border-radius: 3px; rotate: -0.6deg;
+  box-shadow: 0 1px 0 rgba(0,0,0,.4), 0 26px 40px -24px rgba(0,0,0,.9);
+}
+.method-run-hint {
+  position: absolute; inset: 0; z-index: 5; margin: 0; display: grid; place-content: center; text-align: center; gap: 6px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--amber);
+  opacity: calc(1 - var(--p) * 28); pointer-events: none;
+}
+.method-run-hint span { font-size: 18px; animation: method-run-nudge 1.6s var(--ease-thread) infinite; }
+@keyframes method-run-nudge { 50% { transform: translateY(5px); } }
+
+.method-run-strip {
+  position: relative; padding: var(--band) var(--strip-x) var(--edge); border-radius: 2px;
+  background:
+    radial-gradient(closest-side, #2d2826 70%, transparent 76%) 0 calc(var(--band) * 0.18) / calc(var(--band) * 1.15) calc(var(--band) * 0.62) repeat-x,
+    radial-gradient(closest-side, #2d2826 70%, transparent 76%) 0 calc(100% - var(--edge) * 0.08) / calc(var(--band) * 1.15) calc(var(--band) * 0.62) repeat-x,
+    #141110;
+}
+.method-run-edge {
+  position: absolute; left: var(--strip-x); right: var(--strip-x); top: 0; height: var(--band);
+  display: flex; align-items: center;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: clamp(7px, calc(0.68 * var(--u)), 10px); letter-spacing: .1em;
+  color: var(--amber); opacity: .75; pointer-events: none;
+}
+.method-run-frames { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--gap); }
+
+.method-run-frame {
+  --land: clamp(0, calc((var(--p) - (0.04 + var(--i) * 0.021)) / 0.07), 1);
+  --scored: clamp(0, calc((var(--p) - (0.6 + var(--i) * 0.004)) / 0.05), 1);
+  --drawn: clamp(0, calc((var(--p) - (0.78 + var(--k) * 0.012)) / 0.06), 1);
+  position: relative; width: var(--frame-w); flex: none;
+}
+.method-run-frame-button {
+  display: block; width: 100%; padding: 0; border: 0; border-radius: 1px; background: #050404;
+  aspect-ratio: 16 / 10; overflow: hidden;
+  transition: transform .25s var(--ease-thread), box-shadow .25s var(--ease-thread);
+}
+.method-run-frame-button img {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  opacity: var(--land);
+  filter: sepia(calc((1 - var(--land)) * 0.9)) contrast(calc(1.35 - var(--land) * 0.35)) brightness(calc(0.35 + var(--land) * 0.65));
+  scale: calc(1.06 - var(--land) * 0.06);
+}
+.method-run-frame[data-kept="false"] .method-run-frame-button { opacity: calc(1 - var(--cut) * 0.55); }
+.method-run-frame-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px -6px rgba(0,0,0,.9); }
+.method-run-frame-button:focus-visible { outline: 2px solid #F0C534; outline-offset: 2px; }
+.method-run-frame-button[aria-pressed="true"] { outline: 2px solid #F0C534; outline-offset: 2px; }
+
+.method-run-frame-edge {
+  position: absolute; left: 0; right: 0; top: 100%; height: var(--edge);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: clamp(7px, calc(0.72 * var(--u)), 11px);
+  color: var(--amber); pointer-events: none;
+}
+.method-run-frame-edge > span:first-child { opacity: calc(var(--land) * 0.6); }
+.method-run-frame-score { opacity: var(--scored); font-weight: 500; }
+.method-run-frame[data-kept="true"] .method-run-frame-score { color: color-mix(in oklab, var(--amber), #fff calc(var(--cut) * 45%)); }
+
+/* Grease pencil */
+.method-run-loop {
+  position: absolute; left: -12%; right: -12%; top: -22%; bottom: -34%; width: 124%; height: 156%;
+  overflow: visible; pointer-events: none; rotate: var(--loop-tilt);
+}
+.method-run-loop path {
+  fill: none; stroke: var(--grease); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--drawn));
+  filter: drop-shadow(0 0 1px rgba(239, 74, 51, .5));
+}
+/* The overall pick gets the photographer's star beside its circle */
+.method-run-star {
+  position: absolute; right: -14%; top: -30%; z-index: 2; width: 34%; aspect-ratio: 1; overflow: visible;
+  pointer-events: none; rotate: 8deg;
+}
+.method-run-star path {
+  fill: none; stroke: var(--grease); stroke-width: 2.6; stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: calc(1 - clamp(0, calc((var(--p) - 0.9) / 0.05), 1));
+}
+
+/* ── Panel: the brief while the run develops, then the pick ── */
+.method-run-panel { position: relative; align-self: stretch; min-height: 100%; }
+.method-run-brief, .method-run-loupe {
+  position: absolute; inset: 0 0 auto 0; box-sizing: border-box;
+  background: #F6F1E7; color: #1C1B19; border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.35), 0 26px 40px -24px rgba(0,0,0,.9);
+}
+.method-run-brief {
+  display: flex; flex-direction: column; gap: 10px; padding: calc(1.7 * var(--u));
+  rotate: 0.5deg;
+  opacity: calc(1 - var(--cut)); translate: 0 calc(var(--cut) * 14px);
+  pointer-events: none;
+}
+.method-run-brief .label { color: #A9311E; }
+.method-run-brief p { margin: 0; }
+.method-run-brief-from { font-size: 12px; color: #6E6A61; margin-top: -6px !important; }
+.method-run-brief-subject { font-family: "Bodoni Moda", Georgia, serif; font-size: clamp(15px, calc(1.45 * var(--u)), 20px); line-height: 1.3; text-wrap: pretty; }
+.method-run-brief-axes { margin: 0; display: grid; gap: 4px; padding: 10px 0; border-block: 1px dashed #CFC7B8; }
+.method-run-brief-axes dt { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #2F55A4; margin-bottom: 2px; }
+.method-run-brief-axes dt small { letter-spacing: 0; text-transform: none; color: #6E6A61; margin-left: 6px; }
+.method-run-brief-axes dd {
+  --moved: clamp(0, calc((var(--p) - 0.3) / 0.12), 1);
+  margin: 0; display: grid; grid-template-columns: 70px 1fr; column-gap: 8px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; line-height: 1.45;
+}
+.method-run-brief-axis { color: #6E6A61; grid-row: span 2; }
+.method-run-brief-seed { text-decoration-line: line-through; text-decoration-color: rgb(210 64 42 / calc(var(--moved) * 100%)); text-decoration-thickness: 1.5px; }
+.method-run-brief-axes dd[data-moved="false"] .method-run-brief-seed { text-decoration: none; }
+.method-run-brief-final { color: #A9311E; opacity: var(--moved); }
+.method-run-brief-refs { font-size: 13px; line-height: 1.5; color: #45423C; }
+.method-run-brief-nod { font-size: 13px; line-height: 1.5; font-style: italic; color: #45423C; }
+
+.method-run-loupe {
+  margin: 0; overflow: hidden; display: flex; flex-direction: column;
+  opacity: var(--cut); translate: 0 calc((1 - var(--cut)) * 16px);
+  pointer-events: none;
+}
+.method-run-panel[data-selected="true"] .method-run-brief { opacity: 0; }
+.method-run-panel[data-selected="true"] .method-run-loupe { opacity: 1; translate: none; pointer-events: auto; }
+.method-run-loupe img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #141110; }
+.method-run-loupe figcaption { display: flex; flex-direction: column; gap: 9px; padding: calc(1.4 * var(--u)) calc(1.6 * var(--u)) calc(1.6 * var(--u)); }
+.method-run-loupe-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.method-run-loupe-head > span { display: flex; flex-direction: column; gap: 3px; }
+.method-run-loupe-head .label { color: #6E6A61; }
+.method-run-loupe-verdict { font-size: 13px; font-weight: 600; color: #1C1B19; }
+.method-run-loupe-verdict[data-kept="true"] { color: #A9311E; }
+.method-run-loupe-head strong { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 20px; }
+.method-run-loupe dl { margin: 0; display: grid; gap: 3px; }
+.method-run-loupe dl div { display: grid; grid-template-columns: minmax(0, 118px) 1fr; align-items: center; gap: 8px; font-size: 12px; }
+.method-run-loupe dt { color: #6E6A61; }
+.method-run-loupe dd { margin: 0; display: grid; grid-template-columns: 1fr 32px; align-items: center; gap: 6px; }
+.method-run-loupe dd i { display: block; height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--persona-primary), var(--persona-accent)); }
+.method-run-loupe dd span { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; text-align: right; }
+.method-run-loupe blockquote { margin: 0; font-family: "Bodoni Moda", Georgia, serif; font-size: clamp(14px, calc(1.2 * var(--u)), 16px); line-height: 1.38; font-style: italic; }
+.method-run-loupe cite { display: block; margin-top: 5px; font-family: "IBM Plex Mono", ui-monospace, monospace; font-style: normal; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #6E6A61; }
+.method-run-loupe-close {
+  align-self: flex-start; padding: 6px 12px; border: 1px solid #A79E8D; border-radius: 999px; background: transparent;
+  font: inherit; font-size: 12.5px; color: #1C1B19;
+}
+.method-run-loupe-close:hover { border-color: #1C1B19; }
+.method-run-loupe-close:focus-visible { outline: 2px solid #2F55A4; outline-offset: 2px; }
+
+.method-run-note { margin: 0; font-size: 12px; color: #6E6A61; text-align: center; max-width: 96ch; }
+.method-run-note code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11.5px; color: #1C1B19; }
+
+/* ── Narrow: the sheet across the full width, the pick and the brief beneath it ── */
+@container (max-width: 760px) {
+  .method-run-table {
+    --frame-w: calc((100 * var(--u) - 5.2 * var(--u) - 2 * var(--paper) - 2 * var(--strip-x) - 3 * var(--gap)) / 4);
+    --band: calc(2 * var(--u)); --edge: calc(3.4 * var(--u));
+    grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 12px; border-radius: 14px;
+  }
+  .method-run-sheet { rotate: none; }
+  .method-run-edge { font-size: 7px; }
+  .method-run-frame-edge { font-size: 8.5px; }
+  .method-run-panel { display: grid; gap: 14px; }
+  .method-run-brief, .method-run-loupe { position: relative; inset: auto; rotate: none; translate: none; opacity: 1; }
+  .method-run-loupe { order: -1; }
+  .method-run-panel[data-selected="true"] .method-run-brief { opacity: 1; }
+  .method-run-brief { padding: 16px; }
+  .method-run-loupe figcaption { padding: 14px 16px 16px; }
+  .method-run-note { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .method-run-hint span { animation: none; }
+  .method-run-frame-button { transition: none; }
+}

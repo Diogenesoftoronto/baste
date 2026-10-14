@@ -30,6 +30,9 @@ export interface QDConfig {
 
   // Minimum quality score to enter archive
   qualityThreshold: number;
+
+  // Where progress lines go; defaults to the console.
+  log?: (line: string) => void;
 }
 
 export interface QDSolution<T> {
@@ -172,15 +175,17 @@ export async function runQD<T>(
   config: QDConfig,
   generateSeed: () => Promise<QDSolution<T>>,
   mutate: (parent: QDSolution<T>, rate: number) => Promise<QDSolution<T>>,
-  evaluate: (genome: T) => Promise<{ quality: number; features: number[] }>
+  /** `generation` is 0 for seeds; callers may ignore it. */
+  evaluate: (genome: T, context: { generation: number }) => Promise<{ quality: number; features: number[] }>
 ): Promise<QDArchive<T>> {
   const archive = createArchive<T>(config.features);
 
   // Initialize with seeds
-  console.log(`🌱 Initializing QD archive with ${config.batchSize} seeds...`);
+  const log = config.log ?? console.log;
+  log(`🌱 Initializing QD archive with ${config.batchSize} seeds...`);
   for (let i = 0; i < config.batchSize; i++) {
     const seed = await generateSeed();
-    const evaluation = await evaluate(seed.genome);
+    const evaluation = await evaluate(seed.genome, { generation: 0 });
 
     if (evaluation.quality >= config.qualityThreshold) {
       addToArchive(archive, {
@@ -194,8 +199,8 @@ export async function runQD<T>(
 
   // Evolution loop
   for (let gen = 1; gen <= config.iterations; gen++) {
-    console.log(`\n🧬 Generation ${gen}/${config.iterations}`);
-    console.log(`   Archive: ${archive.cells.size} cells | Coverage: ${(archive.coverage * 100).toFixed(1)}% | Max Q: ${archive.maxQuality.toFixed(3)}`);
+    log(`\n🧬 Generation ${gen}/${config.iterations}`);
+    log(`   Archive: ${archive.cells.size} cells | Coverage: ${(archive.coverage * 100).toFixed(1)}% | Max Q: ${archive.maxQuality.toFixed(3)}`);
 
     const batchPromises: Promise<void>[] = [];
 
@@ -206,7 +211,7 @@ export async function runQD<T>(
           if (!parent) return;
 
           const child = await mutate(parent, config.mutationRate);
-          const evaluation = await evaluate(child.genome);
+          const evaluation = await evaluate(child.genome, { generation: gen });
 
           if (evaluation.quality >= config.qualityThreshold) {
             addToArchive(archive, {
@@ -224,8 +229,8 @@ export async function runQD<T>(
     await Promise.all(batchPromises);
   }
 
-  console.log(`\n✅ QD Complete!`);
-  console.log(`   Final archive: ${archive.cells.size} cells | Coverage: ${(archive.coverage * 100).toFixed(1)}% | Max Q: ${archive.maxQuality.toFixed(3)}`);
+  log(`\n✅ QD Complete!`);
+  log(`   Final archive: ${archive.cells.size} cells | Coverage: ${(archive.coverage * 100).toFixed(1)}% | Max Q: ${archive.maxQuality.toFixed(3)}`);
 
   return archive;
 }

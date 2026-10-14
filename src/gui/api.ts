@@ -5,8 +5,8 @@
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { readFileSync, writeFileSync, existsSync, realpathSync, statSync } from "node:fs";
+import { resolve, join, basename, sep } from "node:path";
 import type { Persona } from "../persona/types.js";
 import {
   getPersona,
@@ -14,13 +14,16 @@ import {
   savePersona,
   deletePersona,
   isBasePersona,
-} from "../persona/store.js";
+} from "../notorganic/personas.js";
+import { accountScope, accountPath, accountKey } from "../notorganic/scope.js";
+import { accountManager, accountEnabled, publicOrigin, guardOrigin, AccountError, readJSON, normalizeWallet } from "../notorganic/server.js";
+import { generationPlan, IMAGE_REQUEST_MAX, JUDGEMENT_REQUEST_MAX, assertJudgementCeiling } from "../notorganic/budget.js";
 import { extendPersona } from "../persona/builder.js";
 import { resolveConfig, toBasteConfig, type BasteUserConfig } from "../config/baste-config.js";
 import { generateAssetSuite, generateUIKit } from "../baste.js";
 import { generateDesignTokens, exportCSS, exportTailwindConfig, exportPandaTheme } from "../assets/design-system.js";
 import { slugifyUrl, safeFetch } from "../shared/url.js";
-import { loadBrandKit, saveBrandKit } from "../decompose/store.js";
+import { loadBrandKit, saveBrandKit } from "../notorganic/brandkits.js";
 import { DesignVersionRegistry } from "../versioning/registry.js";
 import {
   appendFeedback,
@@ -34,6 +37,7 @@ import {
   extractTokensFromOpenPencil,
 } from "../openpencil/bridge.js";
 import { watch, type FSWatcher } from "node:fs";
+import { applyProjectCommand, createProject, getProject, listProjects, ProjectError } from "../projects/commands.js";
 
 const DEFAULT_CONFIG_PATH = "./baste.config.json";
 
@@ -45,6 +49,7 @@ interface Moodboard {
   vibe: string[];
 }
 interface AssetRank {
+  owner?: string;
   assetId: string;
   personaId: string;
   score: number; // -1, 0, +1
@@ -55,14 +60,17 @@ const moodboards = new Map<string, Moodboard>();
 const ranks: AssetRank[] = [];
 const MOODBOARD_FILE = ".baste/moodboards.json";
 const RANKS_FILE = ".baste/ranks.json";
+function boardKey(id: string): string { return accountKey() ? `${accountKey()}:${id}` : id; }
 
 import { mkdirSync } from "node:fs";
+import { converse, converseAvailable, readTurns } from "./converse.js";
+import { voiceAvailable, speechInput, readRecording, synthesizeSpeech, transcribeSpeech, VoiceLimits } from "./voice.js";
 
 function persistMoodboards(): void {
   try {
     const dir = resolve(".baste");
     if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-    writeFileSync(resolve(MOODBOARD_FILE), JSON.stringify(Array.from(moodboards.values()), null, 2));
+    writeFileSync(resolve(MOODBOARD_FILE), JSON.stringify(Array.from(moodboards.entries()), null, 2), { mode: 0o600 });
   } catch (err) {
     console.warn(`[gui/api] Failed to persist moodboards: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -71,7 +79,7 @@ function persistRanks(): void {
   try {
     const dir = resolve(".baste");
     if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-    writeFileSync(resolve(RANKS_FILE), JSON.stringify(ranks, null, 2));
+    writeFileSync(resolve(RANKS_FILE), JSON.stringify(ranks, null, 2), { mode: 0o600 });
   } catch (err) {
     console.warn(`[gui/api] Failed to persist ranks: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -79,8 +87,8 @@ function persistRanks(): void {
 function loadStores(): void {
   try {
     if (existsSync(resolve(MOODBOARD_FILE))) {
-      const data = JSON.parse(readFileSync(resolve(MOODBOARD_FILE), "utf-8")) as Moodboard[];
-      data.forEach((m) => moodboards.set(m.personaId, m));
+      const data = JSON.parse(readFileSync(resolve(MOODBOARD_FILE), "utf-8")) as Array<Moodboard | [string, Moodboard]>;
+      data.forEach((m) => Array.isArray(m) ? moodboards.set(m[0], m[1]) : moodboards.set(m.personaId, m));
     }
     if (existsSync(resolve(RANKS_FILE))) {
       const data = JSON.parse(readFileSync(resolve(RANKS_FILE), "utf-8")) as AssetRank[];
@@ -94,13 +102,27 @@ loadStores();
 
 // Active generation jobs for SSE streaming
 interface GenerationJob {
+  owner?: string;
   id: string;
   personaId: string;
   type: "suite" | "ui-kit";
   status: "running" | "completed" | "error";
   logs: string[];
+  /** QD candidates as they are judged, so the Studio can show the archive filling. */
+  candidates: CandidateSummary[];
   result?: unknown;
   error?: string;
+}
+
+interface CandidateSummary {
+  url: string;
+  generation: number;
+  quality: number;
+  features: number[];
+  criteria: Record<string, number>;
+  feedback: string;
+  /** Archive cell this candidate holds at the end of the run. */
+  cell?: string;
 }
 
 const jobs = new Map<string, GenerationJob>();
@@ -120,21 +142,7 @@ function json(res: ServerResponse, data: unknown, status = 200): void {
 }
 
 function parseBody(req: IncomingMessage): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    let body = "";
-    req.on("data", (chunk) => { body += chunk.toString(); });
-    req.on("end", () => {
-      try {
-        resolve(JSON.parse(body));
-      } catch (err) {
-        resolve({});
-        if (body.length > 0) {
-          console.warn(`[gui/api] Invalid JSON body (${body.length} chars): ${err instanceof Error ? err.message : String(err)}`);
-        }
-      }
-    });
-    req.on("error", reject);
-  });
+  return readJSON(req);
 }
 
 async function corsMiddleware(
@@ -142,9 +150,11 @@ async function corsMiddleware(
   res: ServerResponse,
   next: () => Promise<void>
 ): Promise<void> {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  if (req.headers?.origin === publicOrigin()) res.setHeader("Access-Control-Allow-Origin", publicOrigin());
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Baste-CSRF");
 
   if (req.method === "OPTIONS") {
     res.writeHead(204);
@@ -237,7 +247,9 @@ const deletePersonaHandler: RouteHandler = async (_req, res, params) => {
  */
 const getConfigHandler: RouteHandler = async (_req, res) => {
   const config = resolveConfig();
-  json(res, config);
+  // Configuration keys and custom server endpoints never belong in browser responses.
+  const safe = JSON.parse(JSON.stringify(config, (key, value) => /key|secret|token|baseurl/i.test(key) ? undefined : value));
+  json(res, accountEnabled() ? { ...safe, generators: { image: { provider: "notorganic", model: "image" } }, evaluator: { provider: "notorganic", model: "judgement" } } : safe);
 };
 
 /**
@@ -245,12 +257,13 @@ const getConfigHandler: RouteHandler = async (_req, res) => {
  * Save/update config.
  */
 const saveConfigHandler: RouteHandler = async (req, res) => {
+  if (accountEnabled()) throw new AccountError(403, "Hosted provider configuration is managed by the server operator.");
   const body = await parseBody(req) as BasteUserConfig;
   try {
     writeFileSync(resolve(DEFAULT_CONFIG_PATH), JSON.stringify(body, null, 2));
     json(res, { success: true });
   } catch (err) {
-    json(res, { error: String(err) }, 500);
+    json(res, { error: "Configuration could not be saved." }, 500);
   }
 };
 
@@ -259,7 +272,29 @@ const saveConfigHandler: RouteHandler = async (req, res) => {
  * Health check.
  */
 const healthHandler: RouteHandler = async (_req, res) => {
-  json(res, { status: "ok", version: "0.2.0" });
+  json(res, { status: "ok", version: "0.2.0", conversation: { mode: converseAvailable(accountEnabled()) ? "ai" : "demo", voice: voiceAvailable(accountEnabled()), voiceRequiresAccount: accountEnabled() } });
+};
+interface GenerateRequest {
+  type?: string; assetTypes?: unknown[]; dryRun?: boolean; imageProvider?: string;
+  imageModel?: string; videoProvider?: string; videoModel?: string;
+  /** Local runs only: route SVG and judging through fal as well. */
+  svgProvider?: string; evaluatorProvider?: string;
+  maxCostMicrousd?: number; qd?: { iterations?: number; batchSize?: number }; outputCount?: number;
+}
+function applyRunSettings(config: ReturnType<typeof toBasteConfig>, body: GenerateRequest): void {
+  if (body.qd?.iterations !== undefined) config.qd.iterations = body.qd.iterations;
+  if (body.qd?.batchSize !== undefined) config.qd.batchSize = body.qd.batchSize;
+  if (body.outputCount !== undefined) config.outputCount = body.outputCount;
+}
+const generationPlanHandler: RouteHandler = async (req, res, params) => {
+  if (!getPersona(params.id)) throw new AccountError(404, "Persona not found.");
+  if (!accountEnabled()) throw new AccountError(400, "Spending plans are available for Not Organic account generation.");
+  const body = await parseBody(req) as GenerateRequest;
+  const config = toBasteConfig(resolveConfig(), { imageProvider: "notorganic", imageModel: "image" });
+  applyRunSettings(config, body);
+  const assets = body.assetTypes ?? [{ kind: "image" }, { kind: "image" }];
+  if (!Array.isArray(assets) || assets.length < 1 || assets.length > 8 || assets.some(a => !a || typeof a !== "object" || (a as { kind?: string }).kind !== "image")) throw new AccountError(400, "Choose 1–8 image assets for the spending plan.");
+  json(res, generationPlan(config, assets.length, body.maxCostMicrousd));
 };
 
 /**
@@ -273,22 +308,74 @@ const generateHandler: RouteHandler = async (req, res, params) => {
     return;
   }
 
-  const body = await parseBody(req) as { type?: string; assetTypes?: unknown[]; dryRun?: boolean; imageProvider?: string; imageModel?: string };
+  const body = await parseBody(req) as GenerateRequest;
+  const context = await accountManager.getContext(req);
+  if (context && body.assetTypes && (!Array.isArray(body.assetTypes) || body.assetTypes.length === 0 || body.assetTypes.length > 8 || body.assetTypes.some(a => !a || typeof a !== "object" || typeof (a as { purpose?: unknown }).purpose !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/.test(String((a as { purpose?: unknown }).purpose)) || typeof (a as { description?: unknown }).description !== "string" || String((a as { description?: unknown }).description).length > 4000))) throw new AccountError(400, "Choose up to eight image assets with simple purpose names and descriptions under 4,000 characters.");
+  if (context && (body.type === "ui-kit" || body.videoProvider || body.videoModel || body.svgProvider || body.evaluatorProvider || (body.imageProvider && body.imageProvider !== "notorganic") || (body.imageModel && body.imageModel !== "image") || body.assetTypes?.some(a => !a || typeof a !== "object" || (a as { kind?: string }).kind !== "image"))) {
+    throw new AccountError(400, "Your Not Organic account supports image assets here. Choose an image suite; hosted SVG and video generation are unavailable.");
+  }
   const config = resolveConfig();
+  if (body.evaluatorProvider !== undefined && !["openai", "typesafe", "fal"].includes(body.evaluatorProvider)) throw new AccountError(400, "Choose an available judge.");
   const basteConfig = toBasteConfig(config, {
-    imageProvider: body.imageProvider,
-    imageModel: body.imageModel,
+    imageProvider: context ? "notorganic" : body.imageProvider,
+    imageModel: context ? "image" : body.imageModel,
+    videoProvider: body.videoProvider,
+    videoModel: body.videoModel,
+    svgProvider: context ? undefined : body.svgProvider,
+    evaluatorProvider: context ? undefined : body.evaluatorProvider as "openai" | "typesafe" | "fal" | undefined,
   });
+  applyRunSettings(basteConfig, body);
+  if (context && !body.dryRun) {
+    const plan = generationPlan(basteConfig, body.assetTypes?.length ?? 2, body.maxCostMicrousd);
+    if (plan.requestedMaxCostMicrousd > plan.operatorMaxCostMicrousd) throw new AccountError(400, `Choose a spending limit no higher than the server's $${(plan.operatorMaxCostMicrousd / 1000000).toFixed(2)} limit.`);
+    if (!plan.withinOperatorLimit) throw new AccountError(400, `This plan needs a ceiling of $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)}. The server allows $${(plan.operatorMaxCostMicrousd / 1000000).toFixed(2)} per suite. Reduce iterations, batch size or final variations.`);
+    if (!plan.withinRequestedBudget) throw new AccountError(400, `This plan needs a ceiling of $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)}. Increase your spending limit or reduce iterations, batch size or final variations.`);
+    const models = await (await context.fetch("/v1/models")).json() as { data?: Array<{ id: string }> };
+    if (!models.data?.some(m => m.id === "image") || !models.data.some(m => m.id === "judgement")) throw new AccountError(503, "Not Organic must enable image generation and Jev judgement for this suite.");
+    const wallet = normalizeWallet(await (await context.fetch("/v1/wallet")).json());
+    if (wallet.blocked || wallet.availableMicros < plan.minimumBudgetMicrousd) throw new AccountError(402, `Your available Not Organic credit must cover this plan's $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)} ceiling before generation starts. Open your wallet in Settings.`);
+    let remainingBudget = plan.requestedMaxCostMicrousd;
+    // Reserve every request's cost ceiling before dispatch, so concurrent QD candidates
+    // cannot exceed the operator's per-suite budget even if the upstream fails.
+    const budgetedFetch = async (path: string, init: RequestInit = {}) => {
+      const requestBudget = path === "/v1/judgement" ? JUDGEMENT_REQUEST_MAX : IMAGE_REQUEST_MAX;
+      if (requestBudget > remainingBudget) throw new AccountError(402, "This suite reached its spending limit. Reduce the number of iterations or assets.");
+      if (path === "/v1/judgement") assertJudgementCeiling(init.body);
+      remainingBudget -= requestBudget;
+      const headers = new Headers(init.headers);
+      headers.set("x-notorganic-max-cost-microusd", String(requestBudget));
+      return context.fetch(path, { ...init, headers });
+    };
+    basteConfig.generation.notOrganicFetch = budgetedFetch;
+    basteConfig.generation.outputDir = accountPath("assets/output", "assets/output");
+    basteConfig.evaluator = { ...basteConfig.evaluator, provider: "notorganic", model: "judgement", apiKey: undefined, baseUrl: undefined, notOrganicFetch: budgetedFetch };
+  }
 
   const jobId = makeJobId();
   const job: GenerationJob = {
+    owner: accountScope.getStore(),
     id: jobId,
     personaId: params.id,
     type: body.type === "ui-kit" ? "ui-kit" : "suite",
     status: "running",
     logs: [`Starting generation for "${persona.name}"...`],
+    candidates: [],
   };
   jobs.set(jobId, job);
+  // Progress lines for the Studio log, without the CLI's blank lines and emoji.
+  const hooks = {
+    log: (line: string) => {
+      const text = line.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, "").trim();
+      if (text) job.logs.push(text);
+    },
+    candidate: (c: { path: string; generation: number; quality: number; features: number[]; criteria: object; feedback: string }) => {
+      job.candidates.push({
+        url: `/api/assets/images/${encodeURIComponent(basename(c.path))}`,
+        generation: c.generation, quality: c.quality, features: c.features,
+        criteria: c.criteria as Record<string, number>, feedback: c.feedback,
+      });
+    },
+  };
 
   // Respond immediately with job ID
   json(res, { jobId, status: "started" }, 202);
@@ -308,39 +395,75 @@ const generateHandler: RouteHandler = async (req, res, params) => {
 
       if (job.type === "ui-kit") {
         job.logs.push("Generating full UI kit...");
-        const suite = await generateUIKit(persona, basteConfig);
+        const suite = await generateUIKit(persona, basteConfig, hooks);
         job.logs.push(`Done: ${suite.assets.svgs.length} SVGs, ${suite.assets.images.length} images, ${suite.assets.videos.length} videos`);
+        markCells(job, suite.candidates);
         job.result = {
-          svgs: suite.assets.svgs.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-          images: suite.assets.images.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-          videos: suite.assets.videos.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
+          svgs: suite.assets.svgs.map(a => assetSummary(a, "svg", !!context, suite.finalScores)),
+          images: suite.assets.images.map(a => assetSummary(a, "images", !!context, suite.finalScores)),
+          videos: suite.assets.videos.map(a => assetSummary(a, "videos", !!context, suite.finalScores)),
           metadata: suite.metadata,
         };
       } else {
         const assetTypes = body.assetTypes && Array.isArray(body.assetTypes)
           ? body.assetTypes as Array<{ kind: "svg" | "image" | "video"; purpose: string; description: string }>
           : [
-              { kind: "svg" as const, purpose: "icon", description: "App icon" },
+              ...(context ? [] : [{ kind: "svg" as const, purpose: "icon", description: "App icon" }]),
               { kind: "image" as const, purpose: "hero", description: "Hero banner" },
               { kind: "image" as const, purpose: "background", description: "Ambient background" },
             ];
         job.logs.push(`Generating ${assetTypes.length} asset types...`);
-        const suite = await generateAssetSuite(persona, assetTypes, basteConfig);
+        const suite = await generateAssetSuite(persona, assetTypes, basteConfig, hooks);
         job.logs.push(`Done: ${suite.assets.svgs.length} SVGs, ${suite.assets.images.length} images, ${suite.assets.videos.length} videos`);
+        markCells(job, suite.candidates);
         job.result = {
-          svgs: suite.assets.svgs.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-          images: suite.assets.images.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
-          videos: suite.assets.videos.map(a => ({ id: a.id, purpose: a.metadata.assetPurpose, path: a.content })),
+          svgs: suite.assets.svgs.map(a => assetSummary(a, "svg", !!context, suite.finalScores)),
+          images: suite.assets.images.map(a => assetSummary(a, "images", !!context, suite.finalScores)),
+          videos: suite.assets.videos.map(a => assetSummary(a, "videos", !!context, suite.finalScores)),
           metadata: suite.metadata,
         };
       }
       job.status = "completed";
     } catch (err) {
       job.status = "error";
-      job.error = String(err);
-      job.logs.push(`Error: ${String(err)}`);
+      job.error = context ? (err instanceof AccountError ? err.message : "Generation could not finish. Check your account balance and try again.") : String(err);
+      job.logs.push(`Error: ${job.error}`);
     }
   })();
+};
+
+function assetSummary(asset: { id: string; content: string; metadata: { assetPurpose: string } }, kind: string, hosted: boolean, scores: Record<string, { overall: number }> = {}) {
+  const file = basename(asset.content);
+  const score = scores[asset.id]?.overall;
+  return { id: asset.id, purpose: asset.metadata.assetPurpose, path: hosted ? file : asset.content, url: `/api/assets/${kind}/${encodeURIComponent(file)}`, ...(score === undefined ? {} : { score }) };
+}
+
+/** Record which streamed candidates ended the run holding an archive cell. */
+function markCells(job: GenerationJob, candidates: Array<{ path: string; cell?: string }>) {
+  for (const c of candidates) {
+    if (!c.cell) continue;
+    const url = `/api/assets/images/${encodeURIComponent(basename(c.path))}`;
+    const streamed = job.candidates.find(s => s.url === url);
+    if (streamed) streamed.cell = c.cell;
+  }
+}
+
+/** Only media inside the requesting account's output directory can be downloaded. */
+const getAssetHandler: RouteHandler = async (_req, res, params) => {
+  const { id: kind, assetId: file } = params;
+  const mime: Record<string, string> = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", svg: "image/svg+xml", mp4: "video/mp4" };
+  const extension = file?.split(".").pop()?.toLowerCase() ?? "";
+  if (!file || !/^[a-zA-Z0-9_.-]{1,255}$/.test(file) || file.includes("..") || !mime[extension] || (accountEnabled() && (kind !== "images" || !["png", "jpg", "jpeg", "webp"].includes(extension)))) throw new AccountError(404, "Asset not found.");
+  const localRoot = toBasteConfig(resolveConfig()).generation.outputDir;
+  const root = accountPath(`assets/output/${kind}`, join(localRoot, kind));
+  let path: string;
+  try {
+    const realRoot = realpathSync(root);
+    path = realpathSync(join(root, file));
+    if (!path.startsWith(`${realRoot}${sep}`) || !statSync(path).isFile()) throw new Error();
+  } catch { throw new AccountError(404, "Asset not found."); }
+  res.writeHead(200, { "Content-Type": mime[extension], "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'" });
+  res.end(readFileSync(path));
 };
 
 /**
@@ -349,7 +472,7 @@ const generateHandler: RouteHandler = async (req, res, params) => {
  */
 const getJobHandler: RouteHandler = async (_req, res, params) => {
   const job = jobs.get(params.id);
-  if (!job) {
+  if (!job || job.owner !== accountScope.getStore()) {
     json(res, { error: "Job not found" }, 404);
     return;
   }
@@ -359,6 +482,7 @@ const getJobHandler: RouteHandler = async (_req, res, params) => {
     type: job.type,
     status: job.status,
     logs: job.logs,
+    candidates: job.candidates,
     result: job.result,
     error: job.error,
   });
@@ -369,7 +493,7 @@ const getJobHandler: RouteHandler = async (_req, res, params) => {
  * List recent jobs.
  */
 const listJobsHandler: RouteHandler = async (_req, res) => {
-  const all = Array.from(jobs.values()).sort((a, b) => {
+  const all = Array.from(jobs.values()).filter(job => job.owner === accountScope.getStore()).sort((a, b) => {
     const na = Number(a.id.split("-")[2]);
     const nb = Number(b.id.split("-")[2]);
     return nb - na;
@@ -440,7 +564,7 @@ const previewPromptsHandler: RouteHandler = async (_req, res, params) => {
 
 /** GET /api/moodboard/:id — get a persona's moodboard */
 const getMoodboardHandler: RouteHandler = async (_req, res, params) => {
-  const board = moodboards.get(params.id) || { personaId: params.id, references: [], notes: "", vibe: [] };
+  const board = moodboards.get(boardKey(params.id)) || { personaId: params.id, references: [], notes: "", vibe: [] };
   json(res, board);
 };
 
@@ -453,7 +577,7 @@ const putMoodboardHandler: RouteHandler = async (req, res, params) => {
     notes: body.notes || "",
     vibe: body.vibe || [],
   };
-  moodboards.set(params.id, board);
+  moodboards.set(boardKey(params.id), board);
   persistMoodboards();
   json(res, { success: true });
 };
@@ -465,7 +589,7 @@ const addReferenceHandler: RouteHandler = async (req, res, params) => {
     json(res, { error: "src required" }, 400);
     return;
   }
-  const board = moodboards.get(params.id) || { personaId: params.id, references: [], notes: "", vibe: [] };
+  const board = moodboards.get(boardKey(params.id)) || { personaId: params.id, references: [], notes: "", vibe: [] };
   const ref = {
     id: `ref-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
     src: body.src,
@@ -474,7 +598,7 @@ const addReferenceHandler: RouteHandler = async (req, res, params) => {
     addedAt: Date.now(),
   };
   board.references.push(ref);
-  moodboards.set(params.id, board);
+  moodboards.set(boardKey(params.id), board);
   persistMoodboards();
   json(res, ref);
 };
@@ -492,6 +616,7 @@ const rankAssetHandler: RouteHandler = async (req, res) => {
     return;
   }
   const entry: AssetRank = {
+    owner: accountScope.getStore(),
     assetId: body.assetId,
     personaId: body.personaId,
     score: Math.max(-1, Math.min(1, body.score)),
@@ -515,7 +640,7 @@ const rankAssetHandler: RouteHandler = async (req, res) => {
     ts: entry.ts,
   });
 
-  json(res, { success: true, total: ranks.length });
+  json(res, { success: true, total: ranks.filter(r => r.owner === accountScope.getStore()).length });
 };
 
 /** GET /api/feedback/:id — returns the learned-preferences document fed to the judge. */
@@ -590,7 +715,7 @@ function importOpenPencilEdits(personaId: string, json: string): { ok: boolean; 
     saveBrandKit(personaId, kit);
 
     try {
-      const registry = new DesignVersionRegistry();
+      const registry = new DesignVersionRegistry(accountScope.getStore() ? { dbPath: accountPath("versions.db", ".baste/versions.db") } : {});
       const persona = getPersona(personaId);
       if (persona) registry.initPersona(persona);
     } catch (err) {
@@ -601,6 +726,49 @@ function importOpenPencilEdits(personaId: string, json: string): { ok: boolean; 
     return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 }
+
+/**
+ * POST /api/converse/:id — the persona answers in its own voice, locally and
+ * only with an OpenAI key; otherwise 404 tells the site to use its offline voice.
+ * Body: { handle, turns: [{ from: "you" | "them", text }] }.
+ */
+const converseHandler: RouteHandler = async (req, res, params) => {
+  const persona = getPersona(params.id);
+  if (!persona || !converseAvailable(accountEnabled())) {
+    json(res, { error: "Conversation is not available here." }, 404);
+    return;
+  }
+  const body = await readJSON(req);
+  const handle = ({ cyberbotanist: "Moss", nightmarketcoder: "Ren", liminalweeb: "Ada" } as Record<string, string>)[params.id] ?? persona.name;
+  const tokens = generateDesignTokens(persona, loadBrandKit(params.id));
+  const bubbles = await converse(persona, tokens, handle, readTurns(body), process.env.BASTE_CONVERSATION_MODEL || "gpt-4o");
+  json(res, { bubbles });
+};
+
+const voiceLimits = new VoiceLimits();
+const voiceHandler: RouteHandler = async (req, res, params) => {
+  if (!voiceAvailable(accountEnabled())) throw new AccountError(503, "Voice isn’t available here yet. You can still type.");
+  const release = voiceLimits.acquire(accountKey() ?? req.socket?.remoteAddress ?? "local");
+  const controller = new AbortController();
+  const abort = () => { if (!res.writableEnded) controller.abort(); };
+  res.on('close', abort);
+  try {
+    if (params.id) {
+      const input = speechInput(await readJSON(req), params.id);
+      const audio = await synthesizeSpeech(input, fetch, controller.signal);
+      res.writeHead(200, { 'Content-Type': 'audio/mpeg', 'Content-Length': audio.length });
+      res.end(audio);
+    } else {
+      const recording = await readRecording(req);
+      json(res, await transcribeSpeech(recording, fetch, controller.signal));
+    }
+  } catch (error) {
+    if (!res.destroyed) {
+      if (error instanceof AccountError) throw error;
+      throw new AccountError(503, "Voice didn’t finish. Your conversation is still here; try again or keep typing.");
+    }
+  } finally { release(); res.off('close', abort); }
+};
 
 /** GET /api/openpencil/:id — return the OpenPencil document for a persona. */
 const getOpenPencilHandler: RouteHandler = async (_req, res, params) => {
@@ -636,6 +804,7 @@ const postOpenPencilHandler: RouteHandler = async (req, res, params) => {
 
 /** POST /api/openpencil/:id/file — write the doc to disk for external editing. */
 const writeOpenPencilFileHandler: RouteHandler = async (_req, res, params) => {
+  if (accountEnabled()) throw new AccountError(403, "External file editing is available in local mode. Use the in-browser editor for this account.");
   const persona = getPersona(params.id);
   if (!persona) {
     json(res, { error: "Persona not found" }, 404);
@@ -652,6 +821,7 @@ const writeOpenPencilFileHandler: RouteHandler = async (_req, res, params) => {
 
 /** POST /api/openpencil/:id/watch — toggle a file watcher that re-imports on save. */
 const toggleOpenPencilWatchHandler: RouteHandler = async (req, res, params) => {
+  if (accountEnabled()) throw new AccountError(403, "External file watching is available in local mode. Use the in-browser editor for this account.");
   const persona = getPersona(params.id);
   if (!persona) {
     json(res, { error: "Persona not found" }, 404);
@@ -698,7 +868,7 @@ const toggleOpenPencilWatchHandler: RouteHandler = async (req, res, params) => {
 
 /** GET /api/rank/:id — get aggregate ranking stats for a persona */
 const getRanksHandler: RouteHandler = async (_req, res, params) => {
-  const personaRanks = ranks.filter((r) => r.personaId === params.id);
+  const personaRanks = ranks.filter((r) => r.personaId === params.id && r.owner === accountScope.getStore());
   const positive = personaRanks.filter((r) => r.score > 0).length;
   const negative = personaRanks.filter((r) => r.score < 0).length;
   const trend = personaRanks.slice(-10).map((r) => r.score);
@@ -739,7 +909,7 @@ const decomposeHandler: RouteHandler = async (req, res) => {
       id: slug,
       name: body.name,
       deep: !!body.deep,
-      saveAssetsDir: body.mirrorAssets ? "./assets/decomposed" : undefined,
+      saveAssetsDir: body.mirrorAssets ? accountPath("assets/decomposed", "./assets/decomposed") : undefined,
       generatePaletteSwatch: !!body.mirrorAssets,
     });
     savePersona(persona);
@@ -747,7 +917,7 @@ const decomposeHandler: RouteHandler = async (req, res) => {
 
     if (body.initVersioning) {
       try {
-        const registry = new DesignVersionRegistry();
+        const registry = new DesignVersionRegistry(accountScope.getStore() ? { dbPath: accountPath("versions.db", ".baste/versions.db") } : {});
         registry.initPersona(persona);
         const sources = [brandKit.logo, brandKit.ogImage, ...brandKit.images.slice(0, 8).map((i) => i.url)]
           .filter((s): s is string => !!s);
@@ -758,7 +928,7 @@ const decomposeHandler: RouteHandler = async (req, res) => {
     }
 
     if (body.seedMoodboard !== false) {
-      const board = moodboards.get(slug) || { personaId: slug, references: [], notes: "", vibe: [] };
+      const board = moodboards.get(boardKey(slug)) || { personaId: slug, references: [], notes: "", vibe: [] };
       const seeds = [brandKit.logo, brandKit.ogImage, ...brandKit.images.slice(0, 12).map((i) => i.url)].filter(
         (s): s is string => !!s
       );
@@ -776,7 +946,7 @@ const decomposeHandler: RouteHandler = async (req, res) => {
       }
       board.vibe = Array.from(new Set([...(board.vibe || []), ...brandKit.palette])).slice(0, 16);
       if (!board.notes) board.notes = `Decomposed from ${brandKit.sourceUrl} on ${brandKit.fetchedAt}`;
-      moodboards.set(slug, board);
+      moodboards.set(boardKey(slug), board);
       persistMoodboards();
     }
 
@@ -809,7 +979,7 @@ const proxyHandler: RouteHandler = async (req, res) => {
       return;
     }
     const buf = Buffer.from(await upstream.arrayBuffer());
-    res.writeHead(200, { "Content-Type": ct, "Cache-Control": "public, max-age=3600" });
+    res.writeHead(200, { "Content-Type": ct, "Cache-Control": "private, no-store", "Content-Security-Policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'", "X-Content-Type-Options": "nosniff" });
     res.end(buf);
   } catch (err) {
     res.writeHead(502, { "Content-Type": "text/plain" });
@@ -908,6 +1078,7 @@ const splitAssetsHandler: RouteHandler = async (req, res) => {
     minRegionPx?: number;
     threshold?: number;
   };
+  if (accountEnabled() && body.saveTo) throw new AccountError(403, "Save cropped assets on your device in account mode.");
   if (!body.src) {
     json(res, { error: "src required" }, 400);
     return;
@@ -1006,6 +1177,11 @@ const splitAssetsHandler: RouteHandler = async (req, res) => {
 
 // Route table: [method, pattern, handler]
 const routes: Array<[string, RegExp, RouteHandler]> = [
+  ["GET", /^\/api\/projects$/, async (_req, res) => { json(res, await listProjects()); }],
+  ["POST", /^\/api\/projects$/, async (req, res) => { json(res, await createProject(await parseBody(req)), 201); }],
+  ["GET", /^\/api\/projects\/([^/]+)$/, async (_req, res, params) => { json(res, await getProject(params.id)); }],
+  ["POST", /^\/api\/projects\/([^/]+)\/commands$/, async (req, res, params) => { json(res, await applyProjectCommand(params.id, await parseBody(req))); }],
+  ["GET", /^\/api\/assets\/(images|svg|videos)\/([^/]+)$/, getAssetHandler],
   ["GET", /^\/api\/moodboard\/([^/]+)$/, getMoodboardHandler],
   ["PUT", /^\/api\/moodboard\/([^/]+)$/, putMoodboardHandler],
   ["POST", /^\/api\/moodboard\/([^/]+)\/reference$/, addReferenceHandler],
@@ -1029,6 +1205,10 @@ const routes: Array<[string, RegExp, RouteHandler]> = [
   ["GET", /^\/api\/config$/, getConfigHandler],
   ["POST", /^\/api\/config$/, saveConfigHandler],
   ["GET", /^\/api\/health$/, healthHandler],
+  ["POST", /^\/api\/converse\/([^/]+)$/, converseHandler],
+  ["POST", /^\/api\/voice\/speak\/([^/]+)$/, voiceHandler],
+  ["POST", /^\/api\/voice\/transcribe$/, voiceHandler],
+  ["POST", /^\/api\/generate\/([^/]+)\/plan$/, generationPlanHandler],
   ["POST", /^\/api\/generate\/([^/]+)$/, generateHandler],
   ["GET", /^\/api\/jobs$/, listJobsHandler],
   ["GET", /^\/api\/jobs\/([^/]+)$/, getJobHandler],
@@ -1046,6 +1226,7 @@ function matchRoute(method: string, pathname: string): { handler: RouteHandler; 
     if (match) {
       const params: Record<string, string> = {};
       if (match[1]) params.id = match[1];
+      if (match[2]) params.assetId = match[2];
       return { handler, params };
     }
   }
@@ -1062,17 +1243,26 @@ export async function handleAPIRequest(req: IncomingMessage, res: ServerResponse
   if (!pathname.startsWith("/api/")) {
     return false; // Not an API request, let static file handler take over
   }
+  res.setHeader("Cache-Control", "private, no-store");
 
   await corsMiddleware(req, res, async () => {
+    if (await accountManager.handle(req, res)) return;
     const route = matchRoute(req.method || "GET", pathname);
     if (!route) {
       json(res, { error: "Not found" }, 404);
       return;
     }
     try {
-      await route.handler(req, res, route.params);
+      guardOrigin(req, !["GET", "HEAD"].includes(req.method ?? "GET"));
+      if (route.params.id && !/^[a-zA-Z0-9_-]{1,100}$/.test(route.params.id)) throw new AccountError(400, "Invalid resource id.");
+      if (pathname === "/api/health") { await route.handler(req, res, route.params); return; }
+      const context = await accountManager.getContext(req);
+      if (context && !["GET", "HEAD"].includes(req.method ?? "GET")) accountManager.validateMutation(req);
+      if (context) await accountScope.run(context.did, () => route.handler(req, res, route.params));
+      else await route.handler(req, res, route.params);
     } catch (err) {
-      json(res, { error: String(err) }, 500);
+      const knownError = err instanceof AccountError || err instanceof ProjectError;
+      json(res, { error: knownError ? err.message : accountEnabled() ? "The request could not be completed." : String(err) }, knownError ? err.status : 500);
     }
   });
 

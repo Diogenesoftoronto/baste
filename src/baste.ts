@@ -11,6 +11,7 @@
  */
 
 import type { Persona } from "./persona/types.js";
+import { resolveEvaluatorProvider, type EvaluatorConfig } from "./config/baste-config.js";
 import type { AssetType, GeneratedPrompt } from "./generation/prompts.js";
 import { generatePrompts, mutatePrompt } from "./generation/prompts.js";
 import {
@@ -31,6 +32,7 @@ import {
   type GenerationConfig,
   type GeneratedAsset,
 } from "./assets/generators.js";
+import { judgeWithFal, svgPreview } from "./evaluation/fal-judge.js";
 
 export interface BasteConfig {
   // Generation services config
@@ -43,10 +45,20 @@ export interface BasteConfig {
   outputCount: number;
 
   // LLM evaluator config
-  evaluator: {
-    model: string;
-    apiKey?: string;
-  };
+  evaluator: EvaluatorConfig;
+}
+
+/** One image the QD search generated and judged, kept or not. */
+export interface QDCandidate {
+  generation: number;
+  path: string;
+  sourceUrl?: string;
+  quality: number;
+  features: number[];
+  criteria: EvaluationResult["criteria"];
+  feedback: string;
+  /** Archive cell it landed in, when it beat that cell's previous holder. */
+  cell?: string;
 }
 
 export interface AssetSuite {
@@ -58,6 +70,10 @@ export interface AssetSuite {
   };
   archive: QDArchive<string>; // genome = prompt string
   evaluations: EvaluationResult[];
+  /** Every QD candidate in generation order, with where it landed. */
+  candidates: QDCandidate[];
+  /** Judge scores for each final asset, by asset id. */
+  finalScores: Record<string, EvaluationResult>;
   metadata: {
     generationDuration: number;
     totalIterations: number;
@@ -68,17 +84,42 @@ export interface AssetSuite {
 /**
  * Generate a complete asset suite for a persona
  */
+/** Live progress for callers that show a run as it happens, such as the Studio. */
+export interface GenerationHooks {
+  log?: (line: string) => void;
+  /** Each QD candidate as soon as it has been generated and judged. */
+  candidate?: (candidate: QDCandidate) => void;
+}
+
 export async function generateAssetSuite(
   persona: Persona,
   assetTypes: AssetType[],
-  config: BasteConfig
+  config: BasteConfig,
+  hooks: GenerationHooks = {},
 ): Promise<AssetSuite> {
+  const log = hooks.log ?? console.log;
   const startTime = Date.now();
   const generator = new AssetGenerator(config.generation);
+  const evaluations: EvaluationResult[] = [];
+  const candidates: QDCandidate[] = [];
+  const finalScores: Record<string, EvaluationResult> = {};
+  const evaluatorProvider = resolveEvaluatorProvider(config.evaluator);
+  // Surface missing credentials to the GUI before generating paid assets.
+  if (assetTypes.some(a => a.kind === "video") && (config.generation.videoProvider ?? "seedance") === "seedance"
+      && !config.generation.videoApiKey && !process.env.ARK_API_KEY) {
+    throw new Error("Seedance needs ARK_API_KEY");
+  }
+  const needsFal = evaluatorProvider === "fal"
+    || (config.generation.imageProvider === "fal" && assetTypes.some(a => a.kind === "image"))
+    || (config.generation.svgProvider === "fal" && assetTypes.some(a => a.kind === "svg"))
+    || (config.generation.videoProvider === "fal" && assetTypes.some(a => a.kind === "video"));
+  if (needsFal && !config.generation.falApiKey && !process.env.FAL_KEY) {
+    throw new Error("fal needs FAL_KEY");
+  }
 
-  console.log(`\n🎨 Baste: Generating assets for "${persona.name}"`);
-  console.log(`   Persona: ${persona.summary}`);
-  console.log(`   Asset types: ${assetTypes.map((a) => a.kind).join(", ")}`);
+  log(`\n🎨 Baste: Generating assets for "${persona.name}"`);
+  log(`   Persona: ${persona.summary}`);
+  log(`   Asset types: ${assetTypes.map((a) => a.kind).join(", ")}`);
 
   // Generate prompts for each asset type
   const promptsByAsset = new Map<AssetType, Record<string, GeneratedPrompt>>();
@@ -91,13 +132,13 @@ export async function generateAssetSuite(
   let archive: QDArchive<string> = createArchive(config.qd);
 
   if (imageAssets.length > 0) {
-    console.log("\n🧬 Starting QD evolution for images...");
+    log("\n🧬 Starting QD evolution for images...");
 
     const imageAsset = imageAssets[0];
     const prompts = promptsByAsset.get(imageAsset)!;
 
     archive = await runQD<string>(
-      config.qd,
+      { ...config.qd, log },
       // Seed generation
       async () => ({
         genome: prompts.image.prompt,
@@ -113,7 +154,7 @@ export async function generateAssetSuite(
         generation: 0,
       }),
       // Evaluation
-      async (genome) => {
+      async (genome, { generation }) => {
         // Generate the asset
         const asset = await generator.generate(persona, imageAsset, {
           ...prompts.image,
@@ -128,10 +169,16 @@ export async function generateAssetSuite(
               type: "image",
               prompt: genome,
               content: asset.content,
+              purpose: imageAsset.purpose,
+              metadata: asset.metadata,
+              suite: assetTypes.map(a => ({ type: a.kind, purpose: a.purpose, prompt: promptsByAsset.get(a)![a.kind].prompt })),
             },
           ],
-          // Evaluation function using OpenAI
+          // Evaluation function: a vision model on fal, or OpenAI over the prompt
           async (system, user) => {
+            if (evaluatorProvider === "fal") {
+              return judgeWithFal(system, user, { model: config.evaluator.model, apiKey: config.evaluator.apiKey, temperature: config.evaluator.temperature, imageUrl: asset.metadata.sourceUrl });
+            }
             const apiKey = config.evaluator.apiKey || process.env.OPENAI_API_KEY;
             if (!apiKey) {
               console.warn("[baste] No OPENAI_API_KEY set — using rule-based heuristic evaluation (set OPENAI_API_KEY or evaluator.apiKey for LLM judge)");
@@ -192,12 +239,21 @@ export async function generateAssetSuite(
 
             const data = await response.json();
             return data.choices[0]?.message?.content || "";
-          }
+          },
+          config.evaluator
         );
 
         const result = evalResults[0];
-        const scorer = createScorer();
+        evaluations.push(result);
+        const scorer = createScorer(config.evaluator.weights);
         const quality = scorer(result);
+        const candidate: QDCandidate = {
+          generation, path: asset.content, sourceUrl: asset.metadata.sourceUrl, quality,
+          features: result.features, criteria: result.criteria, feedback: result.feedback,
+        };
+        candidates.push(candidate);
+        hooks.candidate?.(candidate);
+        log(`   Candidate ${candidates.length} (generation ${generation}) judged ${quality.toFixed(2)}`);
 
         return {
           quality,
@@ -205,26 +261,57 @@ export async function generateAssetSuite(
         };
       }
     );
+    // Record which candidates hold a cell in the final archive.
+    for (const [cell, solution] of archive.cells) {
+      const held = candidates.find((c) => c.quality === solution.quality && c.features.every((f, i) => f === solution.features[i]));
+      if (held) held.cell = cell;
+    }
   }
 
   // Generate final diverse assets from archive
-  console.log("\n🎯 Generating final assets...");
-  const diversePrompts = getDiverseSamples(archive, config.outputCount);
+  log("\n🎯 Generating final assets...");
+  const diversePrompts = imageAssets.length > 0 ? getDiverseSamples(archive, config.outputCount)
+    : [{ genome: "", quality: 0, features: [0, 0, 0], generation: 0 }];
 
   const finalAssets: GeneratedAsset[] = [];
-  const evaluations: EvaluationResult[] = [];
 
   for (const solution of diversePrompts) {
     for (const assetType of assetTypes) {
       try {
+        const originalPrompt = promptsByAsset.get(assetType)![assetType.kind];
+        // Only the evolved asset takes the evolved genome. Other images keep their own
+        // brief: a hero must not be drawn from the background's prompt.
+        const evolved = assetType === imageAssets[0] && solution.genome;
         const asset = await generator.generate(persona, assetType, {
-          prompt: solution.genome,
-          systemContext: `Generate ${assetType.kind} for ${persona.name}`,
-          parameters: {},
+          ...originalPrompt,
+          prompt: evolved ? solution.genome : originalPrompt.prompt,
         });
+        if (evaluatorProvider === "fal") {
+          // The judge looks at images and rendered SVG; videos are judged on their brief.
+          const imageUrl = asset.type === "image" ? asset.metadata.sourceUrl : asset.type === "svg" ? svgPreview(asset.content) : undefined;
+          const [evaluation] = await evaluateBatch(persona, [{
+            type: asset.type, prompt: asset.prompt, content: imageUrl ? undefined : asset.content,
+            purpose: assetType.purpose, metadata: asset.metadata,
+          }], (system, user) => judgeWithFal(system, user, {
+            model: config.evaluator.model, apiKey: config.evaluator.apiKey, temperature: config.evaluator.temperature, imageUrl,
+          }), config.evaluator);
+          evaluations.push(evaluation);
+          finalScores[asset.id] = evaluation;
+        }
+        if (evaluatorProvider === "typesafe" || evaluatorProvider === "notorganic") {
+          const [evaluation] = await evaluateBatch(persona, [{
+            type: asset.type, prompt: asset.prompt, content: asset.content,
+            purpose: assetType.purpose, metadata: asset.metadata,
+            suite: finalAssets.map(a => ({ type: a.type, purpose: a.metadata.assetPurpose, prompt: a.prompt, metadata: a.metadata })),
+          }], async () => { throw new Error("Unexpected OpenAI evaluator selection"); }, config.evaluator);
+          evaluations.push(evaluation);
+          finalScores[asset.id] = evaluation;
+          if (evaluation.gate?.accepted === false) continue;
+        }
         finalAssets.push(asset);
       } catch (error) {
-        console.error(`Failed to generate ${assetType.kind}:`, error);
+        log(`Failed to generate ${assetType.kind}: ${error instanceof Error ? error.message : String(error)}`);
+        if (assetType.kind === "video" || evaluatorProvider === "typesafe" || evaluatorProvider === "notorganic" || config.generation.imageProvider === "notorganic") throw error;
       }
     }
   }
@@ -236,15 +323,17 @@ export async function generateAssetSuite(
 
   const duration = Date.now() - startTime;
 
-  console.log(`\n✅ Asset suite complete for "${persona.name}"`);
-  console.log(`   Generated: ${svgs.length} SVGs, ${images.length} images, ${videos.length} videos`);
-  console.log(`   Time: ${(duration / 1000).toFixed(1)}s`);
+  log(`\n✅ Asset suite complete for "${persona.name}"`);
+  log(`   Generated: ${svgs.length} SVGs, ${images.length} images, ${videos.length} videos`);
+  log(`   Time: ${(duration / 1000).toFixed(1)}s`);
 
   return {
     persona,
     assets: { svgs, images, videos },
     archive,
     evaluations,
+    candidates,
+    finalScores,
     metadata: {
       generationDuration: duration,
       totalIterations: config.qd.iterations,
@@ -270,7 +359,8 @@ function createArchive(config: QDConfig) {
  */
 export async function generateUIKit(
   persona: Persona,
-  config: BasteConfig
+  config: BasteConfig,
+  hooks: GenerationHooks = {},
 ): Promise<AssetSuite> {
   const uiComponents: AssetType[] = [
     {
@@ -303,5 +393,5 @@ export async function generateUIKit(
     },
   ];
 
-  return generateAssetSuite(persona, uiComponents, config);
+  return generateAssetSuite(persona, uiComponents, config, hooks);
 }

@@ -1,0 +1,33 @@
+{
+  "status": "recovered-decisions-only",
+  "sessionId": "01a0f9de-74e1-7f80-8fec-0399e3916478",
+  "context": "Codex /side conversation from the Baste documentation task; separate from Claude redesign work",
+  "topic": "Generated character as a conversational design partner, with portrait, voice, likes and dislikes",
+  "sources": [
+    "Local Codex history.jsonl user prompts for this exact session",
+    "Local Codex logs_2.sqlite UserInputAnswer records for this exact session"
+  ],
+  "decisions": {
+    "partnerPerspective": "Both perspectives",
+    "characterStart": "Brief or persona, including conversational brief and interview like Twyne",
+    "voiceScope": "Spoken replies first; live voice conversation desired later",
+    "partnerActions": "Edit while collaborating",
+    "designEvidence": "Connected live sites",
+    "interviewStyle": "Generate immediately, with three options at the opening",
+    "autonomyBoundary": "Everything in the project",
+    "candidateRelationship": "Choose one and discard the others; log and analyze this choice and other decisions to improve the product",
+    "speechPlayback": "Opt-in conversation mode",
+    "learningDataScope": "Decision events and traits",
+    "analysisDelivery": "Product analytics and project history"
+  },
+  "lifecycle": {
+    "interruptReceivedAt": "2026-10-02T00:02:03Z",
+    "shutdownReceivedAt": "2026-10-02T00:03:03Z",
+    "causeOfInterrupt": "Not established by available logs"
+  },
+  "limitations": [
+    "The full assistant plan response was not recovered from accessible local saved thread history.",
+    "This file preserves confirmed user decisions and is not a verbatim copy of the original plan.",
+    "The design partner has not been implemented by this recovery work."
+  ]
+}

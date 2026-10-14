@@ -1,0 +1,28 @@
+{
+  "file": "current-narrated.mp4",
+  "duration": 29.16,
+  "narrated": true,
+  "language": "en",
+  "steps": [
+    [
+      "Start with a persona. Fitting shows how their world becomes colour, type, and an interface.",
+      "Commencez par un persona. Fitting traduit son univers en couleurs, en typographie et en interface."
+    ],
+    [
+      "In Material, adjust the cloth. Your changes stay in this browser.",
+      "Dans Material, ajustez le tissu. Vos modifications restent dans ce navigateur."
+    ],
+    [
+      "Tokens gives you the design system, with OpenPencil here too.",
+      "Tokens contient le système de design. OpenPencil se trouve ici aussi."
+    ],
+    [
+      "Keep references and notes together in Moodboard.",
+      "Rassemblez vos références et vos notes dans Moodboard."
+    ],
+    [
+      "Use Taste to say what works for you, and why.",
+      "Dans Taste, indiquez ce qui vous plaît, et pourquoi."
+    ]
+  ]
+}

@@ -10,6 +10,7 @@
 
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve, join } from "node:path";
+import { accountPath } from "../notorganic/scope.js";
 
 export interface FeedbackEntry {
   personaId: string;
@@ -31,12 +32,13 @@ export interface FeedbackEntry {
 const FEEDBACK_DIR = ".baste/feedback";
 
 function ensureDir(): string {
-  const dir = resolve(FEEDBACK_DIR);
+  const dir = accountPath("feedback", FEEDBACK_DIR);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   return dir;
 }
 
 function fileFor(personaId: string): string {
+  if (!/^[a-zA-Z0-9_-]{1,100}$/.test(personaId)) throw new Error("Invalid persona id.");
   return join(ensureDir(), `${personaId}.jsonl`);
 }
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "fit",
+    "title": "Créer pour une personne.",
+    "paragraph": "Créez une interface qui ressemble à la personne qui l’utilise. Dans Baste, partez de ses films, de sa musique, de ses lieux et de ses habitudes. L’essayage rend cet univers visible par les couleurs, la typographie et les détails."
+  },
+  {
+    "id": "measure",
+    "title": "Prendre des mesures précises.",
+    "paragraph": "Adaptez une copie ou mesurez un nouveau persona. Donnez-lui un nom et une description claire. Ajoutez des influences précises, des valeurs et des préférences logicielles. Choisissez les axes esthétiques et les mots-clés visuels. Enregistrez : l’indicateur compte les champs remplis, pas la qualité du design."
+  },
+  {
+    "id": "tokens",
+    "title": "Garder un patron utilisable.",
+    "paragraph": "Dans Jetons, comparez espacement, bords et mouvement, puis exportez en CSS, Tailwind, Panda ou JSON. Les fichiers téléchargés restent sur votre appareil. La démo utilise des exemples intégrés ; vos mesures ne lancent pas une nouvelle génération."
+  },
+  {
+    "id": "taste",
+    "title": "Montrer ce qui convient.",
+    "paragraph": "Composez un tableau d’inspiration avec images, étiquettes et notes. Épinglez les références importantes ; quittez le champ de notes pour enregistrer. Dans Goûts, nommez un visuel, expliquez votre avis et demandez davantage ou moins de ce style. Examinez le retour destiné aux prochaines consignes."
+  },
+  {
+    "id": "draft",
+    "title": "Préparer avant de générer.",
+    "paragraph": "Commencez Générer par un essai à blanc et lisez la consigne. Cette démo simule les tâches sans appel payant. OpenPencil modifie un document distinct. Génération réelle, décomposition de site, fichiers natifs et projets enregistrés nécessitent le serveur ou le compte adapté."
+  },
+  {
+    "id": "keep",
+    "title": "Garder le travail et connaître les limites.",
+    "paragraph": "Explorez la matériauthèque, enregistrez une recette et rechargez-la pour un autre essai. Recharger le Studio efface le travail de démo ; téléchargements et préférences de matériaux restent. Le guide anglais et français décrit chaque écran, export et limite de connexion."
+  }
+]
