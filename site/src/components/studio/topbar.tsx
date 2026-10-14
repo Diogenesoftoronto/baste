@@ -1,3 +1,5 @@
+import { LanguageSelect, useLocale } from "~/i18n/provider";
+import { text, localeHref } from "~/i18n/runtime";
 import { component$, useContext } from "@builder.io/qwik";
 import { css, cx } from "styled-system/css";
 import { BasteLogo } from "~/components/layout/baste-logo";
@@ -8,6 +10,7 @@ import { SoundToggle } from "~/components/fx/juice";
 const outLink = css({ display: { base: "none", md: "inline-flex" }, h: "30px", px: 3, fontSize: "13px" });
 
 export const ConnectionPill = component$(() => {
+  const locale = useLocale();
   const s = useContext(StudioCtx);
   const meta = {
     connecting: { dot: "#A79E8D", label: "Connecting…", title: `Looking for a Baste server at ${s.apiBase}` },
@@ -41,13 +44,14 @@ export const ConnectionPill = component$(() => {
       />
       <span>{meta.label}</span>
       <span class={css({ display: { base: "none", md: "inline" }, fontFamily: "mono", fontSize: "11.5px", color: "ink-muted" })}>
-        {s.status === "demo" ? "in-browser" : s.apiBase.replace(/^https?:\/\//, "")}
+        {s.status === "demo" ? text(locale.value, "in-browser") : s.apiBase.replace(/^https?:\/\//, "")}
       </span>
     </button>
   );
 });
 
 export const Topbar = component$(() => {
+  const locale = useLocale();
   const s = useContext(StudioCtx);
   return (
     <header
@@ -59,7 +63,7 @@ export const Topbar = component$(() => {
         display: "flex",
         alignItems: "center",
         gap: { base: 1, md: 3 },
-        px: { base: 3, md: 5 },
+        px: { base: 2, md: 5 },
         bg: "rgba(241,236,226,0.92)",
         backdropFilter: "blur(10px)",
         borderBottom: "1px solid token(colors.rule)",
@@ -67,7 +71,7 @@ export const Topbar = component$(() => {
     >
       <button
         type="button"
-        aria-label={s.railOpen ? "Close wardrobe" : "Open wardrobe"}
+        aria-label={s.railOpen ? text(locale.value, "Close wardrobe") : text(locale.value, "Open wardrobe")}
         aria-expanded={s.railOpen}
         aria-controls="studio-rail"
         style={{ paddingInline: "0", flexShrink: "0" }}
@@ -78,21 +82,20 @@ export const Topbar = component$(() => {
           {s.railOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h10" />}
         </svg>
       </button>
-      <a href="/" aria-label="Baste home" class={css({ textDecoration: "none", display: "flex" })}>
+      <a href={localeHref("/", locale.value)} aria-label={text(locale.value, "Baste home")} class={css({ textDecoration: "none", display: "flex" })}>
         <BasteLogo size={24} />
       </a>
       <span aria-hidden="true" class={css({ color: "rule-strong", display: { base: "none", sm: "inline" } })}>/</span>
-      <span class={css({ fontSize: "14px", fontWeight: 600, display: { base: "none", sm: "inline" } })}>Studio</span>
+      <span class={css({ fontSize: "14px", fontWeight: 600, display: { base: "none", sm: "inline" } })}>{text(locale.value, "Studio")}</span>
 
       <div class={css({ ml: "auto", display: "flex", alignItems: "center", gap: { base: 0, md: 2 } })}>
         <ConnectionPill />
+        <LanguageSelect />
         <SoundToggle />
         {/* links that leave the Studio carry an out-arrow; everything inside stays a quiet "go" */}
-        <a href="/materials/" title="Baste's own material room — leaves the Studio" class={act("go", outLink)}>
-          Material room <span data-arrow="out" aria-hidden="true">↗</span>
+        <a href={localeHref("/materials/", locale.value)} title="Baste's own material room — leaves the Studio" class={act("go", outLink)}>{text(locale.value, "Material room")} <span data-arrow="out" aria-hidden="true">↗</span>
         </a>
-        <a href="/docs/" title="Studio guide — leaves the Studio" class={act("go", outLink)}>
-          Guide <span data-arrow="out" aria-hidden="true">↗</span>
+        <a href={localeHref("/docs/", locale.value)} title="Studio guide — leaves the Studio" class={act("go", outLink)}>{text(locale.value, "Guide")} <span data-arrow="out" aria-hidden="true">↗</span>
         </a>
         {/* one door to the workroom: account, connection and defaults all live there */}
         <button

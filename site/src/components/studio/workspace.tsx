@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text, personaText } from "~/i18n/runtime";
 import { component$, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css, cx } from "styled-system/css";
 import { StudioCtx, errMsg, loadTokens, openView, refreshPersonas, syncUrl, toast, type PersonaTab } from "./context";
@@ -37,6 +39,7 @@ const BENCHES: Array<{ name: string; tabs: Array<{ id: PersonaTab; label: string
 const tabOf = (t: PersonaTab): PersonaTab => (t === "editor" ? "tokens" : t);
 
 export const Workspace = component$(() => {
+  const locale = useLocale();
   const s = useContext(StudioCtx);
   const persona = s.personas.find((p) => p.id === s.selectedId);
   const tokens = persona ? s.tokens[persona.id] : undefined;
@@ -73,18 +76,18 @@ export const Workspace = component$(() => {
   if (!persona) {
     if (s.account.status?.configured && !s.account.status.authenticated) return (
       <div class={emptyBox}>
-        <h1 class="display" style={{ fontSize: "34px" }}>Connect your workroom.</h1>
-        <p>Sign in or create a Not Organic profile to open your personas, models and wallet on this server.</p>
-        <button class={act("go", undefined, true)} onClick$={() => openView(s, "settings")}>Sign in / create profile <span data-arrow aria-hidden="true">→</span></button>
+        <h1 class="display" style={{ fontSize: "34px" }}>{text(locale.value, "Connect your workroom.")}</h1>
+        <p>{text(locale.value, "Sign in or create a Not Organic profile to open your personas, models and wallet on this server.")}</p>
+        <button class={act("go", undefined, true)} onClick$={() => openView(s, "settings")}>{text(locale.value, "Sign in / create profile")} <span data-arrow aria-hidden="true">→</span></button>
       </div>
     );
     return (
       <div class={emptyBox}>
-        <h1 class="display" style={{ fontSize: "34px" }}>The wardrobe is empty.</h1>
-        <p>Measure a new persona, or draft one from a site you admire.</p>
+        <h1 class="display" style={{ fontSize: "34px" }}>{text(locale.value, "The wardrobe is empty.")}</h1>
+        <p>{text(locale.value, "Measure a new persona, or draft one from a site you admire.")}</p>
         <div class={css({ display: "flex", gap: 2, flexWrap: "wrap" })}>
-          <button class={act("go", undefined, true)} onClick$={() => openView(s, "new")}>Measure a new persona <span data-arrow aria-hidden="true">→</span></button>
-          <button class={act("go")} onClick$={() => openView(s, "decompose")}>Decompose a site <span data-arrow aria-hidden="true">→</span></button>
+          <button class={act("go", undefined, true)} onClick$={() => openView(s, "new")}>{text(locale.value, "Measure a new persona")} <span data-arrow aria-hidden="true">→</span></button>
+          <button class={act("go")} onClick$={() => openView(s, "decompose")}>{text(locale.value, "Decompose a site")} <span data-arrow aria-hidden="true">→</span></button>
         </div>
       </div>
     );
@@ -109,29 +112,29 @@ export const Workspace = component$(() => {
           style={{ background: "rgba(251,249,244,0.94)", backdropFilter: "blur(6px)", boxShadow: "0 12px 30px -12px rgba(20,14,6,0.4)" }}
         >
           <div class={css({ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap" })}>
-            <span class={kicker}>{custom ? "Bespoke persona" : "Base persona"}</span>
+            <span class={kicker}>{custom ? text(locale.value, "Bespoke persona") : text(locale.value, "Base persona")}</span>
             <span class={css({ fontFamily: "mono", fontSize: "11.5px", color: "ink-muted" })}>· {persona.id}</span>
           </div>
-          <h1 class="display" style={{ fontSize: "clamp(30px, 3.6vw, 46px)" }}>{persona.name}</h1>
-          <p class={css({ color: "ink-soft", fontSize: "15px", maxW: "62ch" })}>{persona.summary}</p>
+          <h1 class="display" style={{ fontSize: "clamp(30px, 3.6vw, 46px)" }}>{personaText(locale.value, persona, persona.name)}</h1>
+          <p class={css({ color: "ink-soft", fontSize: "15px", maxW: "62ch" })}>{personaText(locale.value, persona, persona.summary)}</p>
           <div class={css({ display: "flex", gap: 2, flexWrap: "wrap", mt: 1, alignItems: "center" })}>
-            <button class={act("baste", btnSm)} onClick$={() => openView(s, custom ? "edit" : "tailor")} title={custom ? "Re-measure this persona" : "Draft your own copy; the original stays as it is"}>
-              {custom ? "Edit measurements" : "Tailor a copy"}
+            <button class={act("baste", btnSm)} onClick$={() => openView(s, custom ? "edit" : "tailor")} title={custom ? text(locale.value, "Re-measure this persona") : text(locale.value, "Draft your own copy; the original stays as it is")}>
+              {custom ? text(locale.value, "Edit measurements") : text(locale.value, "Tailor a copy")}
             </button>
             {current !== "material" && (
               <button class={act("go", btnSm)} onClick$={() => { s.tab = "material"; syncUrl(s); }}>
-                Change the cloth <span data-arrow aria-hidden="true">→</span>
+                {text(locale.value, "Change the cloth")} <span data-arrow aria-hidden="true">→</span>
               </button>
             )}
             {custom && (
               <HoldButton
-                label="Unpick"
-                holdingLabel="Unpicking…"
+                label={text(locale.value, "Unpick")}
+                holdingLabel={text(locale.value, "Unpicking…")}
                 onConfirm$={async () => {
                   if (!s.client) return;
                   try {
                     await s.client.deletePersona(persona.id);
-                    toast(s, `Unpicked ${persona.name} — personas/${persona.id}.json removed`);
+                    toast(s, text(locale.value, "Unpicked {name} — personas/{id}.json removed", { name: persona.name, id: persona.id }));
                     s.selectedId = "";
                     await refreshPersonas(s);
                   } catch (err) {
@@ -147,11 +150,11 @@ export const Workspace = component$(() => {
       {/* Tabs */}
       <div
         role="tablist"
-        aria-label="Persona workspace"
+        aria-label={text(locale.value, "Persona workspace")}
         class={css({ display: "flex", alignItems: "center", gap: 1, overflowX: "auto", borderBottom: "1px solid token(colors.rule)", scrollbarWidth: "none", maskImage: { base: "linear-gradient(90deg, #000 85%, transparent)", md: "none" } })}
       >
         {BENCHES.flatMap((b, bi) => [
-          <span key={`bench-${b.name}`} aria-hidden="true" class={cx(kicker, css({ flexShrink: 0, pl: bi ? 4 : 0, pr: 1, fontSize: "10px", borderLeft: bi ? "1px dashed token(colors.rule-strong)" : "none", ml: bi ? 2 : 0 }))}>{b.name}</span>,
+          <span key={`bench-${b.name}`} aria-hidden="true" class={cx(kicker, css({ flexShrink: 0, pl: bi ? 4 : 0, pr: 1, fontSize: "10px", borderLeft: bi ? "1px dashed token(colors.rule-strong)" : "none", ml: bi ? 2 : 0 }))}>{text(locale.value, b.name)}</span>,
           ...b.tabs.filter((t) => !t.customOnly || custom || s.tab === t.id).map((t) => (
           <button
             key={t.id}
@@ -186,14 +189,14 @@ export const Workspace = component$(() => {
               },
             })}
           >
-            {t.label}
+            {text(locale.value, t.label)}
           </button>
         ))])}
       </div>
 
       <div id="persona-tabpanel" role="tabpanel" aria-labelledby={`tab-${current}`} key={`${persona.id}-${s.tab}`} class="rise">
         {current === "tokens" && (
-          <div role="radiogroup" aria-label="Tokens mode" class={css({ display: "inline-flex", gap: 1, p: "3px", mb: 4, rounded: "base", border: "1px solid token(colors.rule)", bg: "paper-deep" })}>
+          <div role="radiogroup" aria-label={text(locale.value, "Tokens mode")} class={css({ display: "inline-flex", gap: 1, p: "3px", mb: 4, rounded: "base", border: "1px solid token(colors.rule)", bg: "paper-deep" })}>
             {([["tokens", "Read the pattern"], ["editor", "Edit in OpenPencil"]] as const).map(([id, label]) => (
               <button
                 key={id}
@@ -203,7 +206,7 @@ export const Workspace = component$(() => {
                 onClick$={() => { s.tab = id; syncUrl(s); }}
                 class={css({ h: "30px", px: 3, rounded: "sm", fontSize: "13px", border: "1px solid transparent", bg: "transparent", color: "ink-muted", _hover: { color: "ink" }, "&[aria-checked=true]": { bg: "card", color: "ink", fontWeight: 600, borderColor: "rule-strong", boxShadow: "sheet" } })}
               >
-                {label}
+                {text(locale.value, label)}
               </button>
             ))}
           </div>

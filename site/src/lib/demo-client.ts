@@ -10,7 +10,7 @@ import { loadRecordedRun, recordedResult, type RecordedRun } from './recorded-ru
 const CANDIDATE_MS = 650;
 const FINAL_MS = 2200;
 
-const REQUIRES_SERVER = 'Requires the local Baste server — run: npx baste gui';
+const REQUIRES_SERVER = 'Requires the local Baste server — run: baste gui';
 const clone = <T>(value: T): T => structuredClone(value);
 
 /** Each instance owns its data. Demo writes never mutate the generated fixtures. */

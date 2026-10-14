@@ -1,3 +1,5 @@
+import { useLocale } from "~/i18n/provider";
+import { text } from "~/i18n/runtime";
 import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { css } from "styled-system/css";
 
@@ -61,6 +63,7 @@ function tileStyle(c: Cell): Record<string, string> {
  * best; the final archive is chosen for spread, not just score.
  */
 export const QDArchive = component$(() => {
+  const locale = useLocale();
   const gen = useSignal(GENERATIONS);
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -81,21 +84,21 @@ export const QDArchive = component$(() => {
     <figure class={css({ display: "flex", flexDirection: "column", gap: 3, m: 0 })}>
       <div class={css({ display: "flex", justifyContent: "space-between", fontFamily: "mono", fontSize: "12px", color: "ink-muted" })}>
         <span>
-          generation <strong class={css({ color: "ink" })}>{g}</strong>/{GENERATIONS}
+          {text(locale.value, "generation")} <strong class={css({ color: "ink" })}>{g}</strong>/{GENERATIONS}
         </span>
         <span>
-          {filled}/{COLS * ROWS} niches · {done ? "5 kept" : "evolving…"}
+          {filled}/{COLS * ROWS} {text(locale.value, "niches ·")} {text(locale.value, done ? "5 kept" : "evolving…")}
         </span>
       </div>
       <div class={css({ display: "grid", gridTemplateColumns: "20px 1fr", gap: 2 })}>
         <span
           class={css({ writingMode: "vertical-rl", transform: "rotate(180deg)", fontFamily: "mono", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "chalk", textAlign: "center" })}
         >
-          sparse → dense
+          {text(locale.value, "sparse → dense")}
         </span>
         <div
           role="img"
-          aria-label="Quality-diversity archive: candidate assets spread across colour temperature and density; five diverse winners are kept."
+          aria-label={text(locale.value, "Quality-diversity archive: candidate assets spread across colour temperature and density; five diverse winners are kept.")}
           class={css({ display: "grid", gap: { base: "4px", sm: "6px" } })}
           style={{ gridTemplateColumns: `repeat(${COLS}, 1fr)` }}
         >
@@ -128,14 +131,13 @@ export const QDArchive = component$(() => {
         </div>
         <span />
         <span class={css({ fontFamily: "mono", fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "chalk", display: "flex", justifyContent: "space-between" })}>
-          <span>cool</span>
-          <span>colour temperature</span>
-          <span>warm</span>
+          <span>{text(locale.value, "cool")}</span>
+          <span>{text(locale.value, "colour temperature")}</span>
+          <span>{text(locale.value, "warm")}</span>
         </span>
       </div>
       <figcaption class={css({ fontSize: "13px", color: "ink-muted" })}>
-        Shape encodes the third axis: square tiles are literal, round ones abstract. Stitched tiles
-        are the final archive — the best in each region, chosen for spread.
+        {text(locale.value, "Shape encodes the third axis: square tiles are literal, round ones abstract. Stitched tiles are the final archive — the best in each region, chosen for spread.")}
       </figcaption>
     </figure>
   );

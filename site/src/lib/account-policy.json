@@ -1,0 +1,10 @@
+{
+  "product": "baste",
+  "minimumAge": 14,
+  "status": "review",
+  "version": "review-2026-10-07.2",
+  "effectiveAt": null,
+  "contentSha256": "0cefdf8a37c82c503c2c83fbc9b89a2801ddc67edae4cde6274856fd675fe809",
+  "termsUrl": "/terms/",
+  "privacyUrl": "/privacy/"
+}

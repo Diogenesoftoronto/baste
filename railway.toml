@@ -1,15 +1,12 @@
-# Generated from den.dhall
-# Backend: nix
-# Name: baste-site
-
 [build]
+builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
+watchPatterns = ["/site/**", "/deployment/**", "/Dockerfile", "/railway.toml"]
 
 [deploy]
-restartPolicyType = "ALWAYS"
-healthcheckPath = "/"
-
-[deploy.env]
-DEN_NAME = "baste-site"
-DEN_BACKEND = "nix"
-TAILSCALE_AUTHKEY = "TAILSCALE_AUTHKEY"
+healthcheckPath = "/health"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+numReplicas = 1
+sleepApplication = true

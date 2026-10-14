@@ -409,24 +409,27 @@ export function mountFabric(
   let sizeDirty = true;
   let contextLost = false;
   const resize = () => {
-    // ResizeObserver runs after animation frames. Resizing the drawing buffer
-    // here clears the canvas before the browser paints, producing a black
-    // flash with an opaque context. Allocate and draw together in draw().
+    if (destroyed || contextLost || gl.isContextLost()) return;
     sizeDirty = true;
-    needsFrame = true;
+    if (!syncSize()) return;
+    draw(performance.now());
+    needsFrame = false;
     kick();
   };
   const syncSize = () => {
     const rect = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2) * quality;
-    w = Math.max(1, Math.round(rect.width * dpr));
-    h = Math.max(1, Math.round(rect.height * dpr));
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-    }
+    const nextDpr = Math.min(window.devicePixelRatio || 1, 2) * quality;
+    const nextW = Math.max(1, Math.round(rect.width * nextDpr));
+    const nextH = Math.max(1, Math.round(rect.height * nextDpr));
+    if (w === nextW && h === nextH && dpr === nextDpr) { sizeDirty = false; return false; }
+    dpr = nextDpr;
+    w = nextW;
+    h = nextH;
+    if (canvas.width !== w) canvas.width = w;
+    if (canvas.height !== h) canvas.height = h;
     gl.viewport(0, 0, w, h);
     sizeDirty = false;
+    return true;
   };
 
   const mouse = { x: -10, y: -10, tx: -10, ty: -10, amt: 0, tAmt: 0 };
@@ -479,6 +482,8 @@ export function mountFabric(
   canvas.addEventListener("pointerdown", onDown);
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
+  // A monitor/zoom DPR change can leave the CSS box unchanged.
+  window.addEventListener("resize", resize);
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     if (visible) kick();
@@ -502,7 +507,7 @@ export function mountFabric(
   const draw = (now: number) => {
     if (destroyed || contextLost || gl.isContextLost()) return;
     if (sizeDirty) syncSize();
-    const dt = Math.min(0.05, (now - last) / 1000);
+    const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
     const k = reduced || !motion ? 1 : 1 - Math.exp(-dt * 6);
     if (active()) elapsed += dt * speed;
@@ -654,6 +659,7 @@ export function mountFabric(
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", resize);
       media.removeEventListener("change", onPreference);
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("webglcontextlost", onLost);

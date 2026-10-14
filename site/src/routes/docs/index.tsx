@@ -1,5 +1,7 @@
+import { useLocale } from "~/i18n/provider";
+import { localeHref } from "~/i18n/runtime";
 import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik';
-import { useLocation, type DocumentHead } from '@builder.io/qwik-city';
+import { type DocumentHead } from '@builder.io/qwik-city';
 import { Nav } from '~/components/layout/nav';
 import { Footer } from '~/components/layout/footer';
 import { DocsNavigation } from '~/components/docs/navigation';
@@ -26,17 +28,15 @@ const CLIPS: Record<string, { file: string; home?: boolean }> = {
 };
 
 export default component$(() => {
-  const location = useLocation();
-  const language = useSignal(location.url.searchParams.get('lang') === 'fr' ? 'fr' : 'en');
+  const language = useLocale();
   const recording = useSignal<'tour' | 'current' | 'en' | 'fr'>('tour');
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
-    language.value = new URLSearchParams(window.location.search).get('lang') === 'fr' ? 'fr' : 'en';
     const followHash = () => {
       const hash = window.location.hash.slice(1);
       if (LEGACY_DEVELOPER_ANCHORS[hash]) {
-        window.location.replace(`/docs/developers/#${LEGACY_DEVELOPER_ANCHORS[hash]}`);
+        window.location.replace(localeHref(`/docs/developers/#${LEGACY_DEVELOPER_ANCHORS[hash]}`, language.value));
         return;
       }
       const target = document.getElementById(hash === 'start' ? 'orientation' : hash === 'outputs' ? 'persistence' : hash);
@@ -71,8 +71,8 @@ export default component$(() => {
           <p>{t('Start with a person. Shape their visual world, collect references, and keep the work you want to use. These walkthroughs show you where to begin.', 'Commencez par une personne. Façonnez son univers visuel, rassemblez des références et conservez le travail que vous souhaitez utiliser. Ces visites vous montrent par où commencer.')}</p>
         </div>
         <nav class="guide-language" aria-label={t('Guide language', 'Langue du guide')}>
-          <a href="/docs/?lang=en" lang="en" aria-current={!fr ? 'true' : undefined}>English</a>
-          <a href="/docs/?lang=fr" lang="fr" aria-current={fr ? 'true' : undefined}>Français</a>
+          <a href="/docs/?lang=en" lang="en" aria-current={!fr ? 'true' : undefined}>{t('English', 'English')}</a>
+          <a href="/docs/?lang=fr" lang="fr" aria-current={fr ? 'true' : undefined}>{t('Français', 'Français')}</a>
         </nav>
       </header>
 
@@ -109,10 +109,10 @@ export default component$(() => {
           <div class="guide-recordings" role="group" aria-label={t('Choose a recording', 'Choisir une vidéo')}>
             <button type="button" aria-pressed={isTour} onClick$={() => { recording.value = 'tour'; }}><span>{t('Baste in 74 seconds', 'Baste en 74 secondes')}</span><small>{TOUR_TIME}</small></button>
             <button type="button" aria-pressed={current} onClick$={() => { recording.value = 'current'; }}><span>{t('Current Studio', 'Studio actuel')}</span><small>{CURRENT_TIME}</small></button>
-            <button type="button" aria-pressed={recording.value === 'en'} onClick$={() => { recording.value = 'en'; }}><span>Narrated tour · English</span><small>1:53</small></button>
-            <button type="button" lang="fr" aria-pressed={recording.value === 'fr'} onClick$={() => { recording.value = 'fr'; }}><span>Visite commentée · Français</span><small>1:56</small></button>
+            <button type="button" aria-pressed={recording.value === 'en'} onClick$={() => { recording.value = 'en'; }}><span>{t('Narrated tour · English', 'Visite commentée · anglais')}</span><small>1:53</small></button>
+            <button type="button" lang="fr" aria-pressed={recording.value === 'fr'} onClick$={() => { recording.value = 'fr'; }}><span>{t('Visite commentée · Français', 'Visite commentée · Français')}</span><small>1:56</small></button>
           </div>
-          <a href="/gui/">{t('Open Studio', 'Ouvrir le Studio')} →</a>
+          <a href={localeHref("/gui/", language.value)}>{t('Open Studio', 'Ouvrir le Studio')} →</a>
         </div>
       </section>
 
@@ -120,7 +120,7 @@ export default component$(() => {
         <nav class="guide-outline" aria-label={t('Guide chapters', 'Chapitres du guide')}>
           <h2>{t('In the workroom', 'Dans l’atelier')}</h2>
           {chapters.map(chapter => <a key={chapter.id} href={`#${chapter.id}`}>{chapter.title}</a>)}
-          <a class="guide-developer-link" href="/docs/developers/">{t('Installation, CLI and API', 'Installation, CLI et API')} ↗</a>
+          <a class="guide-developer-link" href={localeHref("/docs/developers/", language.value)}>{t('Installation, CLI and API', 'Installation, CLI et API')} ↗</a>
         </nav>
         <div class="guide-chapters">
           <label class="guide-jump">{t('Jump to a chapter', 'Aller à un chapitre')}
@@ -137,7 +137,7 @@ export default component$(() => {
               <summary><h2>{chapter.title}</h2></summary>
               <div class="guide-chapter-body">
                 {chapter.paragraphs.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
-                {chapter.href && <a href={chapter.href}>{t('Open this view', 'Ouvrir cette vue')} →</a>}
+                {chapter.href && <a href={localeHref(chapter.href, language.value)}>{t('Open this view', 'Ouvrir cette vue')} →</a>}
                 {clip ? <figure>
                   <ChapterClip src={`/media/tour/clips/${clip.file}.mp4`} poster={`/media/tour/clips/${clip.file}.webp`} label={chapter.title} french={fr} />
                   <figcaption>{clip.home
@@ -153,7 +153,7 @@ export default component$(() => {
           <details class="guide-edition">
             <summary>{t('Keep the published edition', 'Conserver l’édition publiée')}</summary>
             <p>{t('The illustrated October 2 guide is available for offline reading. It includes the original screenshots and a developer appendix. Use the chapters above for the current navigation.', 'Le guide illustré du 2 octobre est disponible hors ligne. Il contient les captures d’origine et une annexe développeur. Consultez les chapitres ci-dessus pour la navigation actuelle.')}</p>
-            <div class="guide-downloads"><a href={`${MEDIA}/guide-en.pdf`} download>English PDF</a><a href={`${MEDIA}/guide-fr.pdf`} download>PDF français</a></div>
+            <div class="guide-downloads"><a href={`${MEDIA}/guide-en.pdf`} download>{t('English PDF', 'PDF anglais')}</a><a href={`${MEDIA}/guide-fr.pdf`} download>{t('PDF français', 'PDF français')}</a></div>
           </details>
         </div>
       </div>
