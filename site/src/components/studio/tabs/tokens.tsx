@@ -5,6 +5,7 @@ import { css } from "styled-system/css";
 import { StudioCtx, errMsg, toast } from "../context";
 import { act, btnSm, kicker, panel, panelTitle } from "../ui";
 import { CodeView } from "~/components/ui/code-view";
+import { MotionPanel } from "./motion-panel";
 import type { TokenFormat } from "~/lib/api-types";
 
 const FORMATS: Array<{ id: TokenFormat; label: string; ext: string }> = [
@@ -125,27 +126,7 @@ export const TokensTab = component$(() => {
               ))}
             </div>
           </section>
-          <section class={panel} aria-labelledby="tok-motion">
-            <span class={kicker}>{text(locale.value, "Hang")}</span>
-            <h2 id="tok-motion" class={panelTitle}>{text(locale.value, 'Motion')}</h2>
-            <p class={css({ fontSize: "13px", color: "ink-muted", mt: 1 })}>{text(locale.value, "Hover a row to feel the curve.")}</p>
-            <ul class={css({ listStyle: "none", display: "flex", flexDirection: "column", gap: 3, mt: 3 })}>
-              {Object.entries(t.motion.easing).map(([k, curve]) => (
-                <li key={k} class={css({ display: "flex", flexDirection: "column", gap: 1, "&:hover .bob": { transform: "translateX(calc(100cqw - 18px))" } })}>
-                  <span class={css({ display: "flex", justifyContent: "space-between", fontFamily: "mono", fontSize: "11.5px" })}>
-                    <span>{k}</span>
-                    <span class={css({ color: "ink-muted" })}>{curve}</span>
-                  </span>
-                  <span class={css({ position: "relative", h: "18px", rounded: "full", bg: "paper-deep", overflow: "hidden" })} style={{ containerType: "inline-size" }}>
-                    <span
-                      class={`bob ${css({ position: "absolute", left: 0, top: 0, w: "18px", h: "18px", rounded: "full", bg: "ink" })}`}
-                      style={{ transition: `transform ${t.motion.duration.slow} ${curve}` }}
-                    />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <MotionPanel t={t} />
         </aside>
       )}
     </div>

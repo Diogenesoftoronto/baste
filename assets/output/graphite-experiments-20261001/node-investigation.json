@@ -1,0 +1,1237 @@
+[
+  {
+    "query": "gradient",
+    "count": 25,
+    "results": [
+      {
+        "identifier": "graphene_core::vector::AssignColorsNode",
+        "displayName": "Assign Colors",
+        "category": "Vector: Style",
+        "description": "Uniquely sets the fill and/or stroke style of every vector element to individual colors sampled along a chosen gradient."
+      },
+      {
+        "identifier": "graphene_core::vector::ReadGradientNode",
+        "displayName": "Read Gradient",
+        "category": "Context",
+        "description": ""
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ColorsToGradientNode",
+        "displayName": "Colors to Gradient",
+        "category": "Gradient",
+        "description": "Constructs a gradient from a `Color[]`, where each color becomes a gradient stop. A `position` attribute on the colors places their stops along the ramp and a `midpoint` attribute skews each transition, while colors carrying neither are distributed evenly across the 0 to 1 range."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::FlattenGradientNode",
+        "displayName": "Flatten Gradient",
+        "category": "General",
+        "description": "Converts a `Graphic[]` into a `Gradient[]` by deeply flattening any gradient content it contains, and discarding any non-gradient content."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::GradientToColorsNode",
+        "displayName": "Gradient to Colors",
+        "category": "Gradient",
+        "description": "Unwraps a gradient into a `Color[]` of its stops, keeping any `position` and `midpoint` attributes that place them along the ramp. Attributes belonging to the gradient as a whole (like spread and interpolation), rather than its individual color stops, are not preserved."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientFormNode",
+        "displayName": "Read Attribute Gradient Form",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientForm` attribute from the input list, outputting each value as an element of a new `GradientForm[]`."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientHueDirectionNode",
+        "displayName": "Read Attribute Gradient Hue Direction",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientHueDirection` attribute from the input list, outputting each value as an element of a new `GradientHueDirection[]`."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientInterpolationNode",
+        "displayName": "Read Attribute Gradient Interpolation",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientInterpolation` attribute from the input list, outputting each value as an element of a new `GradientInterpolation[]`."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientSpaceNode",
+        "displayName": "Read Attribute Gradient Space",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientSpace` attribute from the input list, outputting each value as an element of a new `GradientSpace[]`."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientSpreadNode",
+        "displayName": "Read Attribute Gradient Spread",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientSpread` attribute from the input list, outputting each value as an element of a new `GradientSpread[]`."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientStopsNode",
+        "displayName": "Read Attribute Gradient Stops",
+        "category": "Attributes: Read",
+        "description": "Reads a named `Gradient` attribute from the input list, outputting each value as an element of a new `Gradient[]`."
+      },
+      {
+        "identifier": "math_nodes::EvaluateGradientNode",
+        "displayName": "Evaluate Gradient",
+        "category": "Color",
+        "description": "Evaluates the color at the specified position along the gradient, given a position from 0 (left) to 1 (right). Positions beyond that range follow the gradient's `gradient_spread` attribute: Pad (default), Reflect, Repeat, or Clear. Colors between stops interpolate in the gradient's `gradient_space` color space."
+      },
+      {
+        "identifier": "math_nodes::GradientCyclicNode",
+        "displayName": "Gradient Cyclic",
+        "category": "Gradient",
+        "description": "Sets whether each gradient in the input list treats its stops as a cycle, interpolating from the last stop back around to the first."
+      },
+      {
+        "identifier": "math_nodes::GradientFormNode",
+        "displayName": "Gradient Form",
+        "category": "Gradient",
+        "description": "Sets the form (linear or radial) of each gradient in the input list."
+      },
+      {
+        "identifier": "math_nodes::GradientHueDirectionNode",
+        "displayName": "Gradient Hue Direction",
+        "category": "Gradient",
+        "description": "Sets which way around the hue wheel each gradient in the input list interpolates, for polar color spaces."
+      },
+      {
+        "identifier": "math_nodes::GradientInterpolationNode",
+        "displayName": "Gradient Interpolation",
+        "category": "Gradient",
+        "description": "Sets the path each gradient in the input list interpolates along, deciding whether it jumps, turns corners, or flows smoothly through its stops."
+      },
+      {
+        "identifier": "math_nodes::GradientMidpointsNode",
+        "displayName": "Gradient Midpoints",
+        "category": "Gradient",
+        "description": "Skews how rapidly the color flows across each interval between color stops, bunching up the transition toward one end instead of progressing uniformly. Each value places the halfway color within its corresponding interval, measured as a fraction of the distance (0 to 1) between the adjacent stops. A 0.5 midpoint keeps a uniform transition rate through the interval.\n\nNon-cyclic gradients have no interval following the last stop, meaning the midpoint is ignored in that position.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each midpoint to its default of 0.5."
+      },
+      {
+        "identifier": "math_nodes::GradientPositionsNode",
+        "displayName": "Gradient Positions",
+        "category": "Gradient",
+        "description": "Sets the position of each of a gradient's stops, a factor from 0 to 1 along the gradient.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each stop to its default evenly spaced position."
+      },
+      {
+        "identifier": "math_nodes::GradientReverseNode",
+        "displayName": "Gradient Reverse",
+        "category": "Gradient",
+        "description": "Reverses the order of each gradient's stops, moving the color at the start of the ramp to the end and vice versa."
+      },
+      {
+        "identifier": "math_nodes::GradientShiftNode",
+        "displayName": "Gradient Shift",
+        "category": "Gradient",
+        "description": "Shifts every stop along each gradient's ramp, sliding the colors within the gradient without moving the gradient itself.\n\nThe fraction is measured against the whole ramp. A cyclic gradient spins, wrapping past the end back around to the start so 1 is a full turn that lands where it began. A gradient that isn't cyclic has no loop to spin around, so its stops slide off the end and keep going, leaving the visible ramp to blend between whichever colors still span it."
+      },
+      {
+        "identifier": "math_nodes::GradientSpaceNode",
+        "displayName": "Gradient Space",
+        "category": "Gradient",
+        "description": "Sets the color space in which each gradient in the input list interpolates between its stops."
+      },
+      {
+        "identifier": "math_nodes::GradientSpreadNode",
+        "displayName": "Gradient Spread",
+        "category": "Gradient",
+        "description": "Sets how each gradient in the input list extends past its endpoints: Pad, Reflect, Repeat, or Clear."
+      },
+      {
+        "identifier": "math_nodes::GradientStretchNode",
+        "displayName": "Gradient Stretch",
+        "category": "Gradient",
+        "description": "Stretches or squeezes the spacing of each gradient's stops around a pivot, spreading the colors within the gradient without moving the gradient itself.\n\nThe factor multiplies every stop's distance from the pivot, so 2 spreads the ramp over twice its span while 0.5 packs it into half. A negative factor mirrors the stops across the pivot, reversing the order of the colors.\n\nThe pivot is the one point that stays put, measured against the whole ramp from 0 at the start to 1 at the end."
+      },
+      {
+        "identifier": "math_nodes::GradientValueNode",
+        "displayName": "Gradient Value",
+        "category": "Value",
+        "description": "Constructs a gradient value which may be set to any sequence of color stops to represent the transition between colors."
+      },
+      {
+        "identifier": "raster_nodes::adjustments::GradientMapNode",
+        "displayName": "Gradient Map",
+        "category": "Raster: Adjustment",
+        "description": ""
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "warp",
+    "count": 1,
+    "results": [
+      {
+        "identifier": "core_types::vector::BoxWarpNode",
+        "displayName": "Box Warp",
+        "category": "Vector: Modifier",
+        "description": ""
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "repeat",
+    "count": 13,
+    "results": [
+      {
+        "identifier": "core_types::vector::ReadIndexNode",
+        "displayName": "Read Index",
+        "category": "Context",
+        "description": "Produces the index of the current iteration of a loop by reading from the evaluation context, which is supplied by downstream nodes such as *Repeat*.\n\nNested loops can enable 2D or higher-dimensional iteration by using the *Loop Level* parameter to read the index from outer levels of loops."
+      },
+      {
+        "identifier": "graphene_core::memo::MemoizeNode",
+        "displayName": "Memoize",
+        "category": "General",
+        "description": "Helps speed up repeated renders in a computationally-heavy part of the node graph.\n\nStores the last evaluated data that flowed through this node and immediately returns that data on subsequent renders if the context has not changed."
+      },
+      {
+        "identifier": "graphic_nodes::graphic::FilterNode",
+        "displayName": "Filter",
+        "category": "General",
+        "description": "Keeps chosen items from a list (those corresponding to `true` values) and discards the others (those corresponding to `false` values) based on the *Keep Pattern* bool list. A short pattern is repeated over the remainder of the filtered list, allowing a pattern like `[true, false]` to keep every other item starting from the first. An empty pattern keeps all items."
+      },
+      {
+        "identifier": "math_nodes::EvaluateGradientNode",
+        "displayName": "Evaluate Gradient",
+        "category": "Color",
+        "description": "Evaluates the color at the specified position along the gradient, given a position from 0 (left) to 1 (right). Positions beyond that range follow the gradient's `gradient_spread` attribute: Pad (default), Reflect, Repeat, or Clear. Colors between stops interpolate in the gradient's `gradient_space` color space."
+      },
+      {
+        "identifier": "math_nodes::GradientMidpointsNode",
+        "displayName": "Gradient Midpoints",
+        "category": "Gradient",
+        "description": "Skews how rapidly the color flows across each interval between color stops, bunching up the transition toward one end instead of progressing uniformly. Each value places the halfway color within its corresponding interval, measured as a fraction of the distance (0 to 1) between the adjacent stops. A 0.5 midpoint keeps a uniform transition rate through the interval.\n\nNon-cyclic gradients have no interval following the last stop, meaning the midpoint is ignored in that position.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each midpoint to its default of 0.5."
+      },
+      {
+        "identifier": "math_nodes::GradientPositionsNode",
+        "displayName": "Gradient Positions",
+        "category": "Gradient",
+        "description": "Sets the position of each of a gradient's stops, a factor from 0 to 1 along the gradient.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each stop to its default evenly spaced position."
+      },
+      {
+        "identifier": "math_nodes::GradientSpreadNode",
+        "displayName": "Gradient Spread",
+        "category": "Gradient",
+        "description": "Sets how each gradient in the input list extends past its endpoints: Pad, Reflect, Repeat, or Clear."
+      },
+      {
+        "identifier": "repeat_nodes::repeat_nodes::RepeatArrayNode",
+        "displayName": "Repeat Array",
+        "category": "Repeat",
+        "description": ""
+      },
+      {
+        "identifier": "repeat_nodes::repeat_nodes::RepeatNode",
+        "displayName": "Repeat",
+        "category": "Repeat",
+        "description": ""
+      },
+      {
+        "identifier": "repeat_nodes::repeat_nodes::RepeatOnPointsNode",
+        "displayName": "Repeat on Points",
+        "category": "Repeat",
+        "description": ""
+      },
+      {
+        "identifier": "repeat_nodes::repeat_nodes::RepeatRadialNode",
+        "displayName": "Repeat Radial",
+        "category": "Repeat",
+        "description": ""
+      },
+      {
+        "identifier": "text_nodes::StringPadNode",
+        "displayName": "String Pad",
+        "category": "Text",
+        "description": "Pads the string to a target length by filling with the given repeated substring. If the string already meets or exceeds the target length, it is returned unchanged."
+      },
+      {
+        "identifier": "text_nodes::StringRepeatNode",
+        "displayName": "String Repeat",
+        "category": "Text",
+        "description": "Repeats the string a given number of times, optionally with a separator between each repetition."
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "hue",
+    "count": 5,
+    "results": [
+      {
+        "identifier": "graphic_nodes::graphic::ReadAttributeGradientHueDirectionNode",
+        "displayName": "Read Attribute Gradient Hue Direction",
+        "category": "Attributes: Read",
+        "description": "Reads a named `GradientHueDirection` attribute from the input list, outputting each value as an element of a new `GradientHueDirection[]`."
+      },
+      {
+        "identifier": "math_nodes::GradientHueDirectionNode",
+        "displayName": "Gradient Hue Direction",
+        "category": "Gradient",
+        "description": "Sets which way around the hue wheel each gradient in the input list interpolates, for polar color spaces."
+      },
+      {
+        "identifier": "math_nodes::HslaToColorNode",
+        "displayName": "HSLA to Color",
+        "category": "Color",
+        "description": "Constructs a color value from hue, saturation, lightness, and alpha components given as numbers from 0 to 1."
+      },
+      {
+        "identifier": "math_nodes::HsvaToColorNode",
+        "displayName": "HSVA to Color",
+        "category": "Color",
+        "description": "Constructs a color value from hue, saturation, value, and alpha components given as numbers from 0 to 1."
+      },
+      {
+        "identifier": "raster_nodes::adjustments::HueSaturationNode",
+        "displayName": "Hue/Saturation",
+        "category": "Raster: Adjustment",
+        "description": ""
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "math",
+    "count": 81,
+    "results": [
+      {
+        "identifier": "math_nodes::AbsoluteValueNode",
+        "displayName": "Absolute Value",
+        "category": "Math: Numeric",
+        "description": "The absolute value function (`abs`) removes the negative sign from an input value, if present.\n\nWith a vec2 input, this applies separately to the X and Y components. For the overall length of a vec2, see the \"Magnitude\" node instead."
+      },
+      {
+        "identifier": "math_nodes::AddNode",
+        "displayName": "Add",
+        "category": "Math: Arithmetic",
+        "description": "The addition operation (`+`) calculates the sum of two scalar numbers or vec2s."
+      },
+      {
+        "identifier": "math_nodes::AllNode",
+        "displayName": "All",
+        "category": "Math: Logic",
+        "description": "Outputs true only if every value in the input list is true. An empty list gives true."
+      },
+      {
+        "identifier": "math_nodes::AngleBetweenNode",
+        "displayName": "Angle Between",
+        "category": "Math: Vec2",
+        "description": "Calculates the angle swept between two vec2s.\n\nThe angle ranges from -180° to 180° (or -π to π radians) and its sign gives the sweep direction from the \"Direction From\" input to the \"Direction To\" input: positive for clockwise, negative for counterclockwise, as drawn in the viewport and matching the direction convention of the Transform node's rotation."
+      },
+      {
+        "identifier": "math_nodes::AngleToNode",
+        "displayName": "Angle To",
+        "category": "Math: Vec2",
+        "description": "Calculates the angle needed for a rightward-facing object placed at the \"Position From\" point to turn so it points toward the \"Position To\" point."
+      },
+      {
+        "identifier": "math_nodes::AnyNode",
+        "displayName": "Any",
+        "category": "Math: Logic",
+        "description": "Outputs true if at least one value in the input list is true. An empty list gives false."
+      },
+      {
+        "identifier": "math_nodes::AsBoolNode",
+        "displayName": "As Bool",
+        "category": "Type Assertion",
+        "description": "Passes a true or false value through as the type bool, which may be the required type for certain node inputs."
+      },
+      {
+        "identifier": "math_nodes::AsNumberNode",
+        "displayName": "As Number",
+        "category": "Type Assertion",
+        "description": "Converts an integer or bool to the decimal number type, which may be the required type for certain node inputs. A bool becomes 0 (false) or 1 (true)."
+      },
+      {
+        "identifier": "math_nodes::AsU32Node",
+        "displayName": "As u32",
+        "category": "Type Assertion",
+        "description": "Converts a number to an integer of the type u32, which may be the required type for certain node inputs."
+      },
+      {
+        "identifier": "math_nodes::AsU64Node",
+        "displayName": "As u64",
+        "category": "Type Assertion",
+        "description": "Converts a number to an integer of the type u64, which may be the required type for certain node inputs."
+      },
+      {
+        "identifier": "math_nodes::AverageNode",
+        "displayName": "Average",
+        "category": "Math: Numeric",
+        "description": "Averages all the numbers in the input list. An empty list gives 0."
+      },
+      {
+        "identifier": "math_nodes::BoolValueNode",
+        "displayName": "Bool Value",
+        "category": "Value",
+        "description": "Constructs a bool value which may be set to true or false."
+      },
+      {
+        "identifier": "math_nodes::CeilingNode",
+        "displayName": "Ceiling",
+        "category": "Math: Numeric",
+        "description": "The ceiling function (`ceil`) rounds up an input value to the nearest whole number, unless the input number is already whole.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::ClampNode",
+        "displayName": "Clamp",
+        "category": "Math: Numeric",
+        "description": "The clamp function (`clamp`) restricts a number to a specified range between a minimum and maximum value. The minimum and maximum values are automatically swapped if they are reversed.\n\nWith vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::ColorValueNode",
+        "displayName": "Color Value",
+        "category": "Value",
+        "description": "Constructs a color value which may be set to any color."
+      },
+      {
+        "identifier": "math_nodes::CombineVec2Node",
+        "displayName": "Combine Vec2",
+        "category": "Math: Vec2",
+        "description": "Composes a vec2 from its X and Y components.\n\nThe inverse of this node is **Split Vec2**, which decomposes a vec2 back into its X and Y components."
+      },
+      {
+        "identifier": "math_nodes::CosineInverseNode",
+        "displayName": "Cosine Inverse",
+        "category": "Math: Trig",
+        "description": "The inverse cosine trigonometric function (`acos`) calculates the angle whose cosine is the input value."
+      },
+      {
+        "identifier": "math_nodes::CosineNode",
+        "displayName": "Cosine",
+        "category": "Math: Trig",
+        "description": "The cosine trigonometric function (`cos`) calculates the ratio of the angle's adjacent side length to its hypotenuse length.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::CrossProductNode",
+        "displayName": "Cross Product",
+        "category": "Math: Vec2",
+        "description": "The cross product operation (`×`) calculates the signed area of the parallelogram formed by a vec2 pair.\n\nThe sign gives the rotation direction from the first vec2 to the second: positive for clockwise, negative for counterclockwise, and 0 when both are parallel, as drawn in the viewport."
+      },
+      {
+        "identifier": "math_nodes::DistanceNode",
+        "displayName": "Distance",
+        "category": "Math: Vec2",
+        "description": "Measures the distance between two points, which is the length of the straight line segment connecting them."
+      },
+      {
+        "identifier": "math_nodes::DivideNode",
+        "displayName": "Divide",
+        "category": "Math: Arithmetic",
+        "description": "The division operation (`÷`) calculates the quotient of two scalar numbers or vec2s.\n\nProduces 0 for any division by 0. With vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::DotProductNode",
+        "displayName": "Dot Product",
+        "category": "Math: Vec2",
+        "description": "The dot product operation (`·`) calculates the degree of similarity of a vec2 pair based on their angles and lengths.\n\nCalculated as `‖a‖‖b‖cos(θ)`, it represents the product of their lengths (`‖a‖‖b‖`) scaled by the alignment of their directions (`cos(θ)`).\nThe output ranges from the positive to negative product of their lengths based on when they are pointing in the same or opposite directions.\nIf either vec2 has zero length, the output is 0."
+      },
+      {
+        "identifier": "math_nodes::EqualsNode",
+        "displayName": "Equals",
+        "category": "Math: Logic",
+        "description": "The equality operation (`==`, `XNOR`) compares two values and returns true if they are equal, or false if they are not."
+      },
+      {
+        "identifier": "math_nodes::EvaluateGradientNode",
+        "displayName": "Evaluate Gradient",
+        "category": "Color",
+        "description": "Evaluates the color at the specified position along the gradient, given a position from 0 (left) to 1 (right). Positions beyond that range follow the gradient's `gradient_spread` attribute: Pad (default), Reflect, Repeat, or Clear. Colors between stops interpolate in the gradient's `gradient_space` color space."
+      },
+      {
+        "identifier": "math_nodes::ExponentNode",
+        "displayName": "Exponent",
+        "category": "Math: Arithmetic",
+        "description": "The exponent operation (`^`) calculates the result of raising a number to a power.\n\nWith vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::FloorNode",
+        "displayName": "Floor",
+        "category": "Math: Numeric",
+        "description": "The floor function (`floor`) rounds down an input value to the nearest whole number, unless the input number is already whole.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::FootprintValueNode",
+        "displayName": "Footprint Value",
+        "category": "Value",
+        "description": "Constructs a footprint value which may be set to any transformation of a unit square describing a render area, and a render resolution at least 1x1 integer pixels."
+      },
+      {
+        "identifier": "math_nodes::GradientCyclicNode",
+        "displayName": "Gradient Cyclic",
+        "category": "Gradient",
+        "description": "Sets whether each gradient in the input list treats its stops as a cycle, interpolating from the last stop back around to the first."
+      },
+      {
+        "identifier": "math_nodes::GradientFormNode",
+        "displayName": "Gradient Form",
+        "category": "Gradient",
+        "description": "Sets the form (linear or radial) of each gradient in the input list."
+      },
+      {
+        "identifier": "math_nodes::GradientHueDirectionNode",
+        "displayName": "Gradient Hue Direction",
+        "category": "Gradient",
+        "description": "Sets which way around the hue wheel each gradient in the input list interpolates, for polar color spaces."
+      },
+      {
+        "identifier": "math_nodes::GradientInterpolationNode",
+        "displayName": "Gradient Interpolation",
+        "category": "Gradient",
+        "description": "Sets the path each gradient in the input list interpolates along, deciding whether it jumps, turns corners, or flows smoothly through its stops."
+      },
+      {
+        "identifier": "math_nodes::GradientMidpointsNode",
+        "displayName": "Gradient Midpoints",
+        "category": "Gradient",
+        "description": "Skews how rapidly the color flows across each interval between color stops, bunching up the transition toward one end instead of progressing uniformly. Each value places the halfway color within its corresponding interval, measured as a fraction of the distance (0 to 1) between the adjacent stops. A 0.5 midpoint keeps a uniform transition rate through the interval.\n\nNon-cyclic gradients have no interval following the last stop, meaning the midpoint is ignored in that position.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each midpoint to its default of 0.5."
+      },
+      {
+        "identifier": "math_nodes::GradientPositionsNode",
+        "displayName": "Gradient Positions",
+        "category": "Gradient",
+        "description": "Sets the position of each of a gradient's stops, a factor from 0 to 1 along the gradient.\n\nA list shorter than the stop count repeats its last value, a longer list is truncated, and an empty list sets each stop to its default evenly spaced position."
+      },
+      {
+        "identifier": "math_nodes::GradientReverseNode",
+        "displayName": "Gradient Reverse",
+        "category": "Gradient",
+        "description": "Reverses the order of each gradient's stops, moving the color at the start of the ramp to the end and vice versa."
+      },
+      {
+        "identifier": "math_nodes::GradientShiftNode",
+        "displayName": "Gradient Shift",
+        "category": "Gradient",
+        "description": "Shifts every stop along each gradient's ramp, sliding the colors within the gradient without moving the gradient itself.\n\nThe fraction is measured against the whole ramp. A cyclic gradient spins, wrapping past the end back around to the start so 1 is a full turn that lands where it began. A gradient that isn't cyclic has no loop to spin around, so its stops slide off the end and keep going, leaving the visible ramp to blend between whichever colors still span it."
+      },
+      {
+        "identifier": "math_nodes::GradientSpaceNode",
+        "displayName": "Gradient Space",
+        "category": "Gradient",
+        "description": "Sets the color space in which each gradient in the input list interpolates between its stops."
+      },
+      {
+        "identifier": "math_nodes::GradientSpreadNode",
+        "displayName": "Gradient Spread",
+        "category": "Gradient",
+        "description": "Sets how each gradient in the input list extends past its endpoints: Pad, Reflect, Repeat, or Clear."
+      },
+      {
+        "identifier": "math_nodes::GradientStretchNode",
+        "displayName": "Gradient Stretch",
+        "category": "Gradient",
+        "description": "Stretches or squeezes the spacing of each gradient's stops around a pivot, spreading the colors within the gradient without moving the gradient itself.\n\nThe factor multiplies every stop's distance from the pivot, so 2 spreads the ramp over twice its span while 0.5 packs it into half. A negative factor mirrors the stops across the pivot, reversing the order of the colors.\n\nThe pivot is the one point that stays put, measured against the whole ramp from 0 at the start to 1 at the end."
+      },
+      {
+        "identifier": "math_nodes::GradientValueNode",
+        "displayName": "Gradient Value",
+        "category": "Value",
+        "description": "Constructs a gradient value which may be set to any sequence of color stops to represent the transition between colors."
+      },
+      {
+        "identifier": "math_nodes::GreaterThanNode",
+        "displayName": "Greater Than",
+        "category": "Math: Logic",
+        "description": "The greater-than operation (`>`) compares two values and returns true if the first value is greater than the second, or false if it is not.\nIf enabled with *Or Equal*, the greater-than-or-equal operation (`>=`) is used instead."
+      },
+      {
+        "identifier": "math_nodes::GreatestCommonDivisorNode",
+        "displayName": "Greatest Common Divisor",
+        "category": "Math: Numeric",
+        "description": "The greatest common divisor (GCD) calculates the largest positive integer that divides both of the two input numbers without leaving a remainder."
+      },
+      {
+        "identifier": "math_nodes::HslaToColorNode",
+        "displayName": "HSLA to Color",
+        "category": "Color",
+        "description": "Constructs a color value from hue, saturation, lightness, and alpha components given as numbers from 0 to 1."
+      },
+      {
+        "identifier": "math_nodes::HsvaToColorNode",
+        "displayName": "HSVA to Color",
+        "category": "Color",
+        "description": "Constructs a color value from hue, saturation, value, and alpha components given as numbers from 0 to 1."
+      },
+      {
+        "identifier": "math_nodes::IsNonzeroNode",
+        "displayName": "Is Nonzero",
+        "category": "Math: Logic",
+        "description": "Outputs true if the value is anything other than zero. A vector counts as zero only when every component is zero."
+      },
+      {
+        "identifier": "math_nodes::LeastCommonMultipleNode",
+        "displayName": "Least Common Multiple",
+        "category": "Math: Numeric",
+        "description": "The least common multiple (LCM) calculates the smallest positive integer that is a multiple of both of the two input numbers."
+      },
+      {
+        "identifier": "math_nodes::LerpNode",
+        "displayName": "Lerp",
+        "category": "Math: Numeric",
+        "description": "Linearly interpolates between the start and end values, where a factor of 0 gives the start value, 1 gives the end value, and 0.5 gives their midpoint.\n\nWith vec2 inputs, this traces the straight line path between the two points."
+      },
+      {
+        "identifier": "math_nodes::LessThanNode",
+        "displayName": "Less Than",
+        "category": "Math: Logic",
+        "description": "The less-than operation (`<`) compares two values and returns true if the first value is less than the second, or false if it is not.\nIf enabled with *Or Equal*, the less-than-or-equal operation (`<=`) is used instead."
+      },
+      {
+        "identifier": "math_nodes::LogarithmNode",
+        "displayName": "Logarithm",
+        "category": "Math: Arithmetic",
+        "description": "The logarithmic function (`log`) calculates the logarithm of a number with a specified base. If the natural logarithm function (`ln`) is desired, set the base to \"e\".\n\nWith vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::LogicalAndNode",
+        "displayName": "Logical And",
+        "category": "Math: Logic",
+        "description": "The logical AND operation (`&&`) returns true if both of the two inputs are true, or false if any are false."
+      },
+      {
+        "identifier": "math_nodes::LogicalNotNode",
+        "displayName": "Logical Not",
+        "category": "Math: Logic",
+        "description": "The logical NOT operation (`!`) reverses true and false value of the input."
+      },
+      {
+        "identifier": "math_nodes::LogicalOrNode",
+        "displayName": "Logical Or",
+        "category": "Math: Logic",
+        "description": "The logical OR operation (`||`) returns true if either of the two inputs are true, or false if both are false."
+      },
+      {
+        "identifier": "math_nodes::MagnitudeNode",
+        "displayName": "Magnitude",
+        "category": "Math: Vec2",
+        "description": "The magnitude operator (`‖x‖`) calculates the length of a vec2, which is the distance from the base to the tip of the arrow it represents."
+      },
+      {
+        "identifier": "math_nodes::MathFNode",
+        "displayName": "Math f(…)",
+        "category": "Math: Arithmetic",
+        "description": "Evaluates a math expression across all of the input items at once. A full expression reads the items as `a`, `b`, `c`, …, while a math operator or N-argument function name (like `*` or `min`) applies across every item.\n\nBoolean items read as 0 or 1, and a boolean output requires the expression to produce exactly 0 or 1, since any other number is not a truth value."
+      },
+      {
+        "identifier": "math_nodes::MathFxNode",
+        "displayName": "Math f(x)",
+        "category": "Math: Arithmetic",
+        "description": "Evaluates a math expression written in terms of the single variable `x`, which carries the input value.\n\nA boolean input reads as 0 or 1, and a boolean output requires the expression to produce exactly 0 or 1, since any other number is not a truth value."
+      },
+      {
+        "identifier": "math_nodes::MathNode",
+        "displayName": "Math",
+        "category": "Math: Arithmetic",
+        "description": "Calculates a mathematical expression with input values \"A\" and \"B\"."
+      },
+      {
+        "identifier": "math_nodes::MaxNode",
+        "displayName": "Max",
+        "category": "Math: Numeric",
+        "description": "The maximum function (`max`) picks the larger of two numbers.\n\nWith vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::MaximumNode",
+        "displayName": "Maximum",
+        "category": "Math: Numeric",
+        "description": "Gives the largest number in the input list. An empty list gives 0."
+      },
+      {
+        "identifier": "math_nodes::MinNode",
+        "displayName": "Min",
+        "category": "Math: Numeric",
+        "description": "The minimum function (`min`) picks the smaller of two numbers.\n\nWith vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::MinimumNode",
+        "displayName": "Minimum",
+        "category": "Math: Numeric",
+        "description": "Gives the smallest number in the input list. An empty list gives 0."
+      },
+      {
+        "identifier": "math_nodes::ModuloNode",
+        "displayName": "Modulo",
+        "category": "Math: Arithmetic",
+        "description": "The modulo operation (`%`) calculates the remainder from the division of two scalar numbers or vec2s.\n\nThe sign of the result shares the sign of the numerator unless *Always Positive* is enabled."
+      },
+      {
+        "identifier": "math_nodes::MultiplyNode",
+        "displayName": "Multiply",
+        "category": "Math: Arithmetic",
+        "description": "The multiplication operation (`×`) calculates the product of two scalar numbers, vec2s, or transforms."
+      },
+      {
+        "identifier": "math_nodes::NormalizeNode",
+        "displayName": "Normalize",
+        "category": "Math: Vec2",
+        "description": "Scales the input vec2 to unit length while preserving its direction. This is equivalent to dividing the input vec2 by its own magnitude.\n\nReturns 0 when the input vec2 has zero length."
+      },
+      {
+        "identifier": "math_nodes::NotEqualsNode",
+        "displayName": "Not Equals",
+        "category": "Math: Logic",
+        "description": "The inequality operation (`!=`, `XOR`) compares two values and returns true if they are not equal, or false if they are."
+      },
+      {
+        "identifier": "math_nodes::NumberValueNode",
+        "displayName": "Number Value",
+        "category": "Value",
+        "description": "Constructs a number value which may be set to any real number."
+      },
+      {
+        "identifier": "math_nodes::PercentageValueNode",
+        "displayName": "Percentage Value",
+        "category": "Value",
+        "description": "Constructs a number value which may be set to any value from 0% to 100% by dragging the slider."
+      },
+      {
+        "identifier": "math_nodes::RandomNode",
+        "displayName": "Random",
+        "category": "Math: Numeric",
+        "description": "The random function (`rand`) converts a seed into a random number within the specified range, inclusive of the minimum and exclusive of the maximum. The minimum and maximum values are automatically swapped if they are reversed."
+      },
+      {
+        "identifier": "math_nodes::ReciprocalNode",
+        "displayName": "Reciprocal",
+        "category": "Math: Arithmetic",
+        "description": "The reciprocal operation (`1/x`) calculates the multiplicative inverse of a number.\n\nProduces 0 if the input is 0. With a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::RemapNode",
+        "displayName": "Remap",
+        "category": "Math: Numeric",
+        "description": "Linearly maps an input value from one range to another. The ranges may be reversed.\n\nFor example, 0.5 in the input range `[0, 1]` would map to 0 in the output range `[-180, 180]`."
+      },
+      {
+        "identifier": "math_nodes::RgbaToColorNode",
+        "displayName": "RGBA to Color",
+        "category": "Color",
+        "description": "Constructs a color value from red, green, blue, and alpha components given as numbers from 0 to 1."
+      },
+      {
+        "identifier": "math_nodes::RootNode",
+        "displayName": "Root",
+        "category": "Math: Arithmetic",
+        "description": "The `n`th root operation (`√`) calculates the inverse of exponentiation. Square root inverts squaring, cube root inverts cubing, and so on.\n\nThis is equivalent to raising the number to the power of `1/n`. With vec2 inputs, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::RoundNode",
+        "displayName": "Round",
+        "category": "Math: Numeric",
+        "description": "The rounding function (`round`) maps an input value to its nearest whole number. Halfway values are rounded away from zero.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::SignNode",
+        "displayName": "Sign",
+        "category": "Math: Numeric",
+        "description": "The sign function (`sign`) reports whether an input value is positive (1), negative (-1), or zero (0).\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::SineInverseNode",
+        "displayName": "Sine Inverse",
+        "category": "Math: Trig",
+        "description": "The inverse sine trigonometric function (`asin`) calculates the angle whose sine is the input value."
+      },
+      {
+        "identifier": "math_nodes::SineNode",
+        "displayName": "Sine",
+        "category": "Math: Trig",
+        "description": "The sine trigonometric function (`sin`) calculates the ratio of the angle's opposite side length to its hypotenuse length.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::StringToColorNode",
+        "displayName": "String to Color",
+        "category": "Color",
+        "description": "Constructs a color value from a CSS color string. Accepts hex (`#RRGGBB`, `#RRGGBBAA`, plus bare and shorthand variants), CSS named colors (like `red`), and functional notations (`rgb(...)`, `hsl(...)`, etc.). Invalid inputs produce a transparent color."
+      },
+      {
+        "identifier": "math_nodes::SubtractNode",
+        "displayName": "Subtract",
+        "category": "Math: Arithmetic",
+        "description": "The subtraction operation (`-`) calculates the difference between two scalar numbers or vec2s."
+      },
+      {
+        "identifier": "math_nodes::SumNode",
+        "displayName": "Sum",
+        "category": "Math: Numeric",
+        "description": "Adds together all the numbers in the input list, producing their total."
+      },
+      {
+        "identifier": "math_nodes::SwitchNode",
+        "displayName": "Switch",
+        "category": "Math: Logic",
+        "description": "Evaluates either the \"If True\" or \"If False\" input branch based on whether the input condition is true or false."
+      },
+      {
+        "identifier": "math_nodes::TangentInverseNode",
+        "displayName": "Tangent Inverse",
+        "category": "Math: Trig",
+        "description": "The inverse tangent trigonometric function (`atan` or `atan2`, depending on input type) calculates:\n`atan`: the angle whose tangent is the input scalar number.\n`atan2`: the angle of a ray from the origin to the input vec2.\n\nThe resulting angle is always in the range `[-90°, 90°]` or, in radians, `[-π/2, π/2]`."
+      },
+      {
+        "identifier": "math_nodes::TangentNode",
+        "displayName": "Tangent",
+        "category": "Math: Trig",
+        "description": "The tangent trigonometric function (`tan`) calculates the ratio of the angle's opposite side length to its adjacent side length.\n\nWith a vec2 input, this applies separately to the X and Y components."
+      },
+      {
+        "identifier": "math_nodes::Vec2ValueNode",
+        "displayName": "Vec2 Value",
+        "category": "Value",
+        "description": "Constructs a vec2 value, a two-dimensional quantity which may be set to any XY pair."
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "animation",
+    "count": 5,
+    "results": [
+      {
+        "identifier": "graphene_core::animation::AnimationTimeNode",
+        "displayName": "Animation Time",
+        "category": "Animation",
+        "description": "Produces the time, in seconds on the timeline, since the beginning of animation playback."
+      },
+      {
+        "identifier": "graphene_core::animation::PointerPositionNode",
+        "displayName": "Pointer Position",
+        "category": "Animation",
+        "description": "Produces the current position of the user's pointer within the document canvas."
+      },
+      {
+        "identifier": "graphene_core::animation::QuantizeAnimationTimeNode",
+        "displayName": "Quantize Animation Time",
+        "category": "Debug",
+        "description": ""
+      },
+      {
+        "identifier": "graphene_core::animation::QuantizeRealTimeNode",
+        "displayName": "Quantize Real Time",
+        "category": "Debug",
+        "description": ""
+      },
+      {
+        "identifier": "graphene_core::animation::RealTimeNode",
+        "displayName": "Real Time",
+        "category": "Animation",
+        "description": "Produces a chosen representation of the current real time and date (in UTC) based on the system clock."
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "query": "spline",
+    "count": 2,
+    "results": [
+      {
+        "identifier": "core_types::vector::SplineNode",
+        "displayName": "Spline",
+        "category": "Vector: Modifier",
+        "description": ""
+      },
+      {
+        "identifier": "raster_nodes::adjustments::PointsToTransferCurveNode",
+        "displayName": "Points to Transfer Curve",
+        "category": "Raster: Adjustment",
+        "description": "Builds a transfer curve from a `Vec2[]` of control points, each mapping the input value at its x to the output value at its y. A smooth spline runs through them, holding the outermost points' values beyond them."
+      }
+    ],
+    "hint": "Pass an identifier to graphite_describe_node for input types, defaults, and ranges."
+  },
+  {
+    "category": "Math: Arithmetic",
+    "description": "Calculates a mathematical expression with input values \"A\" and \"B\".\n",
+    "displayName": "Math",
+    "fields": [
+      {
+        "description": "The value of \"A\" when calculating the expression.\n",
+        "name": "Operand A",
+        "type": "f64[]"
+      },
+      {
+        "default": "A + B",
+        "description": "A math expression that may incorporate \"A\" and/or \"B\", such as `sqrt(A + B) - B^2`.\n",
+        "name": "Expression",
+        "type": "String"
+      },
+      {
+        "default": "1.",
+        "description": "The value of \"B\" when calculating the expression.\n",
+        "name": "Operand B",
+        "type": "f64"
+      }
+    ],
+    "identifier": "math_nodes::MathNode"
+  },
+  {
+    "category": "Repeat",
+    "description": "",
+    "displayName": "Repeat Radial",
+    "fields": [
+      {
+        "description": "",
+        "name": "Content"
+      },
+      {
+        "description": "",
+        "name": "Start Angle",
+        "type": "f64"
+      },
+      {
+        "default": "5",
+        "description": "",
+        "name": "Radius",
+        "type": "f64",
+        "unit": " px"
+      },
+      {
+        "default": "5",
+        "description": "",
+        "name": "Count",
+        "type": "u32"
+      }
+    ],
+    "identifier": "repeat_nodes::repeat_nodes::RepeatRadialNode"
+  },
+  {
+    "category": "Repeat",
+    "description": "",
+    "displayName": "Repeat Array",
+    "fields": [
+      {
+        "description": "",
+        "name": "Content"
+      },
+      {
+        "default": "100., 100.",
+        "description": "",
+        "name": "Direction",
+        "type": "Vec2"
+      },
+      {
+        "description": "",
+        "name": "Angle",
+        "type": "f64"
+      },
+      {
+        "default": "5",
+        "description": "",
+        "name": "Count",
+        "type": "u32"
+      }
+    ],
+    "identifier": "repeat_nodes::repeat_nodes::RepeatArrayNode"
+  },
+  {
+    "category": "Animation",
+    "description": "Produces the time, in seconds on the timeline, since the beginning of animation playback.\n",
+    "displayName": "Animation Time",
+    "fields": [
+      {
+        "description": "",
+        "hidden": true,
+        "name": "Primary"
+      },
+      {
+        "default": "1",
+        "description": "",
+        "name": "Rate",
+        "type": "f64",
+        "unit": "/sec"
+      }
+    ],
+    "identifier": "graphene_core::animation::AnimationTimeNode"
+  },
+  {
+    "category": "Raster: Adjustment",
+    "description": "",
+    "displayName": "Hue/Saturation",
+    "fields": [
+      {
+        "description": "",
+        "name": "Input",
+        "type": "Raster[]"
+      },
+      {
+        "description": "",
+        "name": "Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "Lightness",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "Colorize",
+        "type": "bool"
+      },
+      {
+        "default": "24.",
+        "description": "",
+        "name": "(Colorize) Hue",
+        "type": "f32"
+      },
+      {
+        "default": "25.",
+        "description": "",
+        "name": "(Colorize) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Colorize) Lightness",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Reds) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Reds) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Reds) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "315.",
+        "description": "",
+        "name": "(Reds) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "345.",
+        "description": "",
+        "name": "(Reds) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "15.",
+        "description": "",
+        "name": "(Reds) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "45.",
+        "description": "",
+        "name": "(Reds) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Yellows) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Yellows) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Yellows) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "15.",
+        "description": "",
+        "name": "(Yellows) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "45.",
+        "description": "",
+        "name": "(Yellows) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "75.",
+        "description": "",
+        "name": "(Yellows) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "105.",
+        "description": "",
+        "name": "(Yellows) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Greens) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Greens) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Greens) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "75.",
+        "description": "",
+        "name": "(Greens) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "105.",
+        "description": "",
+        "name": "(Greens) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "135.",
+        "description": "",
+        "name": "(Greens) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "165.",
+        "description": "",
+        "name": "(Greens) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Cyans) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Cyans) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Cyans) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "135.",
+        "description": "",
+        "name": "(Cyans) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "165.",
+        "description": "",
+        "name": "(Cyans) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "195.",
+        "description": "",
+        "name": "(Cyans) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "225.",
+        "description": "",
+        "name": "(Cyans) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Blues) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Blues) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Blues) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "195.",
+        "description": "",
+        "name": "(Blues) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "225.",
+        "description": "",
+        "name": "(Blues) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "255.",
+        "description": "",
+        "name": "(Blues) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "285.",
+        "description": "",
+        "name": "(Blues) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Magentas) Hue",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Magentas) Saturation",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "name": "(Magentas) Lightness",
+        "type": "f32"
+      },
+      {
+        "default": "255.",
+        "description": "",
+        "name": "(Magentas) Falloff Start",
+        "type": "f32"
+      },
+      {
+        "default": "285.",
+        "description": "",
+        "name": "(Magentas) Range Start",
+        "type": "f32"
+      },
+      {
+        "default": "315.",
+        "description": "",
+        "name": "(Magentas) Range End",
+        "type": "f32"
+      },
+      {
+        "default": "345.",
+        "description": "",
+        "name": "(Magentas) Falloff End",
+        "type": "f32"
+      },
+      {
+        "description": "",
+        "hidden": true,
+        "name": "Range",
+        "type": "HueSaturationRange"
+      }
+    ],
+    "identifier": "raster_nodes::adjustments::HueSaturationNode"
+  }
+]

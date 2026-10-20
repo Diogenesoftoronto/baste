@@ -1,0 +1,31 @@
+{
+  "node": "graphene_core::animation::PointerPositionNode",
+  "boundary": "Headless compilation/render only. Pointer defaults to origin; native editor interaction not exercised.",
+  "rendered": {
+    "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-pointer-headless-proof.png",
+    "format": "png",
+    "byteSize": 119207,
+    "sha256": "83d32f4eea626ee7f5bc755de4904b907a1297f4b75a29b56c88878be37260e3",
+    "width": 640,
+    "height": 400,
+    "validation": {
+      "valid": true,
+      "format": "png",
+      "byteSize": 119207,
+      "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-pointer-headless-proof.png",
+      "width": 640,
+      "height": 400
+    },
+    "quarantine": {
+      "exitCode": 0,
+      "signal": null,
+      "quarantinedAfterWrite": false,
+      "stderrTail": ""
+    },
+    "renderMs": 281,
+    "exitCode": 0,
+    "signal": null,
+    "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-92dc3e10-4738-4ca0-9402-caa6af07d8f9.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-pointer-headless-proof.png --width 640 --height 400",
+    "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-92dc3e10-4738-4ca0-9402-caa6af07d8f9.graphite"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-2560x1600-20261001.png",
+  "format": "png",
+  "byteSize": 1944398,
+  "sha256": "6e56104d49adb6c725200018201745b3443616bf5d7ba806d741aed279833937",
+  "width": 2560,
+  "height": 1600,
+  "validation": {
+    "valid": true,
+    "format": "png",
+    "byteSize": 1944398,
+    "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-2560x1600-20261001.png",
+    "width": 2560,
+    "height": 1600
+  },
+  "quarantine": {
+    "exitCode": 0,
+    "signal": null,
+    "quarantinedAfterWrite": false,
+    "stderrTail": ""
+  },
+  "renderMs": 488,
+  "exitCode": 0,
+  "signal": null,
+  "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1efcb268-4da3-4e9b-9e44-3b4ef8e93c8e.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-2560x1600-20261001.png --width 2560 --height 1600",
+  "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1efcb268-4da3-4e9b-9e44-3b4ef8e93c8e.graphite"
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "width": 2048,
+  "height": 1152,
+  "loopSeconds": 4,
+  "camera": "locked",
+  "depth": "parallax",
+  "focus": "both",
+  "easing": "cubic-bezier(0.2, 0, 0, 1)",
+  "bleed": 0.5,
+  "layers": [
+    {
+      "name": "background",
+      "file": "nightmarketcoder-hero-1792353231175-bg.png",
+      "travel": 0,
+      "scale": 0.02
+    },
+    {
+      "name": "subject",
+      "file": "nightmarketcoder-hero-1792353231175-fg.png",
+      "travel": 0,
+      "scale": 0.02
+    }
+  ]
+}

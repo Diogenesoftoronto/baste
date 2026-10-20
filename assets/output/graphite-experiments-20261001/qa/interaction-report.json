@@ -1,0 +1,75 @@
+[
+  {
+    "check": "Initial technique matches displayed material",
+    "pass": true
+  },
+  {
+    "check": "Paused material holds its frame",
+    "pass": true
+  },
+  {
+    "check": "Six shader techniques produce distinct frames",
+    "pass": true,
+    "hashes": {
+      "flow": "3d63a8ca3966903d9229fd40c415a7ee68ba6bfc5c2a3d6689180aed5d0ad7d3",
+      "cloth": "f3f2ca52ad36b6992381acc9825cbb6d9e52e883ca351107e059881686f50d56",
+      "moire": "da1826269a581d36da1b54ef6d7dd8bd9646b612a17914be3d527c0dce295434",
+      "contour": "be4ca09c06767084d2a0c66144fcc142381bc7589c6471aabe681281acb422e2",
+      "marble": "ab78e9b43947c2ae7a64778a66a88090a483b02bced19be1f3a954312264aecf",
+      "radial": "0da95d2737a775490af432fa35c2d8d2f53a0c9ddbd48cd84c7fcc9c6a2dd413"
+    }
+  },
+  {
+    "check": "Seeds vary the field and reproduce it exactly while still",
+    "pass": true
+  },
+  {
+    "check": "Palette and hue interpolation visibly change colour",
+    "pass": true
+  },
+  {
+    "check": "Motion and cycling advance visible material",
+    "pass": true
+  },
+  {
+    "check": "Pointer bends the field while ambient motion is paused",
+    "pass": true
+  },
+  {
+    "check": "Tap produces an evolving ripple",
+    "pass": true
+  },
+  {
+    "check": "PNG export downloads successfully",
+    "pass": true,
+    "file": "baste-flow-123.png"
+  },
+  {
+    "check": "Recipe export/import restores material",
+    "pass": true
+  },
+  {
+    "check": "Settings survive reload and malformed import leaves settings intact",
+    "pass": true
+  },
+  {
+    "check": "Apply and restore background persist correctly",
+    "pass": true
+  },
+  {
+    "check": "Reduced motion freezes animation and disables movement controls",
+    "pass": true
+  },
+  {
+    "check": "No-WebGL fallback and mobile have no overflow",
+    "pass": true
+  },
+  {
+    "check": "Context loss explains recovery and disables image export",
+    "pass": true
+  },
+  {
+    "check": "No browser or shader errors",
+    "pass": true
+  }
+]

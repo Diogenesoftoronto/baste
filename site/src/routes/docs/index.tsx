@@ -58,7 +58,7 @@ export default component$(() => {
   const videoLang = isTour || current ? language.value : recording.value;
   const video = isTour ? tour.src : current ? `${MEDIA}/current/${currentRecording.file}` : `${MEDIA}/walkthrough-${videoLang}.mp4`;
   const captions = isTour ? tour.captions[videoLang === 'fr' ? 'fr' : 'en'] : current ? `${MEDIA}/current/current-${videoLang}.vtt` : `${MEDIA}/captions-${videoLang}.vtt`;
-  const poster = isTour ? tour.poster : current ? `${MEDIA}/current/fitting.png` : `${MEDIA}/poster-${videoLang}.webp`;
+  const poster = isTour ? tour.poster : current ? `${MEDIA}/current/fitting.png` : `${MEDIA}/poster-${videoLang}.avif`;
   const transcript = videoLang === 'fr' ? transcriptFr : transcriptEn;
 
   return <>
@@ -132,14 +132,14 @@ export default component$(() => {
           {chapters.map(chapter => {
             const clip = CLIPS[chapter.id];
             const screen = CURRENT_SCREENS[chapter.id];
-            const src = screen ? `${MEDIA}/current/${screen}.png` : chapter.screen && chapter.screen !== 'docs' ? `${MEDIA}/${language.value}/${chapter.screen}.webp` : undefined;
+            const src = screen ? `${MEDIA}/current/${screen}.png` : chapter.screen && chapter.screen !== 'docs' ? `${MEDIA}/${language.value}/${chapter.screen}.avif` : undefined;
             return <details key={chapter.id} id={chapter.id} class="guide-chapter" open={chapter.id === 'orientation'}>
               <summary><h2>{chapter.title}</h2></summary>
               <div class="guide-chapter-body">
                 {chapter.paragraphs.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
                 {chapter.href && <a href={localeHref(chapter.href, language.value)}>{t('Open this view', 'Ouvrir cette vue')} →</a>}
                 {clip ? <figure>
-                  <ChapterClip src={`/media/tour/clips/${clip.file}.mp4`} poster={`/media/tour/clips/${clip.file}.webp`} label={chapter.title} french={fr} />
+                  <ChapterClip src={`/media/tour/clips/${clip.file}.mp4`} poster={`/media/tour/clips/${clip.file}.avif`} label={chapter.title} french={fr} />
                   <figcaption>{clip.home
                     ? t('Recorded on the home page · October 10, 2026', 'Enregistré sur la page d’accueil · 10 octobre 2026')
                     : t('Recorded in the Studio · October 10, 2026', 'Enregistré dans le Studio · 10 octobre 2026')}</figcaption>

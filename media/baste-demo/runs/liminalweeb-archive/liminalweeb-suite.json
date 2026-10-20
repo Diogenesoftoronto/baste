@@ -1,0 +1,507 @@
+{
+  "persona": {
+    "id": "liminalweeb",
+    "name": "The Liminal Weeb"
+  },
+  "assets": {
+    "svgs": [],
+    "images": [
+      {
+        "id": "liminalweeb-hero-1791637918556",
+        "purpose": "hero",
+        "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637918556.jpg",
+        "service": "fal",
+        "model": "fal-ai/bytedance/seedream/v4/text-to-image",
+        "prompt": "Stunning hero image: Hero image for an archive of lost media: an empty mall food court after closing, CRT glow, pastel fluorescent light\n\nVariation:\n- cool teal and slate color temperature\n- balanced visual density\n- cinematic, lightly stylised rendering\n\nStyle: film grain and analog texture, vintage mid-century influences\n\nChanneling The Liminal Weeb's aesthetic universe:\n- Visual influences: the atmosphere of abandoned malls\n- Emotional tone: nostalgia\n- Core visual elements: Serial Experiments Lain, liminal spaces, vaporwave, Yume Nikki, glitch art\n- Subculture notes: webcore, liminal spaces\n\nTechnical specs:\n- soft edge treatment\n- grainy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Serial Experiments Lain as interpreted by Surrealmemes.\n",
+        "score": {
+          "overall": 0.88,
+          "criteria": {
+            "personaAlignment": 0.95,
+            "visualQuality": 0.85,
+            "uniqueness": 0.88,
+            "coherence": 0.9,
+            "usability": 0.8
+          },
+          "features": [
+            -0.8,
+            0.6,
+            0.2
+          ],
+          "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The cool color palette, subtle grain, and abandoned mall setting are spot on, evoking a strong sense of digital nostalgia and impermanence. The CRT glow and pastel fluorescents are excellent touches."
+        }
+      }
+    ],
+    "videos": []
+  },
+  "archive": [
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637692184.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27b/yMEmT9L1jB3OjH_CSwflG_004b976e08844a5caab57cf035169b21.jpg",
+      "quality": 0.8885,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.9,
+        "coherence": 0.85,
+        "usability": 0.8
+      },
+      "feedback": "This asset strongly resonates with The Liminal Weeb's aesthetic. The blend of an abandoned mall food court with CRT glow and pastel neon creates a powerful sense of nostalgia and digital decay, reminiscent of Serial Experiments Lain and vaporwave. The grainy texture and illustrative style enhance the wabi-sabi digital feel."
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637719869.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27c/k7Sden3ouTzqgvIofapvd_ef34bd2f047145feae020eb19b1a8311.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.9,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the liminal, pixelated decay that The Liminal Weeb adores. The cool color palette, grainy texture, and subtle glitch effects evoke a strong sense of nostalgia and digital wabi-sabi, reminiscent of Yume Nikki and old internet aesthetics."
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637737875.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27f/eQ0KBGU6uP7Lps6KawuUl_dd7d11fbb3b542d9a7f0c16e056e956c.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.3,
+        0.4
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The decay, the specific color palette, and the subtle grain evoke a strong sense of nostalgia and digital wabi-sabi. It feels like a still from a forgotten 90s anime.",
+      "cell": "color_temperature:0|visual_density:1|abstractness:1"
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637763571.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd282/wktaZ99Ljj111kmUJHn4a_e52cb2c913a745afaa3f140d8bb2dfd4.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of retro mall aesthetics with subtle glitch and grainy texture is spot on, evoking a strong sense of digital wabi-sabi and nostalgia."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637790292.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd284/mjeKVonl7pM71_L3u9BdO_a70e6b6d47e947b19b1b4067b8d43562.jpg",
+      "quality": 0.8935,
+      "features": [
+        -0.8,
+        0.4,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The cool teal and subtle glitch effects evoke a strong sense of digital decay and forgotten spaces, reminiscent of Serial Experiments Lain's aesthetic. The texture and lighting are particularly well-executed, contributing to the overall wabi-sabi digital feel.",
+      "cell": "color_temperature:0|visual_density:2|abstractness:0"
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637790294.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd284/5aEPnJap-bromWVQa8imr_7d3cddac09d140fb957811fbf0e0e381.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.4,
+        0.6
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of retro anime aesthetic with the decay of an abandoned space is spot on, evoking a strong sense of digital wabi-sabi and nostalgia.",
+      "cell": "color_temperature:0|visual_density:2|abstractness:1"
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637790293.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd284/7ZPX0xte_vm2ZzMQ9Ip_J_a379ab037eb44d84aff34549bb559b72.jpg",
+      "quality": 0.8325,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.9,
+        "visualQuality": 0.85,
+        "uniqueness": 0.8,
+        "coherence": 0.85,
+        "usability": 0.7
+      },
+      "feedback": "This asset strongly resonates with The Liminal Weeb's aesthetic. The pixel art style combined with the abandoned mall setting and cool neon lighting hits many of the desired notes, evoking nostalgia and a sense of digital decay. The cracked floor adds a nice touch of wabi-sabi digital."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637790291.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd285/Uuze0KcsudtesMLtX2x0x_1add04ecd3484b648e782f836e2155ca.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of CRT glow, pastel fluorescents, and the abandoned food court hits all the right notes for nostalgia and digital wabi-sabi."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637817332.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd286/0eyzoWaQ5kuq3BN2tGAgA_9549ce447eb64694ad2441684934b869.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.4,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the liminal, melancholic vibe The Liminal Weeb adores. The pastel fluorescent lights, CRT glow, and grainy texture evoke a strong sense of forgotten nostalgia and digital decay, reminiscent of both vaporwave and Lain's aesthetic."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637817334.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd286/6X4TgT0X9XQrn_JFSe8ck_e53643815f3a47029e309f111038010a.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.7,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic beauty of an abandoned liminal space, infused with the signature cool tones and subtle digital degradation that The Liminal Weeb adores. The texture and history are palpable, making it feel like a genuine artifact.",
+      "cell": "color_temperature:0|visual_density:3|abstractness:0"
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637817335.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd286/n5xUkoeLiesQGltMyTbPo_32e670fbb54e4bc7aa814b9806d18c25.jpg",
+      "quality": 0.8300000000000001,
+      "features": [
+        -0.8,
+        0.4,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.9,
+        "visualQuality": 0.85,
+        "uniqueness": 0.75,
+        "coherence": 0.8,
+        "usability": 0.8
+      },
+      "feedback": "This image strongly resonates with The Liminal Weeb's aesthetic, capturing the melancholic emptiness of a forgotten space with a distinct webcore/vaporwave palette. The pixelated texture and cool tones evoke a strong sense of digital nostalgia and wabi-sabi digital."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637817333.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd287/b5MuE4HzLVk8rv7slR-c7_f0f819df374243349adde6dd376401c2.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.6,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This asset perfectly captures the liminal, melancholic vibe The Liminal Weeb adores. The blend of anime-style rendering with the grainy texture and neon glow creates a truly evocative scene that feels both nostalgic and slightly unsettling. The 'Yokohama Kaidashi Kikou' sign is a brilliant touch."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637843166.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd289/onaLY5IIne8kEv4z-Y3RR_4882d1e6302d4c67b622e7c80f503fe1.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.4,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the liminal, melancholic vibe The Liminal Weeb adores. The cool teal lighting, the abandoned food court, and the CRT monitor all contribute to a strong sense of digital wabi-sabi and nostalgic decay. The texture and subtle imperfections are highly appreciated."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637843167.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd289/QJM2q_YWg23hPCSHqDGfl_e3b549c7724e43a6a206e73aacae58c4.jpg",
+      "quality": 0.8885,
+      "features": [
+        -0.7,
+        0.7,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.9,
+        "coherence": 0.85,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of an abandoned mall with digital overlays and CRT glow is spot on, evoking a strong sense of nostalgia and digital decay. The color palette and grainy texture are particularly effective."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637843164.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd289/uiL2PshrAStqIeTig5cqz_342cec72cbee4c43984fb956d1c2d577.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.5,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the liminal, melancholic atmosphere The Liminal Weeb adores. The pastel fluorescent glow, combined with the grainy texture and the abandoned mall setting, evokes a strong sense of digital wabi-sabi and nostalgia. It feels like a still from a forgotten anime or a deep dive into an old internet archive.",
+      "cell": "color_temperature:1|visual_density:2|abstractness:0"
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637843165.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28a/kQeJC5aY8ojDMxv1-kqYg_cd08d21a150c41a192ddd9146130bd78.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.8,
+        0.7,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This asset perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of retro mall aesthetics with subtle digital degradation and cool lighting is spot on, evoking a strong sense of nostalgia and impermanence."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637867134.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28b/vX9NX2FP15CGAJUf9NyYH_84abe64f99244260bde26da23ed91adb.jpg",
+      "quality": 0.8935,
+      "features": [
+        -0.8,
+        0.3,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The cool color palette, subtle grain, and empty mall setting evoke a strong sense of nostalgia and digital decay, reminiscent of vaporwave and early internet aesthetics. It feels like a forgotten corner of a digital world.",
+      "cell": "color_temperature:0|visual_density:1|abstractness:0"
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637867136.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28c/mTXZ_N_ECStbR3lxGQEdi_483b659d43224810a4a572fa38e9e7f5.jpg",
+      "quality": 0.8250000000000001,
+      "features": [
+        -0.5,
+        0.6,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.85,
+        "visualQuality": 0.8,
+        "uniqueness": 0.85,
+        "coherence": 0.8,
+        "usability": 0.8
+      },
+      "feedback": "This image captures the liminal mall aesthetic beautifully with its pixel art style and cool, pastel neon glow. The glitch effects add a nice touch of digital decay, aligning well with the 'wabi-sabi digital' value.",
+      "cell": "color_temperature:1|visual_density:3|abstractness:0"
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637867133.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28c/6wUBNSohCm1xBEGwJbda9_578800993c27446482236e4b44142388.jpg",
+      "quality": 0.8300000000000001,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.9,
+        "visualQuality": 0.85,
+        "uniqueness": 0.75,
+        "coherence": 0.8,
+        "usability": 0.8
+      },
+      "feedback": "This image strongly resonates with The Liminal Weeb's aesthetic. The empty mall food court, CRT glow, and pastel fluorescent lighting perfectly capture the desired mood of impermanence and digital nostalgia. The grainy texture and cool color palette are spot on."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637867135.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28c/V7qlcJztojZFjSwqVSi_y_3b7d4da54b244ab6954c5dd034807083.jpg",
+      "quality": 0.886,
+      "features": [
+        -0.5,
+        0.3,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This asset perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of retro anime aesthetic, grunge, and subtle glitch elements is highly effective, creating a sense of forgotten digital history.",
+      "cell": "color_temperature:1|visual_density:1|abstractness:0"
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637893501.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28e/UkkWqbouBjkmdLMgOwWFN_2eeffc787e2e4a0bb0eb856af7bdf607.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.6,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the liminal, melancholic vibe The Liminal Weeb adores. The CRT glow and pastel fluorescents create a strong sense of nostalgia and digital decay, aligning well with the desired aesthetic."
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637893499.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28e/66uTfgby_noPPD228lFzK_98c1e2de015e4e8587b72dafebe0c6c8.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.9,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe The Liminal Weeb adores. The blend of retro neon, digital decay, and an abandoned space is highly effective, feeling like a direct portal to a forgotten corner of the internet or a scene from Serial Experiments Lain."
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637893498.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28e/aB0MBH53OgfqhonAPZLrS_631b2d4dd1534d33aaf5b6657bfcb062.jpg",
+      "quality": 0.8250000000000001,
+      "features": [
+        -0.8,
+        0.4,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.85,
+        "visualQuality": 0.8,
+        "uniqueness": 0.85,
+        "coherence": 0.8,
+        "usability": 0.8
+      },
+      "feedback": "This image strongly resonates with The Liminal Weeb's aesthetic, particularly the pixel art style combined with the abandoned mall setting and vaporwave color palette. The sense of digital decay and nostalgia is palpable, making it feel like a found artifact from an old internet archive."
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/liminalweeb-archive/images/liminalweeb-hero-1791637893500.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28f/36HTTYsWY9gEjDNf0gaiC_63ebcefd63fa4af097c9a8c954386d83.jpg",
+      "quality": 0.89,
+      "features": [
+        -0.8,
+        0.3,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the melancholic, liminal vibe that The Liminal Weeb adores. The cool color palette, neon accents, and subtle grain evoke a strong sense of nostalgia and digital decay, reminiscent of a forgotten corner of the internet or a scene from Serial Experiments Lain."
+    }
+  ],
+  "metadata": {
+    "generationDuration": 248181,
+    "totalIterations": 5,
+    "coverage": 0.10666666666666667
+  }
+}

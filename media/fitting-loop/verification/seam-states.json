@@ -1,0 +1,272 @@
+[
+  [
+    {
+      "id": "cloth-0",
+      "classes": "cloth-dye persona-0",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "repeating-linear-gradient(0deg, rgb(161, 93, 63) 0px, rgb(161, 93, 63) 3px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0) 6px) repeat scroll 0% 0% / auto padding-box border-box, rgb(253, 241, 235) repeating-linear-gradient(90deg, rgb(253, 241, 235) 0px, rgb(253, 241, 235) 3px, rgb(161, 93, 63) 3px, rgb(161, 93, 63) 6px) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":444.2358703613281,\"y\":97.96186065673828,\"width\":521.5281982421875,\"height\":434.0762939453125,\"top\":97.96186065673828,\"right\":965.7640686035156,\"bottom\":532.0381546020508,\"left\":444.2358703613281}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "fold",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) linear-gradient(122deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 29%, rgba(28, 27, 25, 0.09) 52%, rgba(255, 255, 255, 0.2) 73%, rgba(0, 0, 0, 0) 100%) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":436.015625,\"y\":89.74160766601562,\"width\":537.96875,\"height\":450.5168151855469,\"top\":89.74160766601562,\"right\":973.984375,\"bottom\":540.2584228515625,\"left\":436.015625}"
+      }
+    },
+    {
+      "id": "fitting-0",
+      "classes": "fitting",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":470,\"y\":135,\"width\":470,\"height\":360,\"top\":135,\"right\":940,\"bottom\":495,\"left\":470}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-left",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":510,\"bottom\":157,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":510,\"bottom\":147,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-right",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":918,\"bottom\":157,\"left\":900}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":918,\"bottom\":147,\"left\":900}"
+      }
+    },
+    {
+      "id": "notes-0",
+      "classes": "notes persona-0",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":990,\"y\":187.5,\"width\":170,\"height\":255,\"top\":187.5,\"right\":1160,\"bottom\":442.5,\"left\":990}"
+      }
+    }
+  ],
+  [
+    {
+      "id": "cloth-0",
+      "classes": "cloth-dye persona-0",
+      "style": "opacity: 1;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "repeating-linear-gradient(0deg, rgb(161, 93, 63) 0px, rgb(161, 93, 63) 3px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0) 6px) repeat scroll 0% 0% / auto padding-box border-box, rgb(253, 241, 235) repeating-linear-gradient(90deg, rgb(253, 241, 235) 0px, rgb(253, 241, 235) 3px, rgb(161, 93, 63) 3px, rgb(161, 93, 63) 6px) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":444.2358703613281,\"y\":97.96186065673828,\"width\":521.5281982421875,\"height\":434.0762939453125,\"top\":97.96186065673828,\"right\":965.7640686035156,\"bottom\":532.0381546020508,\"left\":444.2358703613281}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "fold",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) linear-gradient(122deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 29%, rgba(28, 27, 25, 0.09) 52%, rgba(255, 255, 255, 0.2) 73%, rgba(0, 0, 0, 0) 100%) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":436.015625,\"y\":89.74160766601562,\"width\":537.96875,\"height\":450.5168151855469,\"top\":89.74160766601562,\"right\":973.984375,\"bottom\":540.2584228515625,\"left\":436.015625}"
+      }
+    },
+    {
+      "id": "fitting-0",
+      "classes": "fitting",
+      "style": "opacity: 1; clip-path: none;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":470,\"y\":135,\"width\":470,\"height\":360,\"top\":135,\"right\":940,\"bottom\":495,\"left\":470}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-left",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":510,\"bottom\":157,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":510,\"bottom\":147,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-right",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":918,\"bottom\":157,\"left\":900}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":918,\"bottom\":147,\"left\":900}"
+      }
+    },
+    {
+      "id": "notes-0",
+      "classes": "notes persona-0",
+      "style": "opacity: 1;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":990,\"y\":187.5,\"width\":170,\"height\":255,\"top\":187.5,\"right\":1160,\"bottom\":442.5,\"left\":990}"
+      }
+    }
+  ],
+  [
+    {
+      "id": "cloth-0",
+      "classes": "cloth-dye persona-0",
+      "style": "opacity: 1;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "repeating-linear-gradient(0deg, rgb(161, 93, 63) 0px, rgb(161, 93, 63) 3px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0) 6px) repeat scroll 0% 0% / auto padding-box border-box, rgb(253, 241, 235) repeating-linear-gradient(90deg, rgb(253, 241, 235) 0px, rgb(253, 241, 235) 3px, rgb(161, 93, 63) 3px, rgb(161, 93, 63) 6px) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":444.2358703613281,\"y\":97.96186065673828,\"width\":521.5281982421875,\"height\":434.0762939453125,\"top\":97.96186065673828,\"right\":965.7640686035156,\"bottom\":532.0381546020508,\"left\":444.2358703613281}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "fold",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) linear-gradient(122deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 29%, rgba(28, 27, 25, 0.09) 52%, rgba(255, 255, 255, 0.2) 73%, rgba(0, 0, 0, 0) 100%) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":436.015625,\"y\":89.74160766601562,\"width\":537.96875,\"height\":450.5168151855469,\"top\":89.74160766601562,\"right\":973.984375,\"bottom\":540.2584228515625,\"left\":436.015625}"
+      }
+    },
+    {
+      "id": "fitting-0",
+      "classes": "fitting",
+      "style": "opacity: 1; clip-path: none;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":470,\"y\":135,\"width\":470,\"height\":360,\"top\":135,\"right\":940,\"bottom\":495,\"left\":470}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-left",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":510,\"bottom\":157,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":492,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":510,\"bottom\":147,\"left\":492}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin pin-right",
+      "style": "translate: none; rotate: none; scale: none; transform: translate(0px, 0px);",
+      "computed": {
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":28,\"top\":129,\"right\":918,\"bottom\":157,\"left\":900}"
+      }
+    },
+    {
+      "id": "",
+      "classes": "pin-head",
+      "style": null,
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) radial-gradient(circle at 32% 27%, rgb(243, 138, 116), rgb(210, 64, 42) 58%, rgb(142, 38, 21)) repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":900,\"y\":129,\"width\":18,\"height\":18,\"top\":129,\"right\":918,\"bottom\":147,\"left\":900}"
+      }
+    },
+    {
+      "id": "notes-0",
+      "classes": "notes persona-0",
+      "style": "opacity: 1;",
+      "computed": {
+        "transform": "none",
+        "opacity": "1",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "box": "{\"x\":990,\"y\":187.5,\"width\":170,\"height\":255,\"top\":187.5,\"right\":1160,\"bottom\":442.5,\"left\":990}"
+      }
+    }
+  ]
+]

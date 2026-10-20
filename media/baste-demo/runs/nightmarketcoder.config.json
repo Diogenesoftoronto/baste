@@ -1,0 +1,64 @@
+{
+  "generators": {
+    "image": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedream/v4/text-to-image"
+    },
+    "svg": {
+      "provider": "fal"
+    },
+    "video": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedance/v1/pro/text-to-video",
+      "duration": 5,
+      "ratio": "16:9",
+      "quality": "720p"
+    }
+  },
+  "evaluator": {
+    "provider": "fal",
+    "model": "google/gemini-2.5-flash",
+    "temperature": 0.3
+  },
+  "qd": {
+    "iterations": 3,
+    "batchSize": 3,
+    "mutationRate": 0.5,
+    "qualityThreshold": 0.3
+  },
+  "outputCount": 1,
+  "outputDir": "./media/baste-demo/runs/nightmarketcoder",
+  "assetTypes": [
+    {
+      "kind": "image",
+      "purpose": "hero",
+      "description": "Hero image for a point-of-sale app for night-market merchants: a crowded stall street at 1am under neon and lanterns",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon",
+      "description": "App icon: a paper lantern shaped like a price tag"
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon-collection",
+      "description": "Small interface icon for 'new order': a takeaway box with steam"
+    },
+    {
+      "kind": "image",
+      "purpose": "background",
+      "description": "Dense ambient UI background: layered neon shop signs and awning stripes, reflections on wet pavement, no readable text",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "video",
+      "purpose": "ambient-loop",
+      "description": "Neon sign flicker and steam rising from a wok at a night market stall, quick rhythmic light pulses"
+    }
+  ]
+}

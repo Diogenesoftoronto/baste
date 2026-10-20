@@ -1,0 +1,64 @@
+{
+  "generators": {
+    "image": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedream/v4/text-to-image"
+    },
+    "svg": {
+      "provider": "fal"
+    },
+    "video": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedance/v1/pro/text-to-video",
+      "duration": 5,
+      "ratio": "16:9",
+      "quality": "720p"
+    }
+  },
+  "evaluator": {
+    "provider": "fal",
+    "model": "google/gemini-2.5-flash",
+    "temperature": 0.3
+  },
+  "qd": {
+    "iterations": 3,
+    "batchSize": 3,
+    "mutationRate": 0.5,
+    "qualityThreshold": 0.3
+  },
+  "outputCount": 1,
+  "outputDir": "./media/baste-demo/runs/cyberbotanist",
+  "assetTypes": [
+    {
+      "kind": "image",
+      "purpose": "hero",
+      "description": "Hero image for a field-notes app about fungi networks: a greenhouse bench at dusk where mycelium glows through moss",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon",
+      "description": "App icon: a sprouting fern whose roots become a mycelial network"
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon-collection",
+      "description": "Small interface icon for 'start a collection': a specimen jar with a seedling"
+    },
+    {
+      "kind": "image",
+      "purpose": "background",
+      "description": "Quiet ambient UI background: herbarium paper with pressed fern shadows and faint bioluminescent spores",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "video",
+      "purpose": "ambient-loop",
+      "description": "Bioluminescent spores drifting slowly over moss in a dark greenhouse, soft breathing glow"
+    }
+  ]
+}

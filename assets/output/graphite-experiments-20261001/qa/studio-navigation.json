@@ -1,0 +1,103 @@
+{
+  "metrics": [
+    {
+      "tag": "BUTTON",
+      "label": "Open wardrobe",
+      "width": 38,
+      "display": "flex",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 4,
+      "display": "block",
+      "shrink": "1"
+    },
+    {
+      "tag": "A",
+      "label": "Baste home",
+      "width": 84.765625,
+      "display": "flex",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 24,
+      "display": "block",
+      "shrink": "1"
+    },
+    {
+      "tag": "BUTTON",
+      "label": "Demoin-browser",
+      "width": 77.234375,
+      "display": "flex",
+      "shrink": "1"
+    },
+    {
+      "tag": "BUTTON",
+      "label": "Sound on — turn off",
+      "width": 34,
+      "display": "grid",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 18,
+      "display": "block",
+      "shrink": "1"
+    },
+    {
+      "tag": "A",
+      "label": "Material room",
+      "width": 0,
+      "display": "none",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 0,
+      "display": "block",
+      "shrink": "1"
+    },
+    {
+      "tag": "A",
+      "label": "Docs",
+      "width": 0,
+      "display": "none",
+      "shrink": "1"
+    },
+    {
+      "tag": "BUTTON",
+      "label": "Not Organic account",
+      "width": 50,
+      "display": "flex",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 16,
+      "display": "block",
+      "shrink": "1"
+    },
+    {
+      "tag": "BUTTON",
+      "label": "Settings",
+      "width": 50,
+      "display": "flex",
+      "shrink": "1"
+    },
+    {
+      "tag": "svg",
+      "label": "",
+      "width": 16,
+      "display": "block",
+      "shrink": "1"
+    }
+  ],
+  "materialRoomLinkVisible": true
+}

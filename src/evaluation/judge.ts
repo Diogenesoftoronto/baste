@@ -11,6 +11,7 @@ import { buildLearnedPreferencesDocument } from "./feedback-memory.js";
 import type { EvaluatorConfig } from "../config/baste-config.js";
 import { resolveEvaluatorProvider } from "../config/baste-config.js";
 import { evaluateWithTypeSafe, type TypeSafeJudgments } from "./typesafe-judge.js";
+import type { JudgeContext } from "./visual-context.js";
 
 export interface EvaluationCriteria {
   personaAlignment: number; // 0-1: how well does it match the persona
@@ -58,8 +59,13 @@ export interface EvaluateOptions {
   learnedPreferences?: string;
   purpose?: string;
   metadata?: Record<string, unknown>;
-  suite?: Array<{ type: string; purpose: string; prompt: string; metadata?: Record<string, unknown> }>;
+  /** Other assets in the suite; a looking judge is shown those with a `path` on disk. */
+  suite?: Array<{ type: string; purpose: string; prompt: string; metadata?: Record<string, unknown>; path?: string }>;
   features?: number[];
+  /** Reference images and rated examples for a looking judge, loaded once per run. */
+  judgeContext?: JudgeContext;
+  /** Subjects that may stand apart in the image; a looking judge names the one it sees, for segmentation. */
+  subjects?: string[];
 }
 
 /**

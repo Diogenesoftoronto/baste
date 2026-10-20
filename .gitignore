@@ -17,8 +17,12 @@ baste.config.json
 .opencode/
 .entire/
 
-# Site built output is committed for deployment
-# site-dist/
+# Deployment builds the site from source; generated output stays local.
+/site-dist/
+/site/server/
+/site/tmp/
+/site/storybook-static/
+/.zero/
 
 # PandaCSS generated files
 site/styled-system
@@ -32,3 +36,23 @@ videos/baste-tour/.work/
 videos/baste-tour/music/bed-source.*
 site/public/media/studio-guide/walkthrough-en.source.mp4
 media/studio-guide-narration/
+
+# Local generation/render caches; shipped media is curated under site/public.
+/assets/output/**/*.png
+/assets/output/**/*.jpg
+/assets/output/**/*.webp
+/assets/output/**/*.avif
+/assets/output/**/*.mp4
+/assets/output/**/*.svg
+/media/**/*.png
+/media/**/*.jpg
+/media/**/*.webp
+/media/**/*.mp4
+/media/**/*.wav
+/media/**/*.mp3
+/videos/**/*.png
+/videos/**/*.jpg
+/videos/**/*.webp
+/videos/**/*.mp4
+/videos/**/*.wav
+/videos/**/*.mp3

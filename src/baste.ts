@@ -11,9 +11,17 @@
  */
 
 import type { Persona } from "./persona/types.js";
-import { resolveEvaluatorProvider, type EvaluatorConfig } from "./config/baste-config.js";
+import { basename } from "node:path";
+import {
+  DEFAULT_ANIMATE_MODEL,
+  DEFAULT_EDIT_MODEL,
+  DEFAULT_SEGMENT_MODEL,
+  resolveEvaluatorProvider,
+  type AnimateMode,
+  type EvaluatorConfig,
+} from "./config/baste-config.js";
 import type { AssetType, GeneratedPrompt } from "./generation/prompts.js";
-import { generatePrompts, mutatePrompt } from "./generation/prompts.js";
+import { axisStep, generatePrompts, mutatePrompt } from "./generation/prompts.js";
 import {
   runQD,
   defaultAssetFeatures,
@@ -33,6 +41,11 @@ import {
   type GeneratedAsset,
 } from "./assets/generators.js";
 import { judgeWithFal, svgPreview } from "./evaluation/fal-judge.js";
+import { animationFor } from "./assets/motion.js";
+import { buildLayers, editImage, rankSubjects, type EditLineage, type EditPlan, type LayerConfig } from "./assets/layers.js";
+import { buildParallax, buildVideoLoop, loopPrompt } from "./assets/animate.js";
+import { loadJudgeContext, type JudgeContext } from "./evaluation/visual-context.js";
+import { ffmpegAvailable } from "./shared/stills.js";
 
 export interface BasteConfig {
   // Generation services config
@@ -46,6 +59,12 @@ export interface BasteConfig {
 
   // LLM evaluator config
   evaluator: EvaluatorConfig;
+
+  /** Repaint QD candidates with the edit model and cut final images into layers. */
+  edit?: boolean;
+
+  /** Animated loops from each final image. */
+  animate?: AnimateMode;
 }
 
 /** One image the QD search generated and judged, kept or not. */
@@ -59,7 +78,23 @@ export interface QDCandidate {
   feedback: string;
   /** Archive cell it landed in, when it beat that cell's previous holder. */
   cell?: string;
+  /** How it was made, when it repaints another candidate's image. */
+  edit?: EditLineage;
 }
+
+/** A QD genome: the prompt, and once judged, the image it produced. */
+export interface ImageGenome {
+  prompt: string;
+  /** The image generated, or edited, from this genome and judged. */
+  asset?: GeneratedAsset;
+  /** Subjects Jev saw in that image, most likely first, for cutting it into layers. */
+  subjects?: string[];
+  /** Set on a child that repaints a region of its parent's image instead of generating anew. */
+  edit?: EditPlan;
+}
+
+/** Of the children that may be edits, roughly this share are. */
+const EDIT_SHARE = 0.5;
 
 export interface AssetSuite {
   persona: Persona;
@@ -68,7 +103,7 @@ export interface AssetSuite {
     images: GeneratedAsset[];
     videos: GeneratedAsset[];
   };
-  archive: QDArchive<string>; // genome = prompt string
+  archive: QDArchive<ImageGenome>;
   evaluations: EvaluationResult[];
   /** Every QD candidate in generation order, with where it landed. */
   candidates: QDCandidate[];
@@ -116,6 +151,20 @@ export async function generateAssetSuite(
   if (needsFal && !config.generation.falApiKey && !process.env.FAL_KEY) {
     throw new Error("fal needs FAL_KEY");
   }
+  // Editing, segmenting and image-to-video are separate models from the one that creates.
+  const wantsLayers = !!(config.edit || config.animate);
+  if (wantsLayers && !config.generation.notOrganicFetch && !config.generation.falApiKey && !process.env.FAL_KEY) throw new Error("Editing and animation run on fal: set FAL_KEY");
+
+  // Jev looks at pixels: load the persona's reference images and rated examples once.
+  const jevLooks = config.evaluator.vision !== false && (evaluatorProvider === "notorganic" || (evaluatorProvider === "typesafe" && !!(config.evaluator.apiKey || process.env.TYPESAFE_API_KEY)));
+  let judgeContext: JudgeContext | undefined;
+  if (jevLooks) {
+    judgeContext = await loadJudgeContext(persona, config.generation.outputDir);
+    const { references, examples } = judgeContext;
+    const rated = examples.image.liked.length + examples.image.disliked.length + examples.svg.liked.length + examples.svg.disliked.length;
+    log(`   Jev looks at each asset${references.length ? `, beside ${references.length} reference image${references.length === 1 ? "" : "s"}` : ""}${rated ? ` and ${rated} rated example${rated === 1 ? "" : "s"}` : ""}`);
+    if (assetTypes.some((a) => a.kind === "video") && !ffmpegAvailable()) log("   Install ffmpeg to let Jev read video frames; loops are judged on their prompt");
+  }
 
   log(`\n🎨 Baste: Generating assets for "${persona.name}"`);
   log(`   Persona: ${persona.summary}`);
@@ -129,7 +178,22 @@ export async function generateAssetSuite(
 
   // Run QD evolution for image assets (most impactful for UI)
   const imageAssets = assetTypes.filter((a) => a.kind === "image");
-  let archive: QDArchive<string> = createArchive(config.qd);
+  let archive: QDArchive<ImageGenome> = createArchive(config.qd);
+  const animation = animationFor(persona);
+  const subjects = animation.subjects;
+  const layerCfg: LayerConfig = {
+    outputDir: config.generation.outputDir,
+    falKey: config.generation.falApiKey,
+    notOrganicFetch: config.generation.notOrganicFetch,
+    segmentModel: config.generation.segmentModel ?? DEFAULT_SEGMENT_MODEL,
+    editModel: config.generation.editModel ?? DEFAULT_EDIT_MODEL,
+    renderingSpeed: config.generation.editRenderingSpeed,
+    ...(jevLooks ? { judge: config.evaluator } : {}),
+  };
+  // At most about half of each generation's children repaint a parent; the rest are drawn anew.
+  let editsLeft = config.edit && imageAssets.length ? config.qd.iterations * Math.ceil(config.qd.batchSize / 2) : 0;
+  if (editsLeft) log(`   Edits: up to ${editsLeft} candidates repaint a parent's image with ${layerCfg.editModel}, segmented by ${layerCfg.segmentModel}`);
+  if (wantsLayers) log(`   Final images are cut into layers${config.animate ? ` and animated (${config.animate})` : ""}`);
 
   if (imageAssets.length > 0) {
     log("\n🧬 Starting QD evolution for images...");
@@ -137,29 +201,47 @@ export async function generateAssetSuite(
     const imageAsset = imageAssets[0];
     const prompts = promptsByAsset.get(imageAsset)!;
 
-    archive = await runQD<string>(
+    archive = await runQD<ImageGenome>(
       { ...config.qd, log },
       // Seed generation
       async () => ({
-        genome: prompts.image.prompt,
+        genome: { prompt: prompts.image.prompt },
         quality: 0,
         features: [0, 0, 0],
         generation: 0,
       }),
-      // Mutation
-      async (parent, rate) => ({
-        genome: mutatePrompt(parent.genome, persona, rate),
-        quality: 0,
-        features: [0, 0, 0],
-        generation: 0,
-      }),
+      // Mutation: repaint a region of the parent's image, or draw from a mutated prompt.
+      async (parent, rate) => {
+        const from = parent.genome.asset;
+        const parentSubjects = parent.genome.subjects ?? rankSubjects(subjects);
+        // The budget is spent synchronously, before any await, so concurrent children share it safely.
+        const step = from && parentSubjects.length && editsLeft > 0 && Math.random() < EDIT_SHARE ? axisStep(parent.genome.prompt) : undefined;
+        if (from && step) {
+          editsLeft--;
+          const layer = animation.focus === "both" ? (Math.random() < 0.5 ? "background" : "subject") : animation.focus;
+          return { genome: { prompt: step.prompt, edit: { from, subjects: parentSubjects, layer, step } }, quality: 0, features: [0, 0, 0], generation: 0 };
+        }
+        return { genome: { prompt: mutatePrompt(parent.genome.prompt, persona, rate) }, quality: 0, features: [0, 0, 0], generation: 0 };
+      },
       // Evaluation
       async (genome, { generation }) => {
+        let asset: GeneratedAsset | undefined;
+        let lineage: EditLineage | undefined;
+        if (genome.edit) {
+          try {
+            const edited = await editImage(persona, imageAsset, genome.edit, layerCfg);
+            if (edited) ({ asset, lineage } = edited);
+            else log(`   No subject to repaint in ${basename(genome.edit.from.content)}; drawing anew`);
+          } catch (error) {
+            log(`   Edit failed (${error instanceof Error ? error.message : String(error)}); drawing anew`);
+          }
+        }
         // Generate the asset
-        const asset = await generator.generate(persona, imageAsset, {
+        asset ??= await generator.generate(persona, imageAsset, {
           ...prompts.image,
-          prompt: genome,
+          prompt: genome.prompt,
         });
+        const judgedPrompt = lineage ? `${genome.prompt}\nEdit: ${lineage.instruction}` : genome.prompt;
 
         // Evaluate with LLM judge
         const evalResults = await evaluateBatch(
@@ -167,11 +249,13 @@ export async function generateAssetSuite(
           [
             {
               type: "image",
-              prompt: genome,
+              prompt: judgedPrompt,
               content: asset.content,
               purpose: imageAsset.purpose,
               metadata: asset.metadata,
               suite: assetTypes.map(a => ({ type: a.kind, purpose: a.purpose, prompt: promptsByAsset.get(a)![a.kind].prompt })),
+              judgeContext,
+              ...(wantsLayers ? { subjects } : {}),
             },
           ],
           // Evaluation function: a vision model on fal, or OpenAI over the prompt
@@ -185,7 +269,7 @@ export async function generateAssetSuite(
               // Local heuristic: score based on prompt richness and persona keyword overlap.
               // Ensures the archive is still useful even without an LLM API key.
               const keywords = [...persona.aesthetic.visualKeywords, ...persona.aesthetic.moodKeywords];
-              const promptWords = genome.toLowerCase().split(/[^a-z]+/);
+              const promptWords = genome.prompt.toLowerCase().split(/[^a-z]+/);
               const overlap = keywords.filter(k => promptWords.includes(k.toLowerCase())).length;
               const normOverlap = keywords.length ? Math.min(1, overlap / Math.max(1, keywords.length * 0.3)) : 0.5;
               const richness = Math.min(1, promptWords.filter(w => w.length > 3).length / 20);
@@ -250,30 +334,34 @@ export async function generateAssetSuite(
         const candidate: QDCandidate = {
           generation, path: asset.content, sourceUrl: asset.metadata.sourceUrl, quality,
           features: result.features, criteria: result.criteria, feedback: result.feedback,
+          ...(lineage ? { edit: lineage } : {}),
         };
         candidates.push(candidate);
         hooks.candidate?.(candidate);
-        log(`   Candidate ${candidates.length} (generation ${generation}) judged ${quality.toFixed(2)}`);
+        log(`   Candidate ${candidates.length} (generation ${generation}${lineage ? ", edited" : ""}) judged ${quality.toFixed(2)}`);
 
         return {
           quality,
           features: result.features,
+          genome: { prompt: genome.prompt, asset, subjects: rankSubjects(subjects, result.typesafe?.visual?.subject) },
         };
       }
     );
     // Record which candidates hold a cell in the final archive.
     for (const [cell, solution] of archive.cells) {
-      const held = candidates.find((c) => c.quality === solution.quality && c.features.every((f, i) => f === solution.features[i]));
+      const held = candidates.find((c) => c.path === solution.genome.asset?.content);
       if (held) held.cell = cell;
     }
   }
 
   // Generate final diverse assets from archive
   log("\n🎯 Generating final assets...");
-  const diversePrompts = imageAssets.length > 0 ? getDiverseSamples(archive, config.outputCount)
-    : [{ genome: "", quality: 0, features: [0, 0, 0], generation: 0 }];
+  const diversePrompts: QDSolution<ImageGenome>[] = imageAssets.length > 0 ? getDiverseSamples(archive, config.outputCount)
+    : [{ genome: { prompt: "" }, quality: 0, features: [0, 0, 0], generation: 0 }];
 
   const finalAssets: GeneratedAsset[] = [];
+  /** Subjects Jev saw in each final image, by asset id. */
+  const finalSubjects = new Map<string, string[]>();
 
   for (const solution of diversePrompts) {
     for (const assetType of assetTypes) {
@@ -281,10 +369,11 @@ export async function generateAssetSuite(
         const originalPrompt = promptsByAsset.get(assetType)![assetType.kind];
         // Only the evolved asset takes the evolved genome. Other images keep their own
         // brief: a hero must not be drawn from the background's prompt.
-        const evolved = assetType === imageAssets[0] && solution.genome;
-        const asset = await generator.generate(persona, assetType, {
+        const evolved = assetType === imageAssets[0];
+        // The search already drew and judged the evolved image: ship those pixels rather than drawing new ones.
+        const asset = (evolved ? solution.genome.asset : undefined) ?? await generator.generate(persona, assetType, {
           ...originalPrompt,
-          prompt: evolved ? solution.genome : originalPrompt.prompt,
+          prompt: evolved && solution.genome.prompt ? solution.genome.prompt : originalPrompt.prompt,
         });
         if (evaluatorProvider === "fal") {
           // The judge looks at images and rendered SVG; videos are judged on their brief.
@@ -302,17 +391,69 @@ export async function generateAssetSuite(
           const [evaluation] = await evaluateBatch(persona, [{
             type: asset.type, prompt: asset.prompt, content: asset.content,
             purpose: assetType.purpose, metadata: asset.metadata,
-            suite: finalAssets.map(a => ({ type: a.type, purpose: a.metadata.assetPurpose, prompt: a.prompt, metadata: a.metadata })),
+            suite: finalAssets.map(a => ({ type: a.type, purpose: a.metadata.assetPurpose, prompt: a.prompt, metadata: a.metadata, path: a.content })),
+            judgeContext,
+            ...(wantsLayers && asset.type === "image" ? { subjects } : {}),
           }], async () => { throw new Error("Unexpected OpenAI evaluator selection"); }, config.evaluator);
           evaluations.push(evaluation);
           finalScores[asset.id] = evaluation;
           if (evaluation.gate?.accepted === false) continue;
+          if (wantsLayers && asset.type === "image") finalSubjects.set(asset.id, rankSubjects(subjects, evaluation.typesafe?.visual?.subject));
         }
         finalAssets.push(asset);
       } catch (error) {
         log(`Failed to generate ${assetType.kind}: ${error instanceof Error ? error.message : String(error)}`);
         if (assetType.kind === "video" || evaluatorProvider === "typesafe" || evaluatorProvider === "notorganic" || config.generation.imageProvider === "notorganic") throw error;
       }
+    }
+  }
+
+  // Layers and loops from each final image. They come after the paid generation,
+  // so a failure here is logged and the suite still ships.
+  if (wantsLayers) {
+    log("\n✂️  Cutting final images into layers...");
+    for (const image of finalAssets.filter((a) => a.type === "image")) {
+      const ranked = finalSubjects.get(image.id)
+        ?? diversePrompts.find((s) => s.genome.asset?.id === image.id)?.genome.subjects
+        ?? rankSubjects(subjects);
+      const derived: NonNullable<GeneratedAsset["derived"]> = {};
+      if (ranked.length) {
+        try {
+          const { layers, reason } = await buildLayers(image, persona, ranked, layerCfg);
+          if (layers) {
+            derived.layers = layers;
+            log(`   ${image.id}: cut out the ${layers.subject}`);
+            if (config.animate === "parallax" || config.animate === "both") {
+              derived.parallax = await buildParallax(image, layers, persona, layerCfg.outputDir);
+              log(`   ${image.id}: parallax loop${derived.parallax.video ? "" : " (install ffmpeg for the MP4)"}`);
+            }
+          } else log(`   ${image.id}: ${reason}; no layers`);
+        } catch (error) {
+          log(`   ${image.id}: layers failed (${error instanceof Error ? error.message : String(error)})`);
+        }
+      } else log(`   ${image.id}: Jev saw none of ${persona.name}'s subjects; no layers`);
+      if (config.animate === "video" || config.animate === "both") {
+        try {
+          derived.loop = await buildVideoLoop(image, persona, ranked, {
+            ...layerCfg,
+            animateModel: config.generation.animateModel ?? DEFAULT_ANIMATE_MODEL,
+            resolution: config.generation.animateResolution,
+          });
+          log(`   ${image.id}: video loop${derived.loop.end ? " to an edited end frame" : ""}${derived.loop.video ? "" : " (install ffmpeg to close the loop)"}`);
+          if (jevLooks) {
+            const [judged] = await evaluateBatch(persona, [{
+              type: "video", prompt: loopPrompt(persona), content: derived.loop.video ?? derived.loop.transition,
+              purpose: `${image.metadata.assetPurpose} loop`, metadata: image.metadata, judgeContext,
+            }], async () => { throw new Error("Unexpected OpenAI evaluator selection"); }, config.evaluator);
+            evaluations.push(judged);
+            derived.loop.judged = { overall: judged.overall, improvements: judged.improvements };
+            for (const line of judged.improvements) log(`     ${line}`);
+          }
+        } catch (error) {
+          log(`   ${image.id}: video loop failed (${error instanceof Error ? error.message : String(error)})`);
+        }
+      }
+      if (Object.keys(derived).length) image.derived = derived;
     }
   }
 
@@ -343,7 +484,7 @@ export async function generateAssetSuite(
 }
 
 function createArchive(config: QDConfig) {
-  const cells = new Map<string, QDSolution<string>>();
+  const cells = new Map<string, QDSolution<ImageGenome>>();
   return {
     cells,
     descriptors: config.features,

@@ -44,7 +44,39 @@ export interface GeneratorConfig {
     ratio?: string;
     quality?: string;
   };
+
+  /** Image edits, by a different model from the one that creates images. */
+  edit?: {
+    provider: "fal";
+    model?: string;
+    apiKey?: string;
+    renderingSpeed?: "TURBO" | "BALANCED" | "QUALITY";
+  };
+
+  /** Segmentation: separates a subject from its background. */
+  segment?: {
+    provider: "fal";
+    model?: string;
+    apiKey?: string;
+  };
+
+  /** Image-to-video, for loops animated from a finished image. */
+  animate?: {
+    provider: "fal";
+    model?: string;
+    apiKey?: string;
+    resolution?: "480p" | "720p" | "1080p";
+  };
 }
+
+/** Which animated loops to make from each final image. */
+export type AnimateMode = "parallax" | "video" | "both";
+export const ANIMATE_MODES: AnimateMode[] = ["parallax", "video", "both"];
+
+/** The default models for each role; all run on fal with one FAL_KEY. */
+export const DEFAULT_EDIT_MODEL = "fal-ai/ideogram/v3/edit";
+export const DEFAULT_SEGMENT_MODEL = "fal-ai/sam-3/image";
+export const DEFAULT_ANIMATE_MODEL = "fal-ai/bytedance/seedance/v1/pro/image-to-video";
 
 export interface EvaluatorConfig {
   /**
@@ -62,6 +94,12 @@ export interface EvaluatorConfig {
   baseUrl?: string;
   /** Temperature for evaluation responses */
   temperature?: number;
+  /**
+   * TypeSafe only: show Jev the rendered asset, the persona's reference images
+   * and rated examples (default). False keeps judgments to prompts and SVG
+   * source. Images are a TypeSafe preview feature.
+   */
+  vision?: boolean;
   /** Custom system prompt override */
   systemPrompt?: string;
   /** Weights for scoring criteria */
@@ -103,6 +141,15 @@ export interface BasteUserConfig {
 
   /** Number of final assets to output per type */
   outputCount?: number;
+
+  /**
+   * Repaint QD candidates with the edit model instead of always generating
+   * anew, and cut each final image into layers. Off by default: it adds fal calls.
+   */
+  edit?: boolean;
+
+  /** Animate each final image: a parallax loop from its layers, a video loop, or both. */
+  animate?: AnimateMode | false;
 
   /** Asset type preferences */
   assetTypes?: Array<{
@@ -148,6 +195,9 @@ export const defaultConfig: Required<BasteUserConfig> = {
     svg: { provider: "quiver" },
     image: { provider: "openai" as const, model: "gpt-image-2.5", size: "1024x1024", quality: "high" as const, style: "vivid" as const },
     video: { provider: "seedance", model: "seedance-1-0-pro-250528", duration: 5, ratio: "16:9", quality: "1080p" },
+    edit: { provider: "fal", model: DEFAULT_EDIT_MODEL, renderingSpeed: "BALANCED" },
+    segment: { provider: "fal", model: DEFAULT_SEGMENT_MODEL },
+    animate: { provider: "fal", model: DEFAULT_ANIMATE_MODEL, resolution: "720p" },
   },
   evaluator: {
     model: "gpt-4o",
@@ -162,6 +212,8 @@ export const defaultConfig: Required<BasteUserConfig> = {
     qualityThreshold: 0.5,
   },
   outputCount: 3,
+  edit: false,
+  animate: false,
   assetTypes: [
     { kind: "svg", purpose: "icon", description: "App icon" },
     { kind: "image", purpose: "hero", description: "Hero banner", constraints: { aspectRatio: "21:9" } },
@@ -180,6 +232,8 @@ export interface GenerationOverrides {
   videoModel?: string;
   svgProvider?: string;
   evaluatorProvider?: EvaluatorConfig["provider"];
+  edit?: boolean;
+  animate?: AnimateMode | false;
 }
 
 /**
@@ -194,6 +248,8 @@ export function toBasteConfig(
   qd: QDConfig;
   outputCount: number;
   evaluator: EvaluatorConfig;
+  edit?: boolean;
+  animate?: AnimateMode;
 } {
   const qdCfg = { ...defaultConfig.qd, ...(userConfig.qd || {}) };
   const evalCfg = { ...defaultConfig.evaluator, ...(userConfig.evaluator || {}) };
@@ -223,12 +279,18 @@ export function toBasteConfig(
     (imageProvider === "gemini"
       ? process.env.GOOGLE_API_KEY
       : imageProvider === "fal" ? process.env.FAL_KEY : process.env.OPENAI_API_KEY);
+  const editCfg = userConfig.generators?.edit;
+  const segmentCfg = userConfig.generators?.segment;
+  const animateCfg = userConfig.generators?.animate;
   // fal-backed providers share one key; the first configured one wins.
   const falApiKey = [
     imageProvider === "fal" && imgCfg?.provider === "fal" ? imgCfg.apiKey : undefined,
     svgProvider === "fal" && svgCfg?.provider === "fal" ? svgCfg.apiKey : undefined,
     videoProvider === "fal" && vidCfg?.provider === "fal" ? vidCfg.apiKey : undefined,
+    editCfg?.apiKey, segmentCfg?.apiKey, animateCfg?.apiKey,
   ].find(Boolean) ?? process.env.FAL_KEY;
+  const animate = overrides?.animate ?? userConfig.animate;
+  if (animate && !ANIMATE_MODES.includes(animate)) throw new Error(`Unsupported animation: ${animate}. Choose parallax, video or both.`);
 
   return {
     generation: {
@@ -252,6 +314,11 @@ export function toBasteConfig(
       videoResolution: vidCfg?.quality,
       quiverApiKey: svgCfg?.apiKey ?? process.env.QUIVER_API_KEY,
       quiverBaseUrl: svgCfg?.baseUrl,
+      editModel: editCfg?.model ?? DEFAULT_EDIT_MODEL,
+      editRenderingSpeed: editCfg?.renderingSpeed,
+      segmentModel: segmentCfg?.model ?? DEFAULT_SEGMENT_MODEL,
+      animateModel: animateCfg?.model ?? DEFAULT_ANIMATE_MODEL,
+      animateResolution: animateCfg?.resolution,
     },
     qd: {
       features: qdCfg.features!,
@@ -261,6 +328,8 @@ export function toBasteConfig(
       qualityThreshold: qdCfg.qualityThreshold!,
     },
     outputCount: userConfig.outputCount ?? defaultConfig.outputCount,
+    ...((overrides?.edit ?? userConfig.edit) ? { edit: true } : {}),
+    ...(animate ? { animate } : {}),
     evaluator: {
       provider: evaluatorProvider,
       model: (savedEvaluator ? userConfig.evaluator?.model : undefined)
@@ -271,6 +340,7 @@ export function toBasteConfig(
       baseUrl: savedEvaluator ? evalCfg.baseUrl : undefined,
       temperature: evalCfg.temperature,
       weights: evalCfg.weights,
+      ...(evalCfg.vision === false ? { vision: false } : {}),
     },
   };
 }

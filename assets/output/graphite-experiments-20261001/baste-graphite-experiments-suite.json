@@ -1,0 +1,168 @@
+{
+  "persona": "baste-atelier",
+  "suite": "Graphite colour, dynamics and interaction",
+  "iterationsPerFamily": 5,
+  "candidateCount": 20,
+  "selected": [
+    {
+      "family": "chromatic-bath",
+      "round": 1,
+      "candidate": "baste-chromatic-bath-r1-20261001",
+      "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise"
+    },
+    {
+      "family": "chalk-strata",
+      "round": 4,
+      "candidate": "baste-chalk-strata-r4-20261001",
+      "features": "Repeated colour stops turn a height field into contour strata"
+    },
+    {
+      "family": "radial-dye",
+      "round": 3,
+      "candidate": "baste-radial-dye-r3-20261001",
+      "features": "Repeated radial geometry and time-driven colour/rotation"
+    },
+    {
+      "family": "interference-weave",
+      "round": 4,
+      "candidate": "baste-interference-weave-r4-20261001",
+      "features": "Two rotated arrays of dyed geometry form interference bands"
+    }
+  ],
+  "weights": {
+    "alignment": 0.3,
+    "visualQuality": 0.2,
+    "uniqueness": 0.2,
+    "coherence": 0.15,
+    "usability": 0.15
+  },
+  "assets": [
+    {
+      "file": "images/baste-chalk-strata-2560x1600-20261001.png",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 8759313,
+      "sha256": "bdf77dd17fb029a28da72fc05d96295db1650cd79af7324827ecd83508405370"
+    },
+    {
+      "file": "images/baste-chalk-strata-2560x1600-20261001.webp",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 1615438,
+      "sha256": "e87ddef67204c5318049534f7bafe804e84c0381b1d374ba676a5f3669723735"
+    },
+    {
+      "file": "images/baste-chromatic-bath-2560x1600-20261001.png",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 6284301,
+      "sha256": "2597bdc33793b09842203a4e67be46bbe6a21c64db235f761ef11ebc198e1d91"
+    },
+    {
+      "file": "images/baste-chromatic-bath-2560x1600-20261001.webp",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 1295044,
+      "sha256": "ff7a397bd1dbeb82a1933e1943c7537e75bf8c8ce9cebc5c8fff354899bc929c"
+    },
+    {
+      "file": "images/baste-interference-weave-2560x1600-20261001.png",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 2338961,
+      "sha256": "5038748a443a8c5a644668c8b55a8de8618bce6efef570331c3f7412fd5d7eec"
+    },
+    {
+      "file": "images/baste-interference-weave-2560x1600-20261001.webp",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 1380796,
+      "sha256": "5a61c7a94b127d581285aed4f1a80618e5065bf4444232d89b68b69e9f121958"
+    },
+    {
+      "file": "images/baste-radial-dye-2560x1600-20261001.png",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 1944398,
+      "sha256": "6e56104d49adb6c725200018201745b3443616bf5d7ba806d741aed279833937"
+    },
+    {
+      "file": "images/baste-radial-dye-2560x1600-20261001.webp",
+      "dimensions": [
+        2560,
+        1600
+      ],
+      "bytes": 485214,
+      "sha256": "57f95d65797885f62ed2d9207f6b9ee795f94858450b3a5e9e0ac6677f1d589d"
+    },
+    {
+      "file": "videos/baste-chromatic-bath-loop-20261001.gif",
+      "dimensions": [
+        640,
+        400
+      ],
+      "frames": 64,
+      "uniqueFrames": 64,
+      "durationMs": 8320,
+      "loop": 0,
+      "sha256": "9086d06fdf008357a2c5bd5c68a8dcb8bb3eedb09faab6c172a57780bc04a79f"
+    },
+    {
+      "file": "videos/baste-radial-dye-loop-20261001.gif",
+      "dimensions": [
+        640,
+        400
+      ],
+      "frames": 64,
+      "uniqueFrames": 64,
+      "durationMs": 8320,
+      "loop": 0,
+      "sha256": "bc79aef84390a05050ecb8d21ace026f593d0977e954ab1dc583d9a4a82a3299"
+    },
+    {
+      "file": "svg/baste-interference-weave-20261001.svg",
+      "bytes": 185881,
+      "sha256": "8e222e507481f3d9caeea243e6de62606f05da982cd2de356edb035a060a9262"
+    },
+    {
+      "file": "svg/baste-radial-dye-20261001.svg",
+      "bytes": 42685,
+      "sha256": "1d935b691b79d533047b740cbc29ccfa2527c253776e88b0e1088eec8c70b2a5"
+    }
+  ],
+  "relationships": {
+    "nativeDocuments": "documents/*.graphite",
+    "nativeAnimation": "AnimationTime -> GradientShift; AnimationTime -> Math -> domain warp or rotation",
+    "nativeInteraction": "PointerPosition -> radial field translation; headless compilation/render proved, editor pointer behaviour unverified",
+    "liveMaterials": "Baste WebGL implementation inspired by these techniques; not a Graphite runtime or native-document interpreter"
+  },
+  "verification": {
+    "candidateRenders": 20,
+    "highResolutionPngRenders": 4,
+    "gifRenders": 2,
+    "svgRenders": 2,
+    "allEngineExitCodes": 0,
+    "decodedAssets": true,
+    "browserReport": "qa/interaction-report.json",
+    "browserChecksPassed": 16,
+    "recipeTestsPassed": 3,
+    "siteBuild": "passed, including typecheck and lint",
+    "materialRoomDesktopAndMobileOverflow": false,
+    "galleryDownloadsVerified": 11,
+    "nativeGraphiteEditorPointerBehaviour": "not exercised"
+  }
+}

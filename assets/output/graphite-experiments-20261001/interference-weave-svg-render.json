@@ -1,0 +1,23 @@
+{
+  "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-20261001.svg",
+  "format": "svg",
+  "byteSize": 185881,
+  "sha256": "8e222e507481f3d9caeea243e6de62606f05da982cd2de356edb035a060a9262",
+  "validation": {
+    "valid": true,
+    "format": "svg",
+    "byteSize": 185881,
+    "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-20261001.svg"
+  },
+  "quarantine": {
+    "exitCode": 0,
+    "signal": null,
+    "quarantinedAfterWrite": false,
+    "stderrTail": ""
+  },
+  "renderMs": 368,
+  "exitCode": 0,
+  "signal": null,
+  "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-5f7309e4-5790-4a8c-a1a9-ad2fa617e6e7.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-20261001.svg --width 2560 --height 1600",
+  "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-5f7309e4-5790-4a8c-a1a9-ad2fa617e6e7.graphite"
+}

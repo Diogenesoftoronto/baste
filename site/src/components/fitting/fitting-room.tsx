@@ -124,7 +124,7 @@ export const FittingRoom = component$<FittingRoomProps>(({ personas, tokens, aut
               class="fitting-tab"
               style={{ "--tab-primary": pt.colors.primary, "--tab-accent": pt.colors.accent }}
             >
-              <img src={`/assets/companions/${p.id}.webp`} alt="" width={40} height={40} loading="lazy" decoding="async" />
+              <img src={`/assets/companions/${p.id}.avif`} alt="" width={40} height={40} loading="lazy" decoding="async" />
               <span>
                 <strong>{voiceOf(p.id).handle}</strong>
                 <small>{personaText(locale.value, p, p.name.replace(/^The /, ""))}</small>

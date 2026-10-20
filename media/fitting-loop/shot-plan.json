@@ -1,0 +1,508 @@
+{
+  "category": "webpage",
+  "duration_s": 8,
+  "fps": 30,
+  "canvas": {
+    "w": 1200,
+    "h": 630,
+    "aspect": "40:21"
+  },
+  "style": "Exact implementation of BRIEF.md: one interface, cut three times. A tailor's fitting table in pattern paper, three persona-token fittings, diagonal snip transitions. No redesign, no added copy or effects.",
+  "design_authority": "BRIEF.md",
+  "palette": [
+    "#F1ECE2",
+    "#1C1B19",
+    "#6E6A61",
+    "#D2402A",
+    "#2F55A4",
+    "#F0C534",
+    "#A9311E"
+  ],
+  "font": "Bodoni Moda",
+  "fonts": {
+    "delivery": "Google Fonts stylesheet links in composition HTML; verify rendered glyphs in proof snapshots",
+    "house": [
+      {
+        "family": "Bodoni Moda",
+        "weights": [
+          400,
+          600
+        ],
+        "italic": true
+      },
+      {
+        "family": "IBM Plex Mono",
+        "weights": [
+          400
+        ]
+      }
+    ],
+    "persona": [
+      {
+        "family": "Fraunces",
+        "weights": [
+          700
+        ]
+      },
+      {
+        "family": "Source Serif 4",
+        "weights": [
+          400
+        ]
+      },
+      {
+        "family": "Dela Gothic One",
+        "weights": [
+          400
+        ]
+      },
+      {
+        "family": "Instrument Sans",
+        "weights": [
+          400
+        ]
+      },
+      {
+        "family": "VT323",
+        "weights": [
+          400
+        ]
+      },
+      {
+        "family": "IBM Plex Sans",
+        "weights": [
+          400
+        ]
+      }
+    ]
+  },
+  "beats": [
+    1.2,
+    1.55,
+    1.9,
+    3.85,
+    4.2,
+    4.55,
+    6.5,
+    6.85,
+    7.2
+  ],
+  "export": "mp4",
+  "asset_needs": [],
+  "source_strategy": "The brief supplies all UI content, tokens and procedural geometry. No external webpage source or capture is needed. All visuals are DOM, CSS and SVG.",
+  "shot_brief": "A stationary Baste fitting table shows a left editorial lockup, central woven cloth with a pinned app garment, and right chalk token notes. The same app's obsession, spaces, music, chips, font, colors, radii and density change from cyberbotanist to nightmarketcoder to liminalweeb. Each change cuts the previous garment along a drawn diagonal red basting thread and reveals the next fitting. Cloth re-dyes, notes gently rise and fade, pins rock only subtly, and the final cyber fitting returns to exactly the starting state for a seamless loop.",
+  "customize": {
+    "catalog_policy": "Builder performs live registry searches before hand-authoring named looks. Reuse only where the exact specified design is preserved; diagonal cut binding and bespoke procedural UI may be authored as gaps. Do not select a catalog aesthetic that changes this brief.",
+    "runtime": "GSAP paused timeline registered on window.__timelines; deterministic at arbitrary seek times; palette through CSS custom properties"
+  },
+  "content": {
+    "layout": {
+      "ground": {
+        "color": "#F1ECE2",
+        "grid_px": 32,
+        "grid_color": "rgba(28,27,25,0.05)"
+      },
+      "left": {
+        "x_range": [
+          64,
+          420
+        ],
+        "wordmark": {
+          "text": "Baste",
+          "font": "Bodoni Moda",
+          "style": "italic",
+          "weight": 600,
+          "size_px": 56,
+          "color": "#1C1B19"
+        },
+        "copy": {
+          "lines": [
+            "Cut to fit",
+            "one person."
+          ],
+          "font": "Bodoni Moda",
+          "size_px": 30,
+          "color": "#1C1B19",
+          "emphasis": {
+            "text": "one",
+            "style": "italic",
+            "color": "#A9311E"
+          }
+        },
+        "basting_rule": {
+          "width_px": 1.5,
+          "dash_px": 12,
+          "gap_px": 8,
+          "color": "#D2402A"
+        },
+        "footer": {
+          "text": "persona → tokens → interface",
+          "font": "IBM Plex Mono",
+          "size_px": 13,
+          "color": "#6E6A61",
+          "position": "bottom-left"
+        }
+      },
+      "center": {
+        "x_range": [
+          450,
+          960
+        ],
+        "cloth": {
+          "rotation_deg": -1.6,
+          "edges": "pinked zig-zag top and bottom",
+          "shadow": "soft drop shadow",
+          "weave": {
+            "construction": "CSS repeating-linear-gradient warp primary over background weft at 90 degrees",
+            "on_px": 3,
+            "off_px": 3
+          },
+          "folds": "subtle diagonal light gradient"
+        },
+        "pins": {
+          "count": 2,
+          "head": "radial-gradient #F38A74 → #D2402A → #8E2615",
+          "rock_amplitude_deg": 1.5
+        },
+        "garment": {
+          "approx_width_px": 470,
+          "approx_height_px": 360,
+          "chrome": {
+            "dots": [
+              "primary",
+              "secondary",
+              "accent"
+            ],
+            "text": "<id>.app / collections",
+            "font": "IBM Plex Mono"
+          },
+          "eyebrow": {
+            "font": "IBM Plex Mono",
+            "case": "uppercase",
+            "color": "primary"
+          },
+          "heading": {
+            "font": "persona.heading",
+            "size_px": 34,
+            "liminal_size_px": 42
+          },
+          "buttons": [
+            {
+              "text": "Start a collection",
+              "style": "filled primary"
+            },
+            {
+              "text": "Browse",
+              "style": "ghost"
+            }
+          ],
+          "spaces": {
+            "title": "Pinned spaces",
+            "items": 3,
+            "bullets": "persona colors",
+            "background": "surface"
+          },
+          "music": {
+            "title": "Now playing",
+            "artist_font": "persona.heading",
+            "genre_color": "muted",
+            "progress_color": "primary",
+            "background": "surface"
+          },
+          "chips": {
+            "count": 3,
+            "content": "persona.keywords"
+          },
+          "background": "background",
+          "surfaces": "surface",
+          "border": "border",
+          "card_radius": "radius.xl",
+          "button_radius": "radius.base",
+          "padding_px_by_density": {
+            "minimal": 26,
+            "rich": 20,
+            "maximalist": 12
+          }
+        }
+      },
+      "right": {
+        "x_range": [
+          990,
+          1160
+        ],
+        "font": "IBM Plex Mono",
+        "size_px": 12,
+        "note_border": {
+          "width_px": 1.5,
+          "style": "dashed",
+          "side": "left",
+          "color": "#2F55A4"
+        },
+        "notes": [
+          "DISPLAY FACE <heading family>",
+          "PRIMARY <swatch + hex>",
+          "RADIUS <base · edge>",
+          "DENSITY <density>"
+        ]
+      }
+    },
+    "personas": [
+      {
+        "id": "cyberbotanist",
+        "eyebrow": "Pacific Northwest",
+        "heading": "Mycelial network topology",
+        "spaces": [
+          "greenhouses",
+          "herbariums",
+          "maker spaces with plants"
+        ],
+        "artist": "Biosphere",
+        "genre": "ambient",
+        "keywords": [
+          "Mushishi",
+          "Ernst Haeckel",
+          "bioluminescent"
+        ],
+        "tokens": {
+          "primary": "#a15d3f",
+          "secondary": "#5a8e3f",
+          "accent": "#35f3b5",
+          "background": "#fdf1eb",
+          "surface": "#fffbf9",
+          "border": "#dacec9",
+          "text": "#211815",
+          "muted": "#685a54",
+          "heading_font": "Fraunces",
+          "heading_weight": 700,
+          "body_font": "Source Serif 4",
+          "radius": {
+            "base": 12,
+            "xl": 32
+          },
+          "density": "rich",
+          "edge": "organic"
+        }
+      },
+      {
+        "id": "nightmarketcoder",
+        "eyebrow": "East Asian metropolitan",
+        "heading": "Point-of-sale systems",
+        "spaces": [
+          "night markets",
+          "convenience stores at 2am",
+          "rooftops"
+        ],
+        "artist": "Mariya Takeuchi",
+        "genre": "city pop",
+        "keywords": [
+          "Chungking Express",
+          "night markets",
+          "neon signage"
+        ],
+        "tokens": {
+          "primary": "#e44635",
+          "secondary": "#ebb230",
+          "accent": "#fe12a9",
+          "background": "#150d0c",
+          "surface": "#211816",
+          "border": "#3a302e",
+          "text": "#f5ecea",
+          "muted": "#b1a09d",
+          "heading_font": "Dela Gothic One",
+          "heading_weight": 400,
+          "body_font": "Instrument Sans",
+          "radius": {
+            "base": 4,
+            "xl": 12
+          },
+          "density": "maximalist",
+          "edge": "geometric"
+        }
+      },
+      {
+        "id": "liminalweeb",
+        "eyebrow": "Digital native",
+        "heading": "Lost media",
+        "spaces": [
+          "abandoned malls",
+          "empty pools",
+          "server rooms humming in the dark"
+        ],
+        "artist": "Macintosh Plus",
+        "genre": "vaporwave",
+        "keywords": [
+          "Serial Experiments Lain",
+          "liminal spaces",
+          "vaporwave"
+        ],
+        "tokens": {
+          "primary": "#3db2b2",
+          "secondary": "#dad59e",
+          "accent": "#d658cc",
+          "background": "#081111",
+          "surface": "#121d1d",
+          "border": "#2a3535",
+          "text": "#e7f1f0",
+          "muted": "#97a9a8",
+          "heading_font": "VT323",
+          "heading_weight": 400,
+          "heading_size_px": 42,
+          "body_font": "IBM Plex Sans",
+          "radius": {
+            "base": 8,
+            "xl": 16
+          },
+          "density": "minimal",
+          "edge": "soft"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "id": "cyber-hold-opening",
+        "start": 0,
+        "end": 1.2,
+        "persona": "cyberbotanist",
+        "motion": "Starts mid-hold, static layout and fully readable fitting"
+      },
+      {
+        "id": "snip-cyber-night",
+        "start": 1.2,
+        "end": 1.9,
+        "from": "cyberbotanist",
+        "to": "nightmarketcoder",
+        "motion": "snip"
+      },
+      {
+        "id": "night-hold",
+        "start": 1.9,
+        "end": 3.85,
+        "persona": "nightmarketcoder",
+        "motion": "hold"
+      },
+      {
+        "id": "snip-night-liminal",
+        "start": 3.85,
+        "end": 4.55,
+        "from": "nightmarketcoder",
+        "to": "liminalweeb",
+        "motion": "snip"
+      },
+      {
+        "id": "liminal-hold",
+        "start": 4.55,
+        "end": 6.5,
+        "persona": "liminalweeb",
+        "motion": "hold"
+      },
+      {
+        "id": "snip-liminal-cyber",
+        "start": 6.5,
+        "end": 7.2,
+        "from": "liminalweeb",
+        "to": "cyberbotanist",
+        "motion": "snip"
+      },
+      {
+        "id": "cyber-hold-closing",
+        "start": 7.2,
+        "end": 8,
+        "persona": "cyberbotanist",
+        "motion": "hold; exact state at end equals start"
+      }
+    ],
+    "snip": {
+      "duration_s": 0.7,
+      "thread": {
+        "shape": "diagonal across card",
+        "color": "#D2402A",
+        "style": "dashed",
+        "animation": "SVG stroke-dashoffset draw",
+        "duration_s": 0.35,
+        "ease": "power2.inOut"
+      },
+      "cut": {
+        "old_piece": "top-right clipped section",
+        "slide_px": 30,
+        "rotation": "small rotation away",
+        "fade": true,
+        "new_reveal": "clip-path along same diagonal",
+        "duration_s": 0.45,
+        "ease": "expo.out",
+        "timing": "overlap by 0.10s with thread draw so full transition completes within 0.70s"
+      },
+      "cloth": {
+        "animation": "crossfade re-dye",
+        "duration_s": 0.5,
+        "timing": "at cut/reveal"
+      },
+      "chalk_notes": {
+        "animation": "rise and fade",
+        "rise_px": 6,
+        "stagger_s": 0.04
+      }
+    },
+    "constant_life": {
+      "pins": "rock ±1.5 degrees, seek-safe and periodic over 8 seconds",
+      "cloth_gradient": "drift 6px, sine.inOut, seek-safe and periodic over 8 seconds",
+      "constraint": "No larger ambient movement; exact phase equality at 0 and 8"
+    }
+  },
+  "proof": {
+    "times_s": [
+      0.6,
+      1.55,
+      3,
+      5.5,
+      7.9
+    ],
+    "loop_compare_times_s": [
+      0,
+      8
+    ],
+    "still_time_s": 0.6,
+    "contact_sheet": "snapshots/proof/contact-sheet.jpg",
+    "gates": [
+      "hyperframes lint",
+      "hyperframes check",
+      "proof snapshots",
+      "self-inspected contact sheet",
+      "no overlaps",
+      "loaded font glyphs",
+      "exact persona colors",
+      "exact matching loop frames"
+    ]
+  },
+  "outputs": {
+    "mp4": {
+      "path": "renders/fitting-loop.mp4",
+      "quality": "high",
+      "width": 1200,
+      "height": 630,
+      "fps": 30,
+      "duration_s": 8
+    },
+    "gif": {
+      "path": "renders/fitting-loop.gif",
+      "width": 960,
+      "height": 504,
+      "fps": 15,
+      "max_bytes": 4000000,
+      "loop": "forever",
+      "palette": "ffmpeg palettegen/paletteuse; reduce fps/colors only if needed"
+    },
+    "og": {
+      "path": "renders/og-baste.png",
+      "width": 1200,
+      "height": 630,
+      "time_s": 0.6
+    },
+    "poster": {
+      "path": "renders/fitting-loop-poster.jpg",
+      "width": 1200,
+      "height": 630,
+      "time_s": 0.6,
+      "quality": 85
+    }
+  }
+}

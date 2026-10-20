@@ -1,0 +1,38 @@
+[
+  {
+    "family": "flax-linen",
+    "round": 1,
+    "review": {
+      "reviewer": "Codex subjective visual review",
+      "reason": "The first round has the most natural paper grain and a readable red selvedge. The quiet woven structure stays subordinate to text.",
+      "recommendedUse": "Main site or Studio ground."
+    }
+  },
+  {
+    "family": "cutting-room",
+    "round": 2,
+    "review": {
+      "reviewer": "Codex subjective visual review",
+      "reason": "The second round balances a warm material with visible garment contours. Its displaced seam reads as an intentional pattern fragment without crowding the reading area.",
+      "recommendedUse": "Hero and method sections."
+    }
+  },
+  {
+    "family": "chalk-draft",
+    "round": 1,
+    "review": {
+      "reviewer": "Codex subjective visual review",
+      "reason": "The first round preserves the blue chalk outline and ruler marks most clearly. Cooler stock distinguishes it from the two warm options while keeping the same atelier vocabulary.",
+      "recommendedUse": "A cooler Studio or documentation surface."
+    }
+  },
+  {
+    "family": "ink-selvedge",
+    "round": 1,
+    "review": {
+      "reviewer": "Codex subjective visual review",
+      "reason": "The first round keeps the dark cloth grain, red stitches and pale lower edge visible. Later rounds lose too much of the stitching at thumbnail size.",
+      "recommendedUse": "Showcase or closing section with light text."
+    }
+  }
+]

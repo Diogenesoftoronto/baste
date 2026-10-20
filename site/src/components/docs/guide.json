@@ -85,7 +85,7 @@
     "paragraphs": [
       "Open Generate and leave Dry run enabled for your first attempt. Choose Asset suite or Full UI kit, then Draft the prompts. Read the image, SVG and video briefs before making images.",
       "In the browser demo, the built-in personas replay a recorded run, as in the recording below, and your own personas draft prompts only; nothing new is generated. With generation available, choose an image model and review your spending limit before turning off Dry run. Follow the job’s progress and reopen earlier jobs from the history.",
-      "Hosted generation covers images and judging. A full kit also needs SVG and video services. If a service is unavailable, you can still draft prompts and continue refining your persona."
+      "Hosted generation covers images and judging, plus editing, segmentation and animation when the account provider enables them. A full kit still needs SVG services. If a service is unavailable, you can still draft prompts and continue refining your persona."
     ]
   },
   {
@@ -95,7 +95,7 @@
     "href": "/gui/?tab=generate",
     "paragraphs": [
       "Choose Not Organic to load the connected account’s authorized image models and wallet. If the catalog, judging model or verified balance is unavailable, follow the account prompt before attempting paid generation.",
-      "Iterations, Batch size and Per purpose determine how many candidates and final outputs the run explores. Maximum spend for this run is a USD ceiling, initially $1. The live plan counts image and judging requests before enabling a paid run.",
+      "Iterations, Batch size and Per purpose determine how many candidates and final outputs the run explores. Maximum spend for this run is a USD ceiling, initially $1. The live plan counts image and judging requests, plus selected edits, segmentation attempts and animation jobs, before enabling a paid run.",
       "If the plan exceeds your maximum, reduce candidate counts or explicitly raise the maximum. If it exceeds the operator’s server limit, reduce the maximum or candidates, or contact the operator. Insufficient or blocked wallet credit also prevents the run.",
       "Conservative request ceilings are spending limits, not quoted provider prices. Refresh the account to verify a missing balance. Prompt drafts remain available when paid generation is blocked."
     ]

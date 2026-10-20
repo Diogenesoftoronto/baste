@@ -281,10 +281,10 @@ export interface MaterialTry {
 }
 
 /** Thumbnails rendered from the shader itself (public/materials/swatches), so a swatch shows the real cloth. */
-export const presetSwatch = (id: string, wide = false) => `/materials/swatches/${id}${wide ? "-wide" : ""}.webp`;
+export const presetSwatch = (id: string, wide = false) => `/materials/swatches/${id}${wide ? "-wide" : ""}.avif`;
 const PERSONA_SWATCHES = new Set(["cyberbotanist", "nightmarketcoder", "liminalweeb"]);
 export const personaSwatch = (id: string, wide = false) =>
-  PERSONA_SWATCHES.has(id) ? `/materials/swatches/persona-${id}${wide ? "-wide" : ""}.webp` : undefined;
+  PERSONA_SWATCHES.has(id) ? `/materials/swatches/persona-${id}${wide ? "-wide" : ""}.avif` : undefined;
 
 /** A dye as the shader shows it after hue rotation (fabric-gl's tint()), for previews drawn in CSS. */
 export function tintHex(hex: string, degrees: number): string {

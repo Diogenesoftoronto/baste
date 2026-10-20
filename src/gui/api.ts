@@ -16,11 +16,15 @@ import {
   isBasePersona,
 } from "../notorganic/personas.js";
 import { accountScope, accountPath, accountKey } from "../notorganic/scope.js";
+import { MOODBOARD_FILE, boardKey, readMoodboards, type Moodboard } from "../persona/moodboard.js";
 import { accountManager, accountEnabled, publicOrigin, guardOrigin, AccountError, readJSON, normalizeWallet } from "../notorganic/server.js";
-import { generationPlan, IMAGE_REQUEST_MAX, JUDGEMENT_REQUEST_MAX, assertJudgementCeiling } from "../notorganic/budget.js";
+import { generationPlan, budgetedTransport } from "../notorganic/budget.js";
 import { extendPersona } from "../persona/builder.js";
-import { resolveConfig, toBasteConfig, type BasteUserConfig } from "../config/baste-config.js";
-import { generateAssetSuite, generateUIKit } from "../baste.js";
+import { ANIMATE_MODES, resolveConfig, toBasteConfig, type AnimateMode, type BasteUserConfig } from "../config/baste-config.js";
+import { generateAssetSuite, generateUIKit, type QDCandidate } from "../baste.js";
+import type { DerivedAssets } from "../assets/generators.js";
+import type { EvaluationResult } from "../evaluation/judge.js";
+import { personaAnimationSchema } from "../projects/schemas.js";
 import { generateDesignTokens, exportCSS, exportTailwindConfig, exportPandaTheme } from "../assets/design-system.js";
 import { slugifyUrl, safeFetch } from "../shared/url.js";
 import { loadBrandKit, saveBrandKit } from "../notorganic/brandkits.js";
@@ -42,12 +46,6 @@ import { applyProjectCommand, createProject, getProject, listProjects, ProjectEr
 const DEFAULT_CONFIG_PATH = "./baste.config.json";
 
 // In-memory moodboard + ranking store (persisted to disk best-effort)
-interface Moodboard {
-  personaId: string;
-  references: Array<{ id: string; src: string; tags: string[]; pinned: boolean; addedAt: number }>;
-  notes: string;
-  vibe: string[];
-}
 interface AssetRank {
   owner?: string;
   assetId: string;
@@ -58,9 +56,7 @@ interface AssetRank {
 }
 const moodboards = new Map<string, Moodboard>();
 const ranks: AssetRank[] = [];
-const MOODBOARD_FILE = ".baste/moodboards.json";
 const RANKS_FILE = ".baste/ranks.json";
-function boardKey(id: string): string { return accountKey() ? `${accountKey()}:${id}` : id; }
 
 import { mkdirSync } from "node:fs";
 import { converse, converseAvailable, readTurns } from "./converse.js";
@@ -86,10 +82,7 @@ function persistRanks(): void {
 }
 function loadStores(): void {
   try {
-    if (existsSync(resolve(MOODBOARD_FILE))) {
-      const data = JSON.parse(readFileSync(resolve(MOODBOARD_FILE), "utf-8")) as Array<Moodboard | [string, Moodboard]>;
-      data.forEach((m) => Array.isArray(m) ? moodboards.set(m[0], m[1]) : moodboards.set(m.personaId, m));
-    }
+    for (const [key, board] of readMoodboards()) moodboards.set(key, board);
     if (existsSync(resolve(RANKS_FILE))) {
       const data = JSON.parse(readFileSync(resolve(RANKS_FILE), "utf-8")) as AssetRank[];
       ranks.push(...data);
@@ -123,6 +116,8 @@ interface CandidateSummary {
   feedback: string;
   /** Archive cell this candidate holds at the end of the run. */
   cell?: string;
+  /** When it repaints another candidate's image: that image, and what changed. */
+  edit?: { from: string; layer: "background" | "subject"; subject: string; instruction: string };
 }
 
 const jobs = new Map<string, GenerationJob>();
@@ -200,6 +195,10 @@ const createPersonaHandler: RouteHandler = async (req, res) => {
     json(res, { error: "id and name are required" }, 400);
     return;
   }
+  if (body.animation !== undefined && !personaAnimationSchema.safeParse(body.animation).success) {
+    json(res, { error: "animation is malformed" }, 400);
+    return;
+  }
   if (isBasePersona(body.id)) {
     json(res, { error: `Cannot overwrite base persona "${body.id}"` }, 400);
     return;
@@ -221,6 +220,10 @@ const updatePersonaHandler: RouteHandler = async (req, res, params) => {
   }
   if (isBasePersona(params.id)) {
     json(res, { error: "Cannot modify base personas" }, 400);
+    return;
+  }
+  if (body.animation !== undefined && !personaAnimationSchema.safeParse(body.animation).success) {
+    json(res, { error: "animation is malformed" }, 400);
     return;
   }
   const updated: Persona = { ...existing, ...body, id: params.id };
@@ -279,6 +282,8 @@ interface GenerateRequest {
   imageModel?: string; videoProvider?: string; videoModel?: string;
   /** Local runs only: route SVG and judging through fal as well. */
   svgProvider?: string; evaluatorProvider?: string;
+  /** Local runs only: repaint candidates with the edit model, and animate final images. */
+  edit?: boolean; animate?: string;
   maxCostMicrousd?: number; qd?: { iterations?: number; batchSize?: number }; outputCount?: number;
 }
 function applyRunSettings(config: ReturnType<typeof toBasteConfig>, body: GenerateRequest): void {
@@ -294,7 +299,7 @@ const generationPlanHandler: RouteHandler = async (req, res, params) => {
   applyRunSettings(config, body);
   const assets = body.assetTypes ?? [{ kind: "image" }, { kind: "image" }];
   if (!Array.isArray(assets) || assets.length < 1 || assets.length > 8 || assets.some(a => !a || typeof a !== "object" || (a as { kind?: string }).kind !== "image")) throw new AccountError(400, "Choose 1–8 image assets for the spending plan.");
-  json(res, generationPlan(config, assets.length, body.maxCostMicrousd));
+  json(res, generationPlan({ ...config, edit: body.edit === true, animate: body.animate }, assets.length, body.maxCostMicrousd));
 };
 
 /**
@@ -314,6 +319,7 @@ const generateHandler: RouteHandler = async (req, res, params) => {
   if (context && (body.type === "ui-kit" || body.videoProvider || body.videoModel || body.svgProvider || body.evaluatorProvider || (body.imageProvider && body.imageProvider !== "notorganic") || (body.imageModel && body.imageModel !== "image") || body.assetTypes?.some(a => !a || typeof a !== "object" || (a as { kind?: string }).kind !== "image"))) {
     throw new AccountError(400, "Your Not Organic account supports image assets here. Choose an image suite; hosted SVG and video generation are unavailable.");
   }
+  if (body.animate && !ANIMATE_MODES.includes(body.animate as AnimateMode)) throw new AccountError(400, "Choose parallax, video or both to animate.");
   const config = resolveConfig();
   if (body.evaluatorProvider !== undefined && !["openai", "typesafe", "fal"].includes(body.evaluatorProvider)) throw new AccountError(400, "Choose an available judge.");
   const basteConfig = toBasteConfig(config, {
@@ -323,6 +329,8 @@ const generateHandler: RouteHandler = async (req, res, params) => {
     videoModel: body.videoModel,
     svgProvider: context ? undefined : body.svgProvider,
     evaluatorProvider: context ? undefined : body.evaluatorProvider as "openai" | "typesafe" | "fal" | undefined,
+    ...(body.edit === true ? { edit: true } : {}),
+    ...(body.animate ? { animate: body.animate as AnimateMode } : {}),
   });
   applyRunSettings(basteConfig, body);
   if (context && !body.dryRun) {
@@ -331,22 +339,14 @@ const generateHandler: RouteHandler = async (req, res, params) => {
     if (!plan.withinOperatorLimit) throw new AccountError(400, `This plan needs a ceiling of $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)}. The server allows $${(plan.operatorMaxCostMicrousd / 1000000).toFixed(2)} per suite. Reduce iterations, batch size or final variations.`);
     if (!plan.withinRequestedBudget) throw new AccountError(400, `This plan needs a ceiling of $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)}. Increase your spending limit or reduce iterations, batch size or final variations.`);
     const models = await (await context.fetch("/v1/models")).json() as { data?: Array<{ id: string }> };
-    if (!models.data?.some(m => m.id === "image") || !models.data.some(m => m.id === "judgement")) throw new AccountError(503, "Not Organic must enable image generation and Jev judgement for this suite.");
+    const requiredModels = ["image", "judgement", ...(basteConfig.edit || basteConfig.animate ? ["image-edit", "image-segment"] : []), ...(basteConfig.animate === "video" || basteConfig.animate === "both" ? ["image-animate"] : [])];
+    if (requiredModels.some(id => !models.data?.some(m => m.id === id))) throw new AccountError(503, "Not Organic must enable the selected image, judgement, edit and animation models for this suite.");
     const wallet = normalizeWallet(await (await context.fetch("/v1/wallet")).json());
     if (wallet.blocked || wallet.availableMicros < plan.minimumBudgetMicrousd) throw new AccountError(402, `Your available Not Organic credit must cover this plan's $${(plan.minimumBudgetMicrousd / 1000000).toFixed(2)} ceiling before generation starts. Open your wallet in Settings.`);
-    let remainingBudget = plan.requestedMaxCostMicrousd;
-    // Reserve every request's cost ceiling before dispatch, so concurrent QD candidates
-    // cannot exceed the operator's per-suite budget even if the upstream fails.
-    const budgetedFetch = async (path: string, init: RequestInit = {}) => {
-      const requestBudget = path === "/v1/judgement" ? JUDGEMENT_REQUEST_MAX : IMAGE_REQUEST_MAX;
-      if (requestBudget > remainingBudget) throw new AccountError(402, "This suite reached its spending limit. Reduce the number of iterations or assets.");
-      if (path === "/v1/judgement") assertJudgementCeiling(init.body);
-      remainingBudget -= requestBudget;
-      const headers = new Headers(init.headers);
-      headers.set("x-notorganic-max-cost-microusd", String(requestBudget));
-      return context.fetch(path, { ...init, headers });
-    };
+    const budgetedFetch = budgetedTransport(context.fetch, plan.requestedMaxCostMicrousd);
     basteConfig.generation.notOrganicFetch = budgetedFetch;
+    basteConfig.generation.editRenderingSpeed = "BALANCED";
+    basteConfig.generation.animateResolution = "720p";
     basteConfig.generation.outputDir = accountPath("assets/output", "assets/output");
     basteConfig.evaluator = { ...basteConfig.evaluator, provider: "notorganic", model: "judgement", apiKey: undefined, baseUrl: undefined, notOrganicFetch: budgetedFetch };
   }
@@ -368,11 +368,12 @@ const generateHandler: RouteHandler = async (req, res, params) => {
       const text = line.replace(/[\p{Extended_Pictographic}\uFE0F]/gu, "").trim();
       if (text) job.logs.push(text);
     },
-    candidate: (c: { path: string; generation: number; quality: number; features: number[]; criteria: object; feedback: string }) => {
+    candidate: (c: QDCandidate) => {
       job.candidates.push({
         url: `/api/assets/images/${encodeURIComponent(basename(c.path))}`,
         generation: c.generation, quality: c.quality, features: c.features,
-        criteria: c.criteria as Record<string, number>, feedback: c.feedback,
+        criteria: { ...c.criteria }, feedback: c.feedback,
+        ...(c.edit ? { edit: { ...c.edit, from: `/api/assets/images/${encodeURIComponent(basename(c.edit.from))}` } } : {}),
       });
     },
   };
@@ -432,10 +433,27 @@ const generateHandler: RouteHandler = async (req, res, params) => {
   })();
 };
 
-function assetSummary(asset: { id: string; content: string; metadata: { assetPurpose: string } }, kind: string, hosted: boolean, scores: Record<string, { overall: number }> = {}) {
+function assetSummary(asset: { id: string; content: string; metadata: { assetPurpose: string }; derived?: DerivedAssets }, kind: string, hosted: boolean, scores: Record<string, EvaluationResult> = {}) {
   const file = basename(asset.content);
-  const score = scores[asset.id]?.overall;
-  return { id: asset.id, purpose: asset.metadata.assetPurpose, path: hosted ? file : asset.content, url: `/api/assets/${kind}/${encodeURIComponent(file)}`, ...(score === undefined ? {} : { score }) };
+  const result = scores[asset.id];
+  const motion = result?.typesafe?.visual?.motion;
+  const url = (folder: string, path: string) => `/api/assets/${folder}/${encodeURIComponent(basename(path))}`;
+  const { layers, parallax, loop } = asset.derived ?? {};
+  return {
+    id: asset.id, purpose: asset.metadata.assetPurpose, path: hosted ? file : asset.content, url: url(kind, asset.content),
+    ...(result === undefined ? {} : { score: result.overall }),
+    ...(result?.typesafe ? { evidence: result.typesafe.evidence } : {}),
+    ...(motion ? { motion: { style: motion.style.choice, expected: motion.style.expected, seamless: motion.seamless, calm: motion.calm.score / (Object.keys(motion.calm.legend).length - 1) } } : {}),
+    ...(result?.improvements.length ? { improvements: result.improvements } : {}),
+    ...(layers ? { layers: { subject: layers.subject, foreground: url("layers", layers.foreground), background: url("layers", layers.background), mask: url("layers", layers.mask) } } : {}),
+    ...(parallax ? { parallax: { html: url("animation", parallax.html), spec: url("animation", parallax.spec), ...(parallax.video ? { video: url("animation", parallax.video) } : {}) } } : {}),
+    ...(loop ? { loop: {
+      transition: url("animation", loop.transition),
+      ...(loop.end ? { end: url("animation", loop.end) } : {}),
+      ...(loop.video ? { video: url("animation", loop.video) } : {}),
+      ...(loop.judged ? { judged: loop.judged } : {}),
+    } } : {}),
+  };
 }
 
 /** Record which streamed candidates ended the run holding an archive cell. */
@@ -451,9 +469,11 @@ function markCells(job: GenerationJob, candidates: Array<{ path: string; cell?: 
 /** Only media inside the requesting account's output directory can be downloaded. */
 const getAssetHandler: RouteHandler = async (_req, res, params) => {
   const { id: kind, assetId: file } = params;
-  const mime: Record<string, string> = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", svg: "image/svg+xml", mp4: "video/mp4" };
+  const mime: Record<string, string> = { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", svg: "image/svg+xml", mp4: "video/mp4", json: "application/json", html: "text/html; charset=utf-8" };
+  // Each folder serves only what Baste writes there; pages only from animation.
+  const allowed: Record<string, string[]> = { images: ["png", "jpg", "jpeg", "webp"], svg: ["svg"], videos: ["mp4"], layers: ["png"], animation: ["png", "mp4", "json", "html"] };
   const extension = file?.split(".").pop()?.toLowerCase() ?? "";
-  if (!file || !/^[a-zA-Z0-9_.-]{1,255}$/.test(file) || file.includes("..") || !mime[extension] || (accountEnabled() && (kind !== "images" || !["png", "jpg", "jpeg", "webp"].includes(extension)))) throw new AccountError(404, "Asset not found.");
+  if (!file || !/^[a-zA-Z0-9_.-]{1,255}$/.test(file) || file.includes("..") || !allowed[kind]?.includes(extension) || (accountEnabled() && (kind !== "images" || !["png", "jpg", "jpeg", "webp"].includes(extension)))) throw new AccountError(404, "Asset not found.");
   const localRoot = toBasteConfig(resolveConfig()).generation.outputDir;
   const root = accountPath(`assets/output/${kind}`, join(localRoot, kind));
   let path: string;
@@ -462,7 +482,9 @@ const getAssetHandler: RouteHandler = async (_req, res, params) => {
     path = realpathSync(join(root, file));
     if (!path.startsWith(`${realRoot}${sep}`) || !statSync(path).isFile()) throw new Error();
   } catch { throw new AccountError(404, "Asset not found."); }
-  res.writeHead(200, { "Content-Type": mime[extension], "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'" });
+  // A parallax page draws its inline layers with CSS; still sandboxed, with no scripts and no network.
+  const policy = extension === "html" ? "sandbox; default-src 'none'; img-src data:; style-src 'unsafe-inline'" : "sandbox; default-src 'none'; style-src 'unsafe-inline'";
+  res.writeHead(200, { "Content-Type": mime[extension], "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": policy });
   res.end(readFileSync(path));
 };
 
@@ -1181,7 +1203,7 @@ const routes: Array<[string, RegExp, RouteHandler]> = [
   ["POST", /^\/api\/projects$/, async (req, res) => { json(res, await createProject(await parseBody(req)), 201); }],
   ["GET", /^\/api\/projects\/([^/]+)$/, async (_req, res, params) => { json(res, await getProject(params.id)); }],
   ["POST", /^\/api\/projects\/([^/]+)\/commands$/, async (req, res, params) => { json(res, await applyProjectCommand(params.id, await parseBody(req))); }],
-  ["GET", /^\/api\/assets\/(images|svg|videos)\/([^/]+)$/, getAssetHandler],
+  ["GET", /^\/api\/assets\/(images|svg|videos|layers|animation)\/([^/]+)$/, getAssetHandler],
   ["GET", /^\/api\/moodboard\/([^/]+)$/, getMoodboardHandler],
   ["PUT", /^\/api\/moodboard\/([^/]+)$/, putMoodboardHandler],
   ["POST", /^\/api\/moodboard\/([^/]+)\/reference$/, addReferenceHandler],

@@ -1,0 +1,76 @@
+{
+  "model": "fal-ai/whisper",
+  "text": "Bring your own people. Measure them in the Studio, and cut something that fits.",
+  "heard": [
+    {
+      "text": "Bring",
+      "start": 0.03,
+      "end": 0.03
+    },
+    {
+      "text": "your",
+      "start": 0.03,
+      "end": 0.17
+    },
+    {
+      "text": "own",
+      "start": 0.17,
+      "end": 0.35
+    },
+    {
+      "text": "people,",
+      "start": 0.35,
+      "end": 0.81
+    },
+    {
+      "text": "measure",
+      "start": 0.81,
+      "end": 1.33
+    },
+    {
+      "text": "them",
+      "start": 1.33,
+      "end": 1.49
+    },
+    {
+      "text": "in",
+      "start": 1.49,
+      "end": 1.65
+    },
+    {
+      "text": "the",
+      "start": 1.65,
+      "end": 1.69
+    },
+    {
+      "text": "studio,",
+      "start": 1.69,
+      "end": 2.33
+    },
+    {
+      "text": "and",
+      "start": 2.33,
+      "end": 2.83
+    },
+    {
+      "text": "cut",
+      "start": 2.83,
+      "end": 2.99
+    },
+    {
+      "text": "something",
+      "start": 2.99,
+      "end": 3.25
+    },
+    {
+      "text": "that",
+      "start": 3.25,
+      "end": 3.45
+    },
+    {
+      "text": "fits.",
+      "start": 3.45,
+      "end": 3.91
+    }
+  ]
+}

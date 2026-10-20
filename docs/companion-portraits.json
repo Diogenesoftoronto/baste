@@ -4,7 +4,7 @@
       "id": "cyberbotanist",
       "example_identity": "moss",
       "source_crop": "docs/previews/companion-workroom-v2-20261008.png botanical portrait",
-      "output_path": "site/public/assets/companions/cyberbotanist.webp",
+      "output_path": "site/public/assets/companions/cyberbotanist.avif",
       "strategy": "Faithful built-in image generation from approved portrait style; ImageMagick dimension/format conversion only.",
       "prompt_used": "Use case: stylized-concept. Asset type: clean reusable Baste companion portrait, square 1024x1024, opaque, chest-up editorial photograph of a handmade clay and felt stop-motion miniature. Use the supplied workroom mock solely as the approved style reference: preserve the botanical portrait's tactile felt olive clothing, curly dark hair, intelligent warm expression, natural greenhouse lighting and photographed miniature material. Produce only the portrait, no surrounding UI. Subject: Moss, a mature adult botanical researcher in their late thirties, subtly mature face, thoughtful eyes, curly dark hair, felt olive overshirt over a textured oatmeal knit sweater, holding a small brass magnifier near a fern specimen. Background: greenhouse with leafy plants, glass panes and soft green daylight, shallow depth of field. Composition: square, chest-up, centered face with breathing room above hair, three-quarter posture, both head and shoulders fully inside frame; specimen and magnifier near lower edge. Preserve approved silhouette, palette, lighting, material and visual role. High-quality practical stop-motion puppet photographed with macro lens, visible wool fibers and hand sculpted clay surface, refined adult proportions. No text anywhere, no mug labels, no logos, no watermark, no UI chrome, card borders, rounded clipping, shadows from a UI card, caption bands, letterboxing or layout background. Do not redesign into childlike cartoon, plastic CGI or photoreal human. This is a built-in example identity, not a representation of a real person.",
       "dimensions": [
@@ -15,7 +15,7 @@
         1254,
         1254
       ],
-      "format": "webp",
+      "format": "avif",
       "bytes": 175376,
       "transparency": false,
       "deviations": "Full reusable square portrait removes mock mug/UI text and surrounding layout.",
@@ -25,7 +25,7 @@
       "id": "nightmarketcoder",
       "example_identity": "ren",
       "source_crop": "docs/previews/portrait-assets/cyberbotanist-source.png style family",
-      "output_path": "site/public/assets/companions/nightmarketcoder.webp",
+      "output_path": "site/public/assets/companions/nightmarketcoder.avif",
       "strategy": "Faithful built-in image generation from approved portrait style; ImageMagick dimension/format conversion only.",
       "prompt_used": "Use case: stylized-concept. Asset type: clean reusable Baste companion portrait, square 1024x1024, opaque. Use the supplied Moss portrait as binding visual family reference only: same photographed practical handmade clay-and-felt stop-motion puppet quality, visible wool fibers, sculpted clay adult face and macro lens lighting. Subject: Ren, a mature adult merchant and developer about forty, intelligent observant expression, dark short hair, knitted charcoal beanie, warm medium brown clay skin, subtle smile and mature facial contours; practical felt muted-red work jacket over dark shirt. Background: softly defocused warm night market, amber lanterns and small shop awnings with blank sign surfaces, teal night shadows. Square chest-up editorial portrait, relaxed three-quarter posture, head and shoulders fully within frame with breathing room above beanie, gaze toward viewer, useful identity image at small sizes. Preserve approved portrait role, tactile material and framing; different cultural world from Moss. No visible readable text or symbols, no logo, no watermark, no UI, captions, borders, rounded corners, layout shadows, letterboxing. No additional characters, no plastic CGI, no childlike proportions. A built-in fictional example identity, not a real person.",
       "dimensions": [
@@ -36,7 +36,7 @@
         1254,
         1254
       ],
-      "format": "webp",
+      "format": "avif",
       "bytes": 168322,
       "transparency": false,
       "deviations": "Distinct assigned example character generated within approved tactile family.",
@@ -46,7 +46,7 @@
       "id": "liminalweeb",
       "example_identity": "ada",
       "source_crop": "docs/previews/portrait-assets/cyberbotanist-source.png style family",
-      "output_path": "site/public/assets/companions/liminalweeb.webp",
+      "output_path": "site/public/assets/companions/liminalweeb.avif",
       "strategy": "Faithful built-in image generation from approved portrait style; ImageMagick dimension/format conversion only.",
       "prompt_used": "Use case: stylized-concept. Asset type: clean reusable Baste companion portrait, square 1024x1024, opaque. Use supplied Moss portrait as binding material/style-family reference: photographed practical handmade clay-and-felt stop-motion miniature, visible wool fibers, sculpted clay skin, editorial macro lens, mature intelligent character. Subject: Ada, mature adult archive curator in their sixties, silver-grey wavy hair swept away from face, round dark spectacles, subtle wrinkles, thoughtful warm expression, worn dark-blue felt cardigan over oatmeal linen shirt. Background: dim quiet archive studio, old beige computer with blank dark screen, wood shelves, modest stacks of archive folders and books with blank spines, dusty softly lit blue-grey ambience and warm desk light. Composition: square chest-up portrait, face centered, slight three-quarter posture, eyes toward viewer, complete head and shoulders with breathing room above hair; adults rather than children. Preserve family tactile lighting/material; clearly distinct older face and archival world. No readable text anywhere, no logos, watermark, UI cards, rounded corners, border, caption, letterboxing or page background. No additional people, no plastic CGI, no childlike cartoon. Built-in fictional example identity, not a real person.",
       "dimensions": [
@@ -57,7 +57,7 @@
         1254,
         1254
       ],
-      "format": "webp",
+      "format": "avif",
       "bytes": 149776,
       "transparency": false,
       "deviations": "Distinct assigned example character generated within approved tactile family.",
@@ -77,13 +77,13 @@
     "Moss botanical family anchor",
     "Ren night-market portrait",
     "Ada archive portrait",
-    "Resize to 1024 square and encode WebP quality 88",
+    "Resize to 1024 square and encode AVIF at CRF 20 (10-bit, 4:4:4)",
     "Visual comparison of generated sources and production assets"
   ],
   "blockers": [],
   "assumptions": [
     "Assigned portraits are generic built-in examples, not dynamically generated target personas.",
-    "Opaque square 1024 assets. Source PNGs and prompts remain in review archive; production folder contains only consumed WebP files.",
+    "Opaque square 1024 assets. Source PNGs and prompts remain in review archive; production folder contains only AVIF delivery files and retained WebP sources.",
     "Visual QA: inspected all three outputs against assigned roles and approved reference; mature facial features, no readable text/chrome, complete heads, consistent tactile family."
   ],
   "recovered_from": "Entire session 01a11a13-cfc9-7d03-977d-8f982f17f22d; Baste worktree 73bc, companion visual studies of 2026-10-08"

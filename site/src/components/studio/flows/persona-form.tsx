@@ -4,8 +4,8 @@ import { $, component$, useComputed$, useContext, useStore, useVisibleTask$ } fr
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, refreshPersonas, selectPersona, toast } from "../context";
 import { act, fieldLabel, hint, input, kicker, panel, panelTitle, splitList, textarea } from "../ui";
-import { AESTHETIC_AXES } from "~/lib/fitting";
-import type { AestheticProfile, Persona } from "~/lib/api-types";
+import { AESTHETIC_AXES, ANIMATION_AXES } from "~/lib/fitting";
+import type { AestheticProfile, Persona, PersonaAnimation } from "~/lib/api-types";
 import { play } from "~/lib/juice";
 
 const LIST_FIELDS = [
@@ -34,8 +34,14 @@ interface FormState {
   aesthetic: Record<string, string>;
   keywords: string;
   mood: string;
+  /** How their world moves: lists as comma-separated text, choices as option names. */
+  motion: { motifs: string; subjects: string; avoid: string; depth: string; camera: string; focus: string; loopSeconds: string };
   busy: boolean;
 }
+
+/** A motion style's camera when the persona has no animation of its own (as the server derives it). */
+const CAMERA_FOR: Record<string, string> = { smooth: "drift", snappy: "locked", liquid: "orbit", mechanical: "push" };
+const DEPTH_FOR: Record<string, string> = { minimal: "deep", rich: "parallax", dense: "parallax", maximalist: "flat" };
 
 const slug = (v: string) => v.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -56,6 +62,7 @@ export const PersonaForm = component$(() => {
     aesthetic: Object.fromEntries(AESTHETIC_AXES.map((a) => [a.key, a.options[0]])),
     keywords: "",
     mood: "",
+    motion: { motifs: "", subjects: "", avoid: "", depth: "parallax", camera: "drift", focus: "background", loopSeconds: "" },
     busy: false,
   });
 
@@ -81,6 +88,14 @@ export const PersonaForm = component$(() => {
     for (const a of AESTHETIC_AXES) f.aesthetic[a.key] = String(p.aesthetic[a.key as keyof AestheticProfile]);
     f.keywords = j(p.aesthetic.visualKeywords);
     f.mood = j(p.aesthetic.moodKeywords);
+    const motion = p.animation;
+    f.motion = {
+      motifs: j(motion?.motifs), subjects: j(motion?.subjects), avoid: j(motion?.avoid),
+      depth: motion?.depth ?? DEPTH_FOR[p.aesthetic.density] ?? "parallax",
+      camera: motion?.camera ?? CAMERA_FOR[p.aesthetic.motionStyle] ?? "drift",
+      focus: motion?.focus ?? "background",
+      loopSeconds: motion?.loopSeconds ? String(motion.loopSeconds) : "",
+    };
   });
 
   const completeness = useComputed$(() => {
@@ -98,6 +113,18 @@ export const PersonaForm = component$(() => {
     }
     const L = (k: ListKey) => splitList(f.lists[k]);
     const base = editing ? source : undefined;
+    const seconds = Number(f.motion.loopSeconds);
+    // Saved only once someone describes it; otherwise the server derives it from the aesthetic.
+    const described = [f.motion.motifs, f.motion.subjects, f.motion.avoid, f.motion.loopSeconds].some((v) => v.trim())
+      || !!source?.animation
+      || f.motion.depth !== (DEPTH_FOR[f.aesthetic.density] ?? "parallax")
+      || f.motion.camera !== (CAMERA_FOR[f.aesthetic.motionStyle] ?? "drift")
+      || f.motion.focus !== "background";
+    const animation: PersonaAnimation | undefined = described ? {
+      motifs: splitList(f.motion.motifs), subjects: splitList(f.motion.subjects), avoid: splitList(f.motion.avoid),
+      depth: f.motion.depth as PersonaAnimation["depth"], camera: f.motion.camera as PersonaAnimation["camera"], focus: f.motion.focus as PersonaAnimation["focus"],
+      ...(Number.isFinite(seconds) && seconds >= 1 ? { loopSeconds: Math.min(60, Math.round(seconds)) } : {}),
+    } : undefined;
     const persona: Persona = {
       ...(base as Persona | undefined),
       id,
@@ -121,6 +148,7 @@ export const PersonaForm = component$(() => {
         visualKeywords: splitList(f.keywords),
         moodKeywords: splitList(f.mood),
       },
+      ...(animation ? { animation } : {}),
     } as Persona;
 
     f.busy = true;
@@ -233,6 +261,49 @@ export const PersonaForm = component$(() => {
             <label class={fieldLabel} for="pf-mood">{text(locale.value, "Mood keywords")}</label>
             <input id="pf-mood" class={input} placeholder={text(locale.value, "growth, hidden complexity")} value={f.mood} onInput$={(_, el) => (f.mood = el.value)} />
           </div>
+        </div>
+      </section>
+
+      <section class={panel} aria-labelledby="pf-motion">
+        <h2 id="pf-motion" class={panelTitle}>How their world moves</h2>
+        <p class={hint}>Drives layered edits, parallax loops and video loops. Leave it as it is to follow the motion style above.</p>
+        <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "1fr 1fr" }, gap: 4, mt: 4 })}>
+          <div>
+            <label class={fieldLabel} for="pf-motifs">What moves</label>
+            <input id="pf-motifs" class={input} placeholder="spores drifting, neon flickering on" value={f.motion.motifs} onInput$={(_, el) => (f.motion.motifs = el.value)} />
+            <p class={hint}>Loops and end frames show these at their height.</p>
+          </div>
+          <div>
+            <label class={fieldLabel} for="pf-subjects">Subjects to cut out</label>
+            <input id="pf-subjects" class={input} placeholder="lantern, fern, mannequin" value={f.motion.subjects} onInput$={(_, el) => (f.motion.subjects = el.value)} />
+            <p class={hint}>Things that can stand apart as a front layer.</p>
+          </div>
+          <div>
+            <label class={fieldLabel} for="pf-avoid">Motion they can't stand</label>
+            <input id="pf-avoid" class={input} placeholder="fast cuts, shaky camera" value={f.motion.avoid} onInput$={(_, el) => (f.motion.avoid = el.value)} />
+          </div>
+          <div>
+            <label class={fieldLabel} for="pf-loop">Loop length · seconds</label>
+            <input id="pf-loop" class={input} type="number" inputMode="numeric" min="2" max="12" step="1" placeholder="From the motion style" value={f.motion.loopSeconds} onInput$={(_, el) => (f.motion.loopSeconds = el.value)} />
+          </div>
+        </div>
+        <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "repeat(3, 1fr)" }, gap: 5, mt: 5 })}>
+          {ANIMATION_AXES.map((ax) => (
+            <fieldset key={ax.key} class={css({ border: 0, p: 0 })}>
+              <legend class={fieldLabel}>{ax.label}</legend>
+              <div class={css({ display: "flex", flexWrap: "wrap", gap: "6px" })}>
+                {ax.options.map((o) => (
+                  <label
+                    key={o}
+                    class={css({ display: "inline-flex", alignItems: "center", h: "30px", px: 3, rounded: "full", border: "1px solid token(colors.rule-strong)", fontSize: "13px", bg: "card", transition: "all 0.15s", "&:has(input:checked)": { bg: "ink", color: "paper", borderColor: "ink" }, "&:has(input:focus-visible)": { outline: "2px solid token(colors.chalk)", outlineOffset: "2px" } })}
+                  >
+                    <input type="radio" name={`motion-${ax.key}`} value={o} checked={f.motion[ax.key] === o} onChange$={() => (f.motion[ax.key] = o)} class={css({ position: "absolute", opacity: 0, w: 0, h: 0 })} />
+                    {o}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
         </div>
       </section>
 

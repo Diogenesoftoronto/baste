@@ -76,7 +76,7 @@ const MotionStudy = component$<{ study: Study }>(({ study }) => {
       <video
         ref={video}
         src={study.files.find((f) => f.kind === "MP4")!.href}
-        poster={`${DIR}/${study.id}.webp`}
+        poster={`${DIR}/${study.id}.avif`}
         width={1024}
         height={640}
         muted
@@ -114,7 +114,7 @@ export const GraphiteStudies = component$(() => {
               <MotionStudy study={s} />
             ) : (
               <div class="mr-study-media">
-                <img src={`${DIR}/${s.id}.webp`} width={1024} height={640} loading="lazy" decoding="async" alt={`${s.name}, a Graphite study`} />
+                <img src={`${DIR}/${s.id}.avif`} width={1024} height={640} loading="lazy" decoding="async" alt={`${s.name}, a Graphite study`} />
               </div>
             )}
             <div class="mr-study-body">

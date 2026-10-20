@@ -233,7 +233,7 @@ export const Conversation = component$<ConversationProps>(({ personas, tokens, i
               onClick$={() => open(p.id)}
               class="companion-choice"
             >
-              <img src={`/assets/companions/${p.id}.webp`} width={48} height={48} alt="" loading="lazy" />
+              <img src={`/assets/companions/${p.id}.avif`} width={48} height={48} alt="" loading="lazy" />
               <span><strong>{v.handle}</strong><small>{PORTRAITS[p.id]?.world ?? p.name}</small></span>
               <span class="companion-selected" aria-hidden="true">↗</span>
             </button>
@@ -244,7 +244,7 @@ export const Conversation = component$<ConversationProps>(({ personas, tokens, i
       {/* Keep DOM and event captures specific to the selected thread. */}
       <section key={persona.value.id} id="conversation-panel" role="tabpanel" aria-labelledby={`talk-${persona.value.id}`} class="conversation-panel">
         <aside class="companion-profile" aria-label={`Meet ${voice.handle}`}>
-          <div class="companion-portrait-frame"><img class="companion-portrait" src={`/assets/companions/${persona.value.id}.webp`} width={1024} height={1024} alt={profile.alt} loading="lazy" /></div>
+          <div class="companion-portrait-frame"><img class="companion-portrait" src={`/assets/companions/${persona.value.id}.avif`} width={1024} height={1024} alt={profile.alt} loading="lazy" /></div>
           <div class="companion-profile-copy">
             <p class="companion-world">{profile.world}</p>
             <h3>{profile.line}</h3>

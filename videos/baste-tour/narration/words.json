@@ -1,0 +1,937 @@
+{
+  "scenes": [
+    {
+      "id": "why",
+      "voiceStart": 0.45,
+      "words": [
+        {
+          "text": "Most",
+          "start": 0.48,
+          "end": 0.56
+        },
+        {
+          "text": "interfaces",
+          "start": 0.56,
+          "end": 0.98
+        },
+        {
+          "text": "are",
+          "start": 0.98,
+          "end": 1.36
+        },
+        {
+          "text": "cut",
+          "start": 1.36,
+          "end": 1.54
+        },
+        {
+          "text": "for",
+          "start": 1.54,
+          "end": 1.8
+        },
+        {
+          "text": "“users",
+          "start": 1.8,
+          "end": 2.2
+        },
+        {
+          "text": "aged",
+          "start": 2.2,
+          "end": 2.78
+        },
+        {
+          "text": "twenty-five",
+          "start": 2.78,
+          "end": 3.28
+        },
+        {
+          "text": "to",
+          "start": 3.28,
+          "end": 3.76
+        },
+        {
+          "text": "thirty-four.”",
+          "start": 3.76,
+          "end": 5.04
+        },
+        {
+          "text": "Nobody",
+          "start": 5.04,
+          "end": 5.16
+        },
+        {
+          "text": "in",
+          "start": 5.16,
+          "end": 5.42
+        },
+        {
+          "text": "that",
+          "start": 5.42,
+          "end": 5.56
+        },
+        {
+          "text": "bracket",
+          "start": 5.56,
+          "end": 5.84
+        },
+        {
+          "text": "has",
+          "start": 5.84,
+          "end": 6.06
+        },
+        {
+          "text": "taste.",
+          "start": 6.06,
+          "end": 6.62
+        },
+        {
+          "text": "A",
+          "start": 7,
+          "end": 7.02
+        },
+        {
+          "text": "person",
+          "start": 7.02,
+          "end": 7.32
+        },
+        {
+          "text": "does.",
+          "start": 7.32,
+          "end": 8.22
+        }
+      ]
+    },
+    {
+      "id": "measure",
+      "voiceStart": 9.183,
+      "words": [
+        {
+          "text": "Baste",
+          "start": 9.213,
+          "end": 9.353
+        },
+        {
+          "text": "starts",
+          "start": 9.353,
+          "end": 9.693
+        },
+        {
+          "text": "with",
+          "start": 9.693,
+          "end": 10.053
+        },
+        {
+          "text": "one",
+          "start": 10.053,
+          "end": 10.293
+        },
+        {
+          "text": "person:",
+          "start": 10.293,
+          "end": 10.853
+        },
+        {
+          "text": "the",
+          "start": 10.853,
+          "end": 11.273
+        },
+        {
+          "text": "films",
+          "start": 11.273,
+          "end": 11.593
+        },
+        {
+          "text": "they",
+          "start": 11.593,
+          "end": 11.813
+        },
+        {
+          "text": "rewatch,",
+          "start": 11.813,
+          "end": 12.633
+        },
+        {
+          "text": "the",
+          "start": 12.633,
+          "end": 12.933
+        },
+        {
+          "text": "music",
+          "start": 12.933,
+          "end": 13.253
+        },
+        {
+          "text": "they",
+          "start": 13.253,
+          "end": 13.433
+        },
+        {
+          "text": "work",
+          "start": 13.433,
+          "end": 13.713
+        },
+        {
+          "text": "to,",
+          "start": 13.713,
+          "end": 14.113
+        },
+        {
+          "text": "the",
+          "start": 14.113,
+          "end": 14.653
+        },
+        {
+          "text": "rooms",
+          "start": 14.653,
+          "end": 14.953
+        },
+        {
+          "text": "they",
+          "start": 14.953,
+          "end": 15.153
+        },
+        {
+          "text": "feel",
+          "start": 15.153,
+          "end": 15.373
+        },
+        {
+          "text": "at",
+          "start": 15.373,
+          "end": 15.493
+        },
+        {
+          "text": "home",
+          "start": 15.493,
+          "end": 15.733
+        },
+        {
+          "text": "in,",
+          "start": 15.733,
+          "end": 16.073
+        },
+        {
+          "text": "and",
+          "start": 16.073,
+          "end": 16.493
+        },
+        {
+          "text": "the",
+          "start": 16.493,
+          "end": 16.573
+        },
+        {
+          "text": "things",
+          "start": 16.573,
+          "end": 16.833
+        },
+        {
+          "text": "they",
+          "start": 16.833,
+          "end": 17.033
+        },
+        {
+          "text": "can’t",
+          "start": 17.033,
+          "end": 17.413
+        },
+        {
+          "text": "stand",
+          "start": 17.413,
+          "end": 17.633
+        },
+        {
+          "text": "in",
+          "start": 17.633,
+          "end": 17.873
+        },
+        {
+          "text": "an",
+          "start": 17.873,
+          "end": 17.953
+        },
+        {
+          "text": "app.",
+          "start": 17.953,
+          "end": 18.313
+        }
+      ]
+    },
+    {
+      "id": "fitting",
+      "voiceStart": 19.716,
+      "words": [
+        {
+          "text": "Then",
+          "start": 19.746,
+          "end": 19.786
+        },
+        {
+          "text": "it",
+          "start": 19.786,
+          "end": 19.886
+        },
+        {
+          "text": "fits",
+          "start": 19.886,
+          "end": 20.066
+        },
+        {
+          "text": "an",
+          "start": 20.066,
+          "end": 20.226
+        },
+        {
+          "text": "interface",
+          "start": 20.226,
+          "end": 20.486
+        },
+        {
+          "text": "to",
+          "start": 20.486,
+          "end": 20.746
+        },
+        {
+          "text": "them.",
+          "start": 20.746,
+          "end": 21.046
+        },
+        {
+          "text": "Same",
+          "start": 21.366,
+          "end": 21.426
+        },
+        {
+          "text": "screen,",
+          "start": 21.426,
+          "end": 22.066
+        },
+        {
+          "text": "three",
+          "start": 22.066,
+          "end": 22.446
+        },
+        {
+          "text": "people.",
+          "start": 22.446,
+          "end": 22.946
+        },
+        {
+          "text": "The",
+          "start": 23.486,
+          "end": 23.586
+        },
+        {
+          "text": "layout,",
+          "start": 23.586,
+          "end": 24.146
+        },
+        {
+          "text": "the",
+          "start": 24.146,
+          "end": 24.346
+        },
+        {
+          "text": "type,",
+          "start": 24.346,
+          "end": 24.886
+        },
+        {
+          "text": "the",
+          "start": 24.886,
+          "end": 25.126
+        },
+        {
+          "text": "colour",
+          "start": 25.126,
+          "end": 25.566
+        },
+        {
+          "text": "and",
+          "start": 25.566,
+          "end": 25.786
+        },
+        {
+          "text": "the",
+          "start": 25.786,
+          "end": 25.866
+        },
+        {
+          "text": "motion",
+          "start": 25.866,
+          "end": 26.206
+        },
+        {
+          "text": "all",
+          "start": 26.206,
+          "end": 26.366
+        },
+        {
+          "text": "change.",
+          "start": 26.366,
+          "end": 26.746
+        }
+      ]
+    },
+    {
+      "id": "baste",
+      "voiceStart": 27.816,
+      "words": [
+        {
+          "text": "To",
+          "start": 27.846,
+          "end": 27.846
+        },
+        {
+          "text": "find",
+          "start": 27.846,
+          "end": 28.006
+        },
+        {
+          "text": "a",
+          "start": 28.006,
+          "end": 28.106
+        },
+        {
+          "text": "direction,",
+          "start": 28.106,
+          "end": 28.706
+        },
+        {
+          "text": "Baste",
+          "start": 28.706,
+          "end": 29.186
+        },
+        {
+          "text": "tries",
+          "start": 29.186,
+          "end": 29.386
+        },
+        {
+          "text": "dozens",
+          "start": 29.386,
+          "end": 30.046
+        },
+        {
+          "text": "of",
+          "start": 30.046,
+          "end": 30.386
+        },
+        {
+          "text": "loose",
+          "start": 30.386,
+          "end": 30.526
+        },
+        {
+          "text": "versions,",
+          "start": 30.526,
+          "end": 31.266
+        },
+        {
+          "text": "warm",
+          "start": 31.266,
+          "end": 31.806
+        },
+        {
+          "text": "and",
+          "start": 31.806,
+          "end": 32.146
+        },
+        {
+          "text": "cool,",
+          "start": 32.146,
+          "end": 32.806
+        },
+        {
+          "text": "sparse",
+          "start": 32.806,
+          "end": 33.486
+        },
+        {
+          "text": "and",
+          "start": 33.486,
+          "end": 33.706
+        },
+        {
+          "text": "dense,",
+          "start": 33.846,
+          "end": 34.186
+        },
+        {
+          "text": "and",
+          "start": 34.186,
+          "end": 34.746
+        },
+        {
+          "text": "a",
+          "start": 34.746,
+          "end": 34.826
+        },
+        {
+          "text": "vision",
+          "start": 34.826,
+          "end": 35.066
+        },
+        {
+          "text": "judge",
+          "start": 35.066,
+          "end": 35.306
+        },
+        {
+          "text": "looks",
+          "start": 35.306,
+          "end": 35.626
+        },
+        {
+          "text": "at",
+          "start": 35.626,
+          "end": 35.826
+        },
+        {
+          "text": "every",
+          "start": 35.826,
+          "end": 36.146
+        },
+        {
+          "text": "one.",
+          "start": 36.146,
+          "end": 36.566
+        }
+      ]
+    },
+    {
+      "id": "fit",
+      "voiceStart": 37.749,
+      "words": [
+        {
+          "text": "It",
+          "start": 37.779,
+          "end": 37.779
+        },
+        {
+          "text": "keeps",
+          "start": 37.779,
+          "end": 37.979
+        },
+        {
+          "text": "the",
+          "start": 37.979,
+          "end": 38.179
+        },
+        {
+          "text": "best",
+          "start": 38.179,
+          "end": 38.479
+        },
+        {
+          "text": "in",
+          "start": 38.479,
+          "end": 38.699
+        },
+        {
+          "text": "each",
+          "start": 38.699,
+          "end": 38.859
+        },
+        {
+          "text": "region,",
+          "start": 38.859,
+          "end": 39.419
+        },
+        {
+          "text": "not",
+          "start": 39.419,
+          "end": 39.839
+        },
+        {
+          "text": "one",
+          "start": 39.839,
+          "end": 40.039
+        },
+        {
+          "text": "winner.",
+          "start": 40.039,
+          "end": 40.499
+        },
+        {
+          "text": "So",
+          "start": 40.499,
+          "end": 40.919
+        },
+        {
+          "text": "you",
+          "start": 40.919,
+          "end": 41.039
+        },
+        {
+          "text": "see",
+          "start": 41.039,
+          "end": 41.219
+        },
+        {
+          "text": "the",
+          "start": 41.219,
+          "end": 41.359
+        },
+        {
+          "text": "real",
+          "start": 41.359,
+          "end": 41.639
+        },
+        {
+          "text": "range",
+          "start": 41.639,
+          "end": 41.999
+        },
+        {
+          "text": "of",
+          "start": 41.999,
+          "end": 42.179
+        },
+        {
+          "text": "options",
+          "start": 42.179,
+          "end": 42.499
+        },
+        {
+          "text": "before",
+          "start": 42.739,
+          "end": 42.839
+        },
+        {
+          "text": "anything",
+          "start": 42.839,
+          "end": 43.159
+        },
+        {
+          "text": "is",
+          "start": 43.159,
+          "end": 43.419
+        },
+        {
+          "text": "final.",
+          "start": 43.419,
+          "end": 43.859
+        }
+      ]
+    },
+    {
+      "id": "cut",
+      "voiceStart": 45.482,
+      "words": [
+        {
+          "text": "What",
+          "start": 45.512,
+          "end": 45.512
+        },
+        {
+          "text": "comes",
+          "start": 45.512,
+          "end": 45.712
+        },
+        {
+          "text": "out",
+          "start": 45.712,
+          "end": 46.072
+        },
+        {
+          "text": "is",
+          "start": 46.072,
+          "end": 46.192
+        },
+        {
+          "text": "ready",
+          "start": 46.192,
+          "end": 46.432
+        },
+        {
+          "text": "to",
+          "start": 46.432,
+          "end": 46.592
+        },
+        {
+          "text": "use:",
+          "start": 46.592,
+          "end": 47.072
+        },
+        {
+          "text": "images,",
+          "start": 47.412,
+          "end": 48.032
+        },
+        {
+          "text": "vector",
+          "start": 48.032,
+          "end": 48.452
+        },
+        {
+          "text": "icons,",
+          "start": 48.452,
+          "end": 49.432
+        },
+        {
+          "text": "ambient",
+          "start": 49.432,
+          "end": 49.832
+        },
+        {
+          "text": "loops,",
+          "start": 49.832,
+          "end": 50.492
+        },
+        {
+          "text": "and",
+          "start": 50.492,
+          "end": 50.932
+        },
+        {
+          "text": "design",
+          "start": 50.932,
+          "end": 51.192
+        },
+        {
+          "text": "tokens",
+          "start": 51.192,
+          "end": 51.512
+        },
+        {
+          "text": "for",
+          "start": 51.512,
+          "end": 51.912
+        },
+        {
+          "text": "CSS,",
+          "start": 51.912,
+          "end": 52.792
+        },
+        {
+          "text": "Tailwind",
+          "start": 52.792,
+          "end": 53.472
+        },
+        {
+          "text": "or",
+          "start": 53.472,
+          "end": 53.632
+        },
+        {
+          "text": "Panda.",
+          "start": 53.632,
+          "end": 54.072
+        }
+      ]
+    },
+    {
+      "id": "talk",
+      "voiceStart": 55.382,
+      "words": [
+        {
+          "text": "And",
+          "start": 55.412,
+          "end": 55.432
+        },
+        {
+          "text": "you",
+          "start": 55.432,
+          "end": 55.532
+        },
+        {
+          "text": "can",
+          "start": 55.532,
+          "end": 55.652
+        },
+        {
+          "text": "ask",
+          "start": 55.652,
+          "end": 55.872
+        },
+        {
+          "text": "the",
+          "start": 55.872,
+          "end": 56.032
+        },
+        {
+          "text": "persona",
+          "start": 56.032,
+          "end": 56.292
+        },
+        {
+          "text": "why.",
+          "start": 56.292,
+          "end": 56.912
+        },
+        {
+          "text": "They’ll",
+          "start": 57.332,
+          "end": 57.432
+        },
+        {
+          "text": "tell",
+          "start": 57.432,
+          "end": 57.672
+        },
+        {
+          "text": "you,",
+          "start": 57.672,
+          "end": 57.952
+        },
+        {
+          "text": "in",
+          "start": 57.952,
+          "end": 58.212
+        },
+        {
+          "text": "their",
+          "start": 58.212,
+          "end": 58.352
+        },
+        {
+          "text": "own",
+          "start": 58.352,
+          "end": 58.532
+        },
+        {
+          "text": "words,",
+          "start": 58.532,
+          "end": 59.132
+        },
+        {
+          "text": "what",
+          "start": 59.132,
+          "end": 59.532
+        },
+        {
+          "text": "they",
+          "start": 59.532,
+          "end": 59.692
+        },
+        {
+          "text": "love",
+          "start": 59.692,
+          "end": 60.012
+        },
+        {
+          "text": "and",
+          "start": 60.012,
+          "end": 60.412
+        },
+        {
+          "text": "what",
+          "start": 60.412,
+          "end": 60.612
+        },
+        {
+          "text": "would",
+          "start": 60.612,
+          "end": 60.732
+        },
+        {
+          "text": "make",
+          "start": 60.732,
+          "end": 60.872
+        },
+        {
+          "text": "a",
+          "start": 60.872,
+          "end": 60.992
+        },
+        {
+          "text": "design",
+          "start": 60.992,
+          "end": 61.232
+        },
+        {
+          "text": "feel",
+          "start": 61.232,
+          "end": 61.612
+        },
+        {
+          "text": "like",
+          "start": 61.612,
+          "end": 61.872
+        },
+        {
+          "text": "theirs.",
+          "start": 61.872,
+          "end": 62.412
+        }
+      ]
+    },
+    {
+      "id": "yours",
+      "voiceStart": 64.349,
+      "words": [
+        {
+          "text": "Bring",
+          "start": 64.379,
+          "end": 64.379
+        },
+        {
+          "text": "your",
+          "start": 64.379,
+          "end": 64.519
+        },
+        {
+          "text": "own",
+          "start": 64.519,
+          "end": 64.699
+        },
+        {
+          "text": "people.",
+          "start": 64.699,
+          "end": 65.159
+        },
+        {
+          "text": "Measure",
+          "start": 65.159,
+          "end": 65.679
+        },
+        {
+          "text": "them",
+          "start": 65.679,
+          "end": 65.839
+        },
+        {
+          "text": "in",
+          "start": 65.839,
+          "end": 65.999
+        },
+        {
+          "text": "the",
+          "start": 65.999,
+          "end": 66.039
+        },
+        {
+          "text": "Studio,",
+          "start": 66.039,
+          "end": 66.679
+        },
+        {
+          "text": "and",
+          "start": 66.679,
+          "end": 67.179
+        },
+        {
+          "text": "cut",
+          "start": 67.179,
+          "end": 67.339
+        },
+        {
+          "text": "something",
+          "start": 67.339,
+          "end": 67.599
+        },
+        {
+          "text": "that",
+          "start": 67.599,
+          "end": 67.799
+        },
+        {
+          "text": "fits.",
+          "start": 67.799,
+          "end": 68.259
+        }
+      ]
+    }
+  ]
+}

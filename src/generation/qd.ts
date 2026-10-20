@@ -175,8 +175,11 @@ export async function runQD<T>(
   config: QDConfig,
   generateSeed: () => Promise<QDSolution<T>>,
   mutate: (parent: QDSolution<T>, rate: number) => Promise<QDSolution<T>>,
-  /** `generation` is 0 for seeds; callers may ignore it. */
-  evaluate: (genome: T, context: { generation: number }) => Promise<{ quality: number; features: number[] }>
+  /**
+   * `generation` is 0 for seeds; callers may ignore it. An evaluation may
+   * return the genome updated with what it produced, and the archive keeps that.
+   */
+  evaluate: (genome: T, context: { generation: number }) => Promise<{ quality: number; features: number[]; genome?: T }>
 ): Promise<QDArchive<T>> {
   const archive = createArchive<T>(config.features);
 
@@ -190,6 +193,7 @@ export async function runQD<T>(
     if (evaluation.quality >= config.qualityThreshold) {
       addToArchive(archive, {
         ...seed,
+        genome: evaluation.genome ?? seed.genome,
         quality: evaluation.quality,
         features: evaluation.features,
         generation: 0,
@@ -216,6 +220,7 @@ export async function runQD<T>(
           if (evaluation.quality >= config.qualityThreshold) {
             addToArchive(archive, {
               ...child,
+              genome: evaluation.genome ?? child.genome,
               quality: evaluation.quality,
               features: evaluation.features,
               generation: gen,

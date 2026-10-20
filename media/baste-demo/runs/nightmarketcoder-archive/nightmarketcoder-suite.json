@@ -1,0 +1,501 @@
+{
+  "persona": {
+    "id": "nightmarketcoder",
+    "name": "The Night Market Coder"
+  },
+  "assets": {
+    "svgs": [],
+    "images": [
+      {
+        "id": "nightmarketcoder-hero-1791637923591",
+        "purpose": "hero",
+        "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637923591.jpg",
+        "service": "fal",
+        "model": "fal-ai/bytedance/seedream/v4/text-to-image",
+        "prompt": "Stunning hero image: Hero image for a point-of-sale app for night-market merchants: a crowded stall street at 1am under neon and lanterns\n\nVariation:\n- neutral, balanced color temperature\n- rich, layered visual density\n- literal, photographic rendering\n\nStyle: intentional noise and grain texture, expressive editorial typography\n\nChanneling The Night Market Coder's aesthetic universe:\n- Visual influences: Katsuhiro Otomo's artistic approach\n- Emotional tone: community\n- Core visual elements: Chungking Express, neon signage, neon signage, city pop, street food\n- Subculture notes: street food culture, night markets\n\nTechnical specs:\n- geometric edge treatment\n- noisy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Chungking Express as interpreted by Katsuhiro Otomo.\n",
+        "score": {
+          "overall": 0.82,
+          "criteria": {
+            "personaAlignment": 0.9,
+            "visualQuality": 0.85,
+            "uniqueness": 0.7,
+            "coherence": 0.85,
+            "usability": 0.75
+          },
+          "features": [
+            0.5,
+            0.9,
+            0
+          ],
+          "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, aligning strongly with The Night Market Coder's aesthetic. The neon signs and bustling crowd evoke a sense of community and hustle, though it lacks the distinct artistic stylization requested."
+        }
+      }
+    ],
+    "videos": []
+  },
+  "archive": [
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637692201.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27a/VMN-0joJT1Y9cnifjzBdB_305e557c87bd4978b50b6018651c7e9a.jpg",
+      "quality": 0.886,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.88,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This asset perfectly captures the essence of a bustling night market, with its warm glow and dense activity. The art style strongly evokes anime influences, aligning well with the Katsuhiro Otomo reference, and the sense of human connection is palpable."
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637710542.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27c/sx2HrG9XUTQdyUnt4OZaF_c873e6d6750f4e719d204140ffb175bf.jpg",
+      "quality": 0.89,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, strongly aligning with The Night Market Coder's aesthetic. The Katsuhiro Otomo influence is clear in the character design and dense urban environment, while the neon and lanterns evoke Chungking Express."
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637726787.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd27d/XeK7uwhHrTdwgtTcNqdjd_1c2c07df6f9c4e928b456d6f53da88fc.jpg",
+      "quality": 0.905,
+      "features": [
+        0.8,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.9
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The warm lighting, dense activity, and neon signs immediately resonate with The Night Market Coder's aesthetic. It feels authentic and full of life, a true homage to the hustle and bustle."
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637743244.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd280/VGUQeN_wrKdA95VFumS4D_7c746c54f8074255889491bd3f21db64.jpg",
+      "quality": 0.915,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the vibrant, bustling energy of a night market, resonating strongly with The Night Market Coder's aesthetic. The Otomo-esque style, warm lighting, and dense composition create an immediate sense of familiarity and connection to their core values."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637774414.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd282/N3bm0bnttdB-Ae1gW1cK-_cae8e4b1f4664c0d8f5ebabdb5e173e7.jpg",
+      "quality": 0.89,
+      "features": [
+        0.8,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The warm lighting, dense crowd, and neon signs strongly resonate with The Night Market Coder's aesthetic, feeling like a direct pull from their visual DNA. The intentional noise and grain add to the authentic, lived-in feel."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637774410.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd282/fXScv5xJSMVQoItCWnyLI_3f4087b52c7d41d99e541bb8f3dbc412.jpg",
+      "quality": 0.8300000000000001,
+      "features": [
+        0.5,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.9,
+        "visualQuality": 0.85,
+        "uniqueness": 0.75,
+        "coherence": 0.8,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, aligning strongly with The Night Market Coder's aesthetic. The neon signs and dense crowd evoke a sense of hustle and community, reminiscent of Chungking Express. The muted color palette, however, slightly detracts from the full 'city pop' warmth."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637774412.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd282/12hCJB4aI6mo8IPZ9LBoR_9b54ea363b794781b2c105ed1f7012cb.jpg",
+      "quality": 0.755,
+      "features": [
+        0.5,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.8,
+        "visualQuality": 0.75,
+        "uniqueness": 0.7,
+        "coherence": 0.8,
+        "usability": 0.7
+      },
+      "feedback": "This image captures the essence of a bustling night market with its dense activity and vibrant neon. The 'Tekkonk Expreet' text, while a clever nod, feels a bit too much like a watermark and detracts from the raw photographic quality that The Night Market Coder appreciates."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637774413.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd283/fCmThwMrhmzOwBU7jSIuC_c7f13fecf8584755849330a2e04c3bd4.jpg",
+      "quality": 0.89,
+      "features": [
+        0.5,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, resonating strongly with The Night Market Coder's aesthetic. The anime-inspired style with neon lights and bustling activity feels like a direct nod to their visual DNA, especially the Katsuhiro Otomo influence. The density and warmth are spot on."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637803243.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd285/N-AVXMV3fcLZKovQN5Tnm_50cfe13e868b4706a57d3dfa8081d03a.jpg",
+      "quality": 0.887,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.78
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, with strong visual cues from Katsuhiro Otomo's style and the warm glow of neon. The human connection and hustle are palpable, making it highly resonant with The Night Market Coder's aesthetic."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637803242.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd285/hHwIYJVxq--l-CXPzfKZ3_01f946d795584d65b2ee1cc1804e38d7.jpg",
+      "quality": 0.9155,
+      "features": [
+        0.8,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.88,
+        "coherence": 0.93,
+        "usability": 0.9
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The neon signs, steam from the food stall, and dense crowd immediately resonate with The Night Market Coder's aesthetic and values. It feels authentic and full of life."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637803244.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd286/1eefavoRw73CMGqNpVZp5_30071e338d604f6cabbcdc54a14833c4.jpg",
+      "quality": 0.915,
+      "features": [
+        0.5,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, rendered in a style that strongly evokes Katsuhiro Otomo and classic anime. The density of information, the warm glow of the lanterns and neon, and the focus on the street food vendor create an authentic and engaging scene. It truly feels like a still from a beloved animated film."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637803241.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd286/3nqWKWPQTrgF_oQKpf7h5_76c8699930014832b069bcc50864d181.jpg",
+      "quality": 0.8825000000000001,
+      "features": [
+        0.5,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.9,
+        "visualQuality": 0.85,
+        "uniqueness": 0.9,
+        "coherence": 0.9,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The blend of neon, lanterns, and the bustling crowd, with a clear nod to anime/manga aesthetics, strongly resonates with The Night Market Coder's visual DNA. The information density and sense of human connection are palpable."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637832046.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd288/JrFGPcAsMalZF96NL3QDR_ae2f05cffc994d52b598e5abebae1e45.jpg",
+      "quality": 0.887,
+      "features": [
+        0.5,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.85,
+        "uniqueness": 0.9,
+        "coherence": 0.88,
+        "usability": 0.8
+      },
+      "feedback": "This asset perfectly captures the essence of a bustling night market with a fantastic blend of photographic realism and anime-style characters. The neon glow and steam from the food stall immediately evoke the desired atmosphere, and the 'chaos as feature' is well-represented by the dense crowd."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637832043.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd288/_JsgFXfjOGTSFWGi6zLZ4_0acc6146c811412580b4bfff0da1b943.jpg",
+      "quality": 0.9125,
+      "features": [
+        0.8,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.95
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The neon signs, lanterns, and bustling crowd immediately evoke the desired aesthetic, feeling authentic and lived-in. It's a strong representation of the 'hustle and human connection' values."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637832045.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd289/UZMGPBZPcxli7q5r5WL-d_e757e26386324e2ebe0cacd74aaba1ff.jpg",
+      "quality": 0.755,
+      "features": [
+        0.2,
+        0.8,
+        0
+      ],
+      "criteria": {
+        "personaAlignment": 0.8,
+        "visualQuality": 0.75,
+        "uniqueness": 0.7,
+        "coherence": 0.8,
+        "usability": 0.7
+      },
+      "feedback": "This image captures a good sense of a bustling night market, with warm lighting and a dense crowd. The neon-style typography adds a nice touch that aligns with the persona's aesthetic, though the overall image quality could be sharper to truly evoke the 'Chungking Express' feel."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637832044.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd289/ebKFyBxMqwlGWcTyfyzpt_670e238ff07c4f84809f92aae2389c06.jpg",
+      "quality": 0.915,
+      "features": [
+        0.7,
+        0.9,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.85
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market, resonating strongly with The Night Market Coder's aesthetic. The Otomo-esque illustrative style, combined with the neon glow and bustling activity, creates a sense of authentic hustle and community. The muted, desaturated color palette with pops of neon is a brilliant touch."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637859078.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28a/V0RsglACTSzzIH8bIOu_O_1f126aa654154e8b8d1ee87c9685d9b8.jpg",
+      "quality": 0.66,
+      "features": [
+        0.5,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.7,
+        "visualQuality": 0.75,
+        "uniqueness": 0.6,
+        "coherence": 0.65,
+        "usability": 0.55
+      },
+      "feedback": "This image captures the essence of a bustling night market with good density and warm lighting. The neon signs and street food stalls align well with the persona's visual DNA. However, the added text overlays detract significantly from its potential as a hero image."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637859077.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28a/Ran9CyakMVXURBjANOxQl_07354744a6c840caba91a9c6bfbd04aa.jpg",
+      "quality": 0.89,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image absolutely nails the Night Market Coder's aesthetic. The 'Ping Pong the Animation' style is immediately recognizable, and the density, neon, and warm chaos are perfectly executed. It feels like a vibrant, living scene from their world."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637859076.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28b/ktbzKlrUwHqkTVLn2SY_L_9e7229ce2e8b4aa489784b85e873eb3c.jpg",
+      "quality": 0.915,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.85
+      },
+      "feedback": "This asset perfectly captures the essence of a bustling night market, with its warm color palette, dense activity, and neon glow. The anime-inspired style, reminiscent of Katsuhiro Otomo, combined with the explicit references to 'Chungking Express' and 'Katamari Damacy' on the signage, makes this feel tailor-made for The Night Market Coder."
+    },
+    {
+      "generation": 4,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637859079.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28c/nb96PWtmfZw3Kx4qeUlpZ_a52451541ce9416187752b312edc9fba.jpg",
+      "quality": 0.9215,
+      "features": [
+        0.8,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.88,
+        "coherence": 0.92,
+        "usability": 0.95
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The neon glow and dense activity evoke a strong sense of community and hustle, aligning beautifully with the persona's aesthetic and values. The intentional noise and grain add a gritty, authentic feel.",
+      "cell": "color_temperature:4|visual_density:4|abstractness:0"
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637893681.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28e/4eExSsS2IzCqSjviu9ZeW_39be53baaa1d4e6485ba4c0c246890a7.jpg",
+      "quality": 0.8200000000000001,
+      "features": [
+        0.5,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.85,
+        "visualQuality": 0.8,
+        "uniqueness": 0.75,
+        "coherence": 0.85,
+        "usability": 0.85
+      },
+      "feedback": "This image captures the essence of a bustling night market with good density and warm lighting. The 'Chungking Express' sign is a nice touch, directly referencing the persona's aesthetic, and the overall scene feels authentic and full of life."
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637893683.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28f/TIm_FqyuPSYv5Yqme0K85_88a26f67a0564105b5bf6eed02eb8370.jpg",
+      "quality": 0.925,
+      "features": [
+        0.5,
+        1,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.95,
+        "coherence": 0.9,
+        "usability": 0.9
+      },
+      "feedback": "This asset perfectly captures the vibrant, chaotic energy of a night market, blending anime aesthetics with realistic street scenes. The Katsuhiro Otomo influence is clear in the character design and the dense, detailed environment, making it highly appealing to The Night Market Coder.",
+      "cell": "color_temperature:3|visual_density:4|abstractness:0"
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637893682.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28f/GklvcTxEvtN3dqK1od4DX_045ef2548dd443408fa08b262f33f072.jpg",
+      "quality": 0.89,
+      "features": [
+        0.5,
+        0.9,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The warm glow of the food stall contrasts beautifully with the cool neon signs, creating a dynamic and authentic scene that resonates deeply with The Night Market Coder's aesthetic. The sense of human connection and hustle is palpable."
+    },
+    {
+      "generation": 5,
+      "path": "./media/baste-demo/runs/nightmarketcoder-archive/images/nightmarketcoder-hero-1791637893680.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd28f/Y4M8rdYz5CSWFw4x_3peR_f44ac4c23fcf4b209a7835992eb80ea6.jpg",
+      "quality": 0.89,
+      "features": [
+        0.5,
+        1,
+        0.1
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the vibrant, chaotic energy of a night market. The neon signs, lanterns, and bustling crowd immediately resonate with The Night Market Coder's aesthetic. It feels authentic and full of life, embodying the 'delight in chaos' value."
+    }
+  ],
+  "metadata": {
+    "generationDuration": 248163,
+    "totalIterations": 5,
+    "coverage": 0.02666666666666667
+  }
+}

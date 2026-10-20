@@ -11,6 +11,7 @@ import type { AestheticProfile, Persona } from "../persona/types.js";
 import type { AssetType, GeneratedPrompt } from "../generation/prompts.js";
 import { assertSafePublicUrl } from "../shared/url.js";
 import { generateDesignTokens } from "./design-system.js";
+import { videoMotionPhrase } from "./motion.js";
 import { falDownload, falRun, sizeForRatio } from "./fal.js";
 
 export interface GeneratedAsset {
@@ -27,6 +28,36 @@ export interface GeneratedAsset {
     generationTime: number;
     /** Provider-hosted original, kept for provenance and for judges that look at pixels. */
     sourceUrl?: string;
+  };
+  /** Layers and loops made from this image after it was chosen. */
+  derived?: DerivedAssets;
+}
+
+/** Files made from a finished image: its layers and its animated loops. */
+export interface DerivedAssets {
+  layers?: {
+    /** The subject cut out, as named to the segmenter. */
+    subject: string;
+    /** The subject alone on transparency. */
+    foreground: string;
+    /** The scene with the subject painted out. */
+    background: string;
+    /** White subject on black, at the image's size. */
+    mask: string;
+    width: number;
+    height: number;
+    /** Jev's check that the cut-out is whole and the background clean, when Jev is the judge. */
+    check?: { whole: number; clean: number };
+  };
+  parallax?: { html: string; spec: string; video?: string };
+  loop?: {
+    /** The image-to-video clip, start frame to end frame. */
+    transition: string;
+    /** The edited end frame, when the persona has motifs and a subject was found. */
+    end?: string;
+    /** The clip played forward then back, so it loops without a jump. */
+    video?: string;
+    judged?: { overall: number; improvements: string[] };
   };
 }
 
@@ -56,6 +87,14 @@ export interface GenerationConfig {
   videoResolution?: string;
   videoPollIntervalMs?: number;
   videoTimeoutMs?: number;
+  /** Image edits, by a different model from the one that creates (Ideogram on fal). */
+  editModel?: string;
+  editRenderingSpeed?: "TURBO" | "BALANCED" | "QUALITY";
+  /** Segmentation: separates a subject from its background (SAM 3 on fal). */
+  segmentModel?: string;
+  /** Image-to-video for animated loops (Seedance on fal). */
+  animateModel?: string;
+  animateResolution?: "480p" | "720p" | "1080p";
 }
 
 // ── QuiverAI SVG Generator ────────────────────────────────────────────────────
@@ -596,19 +635,14 @@ let lastStamp = 0;
  * batch of candidates concurrently; two started in the same millisecond must
  * not write to the same file.
  */
-function stamp(): number {
+export function stamp(): number {
   const now = Date.now();
   lastStamp = now > lastStamp ? now : lastStamp + 1;
   return lastStamp;
 }
 
 function motionPhrase(persona: Persona): string {
-  return {
-    smooth: "Slow, smooth movement with gentle continuous pacing",
-    liquid: "Flowing organic movement, fluid morphs and soft transitions",
-    snappy: "Crisp, brief motion accents with readable pauses",
-    mechanical: "Precise, rhythmic mechanical movement",
-  }[persona.aesthetic.motionStyle];
+  return videoMotionPhrase(persona.aesthetic.motionStyle);
 }
 
 /** Trim a prompt to a model's limit at the last whole line that fits. */

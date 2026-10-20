@@ -1,0 +1,156 @@
+{
+  "model": "fal-ai/whisper",
+  "text": "Baste starts with one person: the films they rewatch, the music they work to, the rooms they feel at home in, and the things they can’t stand in an app.",
+  "heard": [
+    {
+      "text": "Based",
+      "start": 0.03,
+      "end": 0.17
+    },
+    {
+      "text": "starts",
+      "start": 0.17,
+      "end": 0.51
+    },
+    {
+      "text": "with",
+      "start": 0.51,
+      "end": 0.87
+    },
+    {
+      "text": "one",
+      "start": 0.87,
+      "end": 1.11
+    },
+    {
+      "text": "person,",
+      "start": 1.11,
+      "end": 1.67
+    },
+    {
+      "text": "the",
+      "start": 1.67,
+      "end": 2.09
+    },
+    {
+      "text": "films",
+      "start": 2.09,
+      "end": 2.41
+    },
+    {
+      "text": "they",
+      "start": 2.41,
+      "end": 2.63
+    },
+    {
+      "text": "rewatch,",
+      "start": 2.63,
+      "end": 3.45
+    },
+    {
+      "text": "the",
+      "start": 3.45,
+      "end": 3.75
+    },
+    {
+      "text": "music",
+      "start": 3.75,
+      "end": 4.07
+    },
+    {
+      "text": "they",
+      "start": 4.07,
+      "end": 4.25
+    },
+    {
+      "text": "work",
+      "start": 4.25,
+      "end": 4.53
+    },
+    {
+      "text": "to,",
+      "start": 4.53,
+      "end": 4.93
+    },
+    {
+      "text": "the",
+      "start": 4.93,
+      "end": 5.47
+    },
+    {
+      "text": "rooms",
+      "start": 5.47,
+      "end": 5.77
+    },
+    {
+      "text": "they",
+      "start": 5.77,
+      "end": 5.97
+    },
+    {
+      "text": "feel",
+      "start": 5.97,
+      "end": 6.19
+    },
+    {
+      "text": "at",
+      "start": 6.19,
+      "end": 6.31
+    },
+    {
+      "text": "home",
+      "start": 6.31,
+      "end": 6.55
+    },
+    {
+      "text": "in,",
+      "start": 6.55,
+      "end": 6.89
+    },
+    {
+      "text": "and",
+      "start": 6.89,
+      "end": 7.31
+    },
+    {
+      "text": "the",
+      "start": 7.31,
+      "end": 7.39
+    },
+    {
+      "text": "things",
+      "start": 7.39,
+      "end": 7.65
+    },
+    {
+      "text": "they",
+      "start": 7.65,
+      "end": 7.85
+    },
+    {
+      "text": "can't",
+      "start": 7.85,
+      "end": 8.23
+    },
+    {
+      "text": "stand",
+      "start": 8.23,
+      "end": 8.45
+    },
+    {
+      "text": "in",
+      "start": 8.45,
+      "end": 8.69
+    },
+    {
+      "text": "an",
+      "start": 8.69,
+      "end": 8.77
+    },
+    {
+      "text": "app.",
+      "start": 8.77,
+      "end": 9.13
+    }
+  ]
+}

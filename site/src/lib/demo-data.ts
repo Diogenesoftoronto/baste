@@ -155,6 +155,30 @@ export const DEMO_PERSONAS: PersonaRecord[] = [
         "organic feedback"
       ]
     },
+    "animation": {
+      "motifs": [
+        "spores drifting through low light",
+        "bioluminescent pulses travelling along mycelium",
+        "fern fronds slowly unfurling",
+        "condensation sliding down greenhouse glass"
+      ],
+      "subjects": [
+        "mushroom",
+        "fern",
+        "terrarium",
+        "seedling",
+        "moss"
+      ],
+      "depth": "deep",
+      "camera": "drift",
+      "focus": "background",
+      "loopSeconds": 6,
+      "avoid": [
+        "fast cuts",
+        "strobing or flashing light",
+        "shaky handheld camera"
+      ]
+    },
     "_source": "base"
   },
   {
@@ -311,6 +335,30 @@ export const DEMO_PERSONAS: PersonaRecord[] = [
         "chaos as feature",
         "speed",
         "human connection"
+      ]
+    },
+    "animation": {
+      "motifs": [
+        "neon signs flickering on",
+        "steam rising from woks",
+        "paper lanterns swaying",
+        "crowds passing behind the stalls"
+      ],
+      "subjects": [
+        "lantern",
+        "food stall",
+        "neon sign",
+        "wok",
+        "noodle bowl"
+      ],
+      "depth": "parallax",
+      "camera": "locked",
+      "focus": "both",
+      "loopSeconds": 4,
+      "avoid": [
+        "slow fades",
+        "long empty pauses",
+        "dreamy floating drift"
       ]
     },
     "_source": "base"
@@ -478,6 +526,30 @@ export const DEMO_PERSONAS: PersonaRecord[] = [
         "history"
       ]
     },
+    "animation": {
+      "motifs": [
+        "fluorescent tubes humming and flickering",
+        "an empty escalator running",
+        "a fountain trickling in an empty atrium",
+        "VHS tracking lines rolling through"
+      ],
+      "subjects": [
+        "mannequin",
+        "fountain",
+        "escalator",
+        "potted palm",
+        "payphone"
+      ],
+      "depth": "deep",
+      "camera": "push",
+      "focus": "background",
+      "loopSeconds": 9,
+      "avoid": [
+        "crowds of people",
+        "slick glossy motion graphics",
+        "bright saturated flashes"
+      ]
+    },
     "_source": "base"
   }
 ];
@@ -576,6 +648,162 @@ export const DEMO_TOKENS: Record<string, DesignTokens> = {
         "smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
         "snappy": "cubic-bezier(0.4, 0, 1, 1)",
         "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+      },
+      "character": "Unhurried and continuous: things glide into place and settle without overshoot.",
+      "curves": {
+        "standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "enter": "cubic-bezier(0, 0, 0.2, 1)",
+        "exit": "cubic-bezier(0.4, 0, 1, 1)",
+        "emphasis": "cubic-bezier(0.4, 0, 0.2, 1)"
+      },
+      "spring": {
+        "stiffness": 170,
+        "damping": 26,
+        "mass": 1,
+        "easing": "linear(0, 0.019, 0.065, 0.128, 0.201, 0.276, 0.352, 0.424, 0.492, 0.555, 0.612, 0.664, 0.709, 0.75, 0.785, 0.816, 0.843, 0.866, 0.886, 0.904, 0.919, 0.931, 0.942, 0.951, 0.959, 0.965, 0.971, 0.976, 0.98, 0.983, 0.986, 0.988, 0.99, 0.992, 0.993, 0.994, 1)",
+        "duration": "570ms"
+      },
+      "distance": {
+        "nudge": "2px",
+        "shift": "12px",
+        "travel": "24px"
+      },
+      "pressScale": 0.98,
+      "stagger": "60ms",
+      "ambient": "6000ms",
+      "choreography": {
+        "enter": {
+          "name": "baste-enter",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Arrive: content, cards and panels coming into view.",
+          "trigger": "mount",
+          "keyframes": [
+            {
+              "opacity": 0,
+              "transform": "translateY(12px)"
+            },
+            {
+              "opacity": 1,
+              "transform": "none"
+            }
+          ],
+          "duration": "300ms",
+          "easing": "cubic-bezier(0, 0, 0.2, 1)",
+          "reduced": [
+            {
+              "opacity": 0
+            },
+            {
+              "opacity": 1
+            }
+          ]
+        },
+        "exit": {
+          "name": "baste-exit",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Leave: dismissals and content making way.",
+          "trigger": "unmount",
+          "keyframes": [
+            {
+              "opacity": 1,
+              "transform": "none"
+            },
+            {
+              "opacity": 0,
+              "transform": "translateY(-6px)"
+            }
+          ],
+          "duration": "150ms",
+          "easing": "cubic-bezier(0.4, 0, 1, 1)",
+          "reduced": [
+            {
+              "opacity": 1
+            },
+            {
+              "opacity": 0
+            }
+          ]
+        },
+        "hover": {
+          "name": "baste-hover",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Answer the pointer: lift, swell or slide toward the cursor.",
+          "trigger": "hover",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "translateY(-2px)"
+            }
+          ],
+          "duration": "150ms",
+          "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "reduced": null
+        },
+        "press": {
+          "name": "baste-press",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Confirm a press: the control gives under the finger.",
+          "trigger": "press",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "scale(0.98)"
+            }
+          ],
+          "duration": "150ms",
+          "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "reduced": null
+        },
+        "emphasis": {
+          "name": "baste-emphasis",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Draw the eye once: a new badge, a saved state, a result.",
+          "trigger": "attention",
+          "keyframes": [
+            {
+              "transform": "scale(1)"
+            },
+            {
+              "transform": "scale(1.04)",
+              "offset": 0.4
+            },
+            {
+              "transform": "scale(1)"
+            }
+          ],
+          "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "duration": "500ms",
+          "reduced": null
+        },
+        "ambient": {
+          "name": "baste-ambient",
+          "iterations": "infinite",
+          "direction": "alternate",
+          "use": "Breathe: a slow swell of light and scale for glows and living surfaces.",
+          "keyframes": [
+            {
+              "opacity": 0.82,
+              "transform": "scale(1)"
+            },
+            {
+              "opacity": 1,
+              "transform": "scale(1.015)"
+            }
+          ],
+          "easing": "cubic-bezier(0.37, 0, 0.63, 1)",
+          "trigger": "loop",
+          "duration": "6000ms",
+          "reduced": null
+        }
       }
     }
   },
@@ -672,6 +900,176 @@ export const DEMO_TOKENS: Record<string, DesignTokens> = {
         "smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
         "snappy": "cubic-bezier(0.25, 0.1, 0, 1)",
         "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+      },
+      "character": "Quick and decisive: short moves, crisp stops and readable pauses between them.",
+      "curves": {
+        "standard": "cubic-bezier(0.2, 0, 0, 1)",
+        "enter": "cubic-bezier(0.05, 0.7, 0.1, 1)",
+        "exit": "cubic-bezier(0.3, 0, 0.8, 0.15)",
+        "emphasis": "linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)"
+      },
+      "spring": {
+        "stiffness": 400,
+        "damping": 34,
+        "mass": 1,
+        "easing": "linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)",
+        "duration": "340ms"
+      },
+      "distance": {
+        "nudge": "2px",
+        "shift": "6px",
+        "travel": "12px"
+      },
+      "pressScale": 0.96,
+      "stagger": "25ms",
+      "ambient": "4000ms",
+      "choreography": {
+        "enter": {
+          "name": "baste-enter",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Arrive: content, cards and panels coming into view.",
+          "trigger": "mount",
+          "keyframes": [
+            {
+              "opacity": 0,
+              "transform": "translateY(6px) scale(0.98)"
+            },
+            {
+              "opacity": 1,
+              "transform": "none"
+            }
+          ],
+          "duration": "200ms",
+          "easing": "cubic-bezier(0.05, 0.7, 0.1, 1)",
+          "reduced": [
+            {
+              "opacity": 0
+            },
+            {
+              "opacity": 1
+            }
+          ]
+        },
+        "exit": {
+          "name": "baste-exit",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Leave: dismissals and content making way.",
+          "trigger": "unmount",
+          "keyframes": [
+            {
+              "opacity": 1,
+              "transform": "none"
+            },
+            {
+              "opacity": 0,
+              "transform": "translateY(-3px) scale(0.98)"
+            }
+          ],
+          "duration": "100ms",
+          "easing": "cubic-bezier(0.3, 0, 0.8, 0.15)",
+          "reduced": [
+            {
+              "opacity": 1
+            },
+            {
+              "opacity": 0
+            }
+          ]
+        },
+        "hover": {
+          "name": "baste-hover",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Answer the pointer: lift, swell or slide toward the cursor.",
+          "trigger": "hover",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "translateY(-2px)"
+            }
+          ],
+          "duration": "100ms",
+          "easing": "cubic-bezier(0.2, 0, 0, 1)",
+          "reduced": null
+        },
+        "press": {
+          "name": "baste-press",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Confirm a press: the control gives under the finger.",
+          "trigger": "press",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "scale(0.96)"
+            }
+          ],
+          "duration": "100ms",
+          "easing": "cubic-bezier(0.2, 0, 0, 1)",
+          "reduced": null
+        },
+        "emphasis": {
+          "name": "baste-emphasis",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Draw the eye once: a new badge, a saved state, a result.",
+          "trigger": "attention",
+          "keyframes": [
+            {
+              "transform": "scale(1)"
+            },
+            {
+              "transform": "scale(1.06)",
+              "offset": 0.3
+            },
+            {
+              "transform": "scale(1)"
+            }
+          ],
+          "easing": "cubic-bezier(0.2, 0, 0, 1)",
+          "duration": "400ms",
+          "reduced": null
+        },
+        "ambient": {
+          "name": "baste-ambient",
+          "iterations": "infinite",
+          "direction": "normal",
+          "use": "Flicker: a sign catching power, then a long readable hold.",
+          "keyframes": [
+            {
+              "opacity": 1
+            },
+            {
+              "opacity": 0.55,
+              "offset": 0.02
+            },
+            {
+              "opacity": 1,
+              "offset": 0.04
+            },
+            {
+              "opacity": 0.75,
+              "offset": 0.06
+            },
+            {
+              "opacity": 1,
+              "offset": 0.08
+            },
+            {
+              "opacity": 1
+            }
+          ],
+          "easing": "steps(1, end)",
+          "trigger": "loop",
+          "duration": "4000ms",
+          "reduced": null
+        }
       }
     }
   },
@@ -768,6 +1166,166 @@ export const DEMO_TOKENS: Record<string, DesignTokens> = {
         "smooth": "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
         "snappy": "cubic-bezier(0.4, 0, 1, 1)",
         "bounce": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+      },
+      "character": "Fluid and elastic: forms flow, stretch and settle with a soft overshoot.",
+      "curves": {
+        "standard": "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+        "enter": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "exit": "cubic-bezier(0.55, 0, 1, 0.45)",
+        "emphasis": "linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)"
+      },
+      "spring": {
+        "stiffness": 120,
+        "damping": 12,
+        "mass": 1,
+        "easing": "linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)",
+        "duration": "850ms"
+      },
+      "distance": {
+        "nudge": "4px",
+        "shift": "20px",
+        "travel": "40px"
+      },
+      "pressScale": 0.97,
+      "stagger": "100ms",
+      "ambient": "9000ms",
+      "choreography": {
+        "enter": {
+          "name": "baste-enter",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Arrive: content, cards and panels coming into view.",
+          "trigger": "mount",
+          "keyframes": [
+            {
+              "opacity": 0,
+              "transform": "translateY(20px) scale(0.96)"
+            },
+            {
+              "opacity": 1,
+              "transform": "none"
+            }
+          ],
+          "duration": "850ms",
+          "easing": "linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)",
+          "reduced": [
+            {
+              "opacity": 0
+            },
+            {
+              "opacity": 1
+            }
+          ]
+        },
+        "exit": {
+          "name": "baste-exit",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Leave: dismissals and content making way.",
+          "trigger": "unmount",
+          "keyframes": [
+            {
+              "opacity": 1,
+              "transform": "none"
+            },
+            {
+              "opacity": 0,
+              "transform": "translateY(10px) scale(0.97)"
+            }
+          ],
+          "duration": "200ms",
+          "easing": "cubic-bezier(0.55, 0, 1, 0.45)",
+          "reduced": [
+            {
+              "opacity": 1
+            },
+            {
+              "opacity": 0
+            }
+          ]
+        },
+        "hover": {
+          "name": "baste-hover",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Answer the pointer: lift, swell or slide toward the cursor.",
+          "trigger": "hover",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "scale(1.03)"
+            }
+          ],
+          "duration": "200ms",
+          "easing": "linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)",
+          "reduced": null
+        },
+        "press": {
+          "name": "baste-press",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Confirm a press: the control gives under the finger.",
+          "trigger": "press",
+          "keyframes": [
+            {
+              "transform": "none"
+            },
+            {
+              "transform": "scale(0.97)"
+            }
+          ],
+          "duration": "200ms",
+          "easing": "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
+          "reduced": null
+        },
+        "emphasis": {
+          "name": "baste-emphasis",
+          "iterations": 1,
+          "direction": "normal",
+          "use": "Draw the eye once: a new badge, a saved state, a result.",
+          "trigger": "attention",
+          "keyframes": [
+            {
+              "transform": "scale(1)"
+            },
+            {
+              "transform": "scale(1.06, 0.95)",
+              "offset": 0.3
+            },
+            {
+              "transform": "scale(0.98, 1.03)",
+              "offset": 0.6
+            },
+            {
+              "transform": "scale(1)"
+            }
+          ],
+          "easing": "cubic-bezier(0.37, 0, 0.63, 1)",
+          "duration": "800ms",
+          "reduced": null
+        },
+        "ambient": {
+          "name": "baste-ambient",
+          "iterations": "infinite",
+          "direction": "alternate",
+          "use": "Drift: a blob that slowly changes shape and wanders.",
+          "keyframes": [
+            {
+              "transform": "translate(0px, 0px) rotate(0deg)",
+              "borderRadius": "42% 58% 60% 40% / 45% 45% 55% 55%"
+            },
+            {
+              "transform": "translate(8px, -8px) rotate(4deg)",
+              "borderRadius": "58% 42% 40% 60% / 55% 60% 40% 45%"
+            }
+          ],
+          "easing": "cubic-bezier(0.37, 0, 0.63, 1)",
+          "trigger": "loop",
+          "duration": "9000ms",
+          "reduced": null
+        }
       }
     }
   }
@@ -775,22 +1333,22 @@ export const DEMO_TOKENS: Record<string, DesignTokens> = {
 
 export const DEMO_TOKEN_EXPORTS: Record<string, Record<TokenFormat, string>> = {
   "cyberbotanist": {
-    "css": ":root {\n  /* The Cyberbotanist - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #a15d3f;\n  --color-secondary: #5a8e3f;\n  --color-accent: #35f3b5;\n  --color-background: #fdf1eb;\n  --color-surface: #fffbf9;\n  --color-text: #211815;\n  --color-text-muted: #685a54;\n  --color-border: #dacec9;\n  --color-warm: #8c694e;\n  --color-cool: #00d0d9;\n\n  /* Typography */\n  --font-heading: 'Fraunces', serif;\n  --font-body: 'Source Serif 4', serif;\n  --font-mono: 'Fira Code', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.25rem;\n  --space-2: 0.5rem;\n  --space-3: 0.75rem;\n  --space-4: 1rem;\n  --space-5: 1.5rem;\n  --space-6: 2rem;\n  --space-7: 3rem;\n  --space-8: 4rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.5rem;\n  --radius-base: 0.75rem;\n  --radius-lg: 1.25rem;\n  --radius-xl: 2rem;\n  --radius-full: 9999px;\n\n  /* Motion */\n  --duration-fast: 150ms;\n  --duration-base: 300ms;\n  --duration-slow: 500ms;\n  --duration-slower: 1000ms;\n  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-snappy: cubic-bezier(0.4, 0, 1, 1);\n}\n",
-    "tailwind": "// tailwind.config.js - The Cyberbotanist Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#a15d3f',\n        secondary: '#5a8e3f',\n        accent: '#35f3b5',\n        background: '#fdf1eb',\n        surface: '#fffbf9',\n        text: {\n          DEFAULT: '#211815',\n          muted: '#685a54',\n        },\n        border: '#dacec9',\n        warm: '#8c694e',\n        cool: '#00d0d9',\n      },\n      fontFamily: {\n        heading: [\"Fraunces\", \"serif\"],\n        body: [\"Source Serif 4\", \"serif\"],\n        mono: [\"Fira Code\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.5rem',\n        'base': '0.75rem',\n        'lg': '1.25rem',\n        'xl': '2rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'snappy': 'cubic-bezier(0.4, 0, 1, 1)',\n      },\n      transitionDuration: {\n        'fast': '150ms',\n        'base': '300ms',\n        'slow': '500ms',\n      },\n    },\n  },\n}",
-    "json": "{\n  \"colors\": {\n    \"primary\": \"#a15d3f\",\n    \"secondary\": \"#5a8e3f\",\n    \"accent\": \"#35f3b5\",\n    \"background\": \"#fdf1eb\",\n    \"surface\": \"#fffbf9\",\n    \"border\": \"#dacec9\",\n    \"text\": \"#211815\",\n    \"textMuted\": \"#685a54\",\n    \"warm\": \"#8c694e\",\n    \"cool\": \"#00d0d9\",\n    \"density\": \"rich\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'Fraunces', serif\",\n      \"body\": \"'Source Serif 4', serif\",\n      \"mono\": \"'Fira Code', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.25rem\",\n      \"2\": \"0.5rem\",\n      \"3\": \"0.75rem\",\n      \"4\": \"1rem\",\n      \"5\": \"1.5rem\",\n      \"6\": \"2rem\",\n      \"7\": \"3rem\",\n      \"8\": \"4rem\",\n      \"9\": \"6rem\",\n      \"10\": \"8rem\"\n    },\n    \"density\": \"rich\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.5rem\",\n      \"base\": \"0.75rem\",\n      \"lg\": \"1.25rem\",\n      \"xl\": \"2rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"solid\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(212, 168, 67, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"150ms\",\n      \"base\": \"300ms\",\n      \"slow\": \"500ms\",\n      \"slower\": \"1000ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"smooth\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"snappy\": \"cubic-bezier(0.4, 0, 1, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    }\n  }\n}",
-    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Cyberbotanist — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#fdf1eb\" },\n          surface: { value: \"#fffbf9\" },\n          \"surface-hover\": { value: \"#ffffff\" },\n          text: { value: \"#211815\" },\n          \"text-muted\": { value: \"#685a54\" },\n          border: { value: \"#dacec9\" },\n          primary: { value: \"#a15d3f\" },\n          secondary: { value: \"#5a8e3f\" },\n          accent: { value: \"#35f3b5\" },\n          warm: { value: \"#8c694e\" },\n          cool: { value: \"#00d0d9\" },\n        },\n        fonts: {\n          heading: { value: \"'Fraunces', serif\" },\n          body: { value: \"'Source Serif 4', serif\" },\n          mono: { value: \"'Fira Code', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.5rem\" },\n          base: { value: \"0.75rem\" },\n          lg: { value: \"1.25rem\" },\n          xl: { value: \"2rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.25rem\" },\n          2: { value: \"0.5rem\" },\n          3: { value: \"0.75rem\" },\n          4: { value: \"1rem\" },\n          5: { value: \"1.5rem\" },\n          6: { value: \"2rem\" },\n          7: { value: \"3rem\" },\n          8: { value: \"4rem\" },\n          9: { value: \"6rem\" },\n          10: { value: \"8rem\" },\n        },\n      },\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": { opacity: \"0\" },\n          \"100%\": { opacity: \"1\" },\n        },\n      },\n    },\n  },\n});\n"
+    "css": ":root {\n  /* The Cyberbotanist - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #a15d3f;\n  --color-secondary: #5a8e3f;\n  --color-accent: #35f3b5;\n  --color-background: #fdf1eb;\n  --color-surface: #fffbf9;\n  --color-text: #211815;\n  --color-text-muted: #685a54;\n  --color-border: #dacec9;\n  --color-warm: #8c694e;\n  --color-cool: #00d0d9;\n\n  /* Typography */\n  --font-heading: 'Fraunces', serif;\n  --font-body: 'Source Serif 4', serif;\n  --font-mono: 'Fira Code', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.25rem;\n  --space-2: 0.5rem;\n  --space-3: 0.75rem;\n  --space-4: 1rem;\n  --space-5: 1.5rem;\n  --space-6: 2rem;\n  --space-7: 3rem;\n  --space-8: 4rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.5rem;\n  --radius-base: 0.75rem;\n  --radius-lg: 1.25rem;\n  --radius-xl: 2rem;\n  --radius-full: 9999px;\n\n  /* Motion: Unhurried and continuous: things glide into place and settle without overshoot. */\n  --duration-fast: 150ms;\n  --duration-base: 300ms;\n  --duration-slow: 500ms;\n  --duration-slower: 1000ms;\n  --duration-spring: 570ms;\n  --duration-ambient: 6000ms;\n  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-snappy: cubic-bezier(0.4, 0, 1, 1);\n  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-enter: cubic-bezier(0, 0, 0.2, 1);\n  --ease-exit: cubic-bezier(0.4, 0, 1, 1);\n  --ease-emphasis: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-spring: linear(0, 0.019, 0.065, 0.128, 0.201, 0.276, 0.352, 0.424, 0.492, 0.555, 0.612, 0.664, 0.709, 0.75, 0.785, 0.816, 0.843, 0.866, 0.886, 0.904, 0.919, 0.931, 0.942, 0.951, 0.959, 0.965, 0.971, 0.976, 0.98, 0.983, 0.986, 0.988, 0.99, 0.992, 0.993, 0.994, 1);\n  --motion-nudge: 2px;\n  --motion-shift: 12px;\n  --motion-travel: 24px;\n  --motion-press: 0.98;\n  --motion-stagger: 60ms;\n}\n\n/* The Cyberbotanist — motion primitives (generated by Baste)\n * Unhurried and continuous: things glide into place and settle without overshoot.\n * Classes: .motion-enter .motion-exit .motion-hover .motion-press .motion-emphasis .motion-ambient .motion-stagger\n */\n@keyframes baste-enter {\n  0% { opacity: 0; transform: translateY(12px); }\n  100% { opacity: 1; transform: none; }\n}\n\n@keyframes baste-exit {\n  0% { opacity: 1; transform: none; }\n  100% { opacity: 0; transform: translateY(-6px); }\n}\n\n@keyframes baste-emphasis {\n  0% { transform: scale(1); }\n  40% { transform: scale(1.04); }\n  100% { transform: scale(1); }\n}\n\n@keyframes baste-ambient {\n  0% { opacity: 0.82; transform: scale(1); }\n  100% { opacity: 1; transform: scale(1.015); }\n}\n\n/* Arrive: content, cards and panels coming into view. */\n.motion-enter { animation: baste-enter 300ms cubic-bezier(0, 0, 0.2, 1) 1 normal both; }\n\n/* Leave: dismissals and content making way. */\n.motion-exit { animation: baste-exit 150ms cubic-bezier(0.4, 0, 1, 1) 1 normal both; }\n\n/* Answer the pointer: lift, swell or slide toward the cursor. */\n.motion-hover { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }\n.motion-hover:hover { transform: translateY(-2px); }\n\n/* Confirm a press: the control gives under the finger. */\n.motion-press { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }\n.motion-press:active { transform: scale(0.98); }\n\n/* Draw the eye once: a new badge, a saved state, a result. */\n.motion-emphasis { animation: baste-emphasis 500ms cubic-bezier(0.4, 0, 0.2, 1) 1 normal both; }\n\n/* Breathe: a slow swell of light and scale for glows and living surfaces. */\n.motion-ambient { animation: baste-ambient 6000ms cubic-bezier(0.37, 0, 0.63, 1) infinite alternate both; }\n\n/* Sequence: the children of .motion-stagger enter one after another. */\n.motion-stagger > * { animation: baste-enter 300ms cubic-bezier(0, 0, 0.2, 1) 1 normal both; }\n.motion-stagger > :nth-child(2) { animation-delay: calc(1 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(4) { animation-delay: calc(3 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(5) { animation-delay: calc(4 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(6) { animation-delay: calc(5 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(7) { animation-delay: calc(6 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(8) { animation-delay: calc(7 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(9) { animation-delay: calc(8 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(10) { animation-delay: calc(9 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(11) { animation-delay: calc(10 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(12) { animation-delay: calc(11 * var(--motion-stagger)); }\n\n@media (prefers-reduced-motion: reduce) {\n  @keyframes baste-enter-reduced {\n    0% { opacity: 0; }\n    100% { opacity: 1; }\n  }\n  @keyframes baste-exit-reduced {\n    0% { opacity: 1; }\n    100% { opacity: 0; }\n  }\n  .motion-enter, .motion-stagger > * { animation-name: baste-enter-reduced; animation-delay: 0s; }\n  .motion-exit { animation-name: baste-exit-reduced; }\n  .motion-hover, .motion-hover:hover, .motion-press, .motion-press:active { transform: none; transition: none; }\n  .motion-emphasis, .motion-ambient { animation: none; }\n}\n\n",
+    "tailwind": "// tailwind.config.js - The Cyberbotanist Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#a15d3f',\n        secondary: '#5a8e3f',\n        accent: '#35f3b5',\n        background: '#fdf1eb',\n        surface: '#fffbf9',\n        text: {\n          DEFAULT: '#211815',\n          muted: '#685a54',\n        },\n        border: '#dacec9',\n        warm: '#8c694e',\n        cool: '#00d0d9',\n      },\n      fontFamily: {\n        heading: [\"Fraunces\", \"serif\"],\n        body: [\"Source Serif 4\", \"serif\"],\n        mono: [\"Fira Code\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.5rem',\n        'base': '0.75rem',\n        'lg': '1.25rem',\n        'xl': '2rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'snappy': 'cubic-bezier(0.4, 0, 1, 1)',\n        'standard': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'enter': 'cubic-bezier(0, 0, 0.2, 1)',\n        'exit': 'cubic-bezier(0.4, 0, 1, 1)',\n        'emphasis': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'spring': 'linear(0, 0.019, 0.065, 0.128, 0.201, 0.276, 0.352, 0.424, 0.492, 0.555, 0.612, 0.664, 0.709, 0.75, 0.785, 0.816, 0.843, 0.866, 0.886, 0.904, 0.919, 0.931, 0.942, 0.951, 0.959, 0.965, 0.971, 0.976, 0.98, 0.983, 0.986, 0.988, 0.99, 0.992, 0.993, 0.994, 1)',\n      },\n      transitionDuration: {\n        'fast': '150ms',\n        'base': '300ms',\n        'slow': '500ms',\n        'slower': '1000ms',\n        'spring': '570ms',\n      },\n      // Unhurried and continuous: things glide into place and settle without overshoot.\n      keyframes: {\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(12px)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(-6px)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"40%\": {\n            \"transform\": \"scale(1.04)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"opacity\": \"0.82\",\n            \"transform\": \"scale(1)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"scale(1.015)\"\n          }\n        }\n      },\n      animation: {\n        'enter': 'baste-enter 300ms cubic-bezier(0, 0, 0.2, 1) 1 normal both',\n        'exit': 'baste-exit 150ms cubic-bezier(0.4, 0, 1, 1) 1 normal both',\n        'emphasis': 'baste-emphasis 500ms cubic-bezier(0.4, 0, 0.2, 1) 1 normal both',\n        'ambient': 'baste-ambient 6000ms cubic-bezier(0.37, 0, 0.63, 1) infinite alternate both',\n      },\n    },\n  },\n}",
+    "json": "{\n  \"colors\": {\n    \"primary\": \"#a15d3f\",\n    \"secondary\": \"#5a8e3f\",\n    \"accent\": \"#35f3b5\",\n    \"background\": \"#fdf1eb\",\n    \"surface\": \"#fffbf9\",\n    \"border\": \"#dacec9\",\n    \"text\": \"#211815\",\n    \"textMuted\": \"#685a54\",\n    \"warm\": \"#8c694e\",\n    \"cool\": \"#00d0d9\",\n    \"density\": \"rich\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'Fraunces', serif\",\n      \"body\": \"'Source Serif 4', serif\",\n      \"mono\": \"'Fira Code', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.25rem\",\n      \"2\": \"0.5rem\",\n      \"3\": \"0.75rem\",\n      \"4\": \"1rem\",\n      \"5\": \"1.5rem\",\n      \"6\": \"2rem\",\n      \"7\": \"3rem\",\n      \"8\": \"4rem\",\n      \"9\": \"6rem\",\n      \"10\": \"8rem\"\n    },\n    \"density\": \"rich\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.5rem\",\n      \"base\": \"0.75rem\",\n      \"lg\": \"1.25rem\",\n      \"xl\": \"2rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"solid\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(212, 168, 67, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"150ms\",\n      \"base\": \"300ms\",\n      \"slow\": \"500ms\",\n      \"slower\": \"1000ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"smooth\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"snappy\": \"cubic-bezier(0.4, 0, 1, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    },\n    \"character\": \"Unhurried and continuous: things glide into place and settle without overshoot.\",\n    \"curves\": {\n      \"standard\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"enter\": \"cubic-bezier(0, 0, 0.2, 1)\",\n      \"exit\": \"cubic-bezier(0.4, 0, 1, 1)\",\n      \"emphasis\": \"cubic-bezier(0.4, 0, 0.2, 1)\"\n    },\n    \"spring\": {\n      \"stiffness\": 170,\n      \"damping\": 26,\n      \"mass\": 1,\n      \"easing\": \"linear(0, 0.019, 0.065, 0.128, 0.201, 0.276, 0.352, 0.424, 0.492, 0.555, 0.612, 0.664, 0.709, 0.75, 0.785, 0.816, 0.843, 0.866, 0.886, 0.904, 0.919, 0.931, 0.942, 0.951, 0.959, 0.965, 0.971, 0.976, 0.98, 0.983, 0.986, 0.988, 0.99, 0.992, 0.993, 0.994, 1)\",\n      \"duration\": \"570ms\"\n    },\n    \"distance\": {\n      \"nudge\": \"2px\",\n      \"shift\": \"12px\",\n      \"travel\": \"24px\"\n    },\n    \"pressScale\": 0.98,\n    \"stagger\": \"60ms\",\n    \"ambient\": \"6000ms\",\n    \"choreography\": {\n      \"enter\": {\n        \"name\": \"baste-enter\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Arrive: content, cards and panels coming into view.\",\n        \"trigger\": \"mount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(12px)\"\n          },\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          }\n        ],\n        \"duration\": \"300ms\",\n        \"easing\": \"cubic-bezier(0, 0, 0.2, 1)\",\n        \"reduced\": [\n          {\n            \"opacity\": 0\n          },\n          {\n            \"opacity\": 1\n          }\n        ]\n      },\n      \"exit\": {\n        \"name\": \"baste-exit\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Leave: dismissals and content making way.\",\n        \"trigger\": \"unmount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          },\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(-6px)\"\n          }\n        ],\n        \"duration\": \"150ms\",\n        \"easing\": \"cubic-bezier(0.4, 0, 1, 1)\",\n        \"reduced\": [\n          {\n            \"opacity\": 1\n          },\n          {\n            \"opacity\": 0\n          }\n        ]\n      },\n      \"hover\": {\n        \"name\": \"baste-hover\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Answer the pointer: lift, swell or slide toward the cursor.\",\n        \"trigger\": \"hover\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"translateY(-2px)\"\n          }\n        ],\n        \"duration\": \"150ms\",\n        \"easing\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n        \"reduced\": null\n      },\n      \"press\": {\n        \"name\": \"baste-press\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Confirm a press: the control gives under the finger.\",\n        \"trigger\": \"press\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"scale(0.98)\"\n          }\n        ],\n        \"duration\": \"150ms\",\n        \"easing\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n        \"reduced\": null\n      },\n      \"emphasis\": {\n        \"name\": \"baste-emphasis\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Draw the eye once: a new badge, a saved state, a result.\",\n        \"trigger\": \"attention\",\n        \"keyframes\": [\n          {\n            \"transform\": \"scale(1)\"\n          },\n          {\n            \"transform\": \"scale(1.04)\",\n            \"offset\": 0.4\n          },\n          {\n            \"transform\": \"scale(1)\"\n          }\n        ],\n        \"easing\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n        \"duration\": \"500ms\",\n        \"reduced\": null\n      },\n      \"ambient\": {\n        \"name\": \"baste-ambient\",\n        \"iterations\": \"infinite\",\n        \"direction\": \"alternate\",\n        \"use\": \"Breathe: a slow swell of light and scale for glows and living surfaces.\",\n        \"keyframes\": [\n          {\n            \"opacity\": 0.82,\n            \"transform\": \"scale(1)\"\n          },\n          {\n            \"opacity\": 1,\n            \"transform\": \"scale(1.015)\"\n          }\n        ],\n        \"easing\": \"cubic-bezier(0.37, 0, 0.63, 1)\",\n        \"trigger\": \"loop\",\n        \"duration\": \"6000ms\",\n        \"reduced\": null\n      }\n    }\n  }\n}",
+    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Cyberbotanist — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#fdf1eb\" },\n          surface: { value: \"#fffbf9\" },\n          \"surface-hover\": { value: \"#ffffff\" },\n          text: { value: \"#211815\" },\n          \"text-muted\": { value: \"#685a54\" },\n          border: { value: \"#dacec9\" },\n          primary: { value: \"#a15d3f\" },\n          secondary: { value: \"#5a8e3f\" },\n          accent: { value: \"#35f3b5\" },\n          warm: { value: \"#8c694e\" },\n          cool: { value: \"#00d0d9\" },\n        },\n        fonts: {\n          heading: { value: \"'Fraunces', serif\" },\n          body: { value: \"'Source Serif 4', serif\" },\n          mono: { value: \"'Fira Code', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.5rem\" },\n          base: { value: \"0.75rem\" },\n          lg: { value: \"1.25rem\" },\n          xl: { value: \"2rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.25rem\" },\n          2: { value: \"0.5rem\" },\n          3: { value: \"0.75rem\" },\n          4: { value: \"1rem\" },\n          5: { value: \"1.5rem\" },\n          6: { value: \"2rem\" },\n          7: { value: \"3rem\" },\n          8: { value: \"4rem\" },\n          9: { value: \"6rem\" },\n          10: { value: \"8rem\" },\n        },\n        durations: {\n          fast: { value: \"150ms\" },\n          base: { value: \"300ms\" },\n          slow: { value: \"500ms\" },\n          slower: { value: \"1000ms\" },\n          spring: { value: \"570ms\" },\n          ambient: { value: \"6000ms\" },\n        },\n        easings: {\n          standard: { value: \"cubic-bezier(0.4, 0, 0.2, 1)\" },\n          enter: { value: \"cubic-bezier(0, 0, 0.2, 1)\" },\n          exit: { value: \"cubic-bezier(0.4, 0, 1, 1)\" },\n          emphasis: { value: \"cubic-bezier(0.4, 0, 0.2, 1)\" },\n          spring: { value: \"linear(0, 0.019, 0.065, 0.128, 0.201, 0.276, 0.352, 0.424, 0.492, 0.555, 0.612, 0.664, 0.709, 0.75, 0.785, 0.816, 0.843, 0.866, 0.886, 0.904, 0.919, 0.931, 0.942, 0.951, 0.959, 0.965, 0.971, 0.976, 0.98, 0.983, 0.986, 0.988, 0.99, 0.992, 0.993, 0.994, 1)\" },\n        },\n      },\n      // Unhurried and continuous: things glide into place and settle without overshoot.\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": {\n            \"opacity\": \"0\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\"\n          }\n        },\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(12px)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(-6px)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"40%\": {\n            \"transform\": \"scale(1.04)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"opacity\": \"0.82\",\n            \"transform\": \"scale(1)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"scale(1.015)\"\n          }\n        }\n      },\n    },\n  },\n});\n"
   },
   "nightmarketcoder": {
-    "css": ":root {\n  /* The Night Market Coder - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #e44635;\n  --color-secondary: #ebb230;\n  --color-accent: #fe12a9;\n  --color-background: #150d0c;\n  --color-surface: #211816;\n  --color-text: #f5ecea;\n  --color-text-muted: #b1a09d;\n  --color-border: #3a302e;\n  --color-warm: #eb6200;\n  --color-cool: #18b1cd;\n\n  /* Typography */\n  --font-heading: 'Dela Gothic One', sans-serif;\n  --font-body: 'Instrument Sans', sans-serif;\n  --font-mono: 'Fira Code', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.5rem;\n  --space-2: 1rem;\n  --space-3: 1.5rem;\n  --space-4: 2rem;\n  --space-5: 3rem;\n  --space-6: 4rem;\n  --space-7: 6rem;\n  --space-8: 8rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.125rem;\n  --radius-base: 0.25rem;\n  --radius-lg: 0.5rem;\n  --radius-xl: 0.75rem;\n  --radius-full: 9999px;\n\n  /* Motion */\n  --duration-fast: 100ms;\n  --duration-base: 200ms;\n  --duration-slow: 400ms;\n  --duration-slower: 800ms;\n  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);\n  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-snappy: cubic-bezier(0.25, 0.1, 0, 1);\n}\n",
-    "tailwind": "// tailwind.config.js - The Night Market Coder Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#e44635',\n        secondary: '#ebb230',\n        accent: '#fe12a9',\n        background: '#150d0c',\n        surface: '#211816',\n        text: {\n          DEFAULT: '#f5ecea',\n          muted: '#b1a09d',\n        },\n        border: '#3a302e',\n        warm: '#eb6200',\n        cool: '#18b1cd',\n      },\n      fontFamily: {\n        heading: [\"Dela Gothic One\", \"sans-serif\"],\n        body: [\"Instrument Sans\", \"sans-serif\"],\n        mono: [\"Fira Code\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.125rem',\n        'base': '0.25rem',\n        'lg': '0.5rem',\n        'xl': '0.75rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.25, 0.1, 0.25, 1)',\n        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'snappy': 'cubic-bezier(0.25, 0.1, 0, 1)',\n      },\n      transitionDuration: {\n        'fast': '100ms',\n        'base': '200ms',\n        'slow': '400ms',\n      },\n    },\n  },\n}",
-    "json": "{\n  \"colors\": {\n    \"primary\": \"#e44635\",\n    \"secondary\": \"#ebb230\",\n    \"accent\": \"#fe12a9\",\n    \"background\": \"#150d0c\",\n    \"surface\": \"#211816\",\n    \"border\": \"#3a302e\",\n    \"text\": \"#f5ecea\",\n    \"textMuted\": \"#b1a09d\",\n    \"warm\": \"#eb6200\",\n    \"cool\": \"#18b1cd\",\n    \"density\": \"maximalist\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'Dela Gothic One', sans-serif\",\n      \"body\": \"'Instrument Sans', sans-serif\",\n      \"mono\": \"'Fira Code', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.5rem\",\n      \"2\": \"1rem\",\n      \"3\": \"1.5rem\",\n      \"4\": \"2rem\",\n      \"5\": \"3rem\",\n      \"6\": \"4rem\",\n      \"7\": \"6rem\",\n      \"8\": \"8rem\",\n      \"9\": \"12rem\",\n      \"10\": \"16rem\"\n    },\n    \"density\": \"maximalist\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.125rem\",\n      \"base\": \"0.25rem\",\n      \"lg\": \"0.5rem\",\n      \"xl\": \"0.75rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"solid\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(212, 168, 67, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"100ms\",\n      \"base\": \"200ms\",\n      \"slow\": \"400ms\",\n      \"slower\": \"800ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.25, 0.1, 0.25, 1)\",\n      \"smooth\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"snappy\": \"cubic-bezier(0.25, 0.1, 0, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    }\n  }\n}",
-    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Night Market Coder — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#150d0c\" },\n          surface: { value: \"#211816\" },\n          \"surface-hover\": { value: \"#3b3230\" },\n          text: { value: \"#f5ecea\" },\n          \"text-muted\": { value: \"#b1a09d\" },\n          border: { value: \"#3a302e\" },\n          primary: { value: \"#e44635\" },\n          secondary: { value: \"#ebb230\" },\n          accent: { value: \"#fe12a9\" },\n          warm: { value: \"#eb6200\" },\n          cool: { value: \"#18b1cd\" },\n        },\n        fonts: {\n          heading: { value: \"'Dela Gothic One', sans-serif\" },\n          body: { value: \"'Instrument Sans', sans-serif\" },\n          mono: { value: \"'Fira Code', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.125rem\" },\n          base: { value: \"0.25rem\" },\n          lg: { value: \"0.5rem\" },\n          xl: { value: \"0.75rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.5rem\" },\n          2: { value: \"1rem\" },\n          3: { value: \"1.5rem\" },\n          4: { value: \"2rem\" },\n          5: { value: \"3rem\" },\n          6: { value: \"4rem\" },\n          7: { value: \"6rem\" },\n          8: { value: \"8rem\" },\n          9: { value: \"12rem\" },\n          10: { value: \"16rem\" },\n        },\n      },\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": { opacity: \"0\" },\n          \"100%\": { opacity: \"1\" },\n        },\n      },\n    },\n  },\n});\n"
+    "css": ":root {\n  /* The Night Market Coder - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #e44635;\n  --color-secondary: #ebb230;\n  --color-accent: #fe12a9;\n  --color-background: #150d0c;\n  --color-surface: #211816;\n  --color-text: #f5ecea;\n  --color-text-muted: #b1a09d;\n  --color-border: #3a302e;\n  --color-warm: #eb6200;\n  --color-cool: #18b1cd;\n\n  /* Typography */\n  --font-heading: 'Dela Gothic One', sans-serif;\n  --font-body: 'Instrument Sans', sans-serif;\n  --font-mono: 'Fira Code', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.5rem;\n  --space-2: 1rem;\n  --space-3: 1.5rem;\n  --space-4: 2rem;\n  --space-5: 3rem;\n  --space-6: 4rem;\n  --space-7: 6rem;\n  --space-8: 8rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.125rem;\n  --radius-base: 0.25rem;\n  --radius-lg: 0.5rem;\n  --radius-xl: 0.75rem;\n  --radius-full: 9999px;\n\n  /* Motion: Quick and decisive: short moves, crisp stops and readable pauses between them. */\n  --duration-fast: 100ms;\n  --duration-base: 200ms;\n  --duration-slow: 400ms;\n  --duration-slower: 800ms;\n  --duration-spring: 340ms;\n  --duration-ambient: 4000ms;\n  --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1);\n  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);\n  --ease-snappy: cubic-bezier(0.25, 0.1, 0, 1);\n  --ease-standard: cubic-bezier(0.2, 0, 0, 1);\n  --ease-enter: cubic-bezier(0.05, 0.7, 0.1, 1);\n  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);\n  --ease-emphasis: linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1);\n  --ease-spring: linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1);\n  --motion-nudge: 2px;\n  --motion-shift: 6px;\n  --motion-travel: 12px;\n  --motion-press: 0.96;\n  --motion-stagger: 25ms;\n}\n\n/* The Night Market Coder — motion primitives (generated by Baste)\n * Quick and decisive: short moves, crisp stops and readable pauses between them.\n * Classes: .motion-enter .motion-exit .motion-hover .motion-press .motion-emphasis .motion-ambient .motion-stagger\n */\n@keyframes baste-enter {\n  0% { opacity: 0; transform: translateY(6px) scale(0.98); }\n  100% { opacity: 1; transform: none; }\n}\n\n@keyframes baste-exit {\n  0% { opacity: 1; transform: none; }\n  100% { opacity: 0; transform: translateY(-3px) scale(0.98); }\n}\n\n@keyframes baste-emphasis {\n  0% { transform: scale(1); }\n  30% { transform: scale(1.06); }\n  100% { transform: scale(1); }\n}\n\n@keyframes baste-ambient {\n  0% { opacity: 1; }\n  2% { opacity: 0.55; }\n  4% { opacity: 1; }\n  6% { opacity: 0.75; }\n  8% { opacity: 1; }\n  100% { opacity: 1; }\n}\n\n/* Arrive: content, cards and panels coming into view. */\n.motion-enter { animation: baste-enter 200ms cubic-bezier(0.05, 0.7, 0.1, 1) 1 normal both; }\n\n/* Leave: dismissals and content making way. */\n.motion-exit { animation: baste-exit 100ms cubic-bezier(0.3, 0, 0.8, 0.15) 1 normal both; }\n\n/* Answer the pointer: lift, swell or slide toward the cursor. */\n.motion-hover { transition-property: transform; transition-duration: 100ms; transition-timing-function: cubic-bezier(0.2, 0, 0, 1); }\n.motion-hover:hover { transform: translateY(-2px); }\n\n/* Confirm a press: the control gives under the finger. */\n.motion-press { transition-property: transform; transition-duration: 100ms; transition-timing-function: cubic-bezier(0.2, 0, 0, 1); }\n.motion-press:active { transform: scale(0.96); }\n\n/* Draw the eye once: a new badge, a saved state, a result. */\n.motion-emphasis { animation: baste-emphasis 400ms cubic-bezier(0.2, 0, 0, 1) 1 normal both; }\n\n/* Flicker: a sign catching power, then a long readable hold. */\n.motion-ambient { animation: baste-ambient 4000ms steps(1, end) infinite normal both; }\n\n/* Sequence: the children of .motion-stagger enter one after another. */\n.motion-stagger > * { animation: baste-enter 200ms cubic-bezier(0.05, 0.7, 0.1, 1) 1 normal both; }\n.motion-stagger > :nth-child(2) { animation-delay: calc(1 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(4) { animation-delay: calc(3 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(5) { animation-delay: calc(4 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(6) { animation-delay: calc(5 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(7) { animation-delay: calc(6 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(8) { animation-delay: calc(7 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(9) { animation-delay: calc(8 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(10) { animation-delay: calc(9 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(11) { animation-delay: calc(10 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(12) { animation-delay: calc(11 * var(--motion-stagger)); }\n\n@media (prefers-reduced-motion: reduce) {\n  @keyframes baste-enter-reduced {\n    0% { opacity: 0; }\n    100% { opacity: 1; }\n  }\n  @keyframes baste-exit-reduced {\n    0% { opacity: 1; }\n    100% { opacity: 0; }\n  }\n  .motion-enter, .motion-stagger > * { animation-name: baste-enter-reduced; animation-delay: 0s; }\n  .motion-exit { animation-name: baste-exit-reduced; }\n  .motion-hover, .motion-hover:hover, .motion-press, .motion-press:active { transform: none; transition: none; }\n  .motion-emphasis, .motion-ambient { animation: none; }\n}\n\n",
+    "tailwind": "// tailwind.config.js - The Night Market Coder Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#e44635',\n        secondary: '#ebb230',\n        accent: '#fe12a9',\n        background: '#150d0c',\n        surface: '#211816',\n        text: {\n          DEFAULT: '#f5ecea',\n          muted: '#b1a09d',\n        },\n        border: '#3a302e',\n        warm: '#eb6200',\n        cool: '#18b1cd',\n      },\n      fontFamily: {\n        heading: [\"Dela Gothic One\", \"sans-serif\"],\n        body: [\"Instrument Sans\", \"sans-serif\"],\n        mono: [\"Fira Code\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.125rem',\n        'base': '0.25rem',\n        'lg': '0.5rem',\n        'xl': '0.75rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.25, 0.1, 0.25, 1)',\n        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',\n        'snappy': 'cubic-bezier(0.25, 0.1, 0, 1)',\n        'standard': 'cubic-bezier(0.2, 0, 0, 1)',\n        'enter': 'cubic-bezier(0.05, 0.7, 0.1, 1)',\n        'exit': 'cubic-bezier(0.3, 0, 0.8, 0.15)',\n        'emphasis': 'linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)',\n        'spring': 'linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)',\n      },\n      transitionDuration: {\n        'fast': '100ms',\n        'base': '200ms',\n        'slow': '400ms',\n        'slower': '800ms',\n        'spring': '340ms',\n      },\n      // Quick and decisive: short moves, crisp stops and readable pauses between them.\n      keyframes: {\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(6px) scale(0.98)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(-3px) scale(0.98)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"30%\": {\n            \"transform\": \"scale(1.06)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"opacity\": \"1\"\n          },\n          \"2%\": {\n            \"opacity\": \"0.55\"\n          },\n          \"4%\": {\n            \"opacity\": \"1\"\n          },\n          \"6%\": {\n            \"opacity\": \"0.75\"\n          },\n          \"8%\": {\n            \"opacity\": \"1\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\"\n          }\n        }\n      },\n      animation: {\n        'enter': 'baste-enter 200ms cubic-bezier(0.05, 0.7, 0.1, 1) 1 normal both',\n        'exit': 'baste-exit 100ms cubic-bezier(0.3, 0, 0.8, 0.15) 1 normal both',\n        'emphasis': 'baste-emphasis 400ms cubic-bezier(0.2, 0, 0, 1) 1 normal both',\n        'ambient': 'baste-ambient 4000ms steps(1, end) infinite normal both',\n      },\n    },\n  },\n}",
+    "json": "{\n  \"colors\": {\n    \"primary\": \"#e44635\",\n    \"secondary\": \"#ebb230\",\n    \"accent\": \"#fe12a9\",\n    \"background\": \"#150d0c\",\n    \"surface\": \"#211816\",\n    \"border\": \"#3a302e\",\n    \"text\": \"#f5ecea\",\n    \"textMuted\": \"#b1a09d\",\n    \"warm\": \"#eb6200\",\n    \"cool\": \"#18b1cd\",\n    \"density\": \"maximalist\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'Dela Gothic One', sans-serif\",\n      \"body\": \"'Instrument Sans', sans-serif\",\n      \"mono\": \"'Fira Code', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.5rem\",\n      \"2\": \"1rem\",\n      \"3\": \"1.5rem\",\n      \"4\": \"2rem\",\n      \"5\": \"3rem\",\n      \"6\": \"4rem\",\n      \"7\": \"6rem\",\n      \"8\": \"8rem\",\n      \"9\": \"12rem\",\n      \"10\": \"16rem\"\n    },\n    \"density\": \"maximalist\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.125rem\",\n      \"base\": \"0.25rem\",\n      \"lg\": \"0.5rem\",\n      \"xl\": \"0.75rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"solid\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(212, 168, 67, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"100ms\",\n      \"base\": \"200ms\",\n      \"slow\": \"400ms\",\n      \"slower\": \"800ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.25, 0.1, 0.25, 1)\",\n      \"smooth\": \"cubic-bezier(0.4, 0, 0.2, 1)\",\n      \"snappy\": \"cubic-bezier(0.25, 0.1, 0, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    },\n    \"character\": \"Quick and decisive: short moves, crisp stops and readable pauses between them.\",\n    \"curves\": {\n      \"standard\": \"cubic-bezier(0.2, 0, 0, 1)\",\n      \"enter\": \"cubic-bezier(0.05, 0.7, 0.1, 1)\",\n      \"exit\": \"cubic-bezier(0.3, 0, 0.8, 0.15)\",\n      \"emphasis\": \"linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)\"\n    },\n    \"spring\": {\n      \"stiffness\": 400,\n      \"damping\": 34,\n      \"mass\": 1,\n      \"easing\": \"linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)\",\n      \"duration\": \"340ms\"\n    },\n    \"distance\": {\n      \"nudge\": \"2px\",\n      \"shift\": \"6px\",\n      \"travel\": \"12px\"\n    },\n    \"pressScale\": 0.96,\n    \"stagger\": \"25ms\",\n    \"ambient\": \"4000ms\",\n    \"choreography\": {\n      \"enter\": {\n        \"name\": \"baste-enter\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Arrive: content, cards and panels coming into view.\",\n        \"trigger\": \"mount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(6px) scale(0.98)\"\n          },\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          }\n        ],\n        \"duration\": \"200ms\",\n        \"easing\": \"cubic-bezier(0.05, 0.7, 0.1, 1)\",\n        \"reduced\": [\n          {\n            \"opacity\": 0\n          },\n          {\n            \"opacity\": 1\n          }\n        ]\n      },\n      \"exit\": {\n        \"name\": \"baste-exit\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Leave: dismissals and content making way.\",\n        \"trigger\": \"unmount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          },\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(-3px) scale(0.98)\"\n          }\n        ],\n        \"duration\": \"100ms\",\n        \"easing\": \"cubic-bezier(0.3, 0, 0.8, 0.15)\",\n        \"reduced\": [\n          {\n            \"opacity\": 1\n          },\n          {\n            \"opacity\": 0\n          }\n        ]\n      },\n      \"hover\": {\n        \"name\": \"baste-hover\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Answer the pointer: lift, swell or slide toward the cursor.\",\n        \"trigger\": \"hover\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"translateY(-2px)\"\n          }\n        ],\n        \"duration\": \"100ms\",\n        \"easing\": \"cubic-bezier(0.2, 0, 0, 1)\",\n        \"reduced\": null\n      },\n      \"press\": {\n        \"name\": \"baste-press\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Confirm a press: the control gives under the finger.\",\n        \"trigger\": \"press\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"scale(0.96)\"\n          }\n        ],\n        \"duration\": \"100ms\",\n        \"easing\": \"cubic-bezier(0.2, 0, 0, 1)\",\n        \"reduced\": null\n      },\n      \"emphasis\": {\n        \"name\": \"baste-emphasis\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Draw the eye once: a new badge, a saved state, a result.\",\n        \"trigger\": \"attention\",\n        \"keyframes\": [\n          {\n            \"transform\": \"scale(1)\"\n          },\n          {\n            \"transform\": \"scale(1.06)\",\n            \"offset\": 0.3\n          },\n          {\n            \"transform\": \"scale(1)\"\n          }\n        ],\n        \"easing\": \"cubic-bezier(0.2, 0, 0, 1)\",\n        \"duration\": \"400ms\",\n        \"reduced\": null\n      },\n      \"ambient\": {\n        \"name\": \"baste-ambient\",\n        \"iterations\": \"infinite\",\n        \"direction\": \"normal\",\n        \"use\": \"Flicker: a sign catching power, then a long readable hold.\",\n        \"keyframes\": [\n          {\n            \"opacity\": 1\n          },\n          {\n            \"opacity\": 0.55,\n            \"offset\": 0.02\n          },\n          {\n            \"opacity\": 1,\n            \"offset\": 0.04\n          },\n          {\n            \"opacity\": 0.75,\n            \"offset\": 0.06\n          },\n          {\n            \"opacity\": 1,\n            \"offset\": 0.08\n          },\n          {\n            \"opacity\": 1\n          }\n        ],\n        \"easing\": \"steps(1, end)\",\n        \"trigger\": \"loop\",\n        \"duration\": \"4000ms\",\n        \"reduced\": null\n      }\n    }\n  }\n}",
+    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Night Market Coder — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#150d0c\" },\n          surface: { value: \"#211816\" },\n          \"surface-hover\": { value: \"#3b3230\" },\n          text: { value: \"#f5ecea\" },\n          \"text-muted\": { value: \"#b1a09d\" },\n          border: { value: \"#3a302e\" },\n          primary: { value: \"#e44635\" },\n          secondary: { value: \"#ebb230\" },\n          accent: { value: \"#fe12a9\" },\n          warm: { value: \"#eb6200\" },\n          cool: { value: \"#18b1cd\" },\n        },\n        fonts: {\n          heading: { value: \"'Dela Gothic One', sans-serif\" },\n          body: { value: \"'Instrument Sans', sans-serif\" },\n          mono: { value: \"'Fira Code', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.125rem\" },\n          base: { value: \"0.25rem\" },\n          lg: { value: \"0.5rem\" },\n          xl: { value: \"0.75rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.5rem\" },\n          2: { value: \"1rem\" },\n          3: { value: \"1.5rem\" },\n          4: { value: \"2rem\" },\n          5: { value: \"3rem\" },\n          6: { value: \"4rem\" },\n          7: { value: \"6rem\" },\n          8: { value: \"8rem\" },\n          9: { value: \"12rem\" },\n          10: { value: \"16rem\" },\n        },\n        durations: {\n          fast: { value: \"100ms\" },\n          base: { value: \"200ms\" },\n          slow: { value: \"400ms\" },\n          slower: { value: \"800ms\" },\n          spring: { value: \"340ms\" },\n          ambient: { value: \"4000ms\" },\n        },\n        easings: {\n          standard: { value: \"cubic-bezier(0.2, 0, 0, 1)\" },\n          enter: { value: \"cubic-bezier(0.05, 0.7, 0.1, 1)\" },\n          exit: { value: \"cubic-bezier(0.3, 0, 0.8, 0.15)\" },\n          emphasis: { value: \"linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)\" },\n          spring: { value: \"linear(0, 0.044, 0.145, 0.272, 0.404, 0.527, 0.636, 0.728, 0.803, 0.862, 0.907, 0.94, 0.964, 0.981, 0.992, 0.999, 1.003, 1.005, 1.006, 1.006, 1.006, 1)\" },\n        },\n      },\n      // Quick and decisive: short moves, crisp stops and readable pauses between them.\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": {\n            \"opacity\": \"0\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\"\n          }\n        },\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(6px) scale(0.98)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(-3px) scale(0.98)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"30%\": {\n            \"transform\": \"scale(1.06)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"opacity\": \"1\"\n          },\n          \"2%\": {\n            \"opacity\": \"0.55\"\n          },\n          \"4%\": {\n            \"opacity\": \"1\"\n          },\n          \"6%\": {\n            \"opacity\": \"0.75\"\n          },\n          \"8%\": {\n            \"opacity\": \"1\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\"\n          }\n        }\n      },\n    },\n  },\n});\n"
   },
   "liminalweeb": {
-    "css": ":root {\n  /* The Liminal Weeb - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #3db2b2;\n  --color-secondary: #dad59e;\n  --color-accent: #d658cc;\n  --color-background: #081111;\n  --color-surface: #121d1d;\n  --color-text: #e7f1f0;\n  --color-text-muted: #97a9a8;\n  --color-border: #2a3535;\n  --color-warm: #9f6d4b;\n  --color-cool: #5b8abb;\n\n  /* Typography */\n  --font-heading: 'VT323', monospace;\n  --font-body: 'IBM Plex Sans', sans-serif;\n  --font-mono: 'VT323', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.25rem;\n  --space-2: 0.5rem;\n  --space-3: 0.75rem;\n  --space-4: 1rem;\n  --space-5: 1.5rem;\n  --space-6: 2rem;\n  --space-7: 3rem;\n  --space-8: 4rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.25rem;\n  --radius-base: 0.5rem;\n  --radius-lg: 0.75rem;\n  --radius-xl: 1rem;\n  --radius-full: 9999px;\n\n  /* Motion */\n  --duration-fast: 200ms;\n  --duration-base: 400ms;\n  --duration-slow: 800ms;\n  --duration-slower: 1500ms;\n  --ease-default: cubic-bezier(0.45, 0.05, 0.55, 0.95);\n  --ease-smooth: cubic-bezier(0.45, 0.05, 0.55, 0.95);\n  --ease-snappy: cubic-bezier(0.4, 0, 1, 1);\n}\n",
-    "tailwind": "// tailwind.config.js - The Liminal Weeb Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#3db2b2',\n        secondary: '#dad59e',\n        accent: '#d658cc',\n        background: '#081111',\n        surface: '#121d1d',\n        text: {\n          DEFAULT: '#e7f1f0',\n          muted: '#97a9a8',\n        },\n        border: '#2a3535',\n        warm: '#9f6d4b',\n        cool: '#5b8abb',\n      },\n      fontFamily: {\n        heading: [\"VT323\", \"monospace\"],\n        body: [\"IBM Plex Sans\", \"sans-serif\"],\n        mono: [\"VT323\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.25rem',\n        'base': '0.5rem',\n        'lg': '0.75rem',\n        'xl': '1rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',\n        'smooth': 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',\n        'snappy': 'cubic-bezier(0.4, 0, 1, 1)',\n      },\n      transitionDuration: {\n        'fast': '200ms',\n        'base': '400ms',\n        'slow': '800ms',\n      },\n    },\n  },\n}",
-    "json": "{\n  \"colors\": {\n    \"primary\": \"#3db2b2\",\n    \"secondary\": \"#dad59e\",\n    \"accent\": \"#d658cc\",\n    \"background\": \"#081111\",\n    \"surface\": \"#121d1d\",\n    \"border\": \"#2a3535\",\n    \"text\": \"#e7f1f0\",\n    \"textMuted\": \"#97a9a8\",\n    \"warm\": \"#9f6d4b\",\n    \"cool\": \"#5b8abb\",\n    \"density\": \"minimal\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'VT323', monospace\",\n      \"body\": \"'IBM Plex Sans', sans-serif\",\n      \"mono\": \"'VT323', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.25rem\",\n      \"2\": \"0.5rem\",\n      \"3\": \"0.75rem\",\n      \"4\": \"1rem\",\n      \"5\": \"1.5rem\",\n      \"6\": \"2rem\",\n      \"7\": \"3rem\",\n      \"8\": \"4rem\",\n      \"9\": \"6rem\",\n      \"10\": \"8rem\"\n    },\n    \"density\": \"minimal\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.25rem\",\n      \"base\": \"0.5rem\",\n      \"lg\": \"0.75rem\",\n      \"xl\": \"1rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"dashed\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(136, 176, 196, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"200ms\",\n      \"base\": \"400ms\",\n      \"slow\": \"800ms\",\n      \"slower\": \"1500ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n      \"smooth\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n      \"snappy\": \"cubic-bezier(0.4, 0, 1, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    }\n  }\n}",
-    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Liminal Weeb — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#081111\" },\n          surface: { value: \"#121d1d\" },\n          \"surface-hover\": { value: \"#2c3737\" },\n          text: { value: \"#e7f1f0\" },\n          \"text-muted\": { value: \"#97a9a8\" },\n          border: { value: \"#2a3535\" },\n          primary: { value: \"#3db2b2\" },\n          secondary: { value: \"#dad59e\" },\n          accent: { value: \"#d658cc\" },\n          warm: { value: \"#9f6d4b\" },\n          cool: { value: \"#5b8abb\" },\n        },\n        fonts: {\n          heading: { value: \"'VT323', monospace\" },\n          body: { value: \"'IBM Plex Sans', sans-serif\" },\n          mono: { value: \"'VT323', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.25rem\" },\n          base: { value: \"0.5rem\" },\n          lg: { value: \"0.75rem\" },\n          xl: { value: \"1rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.25rem\" },\n          2: { value: \"0.5rem\" },\n          3: { value: \"0.75rem\" },\n          4: { value: \"1rem\" },\n          5: { value: \"1.5rem\" },\n          6: { value: \"2rem\" },\n          7: { value: \"3rem\" },\n          8: { value: \"4rem\" },\n          9: { value: \"6rem\" },\n          10: { value: \"8rem\" },\n        },\n      },\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": { opacity: \"0\" },\n          \"100%\": { opacity: \"1\" },\n        },\n      },\n    },\n  },\n});\n"
+    "css": ":root {\n  /* The Liminal Weeb - Generated Design System */\n  \n  /* Colors */\n  --color-primary: #3db2b2;\n  --color-secondary: #dad59e;\n  --color-accent: #d658cc;\n  --color-background: #081111;\n  --color-surface: #121d1d;\n  --color-text: #e7f1f0;\n  --color-text-muted: #97a9a8;\n  --color-border: #2a3535;\n  --color-warm: #9f6d4b;\n  --color-cool: #5b8abb;\n\n  /* Typography */\n  --font-heading: 'VT323', monospace;\n  --font-body: 'IBM Plex Sans', sans-serif;\n  --font-mono: 'VT323', monospace;\n\n  /* Spacing Scale */\n  --space-0: 0;\n  --space-1: 0.25rem;\n  --space-2: 0.5rem;\n  --space-3: 0.75rem;\n  --space-4: 1rem;\n  --space-5: 1.5rem;\n  --space-6: 2rem;\n  --space-7: 3rem;\n  --space-8: 4rem;\n\n  /* Border Radius */\n  --radius-none: 0;\n  --radius-sm: 0.25rem;\n  --radius-base: 0.5rem;\n  --radius-lg: 0.75rem;\n  --radius-xl: 1rem;\n  --radius-full: 9999px;\n\n  /* Motion: Fluid and elastic: forms flow, stretch and settle with a soft overshoot. */\n  --duration-fast: 200ms;\n  --duration-base: 400ms;\n  --duration-slow: 800ms;\n  --duration-slower: 1500ms;\n  --duration-spring: 850ms;\n  --duration-ambient: 9000ms;\n  --ease-default: cubic-bezier(0.45, 0.05, 0.55, 0.95);\n  --ease-smooth: cubic-bezier(0.45, 0.05, 0.55, 0.95);\n  --ease-snappy: cubic-bezier(0.4, 0, 1, 1);\n  --ease-standard: cubic-bezier(0.45, 0.05, 0.55, 0.95);\n  --ease-enter: cubic-bezier(0.22, 1, 0.36, 1);\n  --ease-exit: cubic-bezier(0.55, 0, 1, 0.45);\n  --ease-emphasis: linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1);\n  --ease-spring: linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1);\n  --motion-nudge: 4px;\n  --motion-shift: 20px;\n  --motion-travel: 40px;\n  --motion-press: 0.97;\n  --motion-stagger: 100ms;\n}\n\n/* The Liminal Weeb — motion primitives (generated by Baste)\n * Fluid and elastic: forms flow, stretch and settle with a soft overshoot.\n * Classes: .motion-enter .motion-exit .motion-hover .motion-press .motion-emphasis .motion-ambient .motion-stagger\n */\n@keyframes baste-enter {\n  0% { opacity: 0; transform: translateY(20px) scale(0.96); }\n  100% { opacity: 1; transform: none; }\n}\n\n@keyframes baste-exit {\n  0% { opacity: 1; transform: none; }\n  100% { opacity: 0; transform: translateY(10px) scale(0.97); }\n}\n\n@keyframes baste-emphasis {\n  0% { transform: scale(1); }\n  30% { transform: scale(1.06, 0.95); }\n  60% { transform: scale(0.98, 1.03); }\n  100% { transform: scale(1); }\n}\n\n@keyframes baste-ambient {\n  0% { transform: translate(0px, 0px) rotate(0deg); border-radius: 42% 58% 60% 40% / 45% 45% 55% 55%; }\n  100% { transform: translate(8px, -8px) rotate(4deg); border-radius: 58% 42% 40% 60% / 55% 60% 40% 45%; }\n}\n\n/* Arrive: content, cards and panels coming into view. */\n.motion-enter { animation: baste-enter 850ms linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1) 1 normal both; }\n\n/* Leave: dismissals and content making way. */\n.motion-exit { animation: baste-exit 200ms cubic-bezier(0.55, 0, 1, 0.45) 1 normal both; }\n\n/* Answer the pointer: lift, swell or slide toward the cursor. */\n.motion-hover { transition-property: transform; transition-duration: 200ms; transition-timing-function: linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1); }\n.motion-hover:hover { transform: scale(1.03); }\n\n/* Confirm a press: the control gives under the finger. */\n.motion-press { transition-property: transform; transition-duration: 200ms; transition-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95); }\n.motion-press:active { transform: scale(0.97); }\n\n/* Draw the eye once: a new badge, a saved state, a result. */\n.motion-emphasis { animation: baste-emphasis 800ms cubic-bezier(0.37, 0, 0.63, 1) 1 normal both; }\n\n/* Drift: a blob that slowly changes shape and wanders. */\n.motion-ambient { animation: baste-ambient 9000ms cubic-bezier(0.37, 0, 0.63, 1) infinite alternate both; }\n\n/* Sequence: the children of .motion-stagger enter one after another. */\n.motion-stagger > * { animation: baste-enter 850ms linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1) 1 normal both; }\n.motion-stagger > :nth-child(2) { animation-delay: calc(1 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(3) { animation-delay: calc(2 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(4) { animation-delay: calc(3 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(5) { animation-delay: calc(4 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(6) { animation-delay: calc(5 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(7) { animation-delay: calc(6 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(8) { animation-delay: calc(7 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(9) { animation-delay: calc(8 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(10) { animation-delay: calc(9 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(11) { animation-delay: calc(10 * var(--motion-stagger)); }\n.motion-stagger > :nth-child(12) { animation-delay: calc(11 * var(--motion-stagger)); }\n\n@media (prefers-reduced-motion: reduce) {\n  @keyframes baste-enter-reduced {\n    0% { opacity: 0; }\n    100% { opacity: 1; }\n  }\n  @keyframes baste-exit-reduced {\n    0% { opacity: 1; }\n    100% { opacity: 0; }\n  }\n  .motion-enter, .motion-stagger > * { animation-name: baste-enter-reduced; animation-delay: 0s; }\n  .motion-exit { animation-name: baste-exit-reduced; }\n  .motion-hover, .motion-hover:hover, .motion-press, .motion-press:active { transform: none; transition: none; }\n  .motion-emphasis, .motion-ambient { animation: none; }\n}\n\n",
+    "tailwind": "// tailwind.config.js - The Liminal Weeb Theme\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: {\n        primary: '#3db2b2',\n        secondary: '#dad59e',\n        accent: '#d658cc',\n        background: '#081111',\n        surface: '#121d1d',\n        text: {\n          DEFAULT: '#e7f1f0',\n          muted: '#97a9a8',\n        },\n        border: '#2a3535',\n        warm: '#9f6d4b',\n        cool: '#5b8abb',\n      },\n      fontFamily: {\n        heading: [\"VT323\", \"monospace\"],\n        body: [\"IBM Plex Sans\", \"sans-serif\"],\n        mono: [\"VT323\", \"monospace\"],\n      },\n      borderRadius: {\n        'none': '0',\n        'sm': '0.25rem',\n        'base': '0.5rem',\n        'lg': '0.75rem',\n        'xl': '1rem',\n      },\n      transitionTimingFunction: {\n        'default': 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',\n        'smooth': 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',\n        'snappy': 'cubic-bezier(0.4, 0, 1, 1)',\n        'standard': 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',\n        'enter': 'cubic-bezier(0.22, 1, 0.36, 1)',\n        'exit': 'cubic-bezier(0.55, 0, 1, 0.45)',\n        'emphasis': 'linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)',\n        'spring': 'linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)',\n      },\n      transitionDuration: {\n        'fast': '200ms',\n        'base': '400ms',\n        'slow': '800ms',\n        'slower': '1500ms',\n        'spring': '850ms',\n      },\n      // Fluid and elastic: forms flow, stretch and settle with a soft overshoot.\n      keyframes: {\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(20px) scale(0.96)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(10px) scale(0.97)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"30%\": {\n            \"transform\": \"scale(1.06, 0.95)\"\n          },\n          \"60%\": {\n            \"transform\": \"scale(0.98, 1.03)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"transform\": \"translate(0px, 0px) rotate(0deg)\",\n            \"borderRadius\": \"42% 58% 60% 40% / 45% 45% 55% 55%\"\n          },\n          \"100%\": {\n            \"transform\": \"translate(8px, -8px) rotate(4deg)\",\n            \"borderRadius\": \"58% 42% 40% 60% / 55% 60% 40% 45%\"\n          }\n        }\n      },\n      animation: {\n        'enter': 'baste-enter 850ms linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1) 1 normal both',\n        'exit': 'baste-exit 200ms cubic-bezier(0.55, 0, 1, 0.45) 1 normal both',\n        'emphasis': 'baste-emphasis 800ms cubic-bezier(0.37, 0, 0.63, 1) 1 normal both',\n        'ambient': 'baste-ambient 9000ms cubic-bezier(0.37, 0, 0.63, 1) infinite alternate both',\n      },\n    },\n  },\n}",
+    "json": "{\n  \"colors\": {\n    \"primary\": \"#3db2b2\",\n    \"secondary\": \"#dad59e\",\n    \"accent\": \"#d658cc\",\n    \"background\": \"#081111\",\n    \"surface\": \"#121d1d\",\n    \"border\": \"#2a3535\",\n    \"text\": \"#e7f1f0\",\n    \"textMuted\": \"#97a9a8\",\n    \"warm\": \"#9f6d4b\",\n    \"cool\": \"#5b8abb\",\n    \"density\": \"minimal\"\n  },\n  \"typography\": {\n    \"fontFamily\": {\n      \"heading\": \"'VT323', monospace\",\n      \"body\": \"'IBM Plex Sans', sans-serif\",\n      \"mono\": \"'VT323', monospace\"\n    },\n    \"fontSize\": {\n      \"xs\": \"0.75rem\",\n      \"sm\": \"0.875rem\",\n      \"base\": \"1rem\",\n      \"lg\": \"1.125rem\",\n      \"xl\": \"1.25rem\",\n      \"2xl\": \"1.5rem\",\n      \"3xl\": \"2rem\",\n      \"4xl\": \"2.5rem\"\n    },\n    \"fontWeight\": {\n      \"normal\": 400,\n      \"medium\": 500,\n      \"semibold\": 600,\n      \"bold\": 700\n    },\n    \"lineHeight\": {\n      \"tight\": 1.2,\n      \"normal\": 1.5,\n      \"relaxed\": 1.7\n    }\n  },\n  \"spacing\": {\n    \"scale\": {\n      \"0\": \"0\",\n      \"1\": \"0.25rem\",\n      \"2\": \"0.5rem\",\n      \"3\": \"0.75rem\",\n      \"4\": \"1rem\",\n      \"5\": \"1.5rem\",\n      \"6\": \"2rem\",\n      \"7\": \"3rem\",\n      \"8\": \"4rem\",\n      \"9\": \"6rem\",\n      \"10\": \"8rem\"\n    },\n    \"density\": \"minimal\"\n  },\n  \"borders\": {\n    \"radius\": {\n      \"none\": \"0\",\n      \"sm\": \"0.25rem\",\n      \"base\": \"0.5rem\",\n      \"lg\": \"0.75rem\",\n      \"xl\": \"1rem\",\n      \"full\": \"9999px\"\n    },\n    \"width\": {\n      \"thin\": \"1px\",\n      \"base\": \"1.5px\",\n      \"thick\": \"2px\"\n    },\n    \"style\": \"dashed\"\n  },\n  \"shadows\": {\n    \"sm\": \"0 1px 2px rgba(0,0,0,0.05)\",\n    \"base\": \"0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)\",\n    \"lg\": \"0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06)\",\n    \"xl\": \"0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05)\",\n    \"glow\": \"0 0 30px rgba(136, 176, 196, 0.2)\"\n  },\n  \"motion\": {\n    \"duration\": {\n      \"fast\": \"200ms\",\n      \"base\": \"400ms\",\n      \"slow\": \"800ms\",\n      \"slower\": \"1500ms\"\n    },\n    \"easing\": {\n      \"default\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n      \"smooth\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n      \"snappy\": \"cubic-bezier(0.4, 0, 1, 1)\",\n      \"bounce\": \"cubic-bezier(0.68, -0.55, 0.265, 1.55)\"\n    },\n    \"character\": \"Fluid and elastic: forms flow, stretch and settle with a soft overshoot.\",\n    \"curves\": {\n      \"standard\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n      \"enter\": \"cubic-bezier(0.22, 1, 0.36, 1)\",\n      \"exit\": \"cubic-bezier(0.55, 0, 1, 0.45)\",\n      \"emphasis\": \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\"\n    },\n    \"spring\": {\n      \"stiffness\": 120,\n      \"damping\": 12,\n      \"mass\": 1,\n      \"easing\": \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\",\n      \"duration\": \"850ms\"\n    },\n    \"distance\": {\n      \"nudge\": \"4px\",\n      \"shift\": \"20px\",\n      \"travel\": \"40px\"\n    },\n    \"pressScale\": 0.97,\n    \"stagger\": \"100ms\",\n    \"ambient\": \"9000ms\",\n    \"choreography\": {\n      \"enter\": {\n        \"name\": \"baste-enter\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Arrive: content, cards and panels coming into view.\",\n        \"trigger\": \"mount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(20px) scale(0.96)\"\n          },\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          }\n        ],\n        \"duration\": \"850ms\",\n        \"easing\": \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\",\n        \"reduced\": [\n          {\n            \"opacity\": 0\n          },\n          {\n            \"opacity\": 1\n          }\n        ]\n      },\n      \"exit\": {\n        \"name\": \"baste-exit\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Leave: dismissals and content making way.\",\n        \"trigger\": \"unmount\",\n        \"keyframes\": [\n          {\n            \"opacity\": 1,\n            \"transform\": \"none\"\n          },\n          {\n            \"opacity\": 0,\n            \"transform\": \"translateY(10px) scale(0.97)\"\n          }\n        ],\n        \"duration\": \"200ms\",\n        \"easing\": \"cubic-bezier(0.55, 0, 1, 0.45)\",\n        \"reduced\": [\n          {\n            \"opacity\": 1\n          },\n          {\n            \"opacity\": 0\n          }\n        ]\n      },\n      \"hover\": {\n        \"name\": \"baste-hover\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Answer the pointer: lift, swell or slide toward the cursor.\",\n        \"trigger\": \"hover\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"scale(1.03)\"\n          }\n        ],\n        \"duration\": \"200ms\",\n        \"easing\": \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\",\n        \"reduced\": null\n      },\n      \"press\": {\n        \"name\": \"baste-press\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Confirm a press: the control gives under the finger.\",\n        \"trigger\": \"press\",\n        \"keyframes\": [\n          {\n            \"transform\": \"none\"\n          },\n          {\n            \"transform\": \"scale(0.97)\"\n          }\n        ],\n        \"duration\": \"200ms\",\n        \"easing\": \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\",\n        \"reduced\": null\n      },\n      \"emphasis\": {\n        \"name\": \"baste-emphasis\",\n        \"iterations\": 1,\n        \"direction\": \"normal\",\n        \"use\": \"Draw the eye once: a new badge, a saved state, a result.\",\n        \"trigger\": \"attention\",\n        \"keyframes\": [\n          {\n            \"transform\": \"scale(1)\"\n          },\n          {\n            \"transform\": \"scale(1.06, 0.95)\",\n            \"offset\": 0.3\n          },\n          {\n            \"transform\": \"scale(0.98, 1.03)\",\n            \"offset\": 0.6\n          },\n          {\n            \"transform\": \"scale(1)\"\n          }\n        ],\n        \"easing\": \"cubic-bezier(0.37, 0, 0.63, 1)\",\n        \"duration\": \"800ms\",\n        \"reduced\": null\n      },\n      \"ambient\": {\n        \"name\": \"baste-ambient\",\n        \"iterations\": \"infinite\",\n        \"direction\": \"alternate\",\n        \"use\": \"Drift: a blob that slowly changes shape and wanders.\",\n        \"keyframes\": [\n          {\n            \"transform\": \"translate(0px, 0px) rotate(0deg)\",\n            \"borderRadius\": \"42% 58% 60% 40% / 45% 45% 55% 55%\"\n          },\n          {\n            \"transform\": \"translate(8px, -8px) rotate(4deg)\",\n            \"borderRadius\": \"58% 42% 40% 60% / 55% 60% 40% 45%\"\n          }\n        ],\n        \"easing\": \"cubic-bezier(0.37, 0, 0.63, 1)\",\n        \"trigger\": \"loop\",\n        \"duration\": \"9000ms\",\n        \"reduced\": null\n      }\n    }\n  }\n}",
+    "panda": "import { defineConfig } from \"@pandacss/dev\";\n\n// The Liminal Weeb — PandaCSS Theme (generated by Baste)\nexport default defineConfig({\n  preflight: true,\n  include: [\"./src/**/*.{js,jsx,ts,tsx}\"],\n  outdir: \"styled-system\",\n  jsxFramework: \"qwik\",\n  theme: {\n    extend: {\n      tokens: {\n        colors: {\n          bg: { value: \"#081111\" },\n          surface: { value: \"#121d1d\" },\n          \"surface-hover\": { value: \"#2c3737\" },\n          text: { value: \"#e7f1f0\" },\n          \"text-muted\": { value: \"#97a9a8\" },\n          border: { value: \"#2a3535\" },\n          primary: { value: \"#3db2b2\" },\n          secondary: { value: \"#dad59e\" },\n          accent: { value: \"#d658cc\" },\n          warm: { value: \"#9f6d4b\" },\n          cool: { value: \"#5b8abb\" },\n        },\n        fonts: {\n          heading: { value: \"'VT323', monospace\" },\n          body: { value: \"'IBM Plex Sans', sans-serif\" },\n          mono: { value: \"'VT323', monospace\" },\n        },\n        radii: {\n          sm: { value: \"0.25rem\" },\n          base: { value: \"0.5rem\" },\n          lg: { value: \"0.75rem\" },\n          xl: { value: \"1rem\" },\n        },\n        spacing: {\n          0: { value: \"0\" },\n          1: { value: \"0.25rem\" },\n          2: { value: \"0.5rem\" },\n          3: { value: \"0.75rem\" },\n          4: { value: \"1rem\" },\n          5: { value: \"1.5rem\" },\n          6: { value: \"2rem\" },\n          7: { value: \"3rem\" },\n          8: { value: \"4rem\" },\n          9: { value: \"6rem\" },\n          10: { value: \"8rem\" },\n        },\n        durations: {\n          fast: { value: \"200ms\" },\n          base: { value: \"400ms\" },\n          slow: { value: \"800ms\" },\n          slower: { value: \"1500ms\" },\n          spring: { value: \"850ms\" },\n          ambient: { value: \"9000ms\" },\n        },\n        easings: {\n          standard: { value: \"cubic-bezier(0.45, 0.05, 0.55, 0.95)\" },\n          enter: { value: \"cubic-bezier(0.22, 1, 0.36, 1)\" },\n          exit: { value: \"cubic-bezier(0.55, 0, 1, 0.45)\" },\n          emphasis: { value: \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\" },\n          spring: { value: \"linear(0, 0.014, 0.054, 0.113, 0.187, 0.27, 0.359, 0.451, 0.542, 0.63, 0.713, 0.789, 0.858, 0.919, 0.971, 1.015, 1.051, 1.079, 1.101, 1.115, 1.124, 1.128, 1.127, 1.123, 1.116, 1.108, 1.097, 1.086, 1.075, 1.063, 1.051, 1.041, 1.031, 1.021, 1.013, 1.006, 1, 0.995, 0.991, 0.988, 0.986, 0.985, 0.984, 0.984, 0.984, 0.985, 0.986, 0.987, 0.988, 0.99, 0.991, 0.993, 0.994, 1)\" },\n        },\n      },\n      // Fluid and elastic: forms flow, stretch and settle with a soft overshoot.\n      keyframes: {\n        \"fade-in\": {\n          \"0%\": {\n            \"opacity\": \"0\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\"\n          }\n        },\n        \"baste-enter\": {\n          \"0%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(20px) scale(0.96)\"\n          },\n          \"100%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          }\n        },\n        \"baste-exit\": {\n          \"0%\": {\n            \"opacity\": \"1\",\n            \"transform\": \"none\"\n          },\n          \"100%\": {\n            \"opacity\": \"0\",\n            \"transform\": \"translateY(10px) scale(0.97)\"\n          }\n        },\n        \"baste-emphasis\": {\n          \"0%\": {\n            \"transform\": \"scale(1)\"\n          },\n          \"30%\": {\n            \"transform\": \"scale(1.06, 0.95)\"\n          },\n          \"60%\": {\n            \"transform\": \"scale(0.98, 1.03)\"\n          },\n          \"100%\": {\n            \"transform\": \"scale(1)\"\n          }\n        },\n        \"baste-ambient\": {\n          \"0%\": {\n            \"transform\": \"translate(0px, 0px) rotate(0deg)\",\n            \"borderRadius\": \"42% 58% 60% 40% / 45% 45% 55% 55%\"\n          },\n          \"100%\": {\n            \"transform\": \"translate(8px, -8px) rotate(4deg)\",\n            \"borderRadius\": \"58% 42% 40% 60% / 55% 60% 40% 45%\"\n          }\n        }\n      },\n    },\n  },\n});\n"
   }
 };
 
@@ -798,7 +1356,7 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
   "cyberbotanist": {
     "personaId": "cyberbotanist",
     "image": {
-      "prompt": "Stunning hero image: Hero banner\n\nStyle: warm earth tones with amber and ochre highlights, organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality\n\nChanneling The Cyberbotanist's aesthetic universe:\n- Visual influences: the atmosphere of maker spaces with plants\n- Emotional tone: interconnectedness, growth, sustainability\n- Core visual elements: Mushishi, Ernst Haeckel, bioluminescent, mycelial, solarpunk\n- Subculture notes: solarpunk, biohacking\n\nTechnical specs:\n- warm color temperature\n- rich visual density\n- organic edge treatment\n- textured surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Annihilation as interpreted by Ernst Haeckel.\n",
+      "prompt": "Stunning hero image: Hero banner\n\nVariation:\n- warm amber and terracotta color temperature\n- rich, layered visual density\n- cinematic, lightly stylised rendering\n\nStyle: organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality\n\nChanneling The Cyberbotanist's aesthetic universe:\n- Visual influences: the atmosphere of maker spaces with plants\n- Emotional tone: interconnectedness, growth, sustainability\n- Core visual elements: Mushishi, Ernst Haeckel, bioluminescent, mycelial, solarpunk\n- Subculture notes: solarpunk, biohacking\n\nTechnical specs:\n- organic edge treatment\n- textured surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Annihilation as interpreted by Ernst Haeckel.\n",
       "negativePrompt": "generic, stock photo, corporate, sterile, clip art, watermark, text, UI elements, border, frame",
       "parameters": {
         "model": "gpt-image-2",
@@ -819,7 +1377,8 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
       "systemContext": "You are an expert SVG designer who creates solarpunk-inspired vector graphics. You understand the visual language of Mushishi and translate cultural influences into scalable icons and illustrations."
     },
     "video": {
-      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Smooth, gradual transitions\n\nThe Cyberbotanist's motion language:\n- Rhythm: ambient-inspired, folktronica-inspired pacing\n- Texture: textured surface treatments in motion\n- Energy: interconnectedness and growth\n\nVisual treatment:\n- warm palette in motion\n- Focused, intentional movement\n- Atmospheric elements: \"Mushishi\" aesthetic\n- Camera feel: Sharp, deliberate framing\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\n",
+      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Unhurried and continuous: things glide into place and settle without overshoot.\n\nThe Cyberbotanist's motion language:\n- Rhythm: ambient-inspired, folktronica-inspired pacing\n- Texture: textured surface treatments in motion\n- Energy: interconnectedness and growth\n- What moves: spores drifting through low light; bioluminescent pulses travelling along mycelium; fern fronds slowly unfurling\n\nVisual treatment:\n- warm palette in motion\n- Focused, intentional movement\n- Atmospheric elements: \"Mushishi\" aesthetic\n- Camera feel: Sharp, deliberate framing\n- Camera move: slow sideways camera drift\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\nAvoid: fast cuts, strobing or flashing light, shaky handheld camera.\n",
+      "negativePrompt": "fast cuts, strobing or flashing light, shaky handheld camera",
       "parameters": {
         "model": "veo-3",
         "duration": 5,
@@ -832,7 +1391,7 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
   "nightmarketcoder": {
     "personaId": "nightmarketcoder",
     "image": {
-      "prompt": "Stunning hero image: Hero banner\n\nStyle: warm earth tones with amber and ochre highlights, rich visual density with layered elements, intentional noise and grain texture, expressive editorial typography\n\nChanneling The Night Market Coder's aesthetic universe:\n- Visual influences: the atmosphere of convenience stores at 2am\n- Emotional tone: hustle, community, resourcefulness\n- Core visual elements: Chungking Express, night markets, neon signage, city pop, street food\n- Subculture notes: street food culture, night markets\n\nTechnical specs:\n- warm color temperature\n- maximalist visual density\n- geometric edge treatment\n- noisy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Chungking Express as interpreted by Katsuhiro Otomo.\n",
+      "prompt": "Stunning hero image: Hero banner\n\nVariation:\n- warm amber and terracotta color temperature\n- maximalist, every surface busy visual density\n- cinematic, lightly stylised rendering\n\nStyle: intentional noise and grain texture, expressive editorial typography\n\nChanneling The Night Market Coder's aesthetic universe:\n- Visual influences: the atmosphere of convenience stores at 2am\n- Emotional tone: hustle, community, resourcefulness\n- Core visual elements: Chungking Express, night markets, neon signage, city pop, street food\n- Subculture notes: street food culture, night markets\n\nTechnical specs:\n- geometric edge treatment\n- noisy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Chungking Express as interpreted by Katsuhiro Otomo.\n",
       "negativePrompt": "generic, stock photo, corporate, sterile, clip art, watermark, text, UI elements, border, frame",
       "parameters": {
         "model": "gpt-image-2",
@@ -853,7 +1412,8 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
       "systemContext": "You are an expert SVG designer who creates street food culture-inspired vector graphics. You understand the visual language of Chungking Express and translate cultural influences into scalable icons and illustrations."
     },
     "video": {
-      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Sharp, staccato movements with quick cuts\n\nThe Night Market Coder's motion language:\n- Rhythm: city pop-inspired, future funk-inspired pacing\n- Texture: noisy surface treatments in motion\n- Energy: hustle and community\n\nVisual treatment:\n- warm palette in motion\n- Dense, layered visual complexity\n- Atmospheric elements: the atmosphere of convenience stores at 2am\n- Camera feel: Sharp, deliberate framing\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\n",
+      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Quick and decisive: short moves, crisp stops and readable pauses between them.\n\nThe Night Market Coder's motion language:\n- Rhythm: city pop-inspired, future funk-inspired pacing\n- Texture: noisy surface treatments in motion\n- Energy: hustle and community\n- What moves: neon signs flickering on; steam rising from woks; paper lanterns swaying\n\nVisual treatment:\n- warm palette in motion\n- Dense, layered visual complexity\n- Atmospheric elements: the atmosphere of convenience stores at 2am\n- Camera feel: Sharp, deliberate framing\n- Camera move: locked-off camera; only the scene moves\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\nAvoid: slow fades, long empty pauses, dreamy floating drift.\n",
+      "negativePrompt": "slow fades, long empty pauses, dreamy floating drift",
       "parameters": {
         "model": "veo-3",
         "duration": 5,
@@ -866,7 +1426,7 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
   "liminalweeb": {
     "personaId": "liminalweeb",
     "image": {
-      "prompt": "Stunning hero image: Hero banner\n\nStyle: cool steel blues with cyan and deep violet accents, generous negative space and breathing room, film grain and analog texture, vintage mid-century influences\n\nChanneling The Liminal Weeb's aesthetic universe:\n- Visual influences: the obsessive detail of urbex photography\n- Emotional tone: nostalgia, impermanence, wabi-sabi digital\n- Core visual elements: Serial Experiments Lain, liminal spaces, vaporwave, Yume Nikki, glitch art\n- Subculture notes: webcore, liminal spaces\n\nTechnical specs:\n- cool color temperature\n- minimal visual density\n- soft edge treatment\n- grainy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Serial Experiments Lain as interpreted by Surrealmemes.\n",
+      "prompt": "Stunning hero image: Hero banner\n\nVariation:\n- cool teal and slate color temperature\n- sparse, generous negative space visual density\n- illustrative, painterly rendering\n\nStyle: film grain and analog texture, vintage mid-century influences\n\nChanneling The Liminal Weeb's aesthetic universe:\n- Visual influences: the obsessive detail of urbex photography\n- Emotional tone: nostalgia, impermanence, wabi-sabi digital\n- Core visual elements: Serial Experiments Lain, liminal spaces, vaporwave, Yume Nikki, glitch art\n- Subculture notes: webcore, liminal spaces\n\nTechnical specs:\n- soft edge treatment\n- grainy surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Serial Experiments Lain as interpreted by Surrealmemes.\n",
       "negativePrompt": "generic, stock photo, corporate, sterile, clip art, watermark, text, UI elements, border, frame",
       "parameters": {
         "model": "gpt-image-2",
@@ -887,7 +1447,8 @@ export const DEMO_PROMPTS: Record<string, PromptPreview> = {
       "systemContext": "You are an expert SVG designer who creates webcore-inspired vector graphics. You understand the visual language of Serial Experiments Lain and translate cultural influences into scalable icons and illustrations."
     },
     "video": {
-      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Flowing, organic movement with smooth transitions\n\nThe Liminal Weeb's motion language:\n- Rhythm: vaporwave-inspired, ambient-inspired pacing\n- Texture: grainy surface treatments in motion\n- Energy: nostalgia and impermanence\n\nVisual treatment:\n- cool palette in motion\n- Focused, intentional movement\n- Atmospheric elements: the atmosphere of abandoned malls\n- Camera feel: Soft focus, ethereal\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\n",
+      "prompt": "Short cinematic loop (5 seconds): Hero banner\n\nMotion style: Fluid and elastic: forms flow, stretch and settle with a soft overshoot.\n\nThe Liminal Weeb's motion language:\n- Rhythm: vaporwave-inspired, ambient-inspired pacing\n- Texture: grainy surface treatments in motion\n- Energy: nostalgia and impermanence\n- What moves: fluorescent tubes humming and flickering; an empty escalator running; a fountain trickling in an empty atrium\n\nVisual treatment:\n- cool palette in motion\n- Focused, intentional movement\n- Atmospheric elements: the atmosphere of abandoned malls\n- Camera feel: Soft focus, ethereal\n- Camera move: slow push in\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\nAvoid: crowds of people, slick glossy motion graphics, bright saturated flashes.\n",
+      "negativePrompt": "crowds of people, slick glossy motion graphics, bright saturated flashes",
       "parameters": {
         "model": "veo-3",
         "duration": 5,

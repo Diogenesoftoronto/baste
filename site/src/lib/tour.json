@@ -1,6 +1,6 @@
 {
   "src": "/media/tour/baste-tour.mp4",
-  "poster": "/media/tour/poster.webp",
+  "poster": "/media/tour/poster.avif",
   "captions": {
     "en": "/media/tour/captions-en.vtt",
     "fr": "/media/tour/captions-fr.vtt"

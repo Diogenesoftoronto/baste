@@ -24,6 +24,30 @@ export interface Persona {
 
   // Visual language preferences (extracted from above)
   aesthetic: AestheticProfile;
+
+  // How their world moves, for layered and animated assets
+  animation?: PersonaAnimation;
+}
+
+/**
+ * How a persona's world moves. Optional: `animationFor` (assets/motion.ts)
+ * fills anything missing from the aesthetic.
+ */
+export interface PersonaAnimation {
+  /** What moves in their world: "spores drifting", "a neon sign flickering on". */
+  motifs: string[];
+  /** Things that can stand apart as a front layer: "lantern", "fern". */
+  subjects: string[];
+  /** How far apart the front layer and the background sit. */
+  depth: "flat" | "parallax" | "deep";
+  /** What the camera does through a loop. */
+  camera: "locked" | "drift" | "push" | "orbit";
+  /** Which layer carries the change in edits and loops. */
+  focus: "background" | "subject" | "both";
+  /** One loop's length, in seconds. */
+  loopSeconds?: number;
+  /** Motion they can't stand: "fast cuts", "shaky camera". */
+  avoid: string[];
 }
 
 export interface CulturalIdentity {

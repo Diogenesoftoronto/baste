@@ -13,6 +13,7 @@ import type { BrandKit } from "../decompose/index.js";
 import { contrastRatio, parseColor } from "./contrast.js";
 import { hueDistance, normalizeHue, oklchToHex, toOklab, toOklch, type Oklch } from "./oklch.js";
 import { COLOR_LEXICON, FONT_BASES, FONT_OVERRIDES, culturalCorpus, scoreTriggers } from "./palette-lexicon.js";
+import { animatedPrimitives, animationShorthand, exportMotionCSS, keyframesObject, motionTokens, motionVariables, type MotionTokens } from "./motion.js";
 
 /** Built-in font families; externally supplied BrandKit fonts remain caller-owned. */
 export const TOKEN_FONT_FAMILIES: string[] = [...new Set([
@@ -105,20 +106,7 @@ export interface ShadowTokens {
   glow: string;
 }
 
-export interface MotionTokens {
-  duration: {
-    fast: string;
-    base: string;
-    slow: string;
-    slower: string;
-  };
-  easing: {
-    default: string;
-    smooth: string;
-    snappy: string;
-    bounce: string;
-  };
-}
+export type { MotionTokens, MotionPrimitive, MotionMoment } from "./motion.js";
 
 /**
  * Generate design tokens from persona. If a BrandKit is supplied, its
@@ -136,7 +124,7 @@ export function generateDesignTokens(persona: Persona, brandKit?: BrandKit | nul
     spacing: generateSpacing(aesthetic),
     borders: generateBorders(aesthetic),
     shadows: generateShadows(aesthetic),
-    motion: generateMotion(aesthetic),
+    motion: motionTokens(aesthetic),
   };
 }
 
@@ -463,67 +451,6 @@ function generateShadows(aesthetic: AestheticProfile): ShadowTokens {
   return base;
 }
 
-function generateMotion(aesthetic: AestheticProfile): MotionTokens {
-  const easingMap: Record<string, MotionTokens["easing"]> = {
-    smooth: {
-      default: "cubic-bezier(0.4, 0, 0.2, 1)",
-      smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
-      snappy: "cubic-bezier(0.4, 0, 1, 1)",
-      bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-    },
-    snappy: {
-      default: "cubic-bezier(0.25, 0.1, 0.25, 1)",
-      smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
-      snappy: "cubic-bezier(0.25, 0.1, 0, 1)",
-      bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-    },
-    liquid: {
-      default: "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
-      smooth: "cubic-bezier(0.45, 0.05, 0.55, 0.95)",
-      snappy: "cubic-bezier(0.4, 0, 1, 1)",
-      bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-    },
-    mechanical: {
-      default: "linear",
-      smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
-      snappy: "cubic-bezier(0.4, 0, 1, 1)",
-      bounce: "steps(5, end)",
-    },
-  };
-
-  const durationMap: Record<string, MotionTokens["duration"]> = {
-    smooth: {
-      fast: "150ms",
-      base: "300ms",
-      slow: "500ms",
-      slower: "1000ms",
-    },
-    snappy: {
-      fast: "100ms",
-      base: "200ms",
-      slow: "400ms",
-      slower: "800ms",
-    },
-    liquid: {
-      fast: "200ms",
-      base: "400ms",
-      slow: "800ms",
-      slower: "1500ms",
-    },
-    mechanical: {
-      fast: "50ms",
-      base: "150ms",
-      slow: "300ms",
-      slower: "600ms",
-    },
-  };
-
-  return {
-    duration: durationMap[aesthetic.motionStyle] || durationMap.smooth,
-    easing: easingMap[aesthetic.motionStyle] || easingMap.smooth,
-  };
-}
-
 /**
  * Export tokens as CSS custom properties
  */
@@ -569,15 +496,11 @@ export function exportCSS(persona: Persona, brandKit?: BrandKit | null): string 
   --radius-xl: ${tokens.borders.radius.xl};
   --radius-full: ${tokens.borders.radius.full};
 
-  /* Motion */
-  --duration-fast: ${tokens.motion.duration.fast};
-  --duration-base: ${tokens.motion.duration.base};
-  --duration-slow: ${tokens.motion.duration.slow};
-  --duration-slower: ${tokens.motion.duration.slower};
-  --ease-default: ${tokens.motion.easing.default};
-  --ease-smooth: ${tokens.motion.easing.smooth};
-  --ease-snappy: ${tokens.motion.easing.snappy};
+  /* Motion: ${tokens.motion.character} */
+${motionVariables(tokens.motion).map((line) => `  ${line}`).join("\n")}
 }
+
+${exportMotionCSS(persona.name, tokens.motion, { variables: false })}
 `;
 }
 
@@ -621,11 +544,23 @@ module.exports = {
         'default': '${tokens.motion.easing.default}',
         'smooth': '${tokens.motion.easing.smooth}',
         'snappy': '${tokens.motion.easing.snappy}',
+        'standard': '${tokens.motion.curves.standard}',
+        'enter': '${tokens.motion.curves.enter}',
+        'exit': '${tokens.motion.curves.exit}',
+        'emphasis': '${tokens.motion.curves.emphasis}',
+        'spring': '${tokens.motion.spring.easing}',
       },
       transitionDuration: {
         'fast': '${tokens.motion.duration.fast}',
         'base': '${tokens.motion.duration.base}',
         'slow': '${tokens.motion.duration.slow}',
+        'slower': '${tokens.motion.duration.slower}',
+        'spring': '${tokens.motion.spring.duration}',
+      },
+      // ${tokens.motion.character}
+      keyframes: ${indent(JSON.stringify(Object.fromEntries(animatedPrimitives(tokens.motion).map((p) => [p.name, keyframesObject(p.keyframes)])), null, 2), 6)},
+      animation: {
+${animatedPrimitives(tokens.motion).map((p) => `        '${p.name.replace(/^baste-/, "")}': '${animationShorthand(p)}',`).join("\n")}
       },
     },
   },
@@ -676,17 +611,33 @@ export default defineConfig({
         spacing: {
           ${Object.entries(t.spacing.scale).map(([k, v]) => `${k}: { value: "${v}" },`).join("\n          ")}
         },
-      },
-      keyframes: {
-        "fade-in": {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
+        durations: {
+          fast: { value: "${t.motion.duration.fast}" },
+          base: { value: "${t.motion.duration.base}" },
+          slow: { value: "${t.motion.duration.slow}" },
+          slower: { value: "${t.motion.duration.slower}" },
+          spring: { value: "${t.motion.spring.duration}" },
+          ambient: { value: "${t.motion.ambient}" },
+        },
+        easings: {
+          standard: { value: "${t.motion.curves.standard}" },
+          enter: { value: "${t.motion.curves.enter}" },
+          exit: { value: "${t.motion.curves.exit}" },
+          emphasis: { value: "${t.motion.curves.emphasis}" },
+          spring: { value: "${t.motion.spring.easing}" },
         },
       },
+      // ${t.motion.character}
+      keyframes: ${indent(JSON.stringify({ "fade-in": { "0%": { opacity: "0" }, "100%": { opacity: "1" } }, ...Object.fromEntries(animatedPrimitives(t.motion).map((p) => [p.name, keyframesObject(p.keyframes)])) }, null, 2), 6)},
     },
   },
 });
 `;
+}
+
+/** Indent every line after the first, for nesting generated JSON inside a config file. */
+function indent(text: string, spaces: number): string {
+  return text.replace(/\n/g, `\n${" ".repeat(spaces)}`);
 }
 
 function shadeColor(color: string, percent: number): string {

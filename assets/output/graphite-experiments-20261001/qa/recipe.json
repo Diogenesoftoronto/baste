@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "kind": "baste-procedural-material",
+  "look": {
+    "hue": 180,
+    "cycle": true,
+    "colourSpace": "hue",
+    "pattern": "flow",
+    "seed": 123,
+    "density": 0.55,
+    "speed": 0.55,
+    "motion": false,
+    "interaction": false,
+    "warp": "#F07858",
+    "weft": "#A8ABF2",
+    "ground": "#242638",
+    "dye": 0.75,
+    "fold": 0.55,
+    "weave": 0.65,
+    "thread": 3,
+    "scale": 1.4,
+    "grain": 0.018
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "voice": "Theo",
+  "provider": "cartesia",
+  "total": 69.332,
+  "scenes": [
+    {
+      "id": "why",
+      "scene": "Title over pattern paper",
+      "text": "Most interfaces are cut for “users aged twenty-five to thirty-four.” Nobody in that bracket has taste. A person does.",
+      "start": 0,
+      "duration": 8.733,
+      "voiceStart": 0.45,
+      "voice": 7.424
+    },
+    {
+      "id": "measure",
+      "scene": "Three portraits, their influences",
+      "text": "Baste starts with one person: the films they rewatch, the music they work to, the rooms they feel at home in, and the things they can’t stand in an app.",
+      "start": 8.733,
+      "duration": 10.533,
+      "voiceStart": 9.183,
+      "voice": 9.173
+    },
+    {
+      "id": "fitting",
+      "scene": "The same screen re-cut for Moss, Ren and Ada",
+      "text": "Then it fits an interface to them. Same screen, three people. The layout, the type, the colour and the motion all change.",
+      "start": 19.266,
+      "duration": 8.1,
+      "voiceStart": 19.716,
+      "voice": 7.286
+    },
+    {
+      "id": "baste",
+      "scene": "The archive filling with real candidates",
+      "text": "To find a direction, Baste tries dozens of loose versions, warm and cool, sparse and dense, and a vision judge looks at every one.",
+      "start": 27.366,
+      "duration": 9.933,
+      "voiceStart": 27.816,
+      "voice": 8.862
+    },
+    {
+      "id": "fit",
+      "scene": "Judge weights; the kept variants",
+      "text": "It keeps the best in each region, not one winner. So you see the real range of options before anything is final.",
+      "start": 37.299,
+      "duration": 7.733,
+      "voiceStart": 37.749,
+      "voice": 6.198
+    },
+    {
+      "id": "cut",
+      "scene": "Finished suite: hero, icons, loop, tokens",
+      "text": "What comes out is ready to use: images, vector icons, ambient loops, and design tokens for CSS, Tailwind or Panda.",
+      "start": 45.032,
+      "duration": 9.9,
+      "voiceStart": 45.482,
+      "voice": 8.673
+    },
+    {
+      "id": "talk",
+      "scene": "Conversation with Ren",
+      "text": "And you can ask the persona why. They’ll tell you, in their own words, what they love and what would make a design feel like theirs.",
+      "start": 54.932,
+      "duration": 8.967,
+      "voiceStart": 55.382,
+      "voice": 7.152
+    },
+    {
+      "id": "yours",
+      "scene": "Studio, command, end card",
+      "text": "Bring your own people. Measure them in the Studio, and cut something that fits.",
+      "start": 63.899,
+      "duration": 5.433,
+      "voiceStart": 64.349,
+      "voice": 4.016
+    }
+  ]
+}

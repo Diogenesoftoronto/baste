@@ -1,0 +1,10 @@
+{
+  "provider": "cartesia",
+  "model": "sonic-3.6",
+  "voice": "Theo",
+  "voiceId": "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
+  "speed": 0.9,
+  "text": "And you can ask the persona why. They’ll tell you, in their own words, what they love and what would make a design feel like theirs.",
+  "requestId": "3abbd94f-3906-4c06-acac-d16a8f728d8a",
+  "generatedAt": "2026-10-14T03:30:05.726Z"
+}

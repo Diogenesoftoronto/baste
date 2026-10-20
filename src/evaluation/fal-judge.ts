@@ -8,6 +8,7 @@
  */
 import { readFileSync } from "node:fs";
 import { Resvg } from "@resvg/resvg-js";
+import { safeSvg } from "../shared/stills.js";
 import { falRun } from "../assets/fal.js";
 
 /**
@@ -16,7 +17,7 @@ import { falRun } from "../assets/fal.js";
  */
 export function svgPreview(path: string): string | undefined {
   try {
-    const png = new Resvg(readFileSync(path), { fitTo: { mode: "width", value: 512 }, background: "#ffffff" }).render().asPng();
+    const png = new Resvg(safeSvg(readFileSync(path, "utf8")), { fitTo: { mode: "width", value: 512 }, background: "#ffffff" }).render().asPng();
     return `data:image/png;base64,${png.toString("base64")}`;
   } catch {
     return undefined;

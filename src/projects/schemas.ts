@@ -10,6 +10,15 @@ const personaId = z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/);
 const text = z.string().max(20000);
 const texts = z.array(text).max(200);
 
+export const personaAnimationSchema = z.object({
+  motifs: texts, subjects: texts,
+  depth: z.enum(["flat", "parallax", "deep"]),
+  camera: z.enum(["locked", "drift", "push", "orbit"]),
+  focus: z.enum(["background", "subject", "both"]),
+  loopSeconds: z.number().min(1).max(60).optional(),
+  avoid: texts,
+}).strict();
+
 export const personaSchema = z.object({
   id: personaId, name: text, summary: text,
   culture: z.object({
@@ -33,6 +42,7 @@ export const personaSchema = z.object({
     layoutStyle: z.enum(["grid", "organic", "asymmetric", "brutalist", "editorial"]),
     visualKeywords: texts, moodKeywords: texts,
   }).strict(),
+  animation: personaAnimationSchema.optional(),
 }).strict();
 
 export const createProjectSchema = z.object({ commandId, name, brief, personaId: personaId.optional() }).strict();

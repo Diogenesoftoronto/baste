@@ -1,0 +1,126 @@
+{
+  "model": "fal-ai/whisper",
+  "text": "To find a direction, Baste tries dozens of loose versions, warm and cool, sparse and dense, and a vision judge looks at every one.",
+  "heard": [
+    {
+      "text": "To",
+      "start": 0.03,
+      "end": 0.03
+    },
+    {
+      "text": "find",
+      "start": 0.03,
+      "end": 0.19
+    },
+    {
+      "text": "a",
+      "start": 0.19,
+      "end": 0.29
+    },
+    {
+      "text": "direction,",
+      "start": 0.29,
+      "end": 0.89
+    },
+    {
+      "text": "BASE",
+      "start": 0.89,
+      "end": 1.37
+    },
+    {
+      "text": "tries",
+      "start": 1.37,
+      "end": 1.57
+    },
+    {
+      "text": "dozens",
+      "start": 1.57,
+      "end": 2.23
+    },
+    {
+      "text": "of",
+      "start": 2.23,
+      "end": 2.57
+    },
+    {
+      "text": "loose",
+      "start": 2.57,
+      "end": 2.71
+    },
+    {
+      "text": "versions,",
+      "start": 2.71,
+      "end": 3.45
+    },
+    {
+      "text": "warm",
+      "start": 3.45,
+      "end": 3.99
+    },
+    {
+      "text": "and",
+      "start": 3.99,
+      "end": 4.33
+    },
+    {
+      "text": "cool,",
+      "start": 4.33,
+      "end": 4.99
+    },
+    {
+      "text": "sparse",
+      "start": 4.99,
+      "end": 5.67
+    },
+    {
+      "text": "and",
+      "start": 5.67,
+      "end": 5.89
+    },
+    {
+      "text": "dense,",
+      "start": 6.03,
+      "end": 6.37
+    },
+    {
+      "text": "and",
+      "start": 6.37,
+      "end": 6.93
+    },
+    {
+      "text": "a",
+      "start": 6.93,
+      "end": 7.01
+    },
+    {
+      "text": "vision",
+      "start": 7.01,
+      "end": 7.25
+    },
+    {
+      "text": "judge",
+      "start": 7.25,
+      "end": 7.49
+    },
+    {
+      "text": "looks",
+      "start": 7.49,
+      "end": 7.81
+    },
+    {
+      "text": "at",
+      "start": 7.81,
+      "end": 8.01
+    },
+    {
+      "text": "every",
+      "start": 8.01,
+      "end": 8.33
+    },
+    {
+      "text": "one.",
+      "start": 8.33,
+      "end": 8.75
+    }
+  ]
+}
