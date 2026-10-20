@@ -56,3 +56,9 @@ media/studio-guide-narration/
 /videos/**/*.mp4
 /videos/**/*.wav
 /videos/**/*.mp3
+
+/assets/output/**/*.gif
+/media/**/*.gif
+
+# Per-machine assistant preferences.
+/crush.json
