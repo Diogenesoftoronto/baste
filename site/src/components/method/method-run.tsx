@@ -158,7 +158,7 @@ export const MethodRun = component$(() => {
                     document.getElementById(`run-${ORDER[n]}`)?.focus();
                   })]}
                 >
-                  <img src={`/assets/companions/${id}.webp`} alt="" width={30} height={30} loading="lazy" decoding="async" />
+                  <img src={`/assets/companions/${id}.avif`} alt="" width={30} height={30} loading="lazy" decoding="async" />
                   {voiceOf(id).handle}
                 </button>
               );

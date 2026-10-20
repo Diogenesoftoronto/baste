@@ -1,0 +1,16 @@
+{
+  "transport": "stdio",
+  "server": {
+    "name": "graphite-mcp",
+    "version": "0.1.0"
+  },
+  "tools": [
+    "graphite_render",
+    "graphite_list_nodes",
+    "graphite_search_nodes",
+    "graphite_describe_node",
+    "graphite_validate_doc",
+    "graphite_render_variants"
+  ],
+  "install": "/home/diogenes/.local/share/graphite-editor-mcp"
+}

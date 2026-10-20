@@ -93,6 +93,13 @@ export function paletteSwatches(tokens: DesignTokens): Array<{ role: string; hex
 }
 
 /** Human labels for each aesthetic axis, in display order. */
+/** The choices in a persona's animation, beside its motifs, subjects and things to avoid. */
+export const ANIMATION_AXES: Array<{ key: "depth" | "camera" | "focus"; label: string; options: string[] }> = [
+  { key: "depth", label: "Depth", options: ["flat", "parallax", "deep"] },
+  { key: "camera", label: "Camera", options: ["locked", "drift", "push", "orbit"] },
+  { key: "focus", label: "What moves", options: ["background", "subject", "both"] },
+];
+
 export const AESTHETIC_AXES: Array<{ key: keyof AestheticProfile; label: string; options: string[] }> = [
   { key: "colorTemperature", label: "Colour temperature", options: ["warm", "cool", "neutral", "high-contrast", "muted"] },
   { key: "density", label: "Density", options: ["minimal", "rich", "dense", "maximalist"] },

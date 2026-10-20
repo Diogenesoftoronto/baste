@@ -1,0 +1,461 @@
+[
+  {
+    "file": "baste-chalk-strata-2560x1600-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chalk-strata-r1-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chalk-strata-r2-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chalk-strata-r3-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chalk-strata-r4-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chalk-strata-r5-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-2560x1600-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-loop-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 9,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-r1-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-r2-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-r3-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-r4-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-chromatic-bath-r5-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 8,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-2560x1600-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-r1-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-r2-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-r3-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-r4-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-interference-weave-r5-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 12,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-2560x1600-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-loop-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-pointer-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 11,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-r1-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-r2-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-r3-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-r4-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  },
+  {
+    "file": "baste-radial-dye-r5-20261001.graphite",
+    "valid": true,
+    "structural": {
+      "checks": {
+        "parsed": true,
+        "hasNetworkInterface": true,
+        "hasNetwork": true,
+        "hasNodesArray": true,
+        "hasExportsArray": true,
+        "nodeEntriesWellFormed": true,
+        "exportsResolveToNodes": true
+      },
+      "nodeCount": 10,
+      "reasons": []
+    }
+  }
+]

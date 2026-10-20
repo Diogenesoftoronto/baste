@@ -189,7 +189,9 @@ export function importDesignSystem(
       value: ref.value,
       description: ref.description,
       designRationale: ref.designRationale,
-      source: ref.source,
+      // A shared file's local paths name the sender's files. Kept, they would point
+      // at whatever the importer has there, which a looking judge would then upload.
+      source: ref.source && /^https?:\/\//i.test(ref.source) ? ref.source : undefined,
       personaId: targetPersonaId,
       componentId: ref.componentId,
     });

@@ -1,0 +1,60 @@
+{
+  "imagesDecoded": 4,
+  "links": [
+    {
+      "href": "/materials/graphite/chromatic-bath.graphite",
+      "status": 200,
+      "bytes": 60682
+    },
+    {
+      "href": "/materials/graphite/chromatic-bath-loop.gif",
+      "status": 200,
+      "bytes": 18602455
+    },
+    {
+      "href": "/materials/graphite/chromatic-bath-loop.graphite",
+      "status": 200,
+      "bytes": 63518
+    },
+    {
+      "href": "/materials/graphite/chalk-strata.graphite",
+      "status": 200,
+      "bytes": 69980
+    },
+    {
+      "href": "/materials/graphite/radial-dye.graphite",
+      "status": 200,
+      "bytes": 60695
+    },
+    {
+      "href": "/materials/graphite/radial-dye.svg",
+      "status": 200,
+      "bytes": 42685
+    },
+    {
+      "href": "/materials/graphite/radial-dye-loop.gif",
+      "status": 200,
+      "bytes": 9367046
+    },
+    {
+      "href": "/materials/graphite/radial-dye-loop.graphite",
+      "status": 200,
+      "bytes": 60585
+    },
+    {
+      "href": "/materials/graphite/radial-dye-pointer.graphite",
+      "status": 200,
+      "bytes": 61739
+    },
+    {
+      "href": "/materials/graphite/interference-weave.graphite",
+      "status": 200,
+      "bytes": 71844
+    },
+    {
+      "href": "/materials/graphite/interference-weave.svg",
+      "status": 200,
+      "bytes": 185881
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "provider": "cartesia",
+  "model": "sonic-3.6",
+  "voice": "Theo",
+  "voiceId": "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
+  "speed": 0.9,
+  "text": "Most interfaces are cut for “users aged twenty-five to thirty-four.” Nobody in that bracket has taste. A person does.",
+  "requestId": "8dcad0aa-ad2b-43a8-a2d8-6be8eb0d1dae",
+  "generatedAt": "2026-10-14T03:29:53.827Z"
+}

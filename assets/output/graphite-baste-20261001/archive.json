@@ -1,0 +1,1554 @@
+{
+  "persona": "baste-atelier",
+  "brief": "Warm paper, ink, thread and chalk; a quiet background for culturally specific persona fittings.",
+  "method": "Five rounds across four distinct feature-space regions; candidates reviewed visually before production exports.",
+  "criteria": {
+    "personaAlignment": 0.3,
+    "visualQuality": 0.2,
+    "uniqueness": 0.2,
+    "coherence": 0.15,
+    "usability": 0.15
+  },
+  "candidates": [
+    {
+      "id": "baste-flax-linen-r1-960x600-20261001",
+      "family": "flax-linen",
+      "title": "Flax linen",
+      "round": 1,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-flax-linen-r1-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-flax-linen-r1-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3700,
+        "scale": 2,
+        "dark": {
+          "red": 0.7230551289219693,
+          "green": 0.665387298282272,
+          "blue": 0.5647115057049292,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.9215818562772946,
+          "green": 0.8796223968878317,
+          "blue": 0.8069522576692516,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 0,
+        "intensity": 1,
+        "shift": 0
+      },
+      "nodeCount": 28,
+      "featureSpace": {
+        "temperature": 0.72,
+        "density": 0.2,
+        "abstractness": 0.8
+      },
+      "purpose": "A quiet textile ground for the main interface.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r1-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1186160,
+        "sha256": "64628ec77b14d8c829f53d6ae4cab6bfb330338c48fb90ac78a518a9bfccc585",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1186160,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r1-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 653,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-29ce6789-015e-45e3-ba42-dbaf2d8da6e0.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r1-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-29ce6789-015e-45e3-ba42-dbaf2d8da6e0.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.94,
+          "visualQuality": 0.93,
+          "uniqueness": 0.8,
+          "coherence": 0.94,
+          "usability": 0.94
+        },
+        "weightedScore": 0.91,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-cutting-room-r1-960x600-20261001",
+      "family": "cutting-room",
+      "title": "Cutting room",
+      "round": 1,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-cutting-room-r1-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-cutting-room-r1-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3800,
+        "scale": 2,
+        "dark": {
+          "red": 0.799102738014409,
+          "green": 0.7230551289219693,
+          "blue": 0.6172065624196511,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.938685728457888,
+          "green": 0.8796223968878317,
+          "blue": 0.799102738014409,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 0,
+        "intensity": 1,
+        "shift": 0
+      },
+      "nodeCount": 508,
+      "featureSpace": {
+        "temperature": 0.9,
+        "density": 0.42,
+        "abstractness": 0.35
+      },
+      "purpose": "Pattern-paper contours for a hero or section background.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r1-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1056070,
+        "sha256": "7e157b9efcf06d75de082ce242fc7d58b8c53a2dfc65f7cc8efb036a59d0e910",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1056070,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r1-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 677,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-51cae344-e56c-4297-a552-98076149f82f.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r1-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-51cae344-e56c-4297-a552-98076149f82f.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.95,
+          "visualQuality": 0.9,
+          "uniqueness": 0.9,
+          "coherence": 0.92,
+          "usability": 0.9
+        },
+        "weightedScore": 0.918,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-chalk-draft-r1-960x600-20261001",
+      "family": "chalk-draft",
+      "title": "Chalk draft",
+      "round": 1,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-chalk-draft-r1-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-chalk-draft-r1-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3900,
+        "scale": 2,
+        "dark": {
+          "red": 0.7379104087727308,
+          "green": 0.7835377915261935,
+          "blue": 0.7758222183174236,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.8796223968878317,
+          "green": 0.8962693533742664,
+          "blue": 0.846873231509858,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 0,
+        "intensity": 1,
+        "shift": 0
+      },
+      "nodeCount": 519,
+      "featureSpace": {
+        "temperature": 0.3,
+        "density": 0.4,
+        "abstractness": 0.45
+      },
+      "purpose": "A cool drafting-paper alternative for the Studio.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r1-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 902320,
+        "sha256": "16d591d1fd21c54cf4958bfb0ea38d3a8fe4ba9b329a9308663f11b6b7743d70",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 902320,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r1-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 678,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-593ff2d5-a96a-45aa-b824-c555bd1072f5.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r1-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-593ff2d5-a96a-45aa-b824-c555bd1072f5.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.94,
+          "visualQuality": 0.93,
+          "uniqueness": 0.9,
+          "coherence": 0.94,
+          "usability": 0.94
+        },
+        "weightedScore": 0.93,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-ink-selvedge-r1-960x600-20261001",
+      "family": "ink-selvedge",
+      "title": "Ink selvedge",
+      "round": 1,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-ink-selvedge-r1-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-ink-selvedge-r1-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 4000,
+        "scale": 2,
+        "dark": {
+          "red": 0.01599629336550963,
+          "green": 0.01520851442291271,
+          "blue": 0.013702083047289686,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.03433980680868217,
+          "green": 0.033104766570885055,
+          "blue": 0.028426039504420793,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 0,
+        "intensity": 1,
+        "shift": 0
+      },
+      "nodeCount": 113,
+      "featureSpace": {
+        "temperature": 0.57,
+        "density": 0.3,
+        "abstractness": 0.72
+      },
+      "purpose": "A dark textile ground for showcases with light text.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r1-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 993265,
+        "sha256": "971634d91e8fe6158f9bc0c51145eeb2ee98c6155647a76b3de0a0376323a994",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 993265,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r1-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 580,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2bfcb91e-b7db-4498-83fb-25368624be70.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r1-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2bfcb91e-b7db-4498-83fb-25368624be70.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.93,
+          "visualQuality": 0.93,
+          "uniqueness": 0.88,
+          "coherence": 0.93,
+          "usability": 0.94
+        },
+        "weightedScore": 0.9215,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-flax-linen-r2-960x600-20261001",
+      "family": "flax-linen",
+      "title": "Flax linen",
+      "round": 2,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-flax-linen-r2-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-flax-linen-r2-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3717,
+        "scale": 1.425,
+        "dark": {
+          "red": 0.7230551289219693,
+          "green": 0.665387298282272,
+          "blue": 0.5647115057049292,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.9215818562772946,
+          "green": 0.8796223968878317,
+          "blue": 0.8069522576692516,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 1,
+        "intensity": 0.85,
+        "shift": -40
+      },
+      "nodeCount": 28,
+      "featureSpace": {
+        "temperature": 0.72,
+        "density": 0.17,
+        "abstractness": 0.8
+      },
+      "purpose": "A quiet textile ground for the main interface.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r2-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1225803,
+        "sha256": "908acaba243caac794553081f052a26fb09b753c7a274f005e88baa4265a6ef1",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1225803,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r2-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 585,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-87789450-cc1a-4190-a774-a996ba61da39.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r2-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-87789450-cc1a-4190-a774-a996ba61da39.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.92,
+          "visualQuality": 0.92,
+          "uniqueness": 0.78,
+          "coherence": 0.93,
+          "usability": 0.95
+        },
+        "weightedScore": 0.898,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-cutting-room-r2-960x600-20261001",
+      "family": "cutting-room",
+      "title": "Cutting room",
+      "round": 2,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-cutting-room-r2-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-cutting-room-r2-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3817,
+        "scale": 1.425,
+        "dark": {
+          "red": 0.799102738014409,
+          "green": 0.7230551289219693,
+          "blue": 0.6172065624196511,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.938685728457888,
+          "green": 0.8796223968878317,
+          "blue": 0.799102738014409,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 1,
+        "intensity": 0.85,
+        "shift": -40
+      },
+      "nodeCount": 508,
+      "featureSpace": {
+        "temperature": 0.9,
+        "density": 0.357,
+        "abstractness": 0.35
+      },
+      "purpose": "Pattern-paper contours for a hero or section background.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r2-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1095010,
+        "sha256": "0647797f773fc671c22751ac20a05c4f7ff534587b59e44d8244ff708fafafda",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1095010,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r2-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 659,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-dbcfe77d-2e62-4ecb-8657-c5ce18888114.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r2-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-dbcfe77d-2e62-4ecb-8657-c5ce18888114.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.96,
+          "visualQuality": 0.93,
+          "uniqueness": 0.89,
+          "coherence": 0.95,
+          "usability": 0.94
+        },
+        "weightedScore": 0.9355,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-chalk-draft-r2-960x600-20261001",
+      "family": "chalk-draft",
+      "title": "Chalk draft",
+      "round": 2,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-chalk-draft-r2-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-chalk-draft-r2-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3917,
+        "scale": 1.425,
+        "dark": {
+          "red": 0.7379104087727308,
+          "green": 0.7835377915261935,
+          "blue": 0.7758222183174236,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.8796223968878317,
+          "green": 0.8962693533742664,
+          "blue": 0.846873231509858,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 1,
+        "intensity": 0.85,
+        "shift": -40
+      },
+      "nodeCount": 519,
+      "featureSpace": {
+        "temperature": 0.3,
+        "density": 0.34,
+        "abstractness": 0.45
+      },
+      "purpose": "A cool drafting-paper alternative for the Studio.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r2-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 936219,
+        "sha256": "021590552c9e750dd897861b60deea6cd15397d480ec2c5bf9da648e65840c83",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 936219,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r2-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 696,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2e7b8c1a-1089-44e5-84ac-4485db0c6a3c.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r2-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2e7b8c1a-1089-44e5-84ac-4485db0c6a3c.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.93,
+          "visualQuality": 0.92,
+          "uniqueness": 0.86,
+          "coherence": 0.94,
+          "usability": 0.95
+        },
+        "weightedScore": 0.9185,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-ink-selvedge-r2-960x600-20261001",
+      "family": "ink-selvedge",
+      "title": "Ink selvedge",
+      "round": 2,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-ink-selvedge-r2-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-ink-selvedge-r2-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 4017,
+        "scale": 1.425,
+        "dark": {
+          "red": 0.01599629336550963,
+          "green": 0.01520851442291271,
+          "blue": 0.013702083047289686,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.03433980680868217,
+          "green": 0.033104766570885055,
+          "blue": 0.028426039504420793,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 1,
+        "intensity": 0.85,
+        "shift": -40
+      },
+      "nodeCount": 113,
+      "featureSpace": {
+        "temperature": 0.57,
+        "density": 0.255,
+        "abstractness": 0.72
+      },
+      "purpose": "A dark textile ground for showcases with light text.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r2-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1029208,
+        "sha256": "1a5b408190f23d806656848938cee6c836979ea25bdfeaf277ad4451c464506c",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1029208,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r2-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 724,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-565a108b-077e-4ec7-8f14-285d18b50bbd.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r2-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-565a108b-077e-4ec7-8f14-285d18b50bbd.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.91,
+          "visualQuality": 0.92,
+          "uniqueness": 0.84,
+          "coherence": 0.92,
+          "usability": 0.95
+        },
+        "weightedScore": 0.9055,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-flax-linen-r3-960x600-20261001",
+      "family": "flax-linen",
+      "title": "Flax linen",
+      "round": 3,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-flax-linen-r3-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-flax-linen-r3-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3734,
+        "scale": 1.6,
+        "dark": {
+          "red": 0.7230551289219693,
+          "green": 0.665387298282272,
+          "blue": 0.5647115057049292,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.9215818562772946,
+          "green": 0.8796223968878317,
+          "blue": 0.8069522576692516,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 2,
+        "intensity": 0.7,
+        "shift": 35
+      },
+      "nodeCount": 28,
+      "featureSpace": {
+        "temperature": 0.72,
+        "density": 0.13999999999999999,
+        "abstractness": 0.8
+      },
+      "purpose": "A quiet textile ground for the main interface.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r3-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1237178,
+        "sha256": "d8adb7c92fd9412f564b65aa6dd2f434d07e90e4561cd0a160fb831809f21e19",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1237178,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r3-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 648,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-49efb9c4-3cbc-4096-b4c6-9dde99f0e3c8.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r3-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-49efb9c4-3cbc-4096-b4c6-9dde99f0e3c8.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.9,
+          "visualQuality": 0.9,
+          "uniqueness": 0.74,
+          "coherence": 0.93,
+          "usability": 0.95
+        },
+        "weightedScore": 0.88,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-cutting-room-r3-960x600-20261001",
+      "family": "cutting-room",
+      "title": "Cutting room",
+      "round": 3,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-cutting-room-r3-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-cutting-room-r3-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3834,
+        "scale": 1.6,
+        "dark": {
+          "red": 0.799102738014409,
+          "green": 0.7230551289219693,
+          "blue": 0.6172065624196511,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.938685728457888,
+          "green": 0.8796223968878317,
+          "blue": 0.799102738014409,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 2,
+        "intensity": 0.7,
+        "shift": 35
+      },
+      "nodeCount": 508,
+      "featureSpace": {
+        "temperature": 0.9,
+        "density": 0.294,
+        "abstractness": 0.35
+      },
+      "purpose": "Pattern-paper contours for a hero or section background.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r3-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1100658,
+        "sha256": "e242826ce39a57237c47e8531fbc126a9e3c00748abcc98795e6c5866e160a39",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1100658,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r3-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 754,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2a61ab89-dddc-408d-8d33-8bed2ce54379.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r3-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-2a61ab89-dddc-408d-8d33-8bed2ce54379.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.92,
+          "visualQuality": 0.91,
+          "uniqueness": 0.86,
+          "coherence": 0.93,
+          "usability": 0.95
+        },
+        "weightedScore": 0.912,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-chalk-draft-r3-960x600-20261001",
+      "family": "chalk-draft",
+      "title": "Chalk draft",
+      "round": 3,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-chalk-draft-r3-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-chalk-draft-r3-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3934,
+        "scale": 1.6,
+        "dark": {
+          "red": 0.7379104087727308,
+          "green": 0.7835377915261935,
+          "blue": 0.7758222183174236,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.8796223968878317,
+          "green": 0.8962693533742664,
+          "blue": 0.846873231509858,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 2,
+        "intensity": 0.7,
+        "shift": 35
+      },
+      "nodeCount": 519,
+      "featureSpace": {
+        "temperature": 0.3,
+        "density": 0.27999999999999997,
+        "abstractness": 0.45
+      },
+      "purpose": "A cool drafting-paper alternative for the Studio.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r3-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 936775,
+        "sha256": "6c6470ad960122315bd397ff227debdc41e0057f75de144076f116414d4e2375",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 936775,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r3-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 720,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-234c37e9-a65c-48dc-b8c8-2ed2d88e40e5.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r3-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-234c37e9-a65c-48dc-b8c8-2ed2d88e40e5.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.91,
+          "visualQuality": 0.91,
+          "uniqueness": 0.83,
+          "coherence": 0.92,
+          "usability": 0.95
+        },
+        "weightedScore": 0.9015,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-ink-selvedge-r3-960x600-20261001",
+      "family": "ink-selvedge",
+      "title": "Ink selvedge",
+      "round": 3,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-ink-selvedge-r3-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-ink-selvedge-r3-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 4034,
+        "scale": 1.6,
+        "dark": {
+          "red": 0.01599629336550963,
+          "green": 0.01520851442291271,
+          "blue": 0.013702083047289686,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.03433980680868217,
+          "green": 0.033104766570885055,
+          "blue": 0.028426039504420793,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 2,
+        "intensity": 0.7,
+        "shift": 35
+      },
+      "nodeCount": 113,
+      "featureSpace": {
+        "temperature": 0.57,
+        "density": 0.21,
+        "abstractness": 0.72
+      },
+      "purpose": "A dark textile ground for showcases with light text.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r3-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1028964,
+        "sha256": "b930b6f59b174cdd5aaa517d60f1d53eef17e6190c422b72a40ec1dc225713a1",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1028964,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r3-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 689,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1aa06934-5e2d-4d4b-9e9a-215305c476a8.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r3-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1aa06934-5e2d-4d4b-9e9a-215305c476a8.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.89,
+          "visualQuality": 0.91,
+          "uniqueness": 0.8,
+          "coherence": 0.91,
+          "usability": 0.95
+        },
+        "weightedScore": 0.888,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-flax-linen-r4-960x600-20261001",
+      "family": "flax-linen",
+      "title": "Flax linen",
+      "round": 4,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-flax-linen-r4-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-flax-linen-r4-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3751,
+        "scale": 1.775,
+        "dark": {
+          "red": 0.7230551289219693,
+          "green": 0.665387298282272,
+          "blue": 0.5647115057049292,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.9215818562772946,
+          "green": 0.8796223968878317,
+          "blue": 0.8069522576692516,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 3,
+        "intensity": 0.58,
+        "shift": 0
+      },
+      "nodeCount": 28,
+      "featureSpace": {
+        "temperature": 0.72,
+        "density": 0.11599999999999999,
+        "abstractness": 0.8
+      },
+      "purpose": "A quiet textile ground for the main interface.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r4-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1238622,
+        "sha256": "e2a8029ee61df4bc56e6bfc32a88c709ee890f83b7cff69b1164613e4fa885fd",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1238622,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r4-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 601,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-32a44a6d-47a1-47a7-b66d-b4b23b80e1c6.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r4-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-32a44a6d-47a1-47a7-b66d-b4b23b80e1c6.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.88,
+          "visualQuality": 0.9,
+          "uniqueness": 0.71,
+          "coherence": 0.92,
+          "usability": 0.96
+        },
+        "weightedScore": 0.868,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-cutting-room-r4-960x600-20261001",
+      "family": "cutting-room",
+      "title": "Cutting room",
+      "round": 4,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-cutting-room-r4-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-cutting-room-r4-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3851,
+        "scale": 1.775,
+        "dark": {
+          "red": 0.799102738014409,
+          "green": 0.7230551289219693,
+          "blue": 0.6172065624196511,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.938685728457888,
+          "green": 0.8796223968878317,
+          "blue": 0.799102738014409,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 3,
+        "intensity": 0.58,
+        "shift": 0
+      },
+      "nodeCount": 508,
+      "featureSpace": {
+        "temperature": 0.9,
+        "density": 0.24359999999999998,
+        "abstractness": 0.35
+      },
+      "purpose": "Pattern-paper contours for a hero or section background.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r4-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1101455,
+        "sha256": "81bce04d017cf685163eeb2b7391a8b915cd80daea630e3c5ed15a8c7d0637ee",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1101455,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r4-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 715,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-e1446cc6-cd14-430d-9c62-cf351afda067.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r4-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-e1446cc6-cd14-430d-9c62-cf351afda067.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.9,
+          "visualQuality": 0.9,
+          "uniqueness": 0.81,
+          "coherence": 0.92,
+          "usability": 0.95
+        },
+        "weightedScore": 0.8925,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-chalk-draft-r4-960x600-20261001",
+      "family": "chalk-draft",
+      "title": "Chalk draft",
+      "round": 4,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-chalk-draft-r4-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-chalk-draft-r4-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3951,
+        "scale": 1.775,
+        "dark": {
+          "red": 0.7379104087727308,
+          "green": 0.7835377915261935,
+          "blue": 0.7758222183174236,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.8796223968878317,
+          "green": 0.8962693533742664,
+          "blue": 0.846873231509858,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 3,
+        "intensity": 0.58,
+        "shift": 0
+      },
+      "nodeCount": 519,
+      "featureSpace": {
+        "temperature": 0.3,
+        "density": 0.23199999999999998,
+        "abstractness": 0.45
+      },
+      "purpose": "A cool drafting-paper alternative for the Studio.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r4-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 940567,
+        "sha256": "a3d556a9beb66c2fad8c79690db7b3d4a6831066c0449336c797a0304c1c179d",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 940567,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r4-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 735,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-564e69a9-dec1-4d87-901f-ac7cc27a44ea.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r4-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-564e69a9-dec1-4d87-901f-ac7cc27a44ea.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.89,
+          "visualQuality": 0.9,
+          "uniqueness": 0.78,
+          "coherence": 0.91,
+          "usability": 0.96
+        },
+        "weightedScore": 0.8835,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-ink-selvedge-r4-960x600-20261001",
+      "family": "ink-selvedge",
+      "title": "Ink selvedge",
+      "round": 4,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-ink-selvedge-r4-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-ink-selvedge-r4-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 4051,
+        "scale": 1.775,
+        "dark": {
+          "red": 0.01599629336550963,
+          "green": 0.01520851442291271,
+          "blue": 0.013702083047289686,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.03433980680868217,
+          "green": 0.033104766570885055,
+          "blue": 0.028426039504420793,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 3,
+        "intensity": 0.58,
+        "shift": 0
+      },
+      "nodeCount": 113,
+      "featureSpace": {
+        "temperature": 0.57,
+        "density": 0.174,
+        "abstractness": 0.72
+      },
+      "purpose": "A dark textile ground for showcases with light text.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r4-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1033117,
+        "sha256": "ccfaa075f8fa9279984cd3d6c40eea034a45ebacc33aa1ce5aba8c87182b3e89",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1033117,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r4-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 583,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c28ad70e-47ea-4d5d-82c6-5a026f403362.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r4-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c28ad70e-47ea-4d5d-82c6-5a026f403362.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.87,
+          "visualQuality": 0.9,
+          "uniqueness": 0.76,
+          "coherence": 0.9,
+          "usability": 0.96
+        },
+        "weightedScore": 0.872,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-flax-linen-r5-960x600-20261001",
+      "family": "flax-linen",
+      "title": "Flax linen",
+      "round": 5,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-flax-linen-r5-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-flax-linen-r5-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3768,
+        "scale": 1.95,
+        "dark": {
+          "red": 0.7230551289219693,
+          "green": 0.665387298282272,
+          "blue": 0.5647115057049292,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.9215818562772946,
+          "green": 0.8796223968878317,
+          "blue": 0.8069522576692516,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 4,
+        "intensity": 0.48,
+        "shift": 20
+      },
+      "nodeCount": 28,
+      "featureSpace": {
+        "temperature": 0.72,
+        "density": 0.096,
+        "abstractness": 0.8
+      },
+      "purpose": "A quiet textile ground for the main interface.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r5-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1233448,
+        "sha256": "0d835573eeb6eb2be1db4641a093fb04814fb9553d1175f67063b1f5ebaa3d95",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1233448,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r5-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 583,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c3a45d2c-c995-478c-acc8-68c0ccb9e1a9.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-flax-linen-r5-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c3a45d2c-c995-478c-acc8-68c0ccb9e1a9.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.86,
+          "visualQuality": 0.89,
+          "uniqueness": 0.68,
+          "coherence": 0.91,
+          "usability": 0.96
+        },
+        "weightedScore": 0.8525,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-cutting-room-r5-960x600-20261001",
+      "family": "cutting-room",
+      "title": "Cutting room",
+      "round": 5,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-cutting-room-r5-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-cutting-room-r5-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3868,
+        "scale": 1.95,
+        "dark": {
+          "red": 0.799102738014409,
+          "green": 0.7230551289219693,
+          "blue": 0.6172065624196511,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.938685728457888,
+          "green": 0.8796223968878317,
+          "blue": 0.799102738014409,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 4,
+        "intensity": 0.48,
+        "shift": 20
+      },
+      "nodeCount": 508,
+      "featureSpace": {
+        "temperature": 0.9,
+        "density": 0.20159999999999997,
+        "abstractness": 0.35
+      },
+      "purpose": "Pattern-paper contours for a hero or section background.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r5-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1093465,
+        "sha256": "b3fb3a036253d8ac71080684494cfea537765fe0c0ea3a6c010b0a64b0e71e7d",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1093465,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r5-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 666,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f0ff0284-2974-4ab4-b47e-0d3061fcfd54.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-cutting-room-r5-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f0ff0284-2974-4ab4-b47e-0d3061fcfd54.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.88,
+          "visualQuality": 0.89,
+          "uniqueness": 0.76,
+          "coherence": 0.91,
+          "usability": 0.96
+        },
+        "weightedScore": 0.8745,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-chalk-draft-r5-960x600-20261001",
+      "family": "chalk-draft",
+      "title": "Chalk draft",
+      "round": 5,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-chalk-draft-r5-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-chalk-draft-r5-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 3968,
+        "scale": 1.95,
+        "dark": {
+          "red": 0.7379104087727308,
+          "green": 0.7835377915261935,
+          "blue": 0.7758222183174236,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.8796223968878317,
+          "green": 0.8962693533742664,
+          "blue": 0.846873231509858,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 4,
+        "intensity": 0.48,
+        "shift": 20
+      },
+      "nodeCount": 519,
+      "featureSpace": {
+        "temperature": 0.3,
+        "density": 0.192,
+        "abstractness": 0.45
+      },
+      "purpose": "A cool drafting-paper alternative for the Studio.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r5-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 933958,
+        "sha256": "d9b77c2e0c5043d0dd79eda067fccee78035ca239b5aa5e5718e49e5a1aff73b",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 933958,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r5-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 864,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1d7a08b1-d77c-4779-b5e7-935fcb294799.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-draft-r5-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1d7a08b1-d77c-4779-b5e7-935fcb294799.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.86,
+          "visualQuality": 0.89,
+          "uniqueness": 0.74,
+          "coherence": 0.9,
+          "usability": 0.96
+        },
+        "weightedScore": 0.863,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    },
+    {
+      "id": "baste-ink-selvedge-r5-960x600-20261001",
+      "family": "ink-selvedge",
+      "title": "Ink selvedge",
+      "round": 5,
+      "artifactPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/candidates/baste-ink-selvedge-r5-960x600-20261001.png",
+      "documentPath": "/home/diogenes/Projects/baste/assets/output/graphite-baste-20261001/source/baste-ink-selvedge-r5-960x600-20261001.graphite",
+      "params": {
+        "width": 960,
+        "height": 600,
+        "seed": 4068,
+        "scale": 1.95,
+        "dark": {
+          "red": 0.01599629336550963,
+          "green": 0.01520851442291271,
+          "blue": 0.013702083047289686,
+          "alpha": 1,
+          "linear": true
+        },
+        "light": {
+          "red": 0.03433980680868217,
+          "green": 0.033104766570885055,
+          "blue": 0.028426039504420793,
+          "alpha": 1,
+          "linear": true
+        },
+        "round": 4,
+        "intensity": 0.48,
+        "shift": 20
+      },
+      "nodeCount": 113,
+      "featureSpace": {
+        "temperature": 0.57,
+        "density": 0.144,
+        "abstractness": 0.72
+      },
+      "purpose": "A dark textile ground for showcases with light text.",
+      "render": {
+        "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r5-960x600-20261001.png",
+        "format": "png",
+        "byteSize": 1019173,
+        "sha256": "c2336bb07bcfde20eead42f2184b631354eaf4a5404962cff9a68ce8e50d3c4b",
+        "width": 960,
+        "height": 600,
+        "validation": {
+          "valid": true,
+          "format": "png",
+          "byteSize": 1019173,
+          "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r5-960x600-20261001.png",
+          "width": 960,
+          "height": 600
+        },
+        "quarantine": {
+          "exitCode": 0,
+          "signal": null,
+          "quarantinedAfterWrite": false,
+          "stderrTail": ""
+        },
+        "renderMs": 625,
+        "exitCode": 0,
+        "signal": null,
+        "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-dbf26de8-2a56-464e-b656-4c8951d08c41.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-ink-selvedge-r5-960x600-20261001.png --width 960 --height 600",
+        "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-dbf26de8-2a56-464e-b656-4c8951d08c41.graphite"
+      },
+      "review": {
+        "reviewer": "Codex subjective visual review",
+        "criteria": {
+          "personaAlignment": 0.85,
+          "visualQuality": 0.89,
+          "uniqueness": 0.72,
+          "coherence": 0.89,
+          "usability": 0.96
+        },
+        "weightedScore": 0.8545,
+        "basis": "Contact sheet comparison and representative full-size sample inspection; not an independent hosted judge."
+      }
+    }
+  ]
+}

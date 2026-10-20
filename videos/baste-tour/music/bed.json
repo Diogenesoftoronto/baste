@@ -1,0 +1,8 @@
+{
+  "provider": "fal",
+  "model": "fal-ai/stable-audio-25/text-to-audio",
+  "prompt": "Warm, unhurried instrumental bed for a design product film: felt piano, soft upright bass, brushed snare, faint tape hiss, gentle major-seventh chords at 84 BPM. Calm, tactile, hand-made, no vocals, no drops, steady to the end.",
+  "seconds": 75,
+  "requestId": "01a128c4-b529-7c61-a35b-639eacff17a5",
+  "generatedAt": "2026-10-11T02:23:05.944Z"
+}

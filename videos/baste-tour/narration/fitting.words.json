@@ -1,0 +1,116 @@
+{
+  "model": "fal-ai/whisper",
+  "text": "Then it fits an interface to them. Same screen, three people. The layout, the type, the colour and the motion all change.",
+  "heard": [
+    {
+      "text": "Then",
+      "start": 0.03,
+      "end": 0.07
+    },
+    {
+      "text": "it",
+      "start": 0.07,
+      "end": 0.17
+    },
+    {
+      "text": "fits",
+      "start": 0.17,
+      "end": 0.35
+    },
+    {
+      "text": "an",
+      "start": 0.35,
+      "end": 0.51
+    },
+    {
+      "text": "interface",
+      "start": 0.51,
+      "end": 0.77
+    },
+    {
+      "text": "to",
+      "start": 0.77,
+      "end": 1.03
+    },
+    {
+      "text": "them.",
+      "start": 1.03,
+      "end": 1.33
+    },
+    {
+      "text": "Same",
+      "start": 1.65,
+      "end": 1.71
+    },
+    {
+      "text": "screen,",
+      "start": 1.71,
+      "end": 2.35
+    },
+    {
+      "text": "three",
+      "start": 2.35,
+      "end": 2.73
+    },
+    {
+      "text": "people.",
+      "start": 2.73,
+      "end": 3.23
+    },
+    {
+      "text": "The",
+      "start": 3.77,
+      "end": 3.87
+    },
+    {
+      "text": "layout,",
+      "start": 3.87,
+      "end": 4.43
+    },
+    {
+      "text": "the",
+      "start": 4.43,
+      "end": 4.63
+    },
+    {
+      "text": "type,",
+      "start": 4.63,
+      "end": 5.17
+    },
+    {
+      "text": "the",
+      "start": 5.17,
+      "end": 5.41
+    },
+    {
+      "text": "color,",
+      "start": 5.41,
+      "end": 5.85
+    },
+    {
+      "text": "and",
+      "start": 5.85,
+      "end": 6.07
+    },
+    {
+      "text": "the",
+      "start": 6.07,
+      "end": 6.15
+    },
+    {
+      "text": "motion",
+      "start": 6.15,
+      "end": 6.49
+    },
+    {
+      "text": "all",
+      "start": 6.49,
+      "end": 6.65
+    },
+    {
+      "text": "change.",
+      "start": 6.65,
+      "end": 7.03
+    }
+  ]
+}

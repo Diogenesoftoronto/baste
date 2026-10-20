@@ -14,6 +14,9 @@
  *   baste gui [--port]
  */
 
+import { CliAccount, cliLogin, credentialPath } from "./notorganic/cli.js";
+import { generationPlan, budgetedTransport } from "./notorganic/budget.js";
+import { normalizeWallet } from "./notorganic/server.js";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname, basename } from "node:path";
 import {
@@ -26,6 +29,7 @@ import {
   getBasePersonas,
 } from "./persona/store.js";
 import { buildPersona, extendPersona, type PersonaDraft } from "./persona/builder.js";
+import { animationFor } from "./assets/motion.js";
 import { generateAssetSuite, generateUIKit } from "./baste.js";
 import type { GeneratedAsset } from "./assets/generators.js";
 import type { EvaluationResult } from "./evaluation/judge.js";
@@ -34,6 +38,7 @@ import {
   resolveConfig,
   toBasteConfig,
   loadConfigFile,
+  type AnimateMode,
   type BasteUserConfig,
   type EvaluatorConfig,
 } from "./config/baste-config.js";
@@ -52,6 +57,11 @@ Baste - Persona-Driven Asset Generation
 Usage:
   baste generate <persona-id> [options]    Generate assets for a persona
   baste ui-kit <persona-id> [options]       Generate full UI kit
+  baste login [--no-open]                   Sign in to use hosted account credits
+  baste logout                              Revoke this device and remove saved credentials
+  baste credits                             Show balance and available top-ups
+  baste credits --buy <pack-id>              Open an advertised credit checkout
+  baste credits --plan <plan-id>             Open an advertised plan checkout
   baste list                                List all personas (base + custom)
   baste show <persona-id>                   Show persona details
   baste tokens <persona-id> [--format]      Export design tokens
@@ -106,11 +116,15 @@ Global options:
   --batch-size <n>                          Batch size per iteration
   --output-count <n>                        Final assets to generate
   --model <model>                           Evaluator model
-  --provider fal                            Use fal for images, SVG, video and the judge (FAL_KEY)
-  --image-provider <openai|gemini|fal>      Image provider for this run
+  --provider <fal|notorganic>               Hosted image suites, or direct fal for every stage
+  --image-provider <openai|gemini|fal|notorganic>      Image provider for this run
   --svg-provider <quiver|fal>               SVG provider for this run
   --video-provider <seedance|veo|fal>       Video provider for this run
-  --judge <openai|typesafe|fal>             Judge for this run; fal looks at the images
+  --judge <openai|typesafe|fal>             Judge for this run; typesafe and fal look at the images
+  --text-judge                              Jev judges prompts and SVG source only, without images
+  --edit                                    Repaint candidates with Ideogram and cut final images into layers (fal)
+  --animate <parallax|video|both>           Animate final images from their layers, with Seedance, or both (fal)
+  --max-cost <USD>                          Hosted per-suite spending ceiling (default: 1.00)
   --dry-run                                 Show prompts without generating
 
 Examples:
@@ -155,9 +169,17 @@ function parseArgs(args: string[]): Record<string, string | boolean> {
 /** A suite manifest entry: where the asset is, how it was made, and how the judge scored it. */
 function manifestAsset(a: GeneratedAsset, scores: Record<string, EvaluationResult>) {
   const score = scores[a.id];
+  const jev = score?.typesafe;
   return {
     id: a.id, purpose: a.metadata.assetPurpose, path: a.content, service: a.metadata.service, model: a.metadata.model, prompt: a.prompt,
-    ...(score ? { score: { overall: score.overall, criteria: score.criteria, features: score.features, feedback: score.feedback } } : {}),
+    ...(score ? { score: {
+      overall: score.overall, criteria: score.criteria, features: score.features, feedback: score.feedback,
+      ...(score.improvements.length ? { improvements: score.improvements } : {}),
+      // What Jev saw, and its readings beyond the five scores (motion, taste, overlaid text).
+      ...(jev ? { evidence: jev.evidence, ...(jev.visual ? { visual: jev.visual } : {}) } : {}),
+    } } : {}),
+    // Layers and loops made from the image.
+    ...(a.derived ? { derived: a.derived } : {}),
   };
 }
 
@@ -168,11 +190,14 @@ function buildBasteConfig(options: Record<string, string | boolean>, explicitCon
   const pick = (flag: unknown) => typeof flag === "string" ? flag : all;
   const base = toBasteConfig(fileConfig, {
     imageProvider: pick(options.imageprovider),
-    imageModel: typeof options.imagemodel === "string" ? options.imagemodel : undefined,
-    svgProvider: pick(options.svgprovider),
-    videoProvider: pick(options.videoprovider),
+    imageModel: all === "notorganic" ? "image" : typeof options.imagemodel === "string" ? options.imagemodel : undefined,
+    svgProvider: all === "notorganic" ? undefined : pick(options.svgprovider),
+    videoProvider: all === "notorganic" ? undefined : pick(options.videoprovider),
     videoModel: typeof options.videomodel === "string" ? options.videomodel : undefined,
     evaluatorProvider: pick(options.judge) as EvaluatorConfig["provider"],
+    ...(options.edit ? { edit: true } : {}),
+    // A bare --animate makes the parallax loop, the cheapest.
+    ...(options.animate ? { animate: (options.animate === true ? "parallax" : options.animate) as AnimateMode } : {}),
   });
 
   return {
@@ -186,11 +211,34 @@ function buildBasteConfig(options: Record<string, string | boolean>, explicitCon
       batchSize: parseInt(String(options.batchsize || base.qd.batchSize)),
     },
     outputCount: parseInt(String(options.outputcount || base.outputCount)),
+    ...(base.edit ? { edit: true } : {}),
+    ...(base.animate ? { animate: base.animate } : {}),
     evaluator: {
       ...base.evaluator,
       model: String(options.model || base.evaluator.model),
+      ...(options.textjudge ? { vision: false } : {}),
     },
   };
+}
+
+async function prepareHosted(config: ReturnType<typeof buildBasteConfig>, assets: Array<{ kind: string }>, options: Record<string, string | boolean>) {
+  if (!assets.length || assets.length > 8 || assets.some(asset => asset.kind !== "image")) throw new Error("Hosted suites support 1–8 image purposes. Configure image assets or omit assetTypes.");
+  const maximum = String(options.maxcost ?? "1.00");
+  if (!/^\d+(?:\.\d{1,2})?$/.test(maximum) || Number(maximum) <= 0) throw new Error("--max-cost must be a positive dollar amount with at most two decimals.");
+  const plan = generationPlan(config, assets.length, Math.round(Number(maximum) * 1e6));
+  console.log(`Hosted plan ceiling: $${(plan.minimumBudgetMicrousd / 1e6).toFixed(2)}; selected limit: $${maximum}`);
+  if (!plan.withinOperatorLimit || !plan.withinRequestedBudget) throw new Error("Increase --max-cost (within NOTORGANIC_MAX_COST_MICROUSD) or reduce --iterations, --batch-size or --output-count.");
+  const account = CliAccount.load();
+  const models = await (await account.fetch("/v1/models")).json() as { data?: Array<{ id: string }> };
+  const required = ["image", "judgement", ...(config.edit || config.animate ? ["image-edit", "image-segment"] : []), ...(config.animate === "video" || config.animate === "both" ? ["image-animate"] : [])];
+  if (required.some(id => !models.data?.some(m => m.id === id))) throw new Error("Not Organic has not enabled all models needed by this suite.");
+  const wallet = normalizeWallet(await (await account.fetch("/v1/wallet")).json());
+  if (wallet.blocked || wallet.availableMicros < plan.minimumBudgetMicrousd) throw new Error("Available credits cannot cover this plan. Run baste credits.");
+  const transport = budgetedTransport(account.fetch, plan.requestedMaxCostMicrousd);
+  config.generation.notOrganicFetch = transport;
+  config.generation.editRenderingSpeed = "BALANCED";
+  config.generation.animateResolution = "720p";
+  config.evaluator = { ...config.evaluator, provider: "notorganic", model: "judgement", apiKey: undefined, notOrganicFetch: transport };
 }
 
 async function main() {
@@ -212,6 +260,15 @@ async function main() {
   }
 
   switch (command) {
+    case "login": await cliLogin(!options.noopen); break;
+    case "logout": {
+      if (existsSync(credentialPath())) await CliAccount.load().logout();
+      console.log("Signed out on this device."); break;
+    }
+    case "credits": {
+      await CliAccount.load().credits(options.buy || options.plan ? { packId: typeof options.buy === "string" ? options.buy : undefined, planId: typeof options.plan === "string" ? options.plan : undefined } : undefined, !options.noopen);
+      break;
+    }
     case "list":
     case "list-personas": {
       console.log("\nAvailable Personas:");
@@ -252,6 +309,12 @@ async function main() {
       console.log(`  Color: ${persona.aesthetic.colorTemperature} | Density: ${persona.aesthetic.density}`);
       console.log(`  Edge: ${persona.aesthetic.edgeStyle} | Motion: ${persona.aesthetic.motionStyle}`);
       console.log(`  Typography: ${persona.aesthetic.typographyStyle} | Texture: ${persona.aesthetic.textureStyle}`);
+      const animation = animationFor(persona);
+      console.log(`\nAnimation${persona.animation ? "" : " (from the aesthetic)"}:`);
+      console.log(`  Depth: ${animation.depth} | Camera: ${animation.camera} | Focus: ${animation.focus} | Loop: ${animation.loopSeconds}s`);
+      if (animation.motifs.length) console.log(`  Motifs: ${animation.motifs.join(", ")}`);
+      if (animation.subjects.length) console.log(`  Subjects: ${animation.subjects.join(", ")}`);
+      if (animation.avoid.length) console.log(`  Avoid: ${animation.avoid.join(", ")}`);
       console.log(`  Visual Keywords: ${persona.aesthetic.visualKeywords.join(", ")}`);
       console.log("");
       break;
@@ -279,9 +342,15 @@ async function main() {
         break;
       }
 
+      const hosted = config.generation.imageProvider === "notorganic";
+      const assetTypes = fileConfig.assetTypes || (hosted ? [
+        { kind: "image" as const, purpose: "hero", description: "Hero banner", constraints: { aspectRatio: "21:9" } },
+        { kind: "image" as const, purpose: "background", description: "Ambient background", constraints: { aspectRatio: "16:9" } },
+      ] : undefined);
+      if (hosted) await prepareHosted(config, assetTypes!, options);
       const suite = await generateAssetSuite(
         persona,
-        fileConfig.assetTypes || [
+        assetTypes || [
           { kind: "svg", purpose: "icon", description: "App icon" },
           { kind: "image", purpose: "hero", description: "Hero banner", constraints: { aspectRatio: "21:9" } },
           { kind: "image", purpose: "background", description: "Ambient background", constraints: { aspectRatio: "16:9" } },
@@ -321,6 +390,7 @@ async function main() {
       }
 
       const config = buildBasteConfig(options, fileConfig);
+      if (config.generation.imageProvider === "notorganic") throw new Error("Hosted generation supports image suites. Use baste generate --provider notorganic.");
       const suite = await generateUIKit(persona, config);
 
       const metaPath = `${config.generation.outputDir}/${id}-ui-kit.json`;

@@ -103,9 +103,125 @@ baste generate cyberbotanist --provider fal
 # Or choose per stage
 baste generate cyberbotanist --image-provider fal --svg-provider quiver --judge openai
 
-# Export design tokens
+# Jev without images: judge prompts and SVG source only
+baste generate cyberbotanist --judge typesafe --text-judge
+
+# Export design tokens and motion primitives
 baste tokens liminalweeb --format css   # css, tailwind, json
 ```
+
+### How Jev judges
+
+With `TYPESAFE_API_KEY` set, [Jev](https://docs.typesafe.ai) judges every QD candidate and final asset. It now
+looks at them, using TypeSafe's image preview ([images](https://docs.typesafe.ai/images.md), opt-in header
+`TypeSafe-Danger-Zone-Images`):
+
+| Jev sees | As | What it decides |
+|---|---|---|
+| The candidate | The rendered image; an SVG on light and dark grounds at 64, 32 and 16 px; six frames of a video | The five scores, from pixels instead of the prompt |
+| The persona's world | Up to four pictures: moodboard pins, `baste culture` images, a decomposed site's share image and palette | Persona alignment against what the world looks like |
+| The suite | The latest finished asset of each purpose (up to four) | Coherence with what was actually rendered |
+| Your ratings | Up to three upvoted and three downvoted assets of the same kind, as pictured criteria | A taste judgment that moves persona alignment by up to ±0.1 |
+
+From the same request, Jev also reads the QD archive's three axes (colour temperature, density, rendering) off
+the image, replacing the keyword guesses that placed candidates before. For images and loops, it checks for text laid over the picture: a caption, watermark or interface label rejects the asset at 0.8.
+Signs and lettering in the scene are allowed. For loops, it reads the frames for motion (which of the four motion
+languages they show, whether the last frame flows into the first, and how much the movement competes with
+interface content) and turns misses into `improvements` without rejecting the loop.
+
+Video frames need `ffmpeg` and `ffprobe` on `PATH`; WebP and GIF stills use them too. Without them, those assets
+are judged on their prompt. TypeSafe never resizes, so Baste fits every image inside its limits (280–1568 px a
+side) and uploads lossless PNG. TypeSafe also takes JPEG, but its artifacts would be judged as the asset's. If TypeSafe refuses an image request (`400` or `413`), the same
+asset is judged again as text, and its result carries the `vision-refused` tag. `--text-judge`, or
+`"vision": false` in the evaluator config, keeps every judgment text-only. Hosted Not Organic judging is text-only.
+Each result records what Jev saw (`evidence`: `text-only`, `image` or `frames`) and its readings, in the suite
+manifest and the Studio.
+
+### Motion primitives
+
+Every persona's `motionStyle` (smooth, snappy, liquid, mechanical) defines one motion language. The same language
+writes the design tokens, the motion line in video prompts, and the options Jev chooses between when it reads a
+loop. The language sets:
+
+- **Curves**: `standard`, `enter` (decelerate), `exit` (accelerate), `emphasis`, and a physical spring
+  (stiffness, damping, mass) exported as a CSS `linear()` curve with its settle time.
+- **Distances, press and stagger**: nudge, shift and travel lengths, a press scale and a stagger interval. Dense
+  personas move less and sequence faster.
+- **Moves**: `enter`, `exit`, `hover`, `press`, `emphasis` and an `ambient` loop, as Web Animations keyframes
+  with timing. The loop breathes for smooth personas, flickers for snappy, drifts for liquid and ticks for mechanical.
+
+`baste tokens <id> --format css` ships them as variables (`--ease-enter`, `--ease-spring`, `--motion-shift`, …),
+`@keyframes`, `.motion-enter`/`.motion-exit`/`.motion-hover`/`.motion-press`/`.motion-emphasis`/`.motion-ambient`
+classes and `.motion-stagger` for sequences. A `prefers-reduced-motion` block keeps opacity-only enters and exits
+and stops travel, emphasis and loops. The Tailwind and Panda exports carry the same curves, durations and keyframes,
+and JSON carries the full choreography for animation libraries. The Studio's Tokens tab plays each move.
+
+### Edit, layer and animate
+
+Creating and editing are separate roles. The image model draws; three more, all on one `FAL_KEY`, take it from
+there:
+
+| Role | Default model | What it does |
+|---|---|---|
+| Create | `generators.image` (GPT Image by default) | Draws each candidate from its prompt |
+| Segment | `fal-ai/sam-3/image` (SAM 3) | Cuts the persona's subject out of an image, by name |
+| Edit | `fal-ai/ideogram/v3/edit` (Ideogram 3) | Repaints the region around or inside that subject |
+| Animate | `fal-ai/bytedance/seedance/v1/pro/image-to-video` (Seedance) | Turns a finished image into a loop |
+
+```bash
+# Repaint candidates during the search, and cut final images into layers
+baste generate nightmarketcoder --edit
+
+# Animate final images: parallax from their layers, a video loop, or both (both imply layers)
+baste generate nightmarketcoder --animate both
+```
+
+**`--edit`:**
+- About half of each generation's new candidates repaint a kept candidate's image instead of drawing anew. SAM 3
+  finds the subject, and Ideogram repaints the background or the subject one step along the archive's axes. The
+  persona's animation `focus` picks which.
+- Jev judges an edit like any other candidate, and the candidate records which image it came from. Edits are
+  capped at half a batch per generation.
+- The final step now ships the image the search judged instead of drawing it again.
+
+**Layers** (`assets/output/layers/`): each final image becomes the subject on transparency, the scene with the
+subject painted out, and the mask. Jev picks which of the persona's subjects to cut, in the same request that scores
+the image, and checks that the cut-out is whole and the background clean. A failed cut is dropped.
+
+**Animation** (`assets/output/animation/`):
+- **Parallax**: the layers move at different depths along the persona's camera. It ships as a self-contained HTML
+  page (CSS only, no script, still under reduced motion) and a JSON spec. With ffmpeg, there's also an MP4 whose
+  last frame meets its first.
+- **Video**: Seedance animates the image, played forward and back so it loops. When the persona's focus region is
+  small enough to keep the composition, it animates towards an end frame Ideogram paints with the motif at its
+  height. Jev reads the loop's frames for motion style, seam, calm and any motion the persona avoids.
+
+Each persona describes how its world moves in an optional `animation` block:
+- `motifs`: what moves
+- `subjects`: what can be cut out
+- `depth`: flat, parallax or deep
+- `camera`: locked, drift, push or orbit
+- `focus`: background, subject or both
+- `loopSeconds`
+- `avoid`: motion the persona can't stand
+
+The three built-in personas have one; others derive it from their aesthetic. Edit it in the Studio's persona form
+or through the MCP `create_persona` tool. Hosted Not Organic runs can't edit or animate yet.
+
+```json
+{
+  "edit": false,
+  "animate": false,
+  "generators": {
+    "edit": { "provider": "fal", "model": "fal-ai/ideogram/v3/edit", "renderingSpeed": "BALANCED" },
+    "segment": { "provider": "fal", "model": "fal-ai/sam-3/image" },
+    "animate": { "provider": "fal", "model": "fal-ai/bytedance/seedance/v1/pro/image-to-video", "resolution": "720p" }
+  }
+}
+```
+
+fal's Ideogram edit repaints the *white* of a mask, the opposite of Ideogram's own API documentation. This was
+checked live; `EDIT_COLOR` in `src/assets/layers.ts` flips every mask if it changes.
 
 ### Design Version Control
 
@@ -186,7 +302,7 @@ baste culture cyberbotanist ~/Pictures/cultural/hero-ref.png ~/Pictures/cultural
 baste culture nightmarketcoder ~/Pictures/memes/
 ```
 
-Cultural references are embedded in the design system history and exported with `.baste` files, so the "why" behind every design decision travels with the design.
+Cultural references are embedded in the design system history and exported with `.baste` files, so the "why" behind every design decision travels with the design. Image references are also shown to Jev when it judges that persona's assets. A `.baste` import keeps a reference's URL but drops its local path, which names a file on the sender's machine.
 
 ### Export / Share / Import
 
@@ -245,7 +361,8 @@ Browse to `http://localhost:8080` to create, edit, and manage personas through a
   "outputDir": "./assets/output",
   "personaDir": "./personas",
   "evaluator": {
-    "model": "gpt-4o"
+    "model": "gpt-4o",
+    "vision": true
   },
   "qd": {
     "iterations": 5,
@@ -421,7 +538,7 @@ The `.baste` format is a shared, version-controlled design system that can be pa
 OPENAI_API_KEY=sk-...      # GPT Image 2.5 + fallback OpenAI judge
 QUIVER_API_KEY=qv-...      # SVG generation
 ARK_API_KEY=...           # Seedance video generation (default)
-TYPESAFE_API_KEY=...      # TypeSafe System One (Jev) judge, auto-selected when set
+TYPESAFE_API_KEY=...      # TypeSafe System One (Jev) judge, auto-selected when set; looks at images
 GOOGLE_API_KEY=AIza...     # Gemini images / Veo video (optional)
 FAL_KEY=...                # fal: --provider fal for every stage, and companion voice
 ```
@@ -441,7 +558,9 @@ Baste
 ├── Persona Engine          # Cultural identity, influences, aesthetic
 ├── Design System           # CSS/Tailwind/Panda tokens from persona
 ├── QD Engine               # Quality Diversity search for diverse assets
-├── LLM Judge               # Evaluates persona alignment
+├── Motion primitives       # Curves, spring, moves; tokens, video prompts, Jev
+├── Layers and animation    # SAM 3 cut-outs, Ideogram edits, parallax and Seedance loops
+├── Judges                  # Jev (looks at pixels and frames), OpenAI, fal vision
 ├── Version Control (NEW)   # Lix-inspired semantic versioning
 │   ├── SQLite database     # Change-first, not snapshot-first
 │   ├── Branches            # Parallel design exploration
@@ -453,3 +572,17 @@ Baste
 ## License
 
 MIT
+
+### Hosted account credits
+
+Use Not Organic without configuring individual provider keys:
+
+```sh
+baste login
+baste credits
+baste credits --buy <advertised-pack-id>
+baste generate cyberbotanist --provider notorganic --iterations 0 --batch-size 1 --output-count 1 --max-cost 5 --edit --animate parallax
+baste logout
+```
+
+Signed-in Studio runs and hosted CLI runs use account credits for image generation, Jev, SAM segmentation, Ideogram edits and Seedance animation, when the provider advertises those roles. The plan checks a conservative spending ceiling before paid work. Checkout requires the user to complete payment; verify credit afterward with `baste credits`. See [account setup](docs/notorganic.md) for client registration, private device credentials, required gateway prices and async storage.

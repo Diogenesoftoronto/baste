@@ -5,7 +5,7 @@ import { createDpopKey, dpopProof, hash, type DpopKey } from "./dpop.js";
 
 const COOKIE = "baste_session";
 const TTL = 8 * 60 * 60 * 1000;
-const SCOPE = "wallet:read usage:read billing:checkout infer:image judgement:evaluate";
+const SCOPE = "wallet:read usage:read billing:checkout infer:image judgement:evaluate videos:generate videos:read";
 interface Token { access_token: string; token_type: string; expires_in: number; refresh_token?: string; refresh_expires_in?: number }
 interface Profile { did: string; handle?: string }
 interface Session { id: string; csrf: string; deadline: number; profile?: Profile; key?: DpopKey; token?: Token; expires?: number; refreshExpires?: number; pendingRefresh?: Promise<void>; policyProvided?: { version: string; contentSha256: string }; transaction?: { state: string; verifier: string; created: number; locale: "en" | "fr" } }
@@ -121,7 +121,7 @@ export class AccountManager {
   }
   private async request(session: Session, path: string, init: RequestInit = {}): Promise<Response> {
     if (session.profile && this.sessions.get(session.id) !== session) throw new AccountError(401, "This account session has ended. Sign in again to continue.");
-    if (!/^\/v1\/(account|models|wallet|billing\/checkout|images\/generations|judgement)$/.test(path)) throw new AccountError(400, "Unsupported Not Organic route.");
+    if (!/^\/v1\/(account|models|wallet|billing\/checkout|images\/generations|judgement|fal\/jobs(?:\/fal_[a-zA-Z0-9_-]{43})?)$/.test(path)) throw new AccountError(400, "Unsupported Not Organic route.");
     if (session.profile) this.requireConsent(session);
     await this.active(session);
     if (session.profile) this.requireConsent(session);

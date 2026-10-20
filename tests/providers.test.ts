@@ -36,6 +36,18 @@ function output(t: TestContext) {
   return dir;
 }
 
+/**
+ * Run in an empty working directory. The suite engine reads moodboards, ratings
+ * and design history from ./.baste; a developer's own must not reach the mocks.
+ */
+function isolated(t: TestContext) {
+  const dir = output(t);
+  const before = process.cwd();
+  process.chdir(dir);
+  t.after(() => process.chdir(before));
+  return dir;
+}
+
 function mockFetch(t: TestContext, replies: Array<Response | (() => Response)>) {
   const calls: Array<{ url: string; init?: RequestInit; body?: any }> = [];
   const before = globalThis.fetch;
@@ -233,7 +245,7 @@ test("GUI-style video overrides choose the right model and key without crossing 
   assert.throws(() => toBasteConfig({}, { videoProvider: "made-up" }), /Unsupported video provider/);
 });
 
-test("TypeSafe batches five independent Scores and one Noul over named persona/candidate/suite JSON", async t => {
+test("Text-only TypeSafe batches five independent Scores and one Noul over named persona/candidate/suite JSON", async t => {
   environment(t, { TYPESAFE_API_KEY: "mock-typesafe" });
   const dir = output(t);
   const source = '<svg viewBox="0 0 24 24"><path d="M0 0L24 24"/></svg>';
@@ -241,10 +253,11 @@ test("TypeSafe batches five independent Scores and one Noul over named persona/c
   writeFileSync(file, source);
   const calls = mockFetch(t, [json(judgeReply())]);
   const suite = [{ type: "image", purpose: "hero", prompt: "Cool organic textures" }];
-  const result = await evaluateWithTypeSafe(persona, { assetType: "svg", prompt: "Organic icon", content: file, purpose: "icon", metadata: { model: "quiver-1", size: "24x24" }, suite });
+  const result = await evaluateWithTypeSafe(persona, { assetType: "svg", prompt: "Organic icon", content: file, purpose: "icon", metadata: { model: "quiver-1", size: "24x24" }, suite }, { vision: false });
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, "https://api.typesafe.ai/v1/systemone");
   assert.equal((calls[0].init?.headers as any).Authorization, "Bearer mock-typesafe");
+  assert.equal((calls[0].init?.headers as any)["TypeSafe-Danger-Zone-Images"], undefined);
   const body = calls[0].body;
   assert.equal(body.model, "jev-latest");
   assert.deepEqual(body.state.persona.influences, persona.influences);
@@ -343,6 +356,7 @@ for (const [label, mutate] of [
 
 test("Video-only suites generate with Seedance and preserve raw Jev results on accepted final assets", async t => {
   environment(t, { ARK_API_KEY: "mock-ark", TYPESAFE_API_KEY: "mock-typesafe" });
+  isolated(t);
   const calls = mockFetch(t, [json({ id: "task" }), json({ status: "succeeded", content: { video_url: "https://storage.test/video.mp4" } }), new Response("MP4"), json(judgeReply())]);
   const suite = await generateAssetSuite(persona, [video], toBasteConfig({ outputDir: output(t) }));
   assert.equal(suite.assets.videos.length, 1);
@@ -354,6 +368,7 @@ test("Video-only suites generate with Seedance and preserve raw Jev results on a
 
 test("Final assets rejected by Jev stay out of the exported suite", async t => {
   environment(t, { ARK_API_KEY: "mock-ark", TYPESAFE_API_KEY: "mock-typesafe" });
+  isolated(t);
   mockFetch(t, [json({ id: "task" }), json({ status: "succeeded", content: { video_url: "https://storage.test/video.mp4" } }), new Response("MP4"), json(judgeReply(0.95, [4, 4, 4, 4, 4]))]);
   const suite = await generateAssetSuite(persona, [video], toBasteConfig({ outputDir: output(t) }));
   assert.equal(suite.assets.videos.length, 0);
@@ -372,12 +387,16 @@ test("Configured video duration and ratio reach Seedance through the suite engin
 
 test("Image QD and final generation use Jev with matching metadata and retain both evaluations", async t => {
   environment(t, { OPENAI_API_KEY: "mock-openai", TYPESAFE_API_KEY: "mock-typesafe" });
-  const calls = mockFetch(t, [imageReply(), json(judgeReply()), imageReply(), json(judgeReply())]);
+  isolated(t);
+  // One image drawn: the final output ships the judged candidate, and is judged again with its suite.
+  const calls = mockFetch(t, [imageReply(), json(judgeReply()), json(judgeReply())]);
   const config = toBasteConfig({ outputDir: output(t), qd: { iterations: 0, batchSize: 1, qualityThreshold: 0.5 } });
   const suite = await generateAssetSuite(persona, [image], config);
   assert.equal(suite.archive.cells.size, 1);
   assert.equal(suite.assets.images.length, 1);
+  assert.equal(suite.assets.images[0].content, suite.candidates[0].path);
   assert.equal(suite.evaluations.length, 2);
+  assert.equal(calls.length, 3);
   assert.equal(calls[1].body.state.candidate.metadata.model, "gpt-image-2.5");
   assert.equal(calls[1].body.state.candidate.purpose, "hero");
   assert.ok(suite.evaluations.every(result => result.typesafe?.model === "jev-1.13.0"));

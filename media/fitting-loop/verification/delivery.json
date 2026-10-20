@@ -1,0 +1,78 @@
+{
+  "files": [
+    {
+      "path": "renders/fitting-loop.mp4",
+      "bytes": 1316947,
+      "sha256": "cda14ceda87ed6091b1fee0eeb08d34a00d040f5277e96c98e6159421dc0e209"
+    },
+    {
+      "path": "renders/fitting-loop.gif",
+      "bytes": 2739345,
+      "sha256": "044757c081ee6a249a7fcf01a814983f68d29d17c4644a9ee0d04f8998548f72"
+    },
+    {
+      "path": "renders/fitting-loop-poster.jpg",
+      "bytes": 88469,
+      "sha256": "efd96c62a4b03dacb1941e9baa5fc35d20a2660ca72d10d21e503a92938a9511"
+    },
+    {
+      "path": "renders/og-baste.png",
+      "bytes": 156524,
+      "sha256": "08434429216e14d648a3485d577b71843a425eca466076edf43b58f85fd5488f"
+    },
+    {
+      "path": "../../site/public/media/fitting-loop.mp4",
+      "bytes": 1316947,
+      "sha256": "cda14ceda87ed6091b1fee0eeb08d34a00d040f5277e96c98e6159421dc0e209"
+    },
+    {
+      "path": "../../site/public/media/fitting-loop.gif",
+      "bytes": 2739345,
+      "sha256": "044757c081ee6a249a7fcf01a814983f68d29d17c4644a9ee0d04f8998548f72"
+    },
+    {
+      "path": "../../site/public/media/fitting-loop-poster.jpg",
+      "bytes": 88469,
+      "sha256": "efd96c62a4b03dacb1941e9baa5fc35d20a2660ca72d10d21e503a92938a9511"
+    },
+    {
+      "path": "../../site/public/og-baste.png",
+      "bytes": 156524,
+      "sha256": "08434429216e14d648a3485d577b71843a425eca466076edf43b58f85fd5488f"
+    },
+    {
+      "path": "../../docs/fitting-loop.gif",
+      "bytes": 2739345,
+      "sha256": "044757c081ee6a249a7fcf01a814983f68d29d17c4644a9ee0d04f8998548f72"
+    }
+  ],
+  "gif": {
+    "size": [
+      960,
+      504
+    ],
+    "frames": 120,
+    "duration_ms": 8000,
+    "average_fps": 15.0,
+    "loop": 0
+  },
+  "mp4": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "width": 1200,
+        "height": 630,
+        "r_frame_rate": "30/1",
+        "nb_frames": "240"
+      }
+    ],
+    "format": {
+      "duration": "8.000000",
+      "size": "1316947"
+    }
+  },
+  "copies_match": true,
+  "contact_sheet": "snapshots/proof/contact-sheet.jpg"
+}

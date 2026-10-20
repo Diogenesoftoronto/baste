@@ -19,6 +19,7 @@ import {
   deletePersona,
 } from "../persona/store.js";
 import { buildPersona, extendPersona } from "../persona/builder.js";
+import { animationFor } from "../assets/motion.js";
 import type { Persona } from "../persona/types.js";
 import {
   generateDesignTokens,
@@ -133,6 +134,18 @@ export function createBasteMCPServer(options: MCPOptions = {}) {
         anime: z.array(z.string()).optional(),
         musicGenres: z.array(z.string()).optional(),
         visualArtists: z.array(z.string()).optional(),
+        animation: z
+          .object({
+            motifs: z.array(z.string()).optional(),
+            subjects: z.array(z.string()).optional(),
+            depth: z.enum(["flat", "parallax", "deep"]).optional(),
+            camera: z.enum(["locked", "drift", "push", "orbit"]).optional(),
+            focus: z.enum(["background", "subject", "both"]).optional(),
+            loopSeconds: z.number().min(1).max(60).optional(),
+            avoid: z.array(z.string()).optional(),
+          })
+          .optional()
+          .describe("How their world moves: motifs, subjects that can be cut out as a front layer, depth, camera, focus, loop length and motion to avoid"),
         spaces: z.array(z.string()).optional(),
         obsessions: z.array(z.string()).optional(),
         colorTemperature: z
@@ -221,6 +234,8 @@ export function createBasteMCPServer(options: MCPOptions = {}) {
         persona.aesthetic.visualKeywords = args.visualKeywords;
       if (args.moodKeywords)
         persona.aesthetic.moodKeywords = args.moodKeywords;
+      if (args.animation)
+        persona.animation = { ...animationFor(persona), ...args.animation };
 
       savePersona(persona);
       return {

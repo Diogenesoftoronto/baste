@@ -153,7 +153,9 @@ test("the fal judge sees the generated image and places it in the archive by wha
   assert.equal(suite.archive.cells.size, 2, "warm and cool candidates hold separate cells");
   assert.equal(suite.assets.images.length, 2);
   assert.equal(Object.keys(suite.finalScores).length, 2);
-  assert.equal(readdirSync(join(dir, "images")).length, 6);
+  // The final images are the judged candidates, not new drawings.
+  assert.equal(readdirSync(join(dir, "images")).length, 4);
+  assert.ok(suite.assets.images.every(image => suite.candidates.some(c => c.path === image.content)));
 });
 
 test("only the evolved image takes the evolved prompt; other images keep their own brief", async t => {
@@ -171,9 +173,10 @@ test("only the evolved image takes the evolved prompt; other images keep their o
     { kind: "image", purpose: "background", description: "A quiet moss texture" },
   ], config);
   const prompts = calls.filter(c => c.url.endsWith("/seedream/v4/text-to-image")).map(c => c.body.prompt as string);
-  assert.equal(prompts.length, 3);
-  assert.match(prompts[2], /quiet moss texture/);
-  assert.doesNotMatch(prompts[2], /greenhouse hero/);
+  // The seed is the hero; the final hero ships it, so only the background is drawn again.
+  assert.equal(prompts.length, 2);
+  assert.match(prompts[1], /quiet moss texture/);
+  assert.doesNotMatch(prompts[1], /greenhouse hero/);
 });
 
 test("an evaluator override never inherits the saved provider's key or model", () => {

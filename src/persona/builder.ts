@@ -5,7 +5,8 @@
  * overridden. Essential for `baste create` and external integrations.
  */
 
-import type { Persona, CulturalIdentity, Influences, Behaviors, AestheticProfile } from "./types.js";
+import type { Persona, CulturalIdentity, Influences, Behaviors, AestheticProfile, PersonaAnimation } from "./types.js";
+import { defaultAnimation } from "../assets/motion.js";
 
 export interface PersonaDraft {
   id: string;
@@ -15,6 +16,7 @@ export interface PersonaDraft {
   influences?: Partial<Influences>;
   behaviors?: Partial<Behaviors>;
   aesthetic?: Partial<AestheticProfile>;
+  animation?: Partial<PersonaAnimation>;
 }
 
 const EMPTY_INFLUENCES: Influences = {
@@ -90,6 +92,8 @@ export function buildPersona(draft: PersonaDraft): Persona {
     influences,
     behaviors,
     aesthetic,
+    // Only a persona given an animation stores one; the rest derive it from the aesthetic.
+    ...(draft.animation ? { animation: { ...defaultAnimation(aesthetic), ...draft.animation } } : {}),
   };
 }
 
@@ -143,7 +147,19 @@ export function extendPersona(base: Persona, overrides: PersonaDraft): Persona {
       visualKeywords: mergeUnique(base.aesthetic.visualKeywords, overrides.aesthetic?.visualKeywords ?? []),
       moodKeywords: mergeUnique(base.aesthetic.moodKeywords, overrides.aesthetic?.moodKeywords ?? []),
     },
+    ...(base.animation || overrides.animation ? { animation: mergeAnimation(base.animation, overrides.animation) } : {}),
   };
 
   return buildPersona(draft);
+}
+
+/** An extended persona's animation: the base's, with the overlay's choices and its lists added. */
+function mergeAnimation(base: Partial<PersonaAnimation> = {}, extra: Partial<PersonaAnimation> = {}): Partial<PersonaAnimation> {
+  return {
+    ...base,
+    ...extra,
+    motifs: mergeUnique(base.motifs ?? [], extra.motifs ?? []),
+    subjects: mergeUnique(base.subjects ?? [], extra.subjects ?? []),
+    avoid: mergeUnique(base.avoid ?? [], extra.avoid ?? []),
+  };
 }

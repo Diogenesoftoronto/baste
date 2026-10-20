@@ -64,13 +64,46 @@ export {
   evaluateBatch,
   createScorer,
 } from "./evaluation/judge.js";
-export { evaluateWithTypeSafe, PET_PEEVE_REJECTION_THRESHOLD } from "./evaluation/typesafe-judge.js";
-export type { TypeSafeJudgments, ScoreAnswer } from "./evaluation/typesafe-judge.js";
+export { evaluateWithTypeSafe, PET_PEEVE_REJECTION_THRESHOLD, TEXT_REJECTION_THRESHOLD, TASTE_WEIGHT } from "./evaluation/typesafe-judge.js";
+export type { TypeSafeJudgments, ScoreAnswer, ChoiceAnswer, JudgeEvidence, VisualJudgments } from "./evaluation/typesafe-judge.js";
+export { loadJudgeContext, loadReferences, loadExamples } from "./evaluation/visual-context.js";
+export type { JudgeContext, JudgeImage, RatedExamples } from "./evaluation/visual-context.js";
 export type {
   EvaluationCriteria,
   EvaluationResult,
   EvaluateOptions,
 } from "./evaluation/judge.js";
+
+// Layers and animation
+export {
+  buildLayers,
+  editImage,
+  editMask,
+  cutout,
+  normalizeMask,
+  segmentSubject,
+  rankSubjects,
+  repaint,
+  EDIT_COLOR,
+} from "./assets/layers.js";
+export type { Layers, LayerConfig, SubjectMask, EditPlan, EditLineage, EditRegion } from "./assets/layers.js";
+export { buildParallax, buildVideoLoop, parallaxHtml, parallaxMotion, loopPrompt } from "./assets/animate.js";
+export type { ParallaxSpec, ParallaxFiles, VideoLoop } from "./assets/animate.js";
+export { animationFor, defaultAnimation, CAMERA_MOVES } from "./assets/motion.js";
+export { falUpload, falImageInput } from "./assets/fal.js";
+
+// Motion primitives
+export {
+  MOTION_LANGUAGE,
+  MOTION_MOMENTS,
+  motionTokens,
+  exportMotionCSS,
+  keyframesCSS,
+  springEasing,
+  springPosition,
+  videoMotionPhrase,
+} from "./assets/motion.js";
+export type { MotionTokens, MotionPrimitive, MotionMoment, MotionKeyframe, MotionStyle } from "./assets/motion.js";
 
 // Asset generation
 export {

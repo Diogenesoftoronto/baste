@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Baste — a tour</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Bodoni Moda"; src: url("assets/fonts/BodoniModa-normal-400-900.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+      @font-face { font-family: "Bodoni Moda"; src: url("assets/fonts/BodoniModa-italic-400-900.woff2") format("woff2"); font-weight: 400 900; font-style: italic; }
+      @font-face { font-family: "Instrument Sans"; src: url("assets/fonts/InstrumentSans-normal-400-700.woff2") format("woff2"); font-weight: 400 700; font-style: normal; }
+      @font-face { font-family: "Instrument Sans"; src: url("assets/fonts/InstrumentSans-italic-400-700.woff2") format("woff2"); font-weight: 400 700; font-style: italic; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-normal-400.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "IBM Plex Mono"; src: url("assets/fonts/IBMPlexMono-normal-500.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "Fraunces"; src: url("assets/fonts/Fraunces-400-700.woff2") format("woff2"); font-weight: 400 700; }
+      @font-face { font-family: "Dela Gothic One"; src: url("assets/fonts/DelaGothicOne-400.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "VT323"; src: url("assets/fonts/VT323-400.woff2") format("woff2"); font-weight: 400; }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #f1ece2; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #f1ece2; color: #1c1b19; font-family: "Instrument Sans", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .display { font-family: "Bodoni Moda", serif; font-weight: 500; letter-spacing: -0.02em; line-height: 0.98; }
+      .display em, .em { font-style: italic; color: #a9311e; }
+      .mono { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+      #grid { position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgba(28, 27, 25, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(28, 27, 25, 0.045) 1px, transparent 1px); background-size: 48px 48px; background-position: 24px 18px; }
+      #logo { position: absolute; left: 72px; top: 84px; z-index: 9; display: flex; align-items: center; gap: 10px; }
+      #logo b { font-family: "Bodoni Moda", serif; font-style: italic; font-weight: 600; font-size: 29px; letter-spacing: -0.01em; line-height: 1; }
+
+      /* 0 · why */
+      #s-why { z-index: 6; }
+      #why-in { position: absolute; inset: 0; }
+      #why-card { position: absolute; left: 660px; top: 300px; width: 600px; background: #f7f7f7; border: 1px solid #d6d6d6; border-radius: 10px; box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.35); transform-origin: 50% 0; }
+      .pc-head { display: flex; justify-content: space-between; padding: 14px 22px; background: #e6e6e6; border-radius: 10px 10px 0 0; color: #555; font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+      .pc-who { display: flex; align-items: center; gap: 18px; padding: 22px 22px 12px; }
+      .pc-who svg { flex: 0 0 64px; }
+      .pc-who b { display: block; font-size: 26px; font-weight: 600; color: #333; }
+      .pc-who span { font-size: 18px; color: #6b6b6b; }
+      .pc-rows { padding: 6px 22px 18px; }
+      .pc-row { position: relative; display: flex; justify-content: space-between; padding: 11px 6px; border-top: 1px solid #e2e2e2; font-size: 20px; }
+      .pc-row span { position: relative; color: #555555; }
+      .pc-row b { position: relative; font-weight: 600; color: #333; }
+      .pc-row .hl { position: absolute; left: -10px; right: -10px; top: 5px; bottom: 5px; background: rgba(240, 197, 52, 0.8); border-radius: 4px; transform-origin: 0 50%; }
+      .why-x { position: absolute; left: 0; top: 0; overflow: visible; }
+      #why-head { position: absolute; left: 0; right: 0; top: 596px; text-align: center; font-size: 132px; }
+      #why-head .w { display: inline-block; }
+      #why-under { position: absolute; left: 0; right: 0; top: 760px; height: 6px; display: flex; justify-content: center; }
+      #why-under i { display: block; width: 330px; height: 4px; margin-left: 14px; background: repeating-linear-gradient(90deg, #d2402a 0 18px, transparent 18px 30px); transform-origin: 0 50%; }
+
+      /* 1 · measure */
+      #s-measure { z-index: 7; }
+      #m-portrait { position: absolute; left: 280px; top: 196px; width: 500px; height: 580px; overflow: hidden; border-radius: 8px; background: #ddd5c6; }
+      #m-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+      #m-tape { position: absolute; left: 470px; top: 176px; width: 124px; height: 38px; background: rgba(240, 197, 52, 0.72); }
+      #m-caption { position: absolute; left: 280px; top: 800px; width: 500px; }
+      #m-caption .mono { color: #a9311e; }
+      #m-caption h3 { margin-top: 10px; font-size: 52px; }
+      #m-caption p { margin-top: 6px; font-size: 21px; color: #45423c; }
+      #m-sheet { position: absolute; left: 900px; top: 176px; width: 860px; }
+      #m-ruler { position: relative; height: 30px; transform-origin: 0 50%; background: repeating-linear-gradient(90deg, #1c1b19 0 1.5px, transparent 1.5px 86px) 0 0 / 100% 15px no-repeat, repeating-linear-gradient(90deg, rgba(28, 27, 25, 0.55) 0 1px, transparent 1px 8.6px) 0 0 / 100% 7px no-repeat, #f0c534; }
+      #m-ruler span { position: absolute; top: 13px; font-family: "IBM Plex Mono", monospace; font-size: 11px; color: #1c1b19; }
+      #m-kicker { margin-top: 34px; color: #a9311e; }
+      #m-title { margin-top: 14px; font-size: 86px; }
+      .m-row { position: relative; padding: 20px 0 18px; }
+      .m-row .rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgba(28, 27, 25, 0.2); transform-origin: 0 50%; }
+      .m-row .in { display: grid; grid-template-columns: 76px 1fr; column-gap: 8px; }
+      .m-row .no { grid-row: span 2; color: #a9311e; font-size: 12px; padding-top: 4px; }
+      .m-row .lab { color: #6e6a61; font-size: 12px; }
+      .m-row .val { margin-top: 8px; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: 36px; line-height: 1.08; letter-spacing: -0.01em; }
+      #m-rows { margin-top: 30px; }
+
+      /* the stage: Studio recordings, 1:1 */
+      #stage-wrap { position: absolute; left: 432px; top: 90px; width: 1440px; height: 900px; z-index: 3; }
+      #stage { position: absolute; inset: 0; overflow: hidden; border-radius: 14px; background: #faf9f2; box-shadow: 0 40px 80px -36px rgba(28, 27, 25, 0.5), 0 0 0 1px rgba(28, 27, 25, 0.12); }
+      #stitch { position: absolute; left: -14px; top: -14px; overflow: visible; }
+      .seg { position: absolute; inset: 0; }
+      .cam { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform-origin: 0 0; }
+      .cam video { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; object-fit: cover; }
+      /* the recording ends mid-composer; at close range, fade it into the panel instead of a hard cut */
+      .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 112px; opacity: 0; background: linear-gradient(180deg, rgba(246, 245, 238, 0) 0%, #f6f5ee 72%); }
+      #seam { position: absolute; left: 0; top: 0; width: 4px; height: 900px; z-index: 30; background: repeating-linear-gradient(180deg, #d2402a 0 16px, transparent 16px 26px); }
+
+      .co { position: absolute; border: 2.5px dashed #d2402a; border-radius: 12px; }
+      .co span { position: absolute; left: -15px; top: -15px; width: 28px; height: 28px; border-radius: 50%; background: #a9311e; color: #fff; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 15px; line-height: 28px; text-align: center; }
+      .ring { position: absolute; border: 3px solid #d2402a; border-radius: 12px; }
+      .arrow { position: absolute; overflow: visible; }
+      .rot { position: absolute; transform: rotate(-90deg); transform-origin: 0 0; }
+      .rot .tag { position: relative; display: block; }
+      .tag { position: absolute; padding: 6px 12px 7px; border-radius: 999px; background: #a9311e; color: #fff; font-size: 17px; font-weight: 600; white-space: nowrap; }
+
+      /* 04 · the kept drafts */
+      #spread { background: #ebe3d8; padding: 0 52px 24px; display: flex; flex-direction: column; justify-content: center; }
+      #spread header { display: flex; align-items: baseline; justify-content: space-between; }
+      #spread .mono { color: #a9311e; }
+      #spread h3 { font-size: 58px; }
+      #prints { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 30px 24px; }
+      .print { width: 316px; }
+      .print .ph { display: block; width: 316px; height: 237px; padding: 6px; background: #fff; box-shadow: 0 14px 26px -16px rgba(28, 27, 25, 0.55); }
+      .print img { display: block; width: 304px; height: 225px; object-fit: cover; }
+      .print figcaption { display: flex; justify-content: space-between; margin-top: 12px; font-size: 17px; color: #45423c; }
+      .print figcaption b { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 15px; color: #a9311e; }
+      #spread-axis { margin-top: 44px; display: flex; align-items: center; gap: 18px; font-size: 17px; font-weight: 600; }
+      #spread-axis i { flex: 1; height: 3px; background: linear-gradient(90deg, #2f55a4, #d2402a); transform-origin: 0 50%; }
+      #spread-axis .c { color: #2f55a4; }
+      #spread-axis .w { color: #a9311e; }
+
+      /* 05 · what comes out */
+      #look { position: absolute; inset: 0; background: #f1ece2; padding: 0 28px 24px; display: flex; flex-direction: column; justify-content: center; }
+      #look header { display: flex; align-items: baseline; justify-content: space-between; padding: 0 24px; }
+      #look .mono { color: #a9311e; }
+      #look h3 { font-size: 58px; }
+      #lk-grid { margin-top: 38px; display: flex; flex-wrap: wrap; gap: 28px 20px; }
+      .lk { width: 448px; }
+      .lk .frame { position: relative; display: block; width: 448px; height: 252px; overflow: hidden; border-radius: 10px; background: #fff; box-shadow: 0 16px 30px -20px rgba(28, 27, 25, 0.6); }
+      .lk .frame img, .lk .frame video { display: block; width: 448px; height: 252px; object-fit: cover; }
+      .lk .frame.icon { display: flex; align-items: center; justify-content: center; background: #fdf1eb; }
+      .lk .frame.icon img { width: 168px; height: 168px; object-fit: contain; }
+      /* The recorded Studio replay still shows the raw Recraft icons; the refined ones the site uses sit over them. */
+      .iconfix { position: absolute; top: 570px; width: 144px; height: 144px; border-radius: 5px; background: #fffefb; display: grid; place-items: center; }
+      .iconfix img { width: 100px; height: 100px; }
+      .lk .frame.code { background: #211815; padding: 26px 28px; }
+      .lk pre { font-family: "IBM Plex Mono", monospace; font-size: 17px; line-height: 1.62; color: #fdf1eb; white-space: pre; }
+      .lk pre i { font-style: normal; color: #35f3b5; }
+      .lk figcaption { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; font-size: 18px; }
+      .lk figcaption b { font-weight: 600; }
+      .lk figcaption span { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: #6e6a61; }
+
+      /* the rail */
+      #rail { position: absolute; left: 72px; top: 90px; width: 322px; height: 900px; z-index: 4; }
+      .chap { inset: auto; left: 0; top: 96px; width: 322px; }
+      .chap .kicker { color: #a9311e; }
+      .chap h2 { margin-top: 12px; font-size: 64px; }
+      .chap .lede { margin-top: 16px; font-size: 22px; line-height: 1.32; color: #45423c; }
+      .facts { margin-top: 30px; }
+      .who-list { position: relative; }
+      .changes { margin-top: 22px; list-style: none; display: flex; flex-wrap: wrap; row-gap: 10px; }
+      .changes li { width: 50%; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 600; }
+      .changes i { width: 26px; height: 26px; border-radius: 50%; border: 2px dashed #d2402a; font-style: normal; font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 13px; line-height: 22px; text-align: center; color: #a9311e; }
+      #who-hl { position: absolute; left: 0; top: 0; width: 322px; height: 80px; border-radius: 12px; background: #e7e0d2; box-shadow: inset 3px 0 0 #d2402a; }
+      .who { position: relative; height: 80px; padding: 10px 16px 0 18px; display: grid; grid-template-columns: 1fr auto; align-items: center; row-gap: 6px; }
+      .who b { font-weight: 400; font-size: 34px; line-height: 1; }
+      .who .sw { display: flex; gap: 5px; }
+      .who .sw i { display: block; width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15); }
+      .who .meta { grid-column: span 2; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: #45423c; }
+      .stat { display: flex; align-items: baseline; gap: 14px; padding: 12px 0; border-top: 1px solid rgba(28, 27, 25, 0.16); }
+      .stat b { font-family: "Bodoni Moda", serif; font-weight: 500; font-size: 50px; line-height: 1; min-width: 104px; }
+      .stat span { font-size: 18px; color: #45423c; }
+      .note { margin-top: 18px; font-family: "IBM Plex Mono", monospace; font-size: 13.5px; line-height: 1.7; color: #45423c; }
+      .note b { font-weight: 500; color: #1c1b19; }
+      .note.tight { margin-top: 2px; }
+      .wt { padding: 9px 0; }
+      .wt p { display: flex; justify-content: space-between; font-size: 18px; }
+      .wt p b { font-family: "IBM Plex Mono", monospace; font-weight: 500; font-size: 15px; color: #a9311e; }
+      .wt .bar { margin-top: 7px; height: 6px; border-radius: 3px; background: rgba(28, 27, 25, 0.1); }
+      .wt .bar i { display: block; height: 6px; border-radius: 3px; background: #d2402a; transform-origin: 0 50%; }
+      .kept { margin-top: 18px; font-size: 18px; color: #45423c; }
+      .kept b { font-family: "Bodoni Moda", serif; font-weight: 500; font-size: 40px; color: #1c1b19; }
+      .out { display: grid; grid-template-columns: 26px 1fr; padding: 12px 0; border-top: 1px solid rgba(28, 27, 25, 0.16); }
+      .out .tick { width: 18px; height: 18px; margin-top: 3px; border-radius: 50%; border: 2px dashed #d2402a; }
+      .out p { font-size: 19px; font-weight: 600; }
+      .out span { grid-column: 2; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: #45423c; margin-top: 3px; }
+      .chip { display: inline-block; margin: 0 8px 10px 0; padding: 9px 15px 10px; border-radius: 999px; border: 1px solid rgba(28, 27, 25, 0.25); font-size: 18px; }
+      .chip-on { position: absolute; inset: -1px; border-radius: 999px; background: #1c1b19; }
+      .chip { position: relative; }
+      .chip span { position: relative; }
+      .code { margin-top: 6px; padding: 18px 18px 20px; border-radius: 12px; background: #1c1b19; color: #f1ece2; font-family: "IBM Plex Mono", monospace; font-size: 15px; line-height: 1.75; white-space: pre; }
+      .code i { font-style: normal; color: #f0c534; }
+      #index { position: absolute; left: 0; bottom: 0; width: 322px; list-style: none; }
+      #index li { display: flex; gap: 14px; height: 27px; align-items: center; font-family: "IBM Plex Mono", monospace; font-size: 13.5px; color: #6e6a61; }
+      #index li span:first-child { width: 22px; }
+      #ix-mark { position: absolute; left: -22px; bottom: 0; width: 12px; height: 3px; background: #d2402a; }
+
+      /* end card */
+      #s-end { z-index: 8; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+      #end-lock { display: flex; align-items: center; gap: 22px; }
+      #end-lock b { font-family: "Bodoni Moda", serif; font-style: italic; font-weight: 600; font-size: 92px; line-height: 1; letter-spacing: -0.01em; }
+      #end-head { margin-top: 58px; font-size: 104px; text-align: center; }
+      #end-head .w { display: inline-block; }
+      #end-cmd { margin-top: 54px; display: flex; align-items: center; gap: 18px; }
+      #end-cmd code { padding: 14px 26px 15px; border-radius: 999px; background: #1c1b19; color: #f1ece2; font-family: "IBM Plex Mono", monospace; font-size: 24px; }
+      #end-cmd span { font-size: 21px; color: #45423c; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="74" data-width="1920" data-height="1080">
+      <div id="grid"></div>
+      <div id="logo">
+  <svg class="mark" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <defs><mask id="lg-m" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+      <path id="lg-mp" d="M24.4 7.6 C 29 12, 25 18, 18 19 S 7 22, 5 29" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    </mask></defs>
+    <path id="lg-needle" d="M6 26 L25.5 6.5" stroke="#1C1B19" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse id="lg-eye" cx="24" cy="8" rx="1.1" ry="2.6" transform="rotate(45 24 8)" fill="#F1ECE2" stroke="#1C1B19" stroke-width="1.2"/>
+    <path d="M24.4 7.6 C 29 12, 25 18, 18 19 S 7 22, 5 29" stroke="#D2402A" stroke-width="2" stroke-linecap="round" stroke-dasharray="3.4 2.6" mask="url(#lg-m)"/>
+  </svg><b>Baste</b></div>
+
+      <section id="s-why" class="clip" data-start="0" data-duration="9" data-track-index="0">
+        <div id="why-in">
+          <div id="why-card">
+            <div class="pc-head"><span>User persona</span><span>Segment B</span></div>
+            <div class="pc-who">
+              <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="32" fill="#dcdcdc"/><circle cx="32" cy="25" r="11" fill="#b5b5b5"/><path d="M12 54c3-10 11-15 20-15s17 5 20 15" fill="#b5b5b5"/></svg>
+              <div><b>Primary user</b><span>“Busy professional”</span></div>
+            </div>
+            <div class="pc-rows">
+              <div class="pc-row" id="why-age"><i class="hl"></i><span>Age</span><b>25–34</b></div>
+              <div class="pc-row"><span>Location</span><b>Urban</b></div>
+              <div class="pc-row"><span>Income</span><b>$60–80k</b></div>
+              <div class="pc-row"><span>Goal</span><b>Save time</b></div>
+              <div class="pc-row"><span>Frustration</span><b>Too many clicks</b></div>
+            </div>
+            <svg class="why-x" id="why-x1" width="600" height="520" viewBox="0 0 600 520" aria-hidden="true"><path d="M-34 70 L634 450" stroke="#d2402a" stroke-width="6" stroke-linecap="round" stroke-dasharray="26 16" fill="none"/></svg>
+            <svg class="why-x" id="why-x2" width="600" height="520" viewBox="0 0 600 520" aria-hidden="true"><path d="M634 70 L-34 450" stroke="#d2402a" stroke-width="6" stroke-linecap="round" stroke-dasharray="26 16" fill="none"/></svg>
+          </div>
+          <h1 id="why-head" class="display"><span class="w" id="why-w1">A</span> <span class="w em" id="why-w2">person</span> <span class="w" id="why-w3">does.</span></h1>
+          <div id="why-under"><i></i></div>
+        </div>
+      </section>
+
+      <section id="s-measure" class="clip" data-start="8.6" data-duration="10.9" data-track-index="0">
+        <div id="m-portrait"><img src="assets/portraits/cyberbotanist.webp" alt="" /></div>
+        <div id="m-tape"></div>
+        <div id="m-caption">
+          <p class="mono">Authored persona</p>
+          <h3 class="display">Moss</h3>
+          <p>The Cyberbotanist. A biologist who studies fungi networks by day.</p>
+        </div>
+        <div id="m-sheet">
+          <div id="m-ruler"><span style="left:5px">1</span><span style="left:91px">2</span><span style="left:177px">3</span><span style="left:263px">4</span><span style="left:349px">5</span><span style="left:435px">6</span><span style="left:521px">7</span><span style="left:607px">8</span><span style="left:693px">9</span></div>
+          <p id="m-kicker" class="mono">01 · Measure</p>
+          <h2 id="m-title" class="display">Moss, <em>measured.</em></h2>
+          <div id="m-rows">
+            <div class="m-row" id="m-row0"><i class="rule"></i><div class="in"><span class="no mono">No. 1</span><span class="lab mono">Films they rewatch</span><span class="val">Annihilation, Nausicaä, The Fountain</span></div></div>
+            <div class="m-row" id="m-row1"><i class="rule"></i><div class="in"><span class="no mono">No. 2</span><span class="lab mono">Music they work to</span><span class="val">Biosphere, Mary Lattimore, Susumu Yokota</span></div></div>
+            <div class="m-row" id="m-row2"><i class="rule"></i><div class="in"><span class="no mono">No. 3</span><span class="lab mono">Rooms that feel like home</span><span class="val">Greenhouses, herbariums, maker spaces</span></div></div>
+            <div class="m-row" id="m-row3"><i class="rule"></i><div class="in"><span class="no mono">No. 4</span><span class="lab mono">Can’t stand in an app</span><span class="val">Dark patterns, infinite scroll, algorithmic feeds</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="stage-wrap">
+        <div id="stage">
+
+      <div class="seg" id="w-fitting"><div class="cam" id="c-fitting">
+        <video id="v-fitting" src="footage/cfr/fitting.mp4" muted playsinline data-start="18.85" data-duration="8.47" data-media-start="3.62" data-playback-rate="1.23" data-track-index="2"></video>
+          <div class="co" id="co-layout" style="left:58px;top:132px;width:996px;height:488px"><span>1</span></div>
+          <div class="co" id="co-type" style="left:1072px;top:157px;width:316px;height:91px"><span>2</span></div>
+          <div class="co" id="co-colour" style="left:1072px;top:254px;width:311px;height:179px"><span>3</span></div>
+          <div class="co" id="co-motion" style="left:1217px;top:436px;width:166px;height:92px"><span>4</span></div>
+      </div></div>
+
+      <div class="seg" id="w-archA"><div class="cam" id="c-archA">
+        <video id="v-archA" src="footage/cfr/archive.mp4" muted playsinline data-start="26.85" data-duration="2.75" data-media-start="6.321" data-playback-rate="1.5" data-track-index="2"></video>
+          <div class="ring" id="co-cut" style="left:321px;top:764px;width:344px;height:62px"></div>
+      </div></div>
+
+      <div class="seg" id="w-archB"><div class="cam" id="c-archB">
+        <video id="v-archB" src="footage/cfr/archive.mp4" muted playsinline data-start="29.5" data-duration="4.78" data-media-start="10.296" data-playback-rate="3.408" data-track-index="2"></video>
+          <svg class="arrow" id="co-temp" style="left:757px;top:818px" width="626" height="16" viewBox="0 0 626 16" aria-hidden="true"><path d="M8 8 H618 M16 1 L6 8 L16 15 M610 1 L620 8 L610 15" stroke="#d2402a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="tag" id="tag-temp" style="left:980px;top:840px">cool → warm</span>
+          <svg class="arrow" id="co-dense" style="left:716px;top:389px" width="16" height="398" viewBox="0 0 16 398" aria-hidden="true"><path d="M8 8 V390 M1 16 L8 6 L15 16 M1 382 L8 392 L15 382" stroke="#d2402a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="rot" style="left:668px;top:664px"><span class="tag" id="tag-dense">sparse → dense</span></div>
+      </div></div>
+
+      <div class="seg" id="w-archC"><div class="cam" id="c-archC">
+        <video id="v-archC" src="footage/cfr/archive.mp4" muted playsinline data-start="34.18" data-duration="3.27" data-media-start="26.245" data-playback-rate="1" data-track-index="2"></video>
+      </div></div>
+
+      <div class="seg" id="w-method"><div class="cam" id="c-method">
+        <video id="v-method" src="footage/cfr/method.mp4" muted playsinline data-start="36.7" data-duration="5.05" data-media-start="11.25" data-playback-rate="1" data-track-index="2"></video>
+      </div></div>
+          <section id="spread" class="clip" data-start="41.25" data-duration="4.2" data-track-index="3">
+            <header><h3 class="display">Eight kept, from cool to <em>warm.</em></h3><p class="mono">8 of 24 drafts · one per region</p></header>
+            <div id="prints">
+              <figure class="print" id="pr-0"><span class="ph"><img src="assets/kept/c23.jpg" alt="" /></span><figcaption><span>cool and balanced</span><b>0.88</b></figcaption></figure>
+              <figure class="print" id="pr-1"><span class="ph"><img src="assets/kept/c21.jpg" alt="" /></span><figcaption><span>cool and dense</span><b>0.92</b></figcaption></figure>
+              <figure class="print" id="pr-2"><span class="ph"><img src="assets/kept/c16.jpg" alt="" /></span><figcaption><span>neutral and dense</span><b>0.92</b></figcaption></figure>
+              <figure class="print" id="pr-3"><span class="ph"><img src="assets/kept/c17.jpg" alt="" /></span><figcaption><span>neutral and dense</span><b>0.89</b></figcaption></figure>
+              <figure class="print" id="pr-4"><span class="ph"><img src="assets/kept/c15.jpg" alt="" /></span><figcaption><span>warm and dense</span><b>0.93</b></figcaption></figure>
+              <figure class="print" id="pr-5"><span class="ph"><img src="assets/kept/c14.jpg" alt="" /></span><figcaption><span>warm and balanced</span><b>0.88</b></figcaption></figure>
+              <figure class="print" id="pr-6"><span class="ph"><img src="assets/kept/c03.jpg" alt="" /></span><figcaption><span>warm and dense</span><b>0.92</b></figcaption></figure>
+              <figure class="print" id="pr-7"><span class="ph"><img src="assets/kept/c02.jpg" alt="" /></span><figcaption><span>warm and dense</span><b>0.92</b></figcaption></figure>
+            </div>
+            <div id="spread-axis"><span class="c">Cool</span><i></i><span class="w">Warm</span></div>
+          </section>
+
+      <div class="seg" id="w-archCut"><div class="cam" id="c-archCut">
+        <video id="v-archCut" src="footage/cfr/archive.mp4" muted playsinline data-start="44.95" data-duration="2.8" data-media-start="31.6" data-playback-rate="1" data-track-index="2"></video><i class="iconfix" style="left:734px"><img src="assets/outputs/mycelium.svg" alt="" /></i><i class="iconfix" style="left:896px"><img src="assets/outputs/herbarium.svg" alt="" /></i>
+      </div></div>
+          <div id="look">
+            <header><h3 class="display">Ready to <em>use.</em></h3><p class="mono">Moss’s suite · one run</p></header>
+            <div id="lk-grid">
+              <figure class="lk" id="lk-0"><span class="frame"><img src="assets/outputs/hero.webp" alt="" /></span><figcaption><b>Hero image</b><span>Seedream v4</span></figcaption></figure>
+              <figure class="lk" id="lk-1"><span class="frame"><img src="assets/outputs/background.webp" alt="" /></span><figcaption><b>Background</b><span>Seedream v4</span></figcaption></figure>
+              <figure class="lk" id="lk-2"><span class="frame"><video id="v-loop" src="assets/outputs/loop.mp4" muted playsinline data-start="48.9" data-duration="2.1" data-media-start="0.4" data-track-index="3"></video></span><figcaption><b>Ambient loop</b><span>Seedance 1 Pro · 5 s</span></figcaption></figure>
+              <figure class="lk" id="lk-3"><span class="frame icon"><img src="assets/outputs/mycelium.svg" alt="" /></span><figcaption><b>Mycelial network</b><span>Icon · SVG</span></figcaption></figure>
+              <figure class="lk" id="lk-4"><span class="frame icon"><img src="assets/outputs/herbarium.svg" alt="" /></span><figcaption><b>Herbarium collection</b><span>Icon · SVG</span></figcaption></figure>
+              <figure class="lk" id="lk-5"><span class="frame code"><pre>--color-primary:   <i>#a15d3f</i>;
+--color-secondary: <i>#5a8e3f</i>;
+--color-accent:    <i>#35f3b5</i>;
+--font-display:    <i>Fraunces</i>;
+--radius:          <i>.75rem</i>;
+--motion:          <i>300ms</i>;</pre></span><figcaption><b>Design tokens</b><span>CSS · Tailwind · Panda</span></figcaption></figure>
+            </div>
+          </div>
+
+      <div class="seg" id="w-tok1"><div class="cam" id="c-tok1">
+        <video id="v-tok1" src="footage/cfr/tokens.mp4" muted playsinline data-start="50.45" data-duration="2.1" data-media-start="3.6" data-playback-rate="0.4" data-track-index="2"></video>
+      </div></div>
+
+      <div class="seg" id="w-tok2"><div class="cam" id="c-tok2">
+        <video id="v-tok2" src="footage/cfr/tokens.mp4" muted playsinline data-start="52.45" data-duration="0.83" data-media-start="4.4" data-playback-rate="3.767" data-track-index="2"></video>
+      </div></div>
+
+      <div class="seg" id="w-tok3"><div class="cam" id="c-tok3">
+        <video id="v-tok3" src="footage/cfr/tokens.mp4" muted playsinline data-start="53.18" data-duration="2.22" data-media-start="7.15" data-playback-rate="1" data-track-index="2"></video>
+      </div></div>
+
+      <div class="seg" id="w-talk"><div class="cam" id="c-talk">
+        <video id="v-talk" src="footage/cfr/talk.mp4" muted playsinline data-start="54.88" data-duration="9.12" data-media-start="7.447" data-playback-rate="1" data-track-index="2"></video>
+      </div><i class="fade" id="talk-fade"></i></div>
+
+      <div class="seg" id="w-yours"><div class="cam" id="c-yours">
+        <video id="v-yours" src="footage/cfr/yours.mp4" muted playsinline data-start="63.5" data-duration="6.7" data-media-start="4.36" data-playback-rate="1.6" data-track-index="2"></video>
+      </div></div>
+          <i id="seam"></i>
+        </div>
+        <svg id="stitch" width="1468" height="928" viewBox="0 0 1468 928" aria-hidden="true"><rect x="1.5" y="1.5" width="1465" height="925" rx="24" fill="none" stroke="#d2402a" stroke-width="2" stroke-dasharray="12 10" opacity="0.55"/></svg>
+      </div>
+
+      <aside id="rail">
+
+    <section class="chap clip" id="ch-fitting" data-start="18.85" data-duration="8.25" data-track-index="5">
+      <p class="kicker mono">Chapter 02</p>
+      <h2 class="display">Fitting room</h2>
+      <p class="lede">The same screen, re-cut for three people.</p>
+      <div class="facts">
+          <div class="who-list"><i id="who-hl"></i>
+            <div class="who" id="who-moss"><b style="font-family:'Fraunces'">Moss</b><span class="sw"><i style="background:#a15d3f"></i><i style="background:#5a8e3f"></i><i style="background:#35f3b5"></i></span><span class="meta">Fraunces · 300 ms</span></div>
+            <div class="who" id="who-ren"><b style="font-family:'Dela Gothic One'">Ren</b><span class="sw"><i style="background:#e44635"></i><i style="background:#ebb230"></i><i style="background:#fe12a9"></i></span><span class="meta">Dela Gothic One · 200 ms</span></div>
+            <div class="who" id="who-ada"><b style="font-family:'VT323'">Ada</b><span class="sw"><i style="background:#3db2b2"></i><i style="background:#dad59e"></i><i style="background:#d658cc"></i></span><span class="meta">VT323 · 400 ms</span></div>
+          </div>
+          <ol class="changes"><li id="chg-0"><i>1</i>Layout</li><li id="chg-1"><i>2</i>Type</li><li id="chg-2"><i>3</i>Colour</li><li id="chg-3"><i>4</i>Motion</li></ol></div>
+    </section>
+
+    <section class="chap clip" id="ch-baste" data-start="26.9" data-duration="10" data-track-index="5">
+      <p class="kicker mono">Chapter 03</p>
+      <h2 class="display">Baste</h2>
+      <p class="lede">Loose drafts across the grid, each one judged.</p>
+      <div class="facts">
+          <div class="stat"><b id="n-drafts">0</b><span>drafts judged</span></div>
+          <div class="stat"><b>5</b><span>generations</span></div>
+          <div class="stat"><b>3:20</b><span>a real run, sped up</span></div>
+          <p class="note">Drafts <b>Seedream v4</b></p><p class="note tight">Judge <b>Gemini 2.5 Flash</b>, via fal</p></div>
+    </section>
+
+    <section class="chap clip" id="ch-fit" data-start="36.75" data-duration="8.2" data-track-index="5">
+      <p class="kicker mono">Chapter 04</p>
+      <h2 class="display">Fit</h2>
+      <p class="lede">The best draft in each region, not one winner.</p>
+      <div class="facts">
+          <div class="wt"><p><span>Persona alignment</span><b>30%</b></p><div class="bar"><i id="wt-0" style="width:100%"></i></div></div>
+          <div class="wt"><p><span>Visual quality</span><b>20%</b></p><div class="bar"><i id="wt-1" style="width:66.66666666666666%"></i></div></div>
+          <div class="wt"><p><span>Uniqueness</span><b>20%</b></p><div class="bar"><i id="wt-2" style="width:66.66666666666666%"></i></div></div>
+          <div class="wt"><p><span>Coherence</span><b>15%</b></p><div class="bar"><i id="wt-3" style="width:50%"></i></div></div>
+          <div class="wt"><p><span>Usability</span><b>15%</b></p><div class="bar"><i id="wt-4" style="width:50%"></i></div></div>
+          <p class="kept"><b>8</b> kept of 24</p></div>
+    </section>
+
+    <section class="chap clip" id="ch-cut" data-start="44.95" data-duration="9.95" data-track-index="5">
+      <p class="kicker mono">Chapter 05</p>
+      <h2 class="display">Cut</h2>
+      <p class="lede">Files you can ship, cut to one person.</p>
+      <div class="facts">
+          <div class="out" id="out-0"><i class="tick"></i><p>Hero & background</p><span>Seedream v4</span></div>
+          <div class="out" id="out-1"><i class="tick"></i><p>Vector icons</p><span>SVG · refined for UI</span></div>
+          <div class="out" id="out-2"><i class="tick"></i><p>Ambient loop</p><span>Seedance 1 Pro</span></div>
+          <div class="out" id="out-3"><i class="tick"></i><p>Design tokens</p><span>CSS · Tailwind · Panda · JSON</span></div></div>
+    </section>
+
+    <section class="chap clip" id="ch-talk" data-start="54.85" data-duration="8.65" data-track-index="5">
+      <p class="kicker mono">Chapter 06</p>
+      <h2 class="display">Talk</h2>
+      <p class="lede">Ask the persona why, and hear it in their words.</p>
+      <div class="facts">
+          <span class="chip" id="chip-0"><i class="chip-on"></i><span>What are you into?</span></span>
+          <span class="chip" id="chip-1"><i class="chip-on"></i><span>Why these colours?</span></span>
+          <p class="note">Type, or press <b>Talk</b> and say it out loud. Replies can be read back in the persona’s voice.</p></div>
+    </section>
+
+    <section class="chap clip" id="ch-yours" data-start="63.45" data-duration="6.1" data-track-index="5">
+      <p class="kicker mono">Chapter 07</p>
+      <h2 class="display">Yours</h2>
+      <p class="lede">Measure your own people. Cut what fits them.</p>
+      <div class="facts">
+          <div class="code"><i>$</i> npx baste gui
+<i>$</i> baste generate cyberbotanist \
+    --provider fal</div>
+          <p class="note">Studio · New persona · Measure</p></div>
+    </section>
+        <ol id="index">
+          <li id="ix-0"><span>01</span><span>Measure</span></li>
+          <li id="ix-1"><span>02</span><span>Fitting room</span></li>
+          <li id="ix-2"><span>03</span><span>Baste</span></li>
+          <li id="ix-3"><span>04</span><span>Fit</span></li>
+          <li id="ix-4"><span>05</span><span>Cut</span></li>
+          <li id="ix-5"><span>06</span><span>Talk</span></li>
+          <li id="ix-6"><span>07</span><span>Yours</span></li>
+        </ol>
+        <i id="ix-mark"></i>
+      </aside>
+
+      <section id="s-end" class="clip" data-start="69.2" data-duration="4.8" data-track-index="0">
+        <div id="end-lock">
+  <svg class="mark" width="104" height="104" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <defs><mask id="end-m" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+      <path id="end-mp" d="M24.4 7.6 C 29 12, 25 18, 18 19 S 7 22, 5 29" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    </mask></defs>
+    <path id="end-needle" d="M6 26 L25.5 6.5" stroke="#1C1B19" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse id="end-eye" cx="24" cy="8" rx="1.1" ry="2.6" transform="rotate(45 24 8)" fill="#F1ECE2" stroke="#1C1B19" stroke-width="1.2"/>
+    <path d="M24.4 7.6 C 29 12, 25 18, 18 19 S 7 22, 5 29" stroke="#D2402A" stroke-width="2" stroke-linecap="round" stroke-dasharray="3.4 2.6" mask="url(#end-m)"/>
+  </svg><b id="end-word">Baste</b></div>
+        <h2 id="end-head" class="display"><span class="w" id="end-w0">Cut</span> <span class="w" id="end-w1">to</span> <span class="w" id="end-w2">fit</span> <span class="w em" id="end-w3">one</span> <span class="w" id="end-w4">person.</span></h2>
+        <div id="end-cmd"><code>npx baste gui</code><span>then open the Studio</span></div>
+      </section>
+
+      <audio id="vo-why" src="assets/voice/why.mp3" data-start="0.45" data-duration="7.424" data-track-index="8"></audio>
+      <audio id="vo-measure" src="assets/voice/measure.mp3" data-start="9.183" data-duration="9.173" data-track-index="8"></audio>
+      <audio id="vo-fitting" src="assets/voice/fitting.mp3" data-start="19.716" data-duration="7.286" data-track-index="8"></audio>
+      <audio id="vo-baste" src="assets/voice/baste.mp3" data-start="27.816" data-duration="8.862" data-track-index="8"></audio>
+      <audio id="vo-fit" src="assets/voice/fit.mp3" data-start="37.749" data-duration="6.198" data-track-index="8"></audio>
+      <audio id="vo-cut" src="assets/voice/cut.mp3" data-start="45.482" data-duration="8.673" data-track-index="8"></audio>
+      <audio id="vo-talk" src="assets/voice/talk.mp3" data-start="55.382" data-duration="7.152" data-track-index="8"></audio>
+      <audio id="vo-yours" src="assets/voice/yours.mp3" data-start="64.349" data-duration="4.016" data-track-index="8"></audio>
+      <audio id="bed" src="music/bed.mp3" data-start="0" data-duration="74" data-track-index="9" data-volume="1"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.8,"v":0.5},{"t":69.2,"v":0.5},{"t":70.4,"v":1.35},{"t":72.5,"v":1.35},{"t":74,"v":0}]}]}'></audio>
+    </div>
+
+    <script>
+      const T = {"aged":2.2,"nobody":5.04,"bracket":5.56,"taste":6.06,"a":7,"person":7.02,"does":7.32,"starts":9.353,"films":11.273,"music":12.933,"rooms":14.653,"things":16.573,"layout":23.586,"type":24.346,"colour":25.126,"motion":25.866,"tries":29.186,"warm":31.266,"sparse":32.806,"judge":35.066,"keeps":37.779,"range":41.639,"images":47.412,"vector":48.032,"ambient":49.432,"design":50.932,"ask":55.652,"what":59.132,"bring":64.379,"studio":66.039};
+      const WIPES = [["#w-archA",26.85],["#w-method",36.7],["#spread",41.25],["#w-archCut",44.95],["#look",47.2],["#w-tok1",50.45],["#w-talk",54.88],["#w-yours",63.5]];
+      const WIPE = 0.45;
+      const tl = gsap.timeline({ paused: true });
+      const set = (s, v, t = 0) => tl.set(s, v, t);
+      const to = (s, v, t) => tl.to(s, v, t);
+      const rise = (s, t, d = 0.55, y = 18) => { set(s, { opacity: 0, y }); to(s, { opacity: 1, y: 0, duration: d, ease: "power3.out" }, t); };
+
+      // Frame the recording on (cx, cy) at scale s, never showing past its edges.
+      const frame = (cx, cy, s) => ({
+        x: Math.min(0, Math.max(1440 - 1440 * s, 1440 / 2 - cx * s)),
+        y: Math.min(0, Math.max(900 - 900 * s, 900 / 2 - cy * s)),
+        scale: s,
+      });
+      const cam = (sel, t, d, cx, cy, s, ease = "power2.inOut") => to(sel, { ...frame(cx, cy, s), duration: d, ease }, t);
+      set(".cam", { x: 0, y: 0, scale: 1 });
+
+      /* persistent */
+      rise("#logo", 0.2, 0.6, 8);
+      to("#logo", { opacity: 0, duration: 0.3 }, 69.3);
+
+      /* why */
+      rise("#why-card", 0.15, 0.8, 26);
+      set("#why-age .hl", { scaleX: 0 });
+      to("#why-age .hl", { scaleX: 1, duration: 0.45, ease: "power2.out" }, T.aged - 0.05);
+      set(".why-x", { clipPath: "inset(0% 100% 0% 0%)" });
+      to("#why-x1", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, T.nobody);
+      to("#why-x2", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.inOut" }, T.bracket);
+      set("#why-card", { rotation: 0, scale: 1 });
+      to("#why-card", { rotation: -2.5, opacity: 0.6, duration: 0.4, ease: "power2.out" }, T.taste - 0.15);
+      to("#why-card", { y: -176, scale: 0.74, opacity: 0.32, duration: 0.7, ease: "power3.inOut" }, T.a - 0.5);
+      rise("#why-w1", T.a, 0.5, 44);
+      rise("#why-w2", T.person + 0.05, 0.5, 44);
+      rise("#why-w3", T.does, 0.5, 44);
+      set("#why-under i", { scaleX: 0 });
+      to("#why-under i", { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, T.does + 0.2);
+      to("#why-in", { opacity: 0, duration: 0.35, ease: "power1.in" }, 8.62);
+
+      /* measure */
+      set("#m-portrait", { opacity: 0, y: 30, rotation: -1.5, boxShadow: "0px 34px 60px -26px rgba(28,27,25,0.55)" });
+      to("#m-portrait", { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 8.85);
+      set("#m-tape", { opacity: 0, scale: 0.9, rotation: 4 });
+      to("#m-tape", { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, 9.45);
+      rise("#m-caption", 9.3);
+      set("#m-ruler", { scaleX: 0 });
+      to("#m-ruler", { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, T.starts - 0.2);
+      rise("#m-kicker", T.starts);
+      rise("#m-title", T.starts + 0.15, 0.7, 26);
+      [T.films, T.music, T.rooms, T.things].forEach((t, i) => {
+        set("#m-row" + i + " .rule", { scaleX: 0 });
+        to("#m-row" + i + " .rule", { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, t - 0.2);
+        rise("#m-row" + i + " .in", t, 0.55, 16);
+      });
+      to("#m-sheet, #m-caption, #m-tape", { opacity: 0, y: -12, duration: 0.4, ease: "power2.in" }, 18.2);
+      set("#m-portrait", { left: 280, top: 196, width: 500, height: 580, borderRadius: 8 });
+      to("#m-portrait", { left: 508.5, top: 171, width: 42, height: 42, borderRadius: 21, rotation: 0, boxShadow: "0px 0px 0px 0px rgba(28,27,25,0)", duration: 0.8, ease: "power3.inOut" }, 18.45);
+      to("#m-portrait", { opacity: 0, duration: 0.15 }, 19.28);
+
+      /* stage + rail */
+      set("#stage-wrap", { opacity: 0, y: 16, scale: 0.985 });
+      to("#stage-wrap", { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, 18.75);
+      to("#stage-wrap", { opacity: 0, y: 14, scale: 0.97, duration: 0.6, ease: "power2.in" }, 69.3);
+      set("#rail", { opacity: 0, x: -14 });
+      to("#rail", { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 19.0);
+      to("#rail", { opacity: 0, x: -10, duration: 0.4, ease: "power2.in" }, 69.3);
+
+      // Rail chapters: lift in, fade out before the next.
+      [["fitting",1,18.85,27.1],["baste",2,26.9,36.9],["fit",3,36.75,44.95],["cut",4,44.95,54.9],["talk",5,54.85,63.5],["yours",6,63.45,69.55]].forEach(([key, n, start, end]) => {
+        const c = "#ch-" + key;
+        rise(c + " .kicker", start + 0.1, 0.5, 10);
+        rise(c + " h2", start + 0.18, 0.6, 16);
+        rise(c + " .lede", start + 0.28, 0.6, 12);
+        rise(c + " .facts", start + 0.4, 0.6, 12);
+        to(c, { opacity: 0, duration: 0.25, ease: "power1.in" }, end - 0.26);
+        to("#ix-mark", { y: -(6 - n) * 27 - 12, duration: 0.5, ease: "power3.inOut" }, start);
+        to("#ix-" + n, { color: "#1c1b19", duration: 0.3 }, start);
+        if (n > 1) to("#ix-" + (n - 1), { color: "#6e6a61", duration: 0.3 }, start);
+      });
+      set("#ix-mark", { y: -(6 - 1) * 27 - 12 });
+
+      /* wipes */
+      set("#seam", { x: 1440, opacity: 0 });
+      WIPES.forEach(([sel, t]) => {
+        set(sel, { clipPath: "inset(0% 0% 0% 100%)" });
+        to(sel, { clipPath: "inset(0% 0% 0% 0%)", duration: WIPE, ease: "power3.inOut" }, t);
+        set("#seam", { opacity: 1, x: 1440 }, t);
+        to("#seam", { x: -6, duration: WIPE, ease: "power3.inOut" }, t);
+        set("#seam", { opacity: 0 }, t + WIPE);
+      });
+
+      /* 02 fitting: who is on screen, then what changed */
+      const people = [["#who-moss", 18.85], ["#who-ren", 21.167], ["#who-ada", 24.224]];
+      set(".who", { opacity: 0.42 });
+      set("#who-moss", { opacity: 1 });
+      people.forEach(([sel, t], i) => {
+        if (i === 0) return;
+        to(people[i - 1][0], { opacity: 0.42, duration: 0.3 }, t);
+        to(sel, { opacity: 1, duration: 0.3 }, t);
+        to("#who-hl", { y: i * 80, duration: 0.45, ease: "power3.inOut" }, t);
+      });
+      [["#co-layout", T.layout], ["#co-type", T.type], ["#co-colour", T.colour], ["#co-motion", T.motion]].forEach(([sel, t]) => {
+        set(sel, { opacity: 0, scale: 0.97 });
+        to(sel, { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }, t - 0.05);
+        to(sel, { opacity: 0, duration: 0.3 }, 26.5);
+      });
+      [T.layout, T.type, T.colour, T.motion].forEach((t, i) => {
+        set("#chg-" + i + " i", { backgroundColor: "rgba(210,64,42,0)", color: "#a9311e" });
+        to("#chg-" + i + " i", { backgroundColor: "rgba(210,64,42,1)", color: "#ffffff", duration: 0.3 }, t - 0.05);
+      });
+
+      /* 03 baste */
+      cam("#c-archA", 27.3, 0.9, 493, 560, 1.25);
+      set("#co-cut", { opacity: 0, scale: 1.12 });
+      to("#co-cut", { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, T.tries - 0.25);
+      to("#co-cut", { opacity: 0, duration: 0.25 }, T.tries + 0.35);
+      to("#c-archA", { ...frame(720, 450, 1), duration: 0.3, ease: "power2.inOut" }, 29.2);
+      cam("#c-archB", 30.0, 0.8, 1070, 590, 1.5);
+      [["#co-temp", "#tag-temp", T.warm - 0.1], ["#co-dense", "#tag-dense", T.sparse - 0.1]].forEach(([a, tag, t]) => {
+        set([a, tag], { opacity: 0 });
+        to(a, { opacity: 1, duration: 0.35 }, t);
+        to(tag, { opacity: 1, duration: 0.35 }, t + 0.08);
+      });
+      to("#co-temp, #tag-temp, #co-dense, #tag-dense", { opacity: 0, duration: 0.3 }, 34.0);
+      const drafts = { n: 0 };
+      to(drafts, { n: 24, duration: 3.88, ease: "none", onUpdate: () => { document.getElementById("n-drafts").textContent = Math.round(drafts.n); } }, 30.18);
+      set("#c-archC", frame(1070, 590, 1.5));
+      cam("#c-archC", 34.2, 0.7, 1057, 250, 1.55);
+
+      /* 04 fit */
+      cam("#c-method", 37.2, 4.4, 968, 432, 1.06, "power1.inOut");
+      [0,1,2,3,4].forEach((i) => {
+        set("#wt-" + i, { scaleX: 0 });
+        to("#wt-" + i, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 37.5 + i * 0.12);
+      });
+      [0,1,2,3,4,5,6,7].forEach((i) => {
+        set("#pr-" + i, { opacity: 0, y: 26, rotation: i % 2 ? 1.6 : -1.6 });
+        to("#pr-" + i, { opacity: 1, y: 0, rotation: 0, duration: 0.55, ease: "power3.out" }, 41.55 + i * 0.09);
+      });
+      set("#spread-axis i", { scaleX: 0 });
+      to("#spread-axis i", { scaleX: 1, duration: 1.1, ease: "power2.inOut" }, T.range - 0.2);
+
+      /* 05 cut */
+      cam("#c-archCut", 45.25, 1.6, 1060, 330, 1.6);
+      [[0, T.images], [1, T.images + 0.12], [3, T.vector], [4, T.vector + 0.12], [2, T.ambient - 0.1], [5, T.ambient + 0.35]].forEach(([i, t]) => rise("#lk-" + i, t, 0.5, 18));
+      [T.images, T.vector, T.ambient, T.design].forEach((t, i) => {
+        set("#out-" + i + " .tick", { borderStyle: "dashed", backgroundColor: "rgba(210,64,42,0)" });
+        to("#out-" + i + " .tick", { backgroundColor: "rgba(210,64,42,1)", duration: 0.3 }, t);
+      });
+      ["#c-tok1", "#c-tok2", "#c-tok3"].forEach((c) => cam(c, 50.9, 0.9, 640, 700, 1.45));
+
+      /* 06 talk */
+      // Frame the chat alone, cut at the portrait's edge, so the replies read.
+      cam("#c-talk", 55.4, 1.6, 971.5, 612, 1.56);
+      to("#c-talk", { ...frame(980, 613, 1.58), duration: 5, ease: "power1.inOut" }, 57.4);
+      to("#talk-fade", { opacity: 1, duration: 1.2, ease: "power1.out" }, 55.6);
+      set("#talk-fade", { opacity: 0 }, 64.0);
+      set(".chip-on", { opacity: 0 });
+      set(".chip span", { color: "#1c1b19" });
+      [["#chip-0", 56.383], ["#chip-1", 60.933]].forEach(([c, t]) => {
+        to(c + " .chip-on", { opacity: 1, duration: 0.25 }, t - 0.3);
+        to(c + " span", { color: "#f1ece2", duration: 0.25 }, t - 0.3);
+        to(c + " .chip-on", { opacity: 0, duration: 0.4 }, t + 1.6);
+        to(c + " span", { color: "#1c1b19", duration: 0.4 }, t + 1.6);
+      });
+
+      /* 07 yours */
+      cam("#c-yours", 63.95, 1.1, 850, 430, 1.22);
+
+      /* end card */
+      const len = (id) => document.getElementById(id).getTotalLength();
+      set("#end-needle", { strokeDasharray: len("end-needle"), strokeDashoffset: len("end-needle") });
+      to("#end-needle", { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut" }, 69.65);
+      set("#end-eye", { opacity: 0 });
+      to("#end-eye", { opacity: 1, duration: 0.2 }, 70.0);
+      set("#end-mp", { strokeDasharray: len("end-mp"), strokeDashoffset: len("end-mp") });
+      to("#end-mp", { strokeDashoffset: 0, duration: 0.9, ease: "power1.inOut" }, 69.95);
+      rise("#end-word", 70.25, 0.6, 12);
+      ["#end-w0", "#end-w1", "#end-w2", "#end-w3", "#end-w4"].forEach((w, i) => rise(w, 70.65 + i * 0.09, 0.6, 30));
+      rise("#end-cmd", 71.35, 0.6, 12);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

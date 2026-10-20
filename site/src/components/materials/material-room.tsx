@@ -100,7 +100,7 @@ export const PersonaCloths = component$(() => {
             <article key={p.id} class="mr-persona">
               <div class="mr-persona-cloth" style={{ background: look.ground }}>
                 {swatch && <img src={swatch} alt={`${handle}'s cloth: ${MATERIAL_TECHNIQUES[look.pattern].name.toLowerCase()} in their palette`} width={960} height={600} loading="lazy" decoding="async" />}
-                <img class="mr-persona-face" src={`/assets/companions/${p.id}.webp`} alt="" width={64} height={64} loading="lazy" decoding="async" />
+                <img class="mr-persona-face" src={`/assets/companions/${p.id}.avif`} alt="" width={64} height={64} loading="lazy" decoding="async" />
               </div>
               <div class="mr-persona-body">
                 <span class="mr-persona-meta">{handle} · {MATERIAL_TECHNIQUES[look.pattern].name}</span>

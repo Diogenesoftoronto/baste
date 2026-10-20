@@ -6,6 +6,8 @@ export interface Persona {
   culture: CulturalIdentity;
   influences: Influences;
   behaviors: Behaviors;
+  /** How their world moves, for layered and animated assets. Missing parts come from the aesthetic. */
+  animation?: PersonaAnimation;
   aesthetic: AestheticProfile;
 }
 
@@ -37,6 +39,16 @@ export interface Behaviors {
   platforms: string[];
   expression: string[];
   petPeeves: string[];
+}
+
+export interface PersonaAnimation {
+  motifs: string[];
+  subjects: string[];
+  depth: 'flat' | 'parallax' | 'deep';
+  camera: 'locked' | 'drift' | 'push' | 'orbit';
+  focus: 'background' | 'subject' | 'both';
+  loopSeconds?: number;
+  avoid: string[];
 }
 
 export interface AestheticProfile {
@@ -100,9 +112,32 @@ export interface ShadowTokens {
   sm: string; base: string; lg: string; xl: string; glow: string;
 }
 
+export type MotionMoment = 'enter' | 'exit' | 'hover' | 'press' | 'emphasis' | 'ambient';
+
+/** One ready-made move: keyframes in Web Animations form, with its timing and reduced-motion version. */
+export interface MotionPrimitive {
+  name: string;
+  use: string;
+  trigger: 'mount' | 'unmount' | 'hover' | 'press' | 'attention' | 'loop';
+  keyframes: Array<Record<string, string | number>>;
+  duration: string;
+  easing: string;
+  iterations: number | 'infinite';
+  direction: 'normal' | 'alternate';
+  reduced: Array<Record<string, string | number>> | null;
+}
+
 export interface MotionTokens {
   duration: { fast: string; base: string; slow: string; slower: string };
   easing: { default: string; smooth: string; snappy: string; bounce: string };
+  character: string;
+  curves: { standard: string; enter: string; exit: string; emphasis: string };
+  spring: { stiffness: number; damping: number; mass: number; easing: string; duration: string };
+  distance: { nudge: string; shift: string; travel: string };
+  pressScale: number;
+  stagger: string;
+  ambient: string;
+  choreography: Record<MotionMoment, MotionPrimitive>;
 }
 
 export interface BrandKit {
@@ -177,7 +212,20 @@ export interface JobSummary {
 }
 
 export interface DryRunResult { dryRun: true; samplePrompt: string }
-export interface GeneratedAssetSummary { id: string; purpose: string; path: string; url?: string; score?: number }
+export interface GeneratedAssetSummary {
+  id: string; purpose: string; path: string; url?: string; score?: number;
+  /** What a TypeSafe judge saw: the prompt alone, the rendered image, or sampled video frames. */
+  evidence?: 'text-only' | 'image' | 'frames';
+  /** For loops judged on frames: the motion Jev read against the persona's own, the seam, and how calm it is (0–1). */
+  motion?: { style: string; expected: string; seamless: number; calm: number };
+  improvements?: string[];
+  /** The image cut into layers: the subject alone, the scene without it, and the mask. */
+  layers?: { subject: string; foreground: string; background: string; mask: string };
+  /** A parallax loop from the layers: a script-free page, its spec, and an MP4 when the server has ffmpeg. */
+  parallax?: { html: string; spec: string; video?: string };
+  /** An image-to-video loop: the clip, its edited end frame, and the clip played there and back. */
+  loop?: { transition: string; end?: string; video?: string; judged?: { overall: number; improvements: string[] } };
+}
 /** A QD candidate as the server streams it: the image, its judge score and where it sits in feature space. */
 export interface CandidateSummary {
   url: string;
@@ -188,6 +236,8 @@ export interface CandidateSummary {
   criteria: Record<string, number>;
   feedback: string;
   cell?: string;
+  /** When it repaints another candidate's image: that image's URL, and what changed. */
+  edit?: { from: string; layer: 'background' | 'subject'; subject: string; instruction: string };
 }
 export interface GenerationResult {
   svgs: GeneratedAssetSummary[];
@@ -418,12 +468,19 @@ export interface GenerateRequest {
   /** Local runs only: route SVG and judging through the same provider. */
   svgProvider?: string;
   evaluatorProvider?: string;
+  /** Repaint candidates with the edit model and cut final images into layers. */
+  edit?: boolean;
+  /** Animate final images from their layers, with image-to-video, or both. */
+  animate?: 'parallax' | 'video' | 'both';
   maxCostMicrousd?: number;
   qd?: { iterations: number; batchSize: number };
   outputCount?: number;
 }
 
 export interface GenerationPlan {
+  segmentCalls?: number;
+  editCalls?: number;
+  videoCalls?: number;
   imageCalls: number;
   judgementCalls: number;
   minimumBudgetMicrousd: number;

@@ -2,7 +2,7 @@ import { component$, useContext, useSignal, useStore, useVisibleTask$, $ } from 
 import { css } from "styled-system/css";
 import { StudioCtx, errMsg, openView, toast } from "../context";
 import { act, btnSm, fieldLabel, hint, input, kicker, panel, panelTitle } from "../ui";
-import type { Job, JobSummary, PromptPreview, GenerationPlan } from "~/lib/api-types";
+import type { GeneratedAssetSummary, Job, JobSummary, PromptPreview, GenerationPlan } from "~/lib/api-types";
 import { play, snipBurst } from "~/lib/juice";
 import { availableBalance, formatBalance, walletBlocked } from "~/lib/notorganic";
 import { ArchiveMap } from "~/components/fitting/archive-map";
@@ -28,7 +28,7 @@ function stageOf(job: Job | null): number {
 
 export const GenerateTab = component$(() => {
   const s = useContext(StudioCtx);
-  const form = useStore({ type: "suite" as "suite" | "ui-kit", dryRun: true, provider: "openai", model: "", maxCostUsd: "1.00", iterations: 5, batchSize: 3, outputCount: 3 });
+  const form = useStore({ type: "suite" as "suite" | "ui-kit", dryRun: true, provider: "openai", model: "", maxCostUsd: "1.00", iterations: 5, batchSize: 3, outputCount: 3, edit: false, animate: "" as "" | "parallax" | "video" | "both" });
   const plan = useSignal<GenerationPlan | null>(null);
   const planError = useSignal("");
   const planning = useSignal(false);
@@ -80,6 +80,8 @@ export const GenerateTab = component$(() => {
     const batchSize = track(() => form.batchSize);
     const outputCount = track(() => form.outputCount);
     const model = track(() => form.model);
+    const edit = track(() => form.edit);
+    const animate = track(() => form.animate);
     const id = track(() => s.selectedId);
     const authenticated = track(() => s.account.status?.authenticated);
     plan.value = null;
@@ -93,7 +95,7 @@ export const GenerateTab = component$(() => {
         const result = await s.client!.planGeneration!(id, {
           type: "suite", imageProvider: "notorganic", imageModel: model || undefined,
           assetTypes: HOSTED_ASSETS, maxCostMicrousd: Math.round(Number(maxCost) * 1_000_000),
-          qd: { iterations, batchSize }, outputCount,
+          qd: { iterations, batchSize }, outputCount, edit, ...(animate ? { animate } : {}),
         });
         if (active) plan.value = result;
       } catch (error) {
@@ -120,6 +122,8 @@ export const GenerateTab = component$(() => {
         dryRun: form.dryRun,
         imageProvider: form.provider,
         ...(form.model ? { imageModel: form.model } : {}),
+        ...(form.edit ? { edit: true } : {}),
+        ...(form.animate ? { animate: form.animate } : {}),
         // One fal key covers icons and the judge too, so a fal run is fal end to end.
         ...(form.provider === "fal" ? {
           svgProvider: "fal", evaluatorProvider: "fal",
@@ -231,7 +235,7 @@ export const GenerateTab = component$(() => {
             </select> : <input id="gen-model" class={input} value={form.model} placeholder="Use server default" onInput$={(_, el) => (form.model = el.value)} />}
           </div>
         </div>
-        <p class={hint}>{hosted ? "Hosted image suite: hero and background only. SVGs and videos require local providers." : fal ? "Seedream images, Recraft vector icons, and a Gemini judge that looks at every image. Needs FAL_KEY on the server." : "Enter a model ID for your configured provider, or use its server default. SVG and video use their local providers."}</p>
+        <p class={hint}>{hosted ? "Hosted suite: hero and background images, with optional edits and motion billed to your account. Full SVG kits require local providers." : fal ? "Seedream images, Recraft vector icons, and a Gemini judge that looks at every image. Needs FAL_KEY on the server." : "Enter a model ID for your configured provider, or use its server default. SVG and video use their local providers."}</p>
         {hosted && <p class={hint}>
           {!s.account.status?.authenticated ? "Sign in to load your image models and wallet." : s.account.modelError ? `Catalog unavailable: ${s.account.modelError}` : !models.length ? "No image models are currently available." : !judgementAvailable ? "Asset judging is unavailable for this account. You can still draft prompts." : walletBlocked(s.account.wallet) ? "Your wallet is blocked. Review billing before generating." : availableBalance(s.account.wallet) === 0 ? "Add wallet credit before paid generation." : availableBalance(s.account.wallet) === null ? "Refresh your account to verify your balance before generating." : "Generation uses your Not Organic wallet. The provider determines actual cost."}
           {" "}<button class={act("go", btnSm)} onClick$={() => openView(s, "settings")}>Open account</button>
@@ -264,13 +268,35 @@ export const GenerateTab = component$(() => {
           {!validBudget && <p class={hint}>Enter a positive USD amount with up to two decimal places.</p>}
           <div aria-live="polite" class={css({ mt: 3 })}>
             {planning.value ? <p class={hint}>Checking request budget…</p> : planError.value ? <p class={hint}>Budget plan unavailable: {planError.value}</p> : plan.value && <>
-              <p class={hint}>{plan.value.imageCalls} image requests + {plan.value.judgementCalls} judging requests. Required conservative budget: <strong>{formatBalance(plan.value.minimumBudgetMicrousd)}</strong>. Server limit: {formatBalance(plan.value.operatorMaxCostMicrousd)}.</p>
+              <p class={hint}>{plan.value.imageCalls} image requests + {plan.value.judgementCalls} judging requests{(plan.value.segmentCalls ?? 0) > 0 && <> + {plan.value.segmentCalls} segmentation attempts + {plan.value.editCalls} edits</>}{(plan.value.videoCalls ?? 0) > 0 && <> + {plan.value.videoCalls} animation jobs</>}. Required conservative budget: <strong>{formatBalance(plan.value.minimumBudgetMicrousd)}</strong>. Server limit: {formatBalance(plan.value.operatorMaxCostMicrousd)}.</p>
               {!plan.value.withinRequestedBudget && <p class={hint}>Your maximum is too low for this plan. Reduce candidates or explicitly raise the maximum before generating.</p>}
               {!plan.value.withinOperatorLimit && <p class={hint}>Your maximum or this plan exceeds the server limit. Reduce the maximum or candidates, or ask the operator to adjust the limit.</p>}
               {(availableBalance(s.account.wallet) ?? 0) < plan.value.minimumBudgetMicrousd && <p class={hint}>Your available wallet credit cannot cover this plan's request ceilings. Add credit or reduce candidates.</p>}
             </>}
           </div>
         </div>}
+
+        <fieldset class={css({ border: 0, p: 0, mt: 4, display: "flex", flexDirection: "column", gap: 3 })}>
+          <legend class={fieldLabel}>Edit and animate{hosted ? " · account credits" : " · fal"}</legend>
+          <label class={css({ display: "flex", gap: 3, alignItems: "flex-start", p: 3, rounded: "base", border: "1px solid token(colors.rule)", "&:has(input:checked)": { borderColor: "ink", bg: "paper" } })}>
+            <input type="checkbox" checked={form.edit} onChange$={(_, el) => (form.edit = el.checked)} class={css({ accentColor: "#1C1B19", mt: "3px" })} />
+            <span>
+              <span class={css({ display: "block", fontWeight: 600, fontSize: "14px" })}>Edit with Ideogram</span>
+              <span class={css({ display: "block", fontSize: "12.5px", color: "ink-muted" })}>About half the new candidates repaint a kept image around its subject, found by SAM 3, instead of drawing anew. Final images are cut into layers.</span>
+            </span>
+          </label>
+          <div>
+            <label class={fieldLabel} for="gen-animate">Animate final images</label>
+            <select id="gen-animate" class={input} value={form.animate} onChange$={(_, el) => (form.animate = el.value as typeof form.animate)}>
+              <option value="">No animation</option>
+              <option value="parallax">Parallax loop from the layers</option>
+              <option value="video">Video loop (Seedance)</option>
+              <option value="both">Both</option>
+            </select>
+            <p class={hint}>{hosted ? "Edits, segmentation and animation use your Not Organic wallet and are included in the spending plan. Availability is checked before generation starts." : form.animate === "" ? (form.edit ? `Up to ${form.iterations * Math.ceil(form.batchSize / 2)} edits, plus a cut-out and a repainted background per final image. Roughly $${(form.iterations * Math.ceil(form.batchSize / 2) * 0.06 + form.outputCount * 0.08).toFixed(2)} more on fal.` : "Uses the persona's subjects, motifs, camera and loop length.")
+              : `Each final image is cut into layers first.${form.animate !== "parallax" ? " A video loop costs about $0.30 at 720p." : ""} Needs FAL_KEY on the server; MP4s need ffmpeg.`}</p>
+          </div>
+        </fieldset>
 
         <label class={css({ display: "flex", gap: 3, alignItems: "flex-start", mt: 4, p: 3, rounded: "base", bg: "paper", })}>
           <input type="checkbox" checked={form.dryRun} onChange$={(_, el) => (form.dryRun = el.checked)} class={css({ accentColor: "#1C1B19", mt: "3px" })} />
@@ -359,9 +385,10 @@ export const GenerateTab = component$(() => {
               <h3 class={css({ fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "ink-muted" })}>The cut · {result.images.length + result.svgs.length + result.videos.length} assets</h3>
               <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))" }, gap: 3 })}>
                 {result.images.map((a) => (
-                  <figure key={a.id} class={css({ m: 0, display: "flex", flexDirection: "column", gap: 2 })}>
+                  <figure key={a.id} class={css({ m: 0, display: "flex", flexDirection: "column", gap: 2, gridColumn: a.layers || a.parallax || a.loop ? "1 / -1" : undefined })}>
                     {a.url && <img src={a.url} alt={`${a.purpose} fitted to the persona`} width={640} height={360} loading="lazy" class={css({ display: "block", w: "100%", aspectRatio: "16 / 9", objectFit: "cover", rounded: "sm", boxShadow: "sheet" })} />}
                     <AssetCaption purpose={a.purpose} score={a.score} url={a.url} />
+                    {(a.layers || a.parallax || a.loop) && <Derived asset={a} />}
                   </figure>
                 ))}
                 {result.videos.map((a) => (
@@ -438,6 +465,66 @@ export const GenerateTab = component$(() => {
 });
 
 /** Purpose, judge score and download for one finished asset. */
+/** What a final image became: its layers, a parallax loop and a video loop. */
+const Derived = component$<{ asset: GeneratedAssetSummary }>(({ asset }) => {
+  const tile = css({ m: 0, display: "flex", flexDirection: "column", gap: 1, minW: 0 });
+  const label = css({ display: "flex", justifyContent: "space-between", gap: 2, fontSize: "12px", color: "ink-muted" });
+  const link = css({ color: "chalk", fontFamily: "mono", fontSize: "11.5px" });
+  const media = css({ display: "block", w: "100%", aspectRatio: "16 / 9", objectFit: "cover", rounded: "sm", border: "1px solid token(colors.rule)", bg: "night" });
+  // Transparency reads against a checkerboard.
+  const checker = { backgroundColor: "#E9DFCB", backgroundImage: "linear-gradient(45deg, #D8CCB4 25%, transparent 25%, transparent 75%, #D8CCB4 75%), linear-gradient(45deg, #D8CCB4 25%, transparent 25%, transparent 75%, #D8CCB4 75%)", backgroundSize: "16px 16px", backgroundPosition: "0 0, 8px 8px" };
+  const { layers, parallax, loop } = asset;
+  return (
+    <div class={css({ display: "flex", flexDirection: "column", gap: 3, mt: 1, p: 3, rounded: "base", border: "1px dashed token(colors.rule-strong)" })}>
+      {layers && (
+        <div>
+          <span class={css({ fontSize: "12px", fontWeight: 600 })}>Layers · {layers.subject}</span>
+          <div class={css({ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 2, mt: 2 })}>
+            {([["Cut-out", layers.foreground, true], ["Background", layers.background, false], ["Mask", layers.mask, false]] as const).map(([name, url, transparent]) => (
+              <figure key={name} class={tile}>
+                <img src={url} alt={`${name} of the ${asset.purpose}`} width={320} height={180} loading="lazy" class={media} style={transparent ? checker : undefined} />
+                <figcaption class={label}><span>{name}</span><a href={url} download class={link}>PNG</a></figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
+      {(parallax || loop) && (
+        <div class={css({ display: "grid", gridTemplateColumns: { base: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))" }, gap: 3 })}>
+          {parallax && (
+            <figure class={tile}>
+              {parallax.video
+                ? <video src={parallax.video} muted loop playsInline autoplay width={640} height={360} class={media} />
+                : <iframe src={parallax.html} title={`Parallax loop of the ${asset.purpose}`} sandbox="" loading="lazy" class={media} />}
+              <figcaption class={label}>
+                <span>Parallax loop</span>
+                <span class={css({ display: "flex", gap: 3 })}>
+                  {parallax.video && <a href={parallax.video} download class={link}>MP4</a>}
+                  <a href={parallax.html} download class={link}>HTML</a>
+                  <a href={parallax.spec} download class={link}>JSON</a>
+                </span>
+              </figcaption>
+            </figure>
+          )}
+          {loop && (
+            <figure class={tile}>
+              <video src={loop.video ?? loop.transition} muted loop playsInline autoplay width={640} height={360} class={media} />
+              <figcaption class={label}>
+                <span>Video loop{loop.judged ? ` · fit ${loop.judged.overall.toFixed(2)}` : ""}</span>
+                <span class={css({ display: "flex", gap: 3 })}>
+                  <a href={loop.video ?? loop.transition} download class={link}>MP4</a>
+                  {loop.end && <a href={loop.end} download class={link}>End frame</a>}
+                </span>
+              </figcaption>
+              {loop.judged?.improvements.length ? <p class={css({ fontSize: "12px", color: "ink-muted", lineHeight: 1.45 })}>{loop.judged.improvements.join(" ")}</p> : null}
+            </figure>
+          )}
+        </div>
+      )}
+    </div>
+  );
+});
+
 const AssetCaption = component$<{ purpose: string; score?: number; url?: string }>(({ purpose, score, url }) => (
   <figcaption class={css({ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "baseline", columnGap: 3, rowGap: 1, fontSize: "12.5px" })}>
     <span class={css({ fontWeight: 600, textTransform: "capitalize" })}>{purpose.replace(/-/g, " ")}</span>

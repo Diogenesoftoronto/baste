@@ -1,0 +1,64 @@
+{
+  "generators": {
+    "image": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedream/v4/text-to-image"
+    },
+    "svg": {
+      "provider": "fal"
+    },
+    "video": {
+      "provider": "fal",
+      "model": "fal-ai/bytedance/seedance/v1/pro/text-to-video",
+      "duration": 5,
+      "ratio": "16:9",
+      "quality": "720p"
+    }
+  },
+  "evaluator": {
+    "provider": "fal",
+    "model": "google/gemini-2.5-flash",
+    "temperature": 0.3
+  },
+  "qd": {
+    "iterations": 3,
+    "batchSize": 3,
+    "mutationRate": 0.5,
+    "qualityThreshold": 0.3
+  },
+  "outputCount": 1,
+  "outputDir": "./media/baste-demo/runs/liminalweeb",
+  "assetTypes": [
+    {
+      "kind": "image",
+      "purpose": "hero",
+      "description": "Hero image for an archive of lost media: an empty mall food court after closing, CRT glow, pastel fluorescent light",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon",
+      "description": "App icon: a cassette tape dissolving into pixels"
+    },
+    {
+      "kind": "svg",
+      "purpose": "icon-collection",
+      "description": "Small interface icon for 'save to archive': a floppy disk with a small moon"
+    },
+    {
+      "kind": "image",
+      "purpose": "background",
+      "description": "Minimal ambient UI background: a tiled empty pool room in faded teal and pink, VHS grain, lots of empty space",
+      "constraints": {
+        "aspectRatio": "16:9"
+      }
+    },
+    {
+      "kind": "video",
+      "purpose": "ambient-loop",
+      "description": "VHS-degraded slow drift down an empty fluorescent-lit mall corridor, liquid tracking wobble"
+    }
+  ]
+}

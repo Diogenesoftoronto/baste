@@ -255,11 +255,21 @@ test("Studio routes isolate personas, moodboards, jobs and feedback and reject u
   const generation = await request(api, "../generate/private-persona", { ...alice, body: { imageProvider: "notorganic", dryRun: true, assetTypes: [{ kind: "image", purpose: "hero", description: "Hero" }] } });
   assert.equal(generation.status, 202);
   assert.equal((await request(api, "../generate/private-persona", { ...alice, body: { imageProvider: "openai", dryRun: true } })).status, 400);
+  // Hosted dry runs can select edit and motion without making paid calls.
+  for (const extra of [{ edit: true }, { animate: "parallax" }]) {
+    assert.equal((await request(api, "../generate/private-persona", { ...alice, body: { imageProvider: "notorganic", dryRun: true, assetTypes: [{ kind: "image", purpose: "hero", description: "Hero" }], ...extra } })).status, 202);
+  }
   const planned = await request(api, "../generate/private-persona/plan", { ...alice, body: { qd: { iterations: 0, batchSize: 1 }, outputCount: 1, assetTypes: [{ kind: "image" }], maxCostMicrousd: 1200000 } });
-  assert.equal(planned.data.minimumBudgetMicrousd, 1200000);
+  assert.equal(planned.data.minimumBudgetMicrousd, 700000);
   assert.equal(planned.data.withinRequestedBudget, true);
-  const blocked = await request(api, "../generate/private-persona", { ...alice, body: { qd: { iterations: 0, batchSize: 1 }, outputCount: 1, assetTypes: [{ kind: "image", purpose: "hero", description: "Hero" }], maxCostMicrousd: 1000000 } });
-  assert.equal(blocked.status, 400); assert.match(blocked.data.error, /ceiling of \$1.20/);
+  const motionPlan = await request(api, "../generate/private-persona/plan", { ...alice, body: { qd: { iterations: 0, batchSize: 1 }, outputCount: 1, assetTypes: [{ kind: "image" }], edit: true, animate: "both", maxCostMicrousd: 6000000 } });
+  assert.equal(motionPlan.status, 200);
+  assert.equal(motionPlan.data.segmentCalls, 6);
+  assert.equal(motionPlan.data.editCalls, 2);
+  assert.equal(motionPlan.data.videoCalls, 1);
+  assert.equal(motionPlan.data.minimumBudgetMicrousd, 5500000);
+  const blocked = await request(api, "../generate/private-persona", { ...alice, body: { qd: { iterations: 0, batchSize: 1 }, outputCount: 1, assetTypes: [{ kind: "image", purpose: "hero", description: "Hero" }], maxCostMicrousd: 600000 } });
+  assert.equal(blocked.status, 400); assert.match(blocked.data.error, /ceiling of \$0.70/);
   const lowWallet = await request(api, "../generate/private-persona", { ...alice, body: { qd: { iterations: 0, batchSize: 1 }, outputCount: 1, assetTypes: [{ kind: "image", purpose: "hero", description: "Hero" }], maxCostMicrousd: 1200000 } });
   assert.equal(lowWallet.status, 402); assert.match(lowWallet.data.error, /available Not Organic credit/);
   assert.equal(imageCalls, 0); assert.equal(judgementCalls, 0);
@@ -272,7 +282,8 @@ test("Studio routes isolate personas, moodboards, jobs and feedback and reject u
     finished = await request(api, `../jobs/${paid.data.jobId}`, alice);
     if (finished.data.status !== "running") break;
   }
-  assert.equal(finished.data.status, "completed"); assert.equal(imageCalls, 2); assert.equal(judgementCalls, 2);
+  // The final output ships the judged candidate: one image drawn, judged twice.
+  assert.equal(finished.data.status, "completed"); assert.equal(imageCalls, 1); assert.equal(judgementCalls, 2);
   assert.equal(finished.data.result.images.length, 1);
   const generated = finished.data.result.images[0];
   assert.match(generated.url, /^\/api\/assets\/images\//); assert.ok(!generated.path.includes("/"));
@@ -323,8 +334,8 @@ test("remote image fetch validates each redirect and rejects credentials and map
 
 test("generation preflight reserves both image and review ceilings for every possible dispatch", () => {
   const plan = generationPlan({ qd: { iterations: 5, batchSize: 3 }, outputCount: 3 }, 2);
-  assert.equal(plan.imageCalls, 24); assert.equal(plan.judgementCalls, 24);
-  assert.equal(plan.minimumBudgetMicrousd, 14400000); assert.equal(plan.withinRequestedBudget, false);
+  assert.equal(plan.imageCalls, 21); assert.equal(plan.judgementCalls, 24);
+  assert.equal(plan.minimumBudgetMicrousd, 12900000); assert.equal(plan.withinRequestedBudget, false);
   assert.throws(() => generationPlan({ qd: { iterations: -1, batchSize: 3 }, outputCount: 3 }, 2));
   assertJudgementCeiling(JSON.stringify({ state: { persona: "small" }, questions: [] }));
   assert.throws(() => assertJudgementCeiling("x".repeat(5000000)));

@@ -1,0 +1,35 @@
+{
+  "siteBuild": "passed",
+  "typecheck": "passed",
+  "lint": "passed",
+  "recipeBoundaryTests": 3,
+  "browserChecks": 16,
+  "materialRoomDesktop": {
+    "width": 1440,
+    "pageWidth": 1440,
+    "consoleErrors": []
+  },
+  "materialRoomMobile": {
+    "width": 390,
+    "pageWidth": 390,
+    "consoleErrors": []
+  },
+  "gallery": {
+    "imagesDecoded": 4,
+    "downloadResponses200": 11
+  },
+  "nativeGraphite": {
+    "candidatePngs": 20,
+    "productionPngs": 4,
+    "motionGifs": 2,
+    "svgExports": 2,
+    "pointerNodeHeadlessProof": true,
+    "editorPointerTest": false
+  },
+  "boundaries": [
+    "Headless desktop browser with simulated mobile viewport; no real-device proof.",
+    "Native editor pointer behaviour not tested.",
+    "Existing Studio /api/health endpoint returns 403 in this local preview; material room has no API dependency.",
+    "Full diff whitespace check reports generated Qwik plan whitespace; source diff whitespace check passes."
+  ]
+}

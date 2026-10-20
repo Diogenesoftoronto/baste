@@ -1,12 +1,12 @@
 {
  "cyberbotanist": {
   "hero": {
-   "src": "/assets/fittings/cyberbotanist-hero.webp",
+   "src": "/assets/fittings/cyberbotanist-hero.avif",
    "score": 0.92,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
   "background": {
-   "src": "/assets/fittings/cyberbotanist-background.webp",
+   "src": "/assets/fittings/cyberbotanist-background.avif",
    "score": 0.88,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
@@ -28,7 +28,7 @@
   },
   "archive": [
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c23.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c23.avif",
     "cell": "color_temperature:0|visual_density:3|abstractness:1",
     "features": [
      -0.7,
@@ -38,7 +38,7 @@
     "quality": 0.883
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c21.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c21.avif",
     "cell": "color_temperature:1|visual_density:4|abstractness:0",
     "features": [
      -0.5,
@@ -48,7 +48,7 @@
     "quality": 0.922
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c16.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c16.avif",
     "cell": "color_temperature:2|visual_density:4|abstractness:1",
     "features": [
      -0.2,
@@ -58,7 +58,7 @@
     "quality": 0.924
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c17.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c17.avif",
     "cell": "color_temperature:2|visual_density:4|abstractness:0",
     "features": [
      0.1,
@@ -68,7 +68,7 @@
     "quality": 0.89
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c15.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c15.avif",
     "cell": "color_temperature:3|visual_density:4|abstractness:0",
     "features": [
      0.5,
@@ -78,7 +78,7 @@
     "quality": 0.925
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c14.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c14.avif",
     "cell": "color_temperature:4|visual_density:3|abstractness:0",
     "features": [
      0.8,
@@ -88,7 +88,7 @@
     "quality": 0.883
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c03.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c03.avif",
     "cell": "color_temperature:4|visual_density:4|abstractness:1",
     "features": [
      0.8,
@@ -98,7 +98,7 @@
     "quality": 0.916
    },
    {
-    "src": "/assets/fittings/runs/cyberbotanist/c02.webp",
+    "src": "/assets/fittings/runs/cyberbotanist/c02.avif",
     "cell": "color_temperature:4|visual_density:4|abstractness:0",
     "features": [
      0.9,
@@ -115,12 +115,12 @@
  },
  "nightmarketcoder": {
   "hero": {
-   "src": "/assets/fittings/nightmarketcoder-hero.webp",
+   "src": "/assets/fittings/nightmarketcoder-hero.avif",
    "score": 0.92,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
   "background": {
-   "src": "/assets/fittings/nightmarketcoder-background.webp",
+   "src": "/assets/fittings/nightmarketcoder-background.avif",
    "score": 0.88,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
@@ -142,7 +142,7 @@
   },
   "archive": [
    {
-    "src": "/assets/fittings/runs/nightmarketcoder/c12.webp",
+    "src": "/assets/fittings/runs/nightmarketcoder/c12.avif",
     "cell": "color_temperature:0|visual_density:4|abstractness:1",
     "features": [
      -0.8,
@@ -152,7 +152,7 @@
     "quality": 0.915
    },
    {
-    "src": "/assets/fittings/runs/nightmarketcoder/c15.webp",
+    "src": "/assets/fittings/runs/nightmarketcoder/c15.avif",
     "cell": "color_temperature:3|visual_density:4|abstractness:0",
     "features": [
      0.5,
@@ -162,7 +162,7 @@
     "quality": 0.89
    },
    {
-    "src": "/assets/fittings/runs/nightmarketcoder/c18.webp",
+    "src": "/assets/fittings/runs/nightmarketcoder/c18.avif",
     "cell": "color_temperature:3|visual_density:4|abstractness:1",
     "features": [
      0.5,
@@ -172,7 +172,7 @@
     "quality": 0.922
    },
    {
-    "src": "/assets/fittings/runs/nightmarketcoder/c19.webp",
+    "src": "/assets/fittings/runs/nightmarketcoder/c19.avif",
     "cell": "color_temperature:4|visual_density:4|abstractness:0",
     "features": [
      0.7,
@@ -182,7 +182,7 @@
     "quality": 0.925
    },
    {
-    "src": "/assets/fittings/runs/nightmarketcoder/c21.webp",
+    "src": "/assets/fittings/runs/nightmarketcoder/c21.avif",
     "cell": "color_temperature:4|visual_density:4|abstractness:1",
     "features": [
      0.9,
@@ -199,12 +199,12 @@
  },
  "liminalweeb": {
   "hero": {
-   "src": "/assets/fittings/liminalweeb-hero.webp",
+   "src": "/assets/fittings/liminalweeb-hero.avif",
    "score": 0.92,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
   "background": {
-   "src": "/assets/fittings/liminalweeb-background.webp",
+   "src": "/assets/fittings/liminalweeb-background.avif",
    "score": 0.88,
    "model": "fal-ai/bytedance/seedream/v4/text-to-image"
   },
@@ -226,7 +226,7 @@
   },
   "archive": [
    {
-    "src": "/assets/fittings/runs/liminalweeb/c16.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c16.avif",
     "cell": "color_temperature:0|visual_density:1|abstractness:0",
     "features": [
      -0.8,
@@ -236,7 +236,7 @@
     "quality": 0.893
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c02.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c02.avif",
     "cell": "color_temperature:0|visual_density:1|abstractness:1",
     "features": [
      -0.8,
@@ -246,7 +246,7 @@
     "quality": 0.886
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c04.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c04.avif",
     "cell": "color_temperature:0|visual_density:2|abstractness:0",
     "features": [
      -0.8,
@@ -256,7 +256,7 @@
     "quality": 0.893
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c05.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c05.avif",
     "cell": "color_temperature:0|visual_density:2|abstractness:1",
     "features": [
      -0.8,
@@ -266,7 +266,7 @@
     "quality": 0.886
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c09.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c09.avif",
     "cell": "color_temperature:0|visual_density:3|abstractness:0",
     "features": [
      -0.8,
@@ -276,7 +276,7 @@
     "quality": 0.89
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c19.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c19.avif",
     "cell": "color_temperature:1|visual_density:1|abstractness:0",
     "features": [
      -0.5,
@@ -286,7 +286,7 @@
     "quality": 0.886
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c14.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c14.avif",
     "cell": "color_temperature:1|visual_density:2|abstractness:0",
     "features": [
      -0.5,
@@ -296,7 +296,7 @@
     "quality": 0.89
    },
    {
-    "src": "/assets/fittings/runs/liminalweeb/c17.webp",
+    "src": "/assets/fittings/runs/liminalweeb/c17.avif",
     "cell": "color_temperature:1|visual_density:3|abstractness:0",
     "features": [
      -0.5,

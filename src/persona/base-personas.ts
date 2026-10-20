@@ -53,6 +53,15 @@ export const basePersonas: Record<string, Persona> = {
       visualKeywords: ["Mushishi", "Ernst Haeckel", "bioluminescent", "mycelial", "solarpunk", "natural dyes", "herbariums", "generative growth"],
       moodKeywords: ["interconnectedness", "growth", "sustainability", "hidden complexity", "discoverability", "organic feedback"],
     },
+    animation: {
+      motifs: ["spores drifting through low light", "bioluminescent pulses travelling along mycelium", "fern fronds slowly unfurling", "condensation sliding down greenhouse glass"],
+      subjects: ["mushroom", "fern", "terrarium", "seedling", "moss"],
+      depth: "deep",
+      camera: "drift",
+      focus: "background",
+      loopSeconds: 6,
+      avoid: ["fast cuts", "strobing or flashing light", "shaky handheld camera"],
+    },
   },
 
   nightmarketcoder: {
@@ -102,6 +111,15 @@ export const basePersonas: Record<string, Persona> = {
       visualKeywords: ["Chungking Express", "night markets", "neon signage", "city pop", "street food", "Yakuza", "Katsuhiro Otomo", "vintage sportswear"],
       moodKeywords: ["hustle", "community", "resourcefulness", "chaos as feature", "speed", "human connection"],
     },
+    animation: {
+      motifs: ["neon signs flickering on", "steam rising from woks", "paper lanterns swaying", "crowds passing behind the stalls"],
+      subjects: ["lantern", "food stall", "neon sign", "wok", "noodle bowl"],
+      depth: "parallax",
+      camera: "locked",
+      focus: "both",
+      loopSeconds: 4,
+      avoid: ["slow fades", "long empty pauses", "dreamy floating drift"],
+    },
   },
 
   liminalweeb: {
@@ -150,6 +168,15 @@ export const basePersonas: Record<string, Persona> = {
       layoutStyle: "asymmetric",
       visualKeywords: ["Serial Experiments Lain", "liminal spaces", "vaporwave", "Yume Nikki", "glitch art", "abandoned malls", "VHS degradation", "old internet"],
       moodKeywords: ["nostalgia", "impermanence", "wabi-sabi digital", "found beauty", "texture", "history"],
+    },
+    animation: {
+      motifs: ["fluorescent tubes humming and flickering", "an empty escalator running", "a fountain trickling in an empty atrium", "VHS tracking lines rolling through"],
+      subjects: ["mannequin", "fountain", "escalator", "potted palm", "payphone"],
+      depth: "deep",
+      camera: "push",
+      focus: "background",
+      loopSeconds: 9,
+      avoid: ["crowds of people", "slick glossy motion graphics", "bright saturated flashes"],
     },
   },
 };

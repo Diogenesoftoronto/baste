@@ -1,0 +1,372 @@
+{
+  "persona": {
+    "id": "cyberbotanist",
+    "name": "The Cyberbotanist"
+  },
+  "assets": {
+    "svgs": [
+      {
+        "id": "cyberbotanist-icon-1791637370807",
+        "purpose": "icon",
+        "path": "./media/baste-demo/runs/cyberbotanist/svg/cyberbotanist-icon-1791637370807.svg",
+        "service": "fal",
+        "model": "fal-ai/recraft/v3/text-to-image",
+        "prompt": "Create an icon SVG in the style of warm earth tones with amber and ochre highlights, organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality.\n\nVisual concept: App icon: a sprouting fern whose roots become a mycelial network\n\nInspired by The Cyberbotanist's world:\n- Influences: Rachel Ruysch's artistic approach\n- Mood: interconnectedness, growth, sustainability\n- Visual DNA: Mushishi, Ernst Haeckel, bioluminescent, mycelial\n\nRequirements:\n- Clean, scalable vector paths\n- warm color palette\n- Rich detail, layered elements\n- Flowing, organic curves\n- Style should feel textured\n- Must work on both light and dark backgrounds\n- No text unless essential to the concept\n\nOutput as clean SVG code with proper viewBox.\n",
+        "score": {
+          "overall": 0.35,
+          "criteria": {
+            "personaAlignment": 0.2,
+            "visualQuality": 0.4,
+            "uniqueness": 0.3,
+            "coherence": 0.5,
+            "usability": 0.4
+          },
+          "features": [
+            0.2,
+            0.5,
+            0.3
+          ],
+          "feedback": "This asset is too simplistic and lacks the organic complexity and textured feel that The Cyberbotanist appreciates. The colors are not warm earth tones, and the overall aesthetic is more generic flat design than solarpunk or mycelial. It misses the mark on depth and discoverability."
+        }
+      },
+      {
+        "id": "cyberbotanist-icon-collection-1791637388482",
+        "purpose": "icon-collection",
+        "path": "./media/baste-demo/runs/cyberbotanist/svg/cyberbotanist-icon-collection-1791637388482.svg",
+        "service": "fal",
+        "model": "fal-ai/recraft/v3/text-to-image",
+        "prompt": "Create an icon-collection SVG in the style of warm earth tones with amber and ochre highlights, organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality.\n\nVisual concept: Small interface icon for 'start a collection': a specimen jar with a seedling\n\nInspired by The Cyberbotanist's world:\n- Influences: \"Princess Mononoke\" aesthetic\n- Mood: interconnectedness, growth, sustainability\n- Visual DNA: Mushishi, Ernst Haeckel, bioluminescent, mycelial\n\nRequirements:\n- Clean, scalable vector paths\n- warm color palette\n- Rich detail, layered elements\n- Flowing, organic curves\n- Style should feel textured\n- Must work on both light and dark backgrounds\n- No text unless essential to the concept\n\nOutput as clean SVG code with proper viewBox.\n",
+        "score": {
+          "overall": 0.35,
+          "criteria": {
+            "personaAlignment": 0.2,
+            "visualQuality": 0.5,
+            "uniqueness": 0.3,
+            "coherence": 0.4,
+            "usability": 0.4
+          },
+          "features": [
+            0.3,
+            0.6,
+            0.2
+          ],
+          "feedback": "This asset misses the mark for The Cyberbotanist. While it features plants and a jar, the aesthetic is too generic and cartoonish, lacking the organic depth, texture, and handcrafted feel that would resonate with their appreciation for Ernst Haeckel or Mushishi. The colors are somewhat warm but lack the rich, natural dye quality desired."
+        }
+      }
+    ],
+    "images": [
+      {
+        "id": "cyberbotanist-hero-1791637345337",
+        "purpose": "hero",
+        "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637345337.jpg",
+        "service": "fal",
+        "model": "fal-ai/bytedance/seedream/v4/text-to-image",
+        "prompt": "Stunning hero image: Hero image for a field-notes app about fungi networks: a greenhouse bench at dusk where mycelium glows through moss\n\nStyle: warm earth tones with amber and ochre highlights, organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality\n\nChanneling The Cyberbotanist's aesthetic universe:\n- Visual influences: the visual language of \"The Fountain\"\n- Emotional tone: sustainability\n- Core visual elements: Mushishi, Ernst Haeckel, bioluminescent, mycelial, solarpunk\n- Subculture notes: solarpunk, biohacking\n\nTechnical specs:\n- warm color temperature\n- dense visual density\n- cinematic, lightly stylised rendering\n- organic edge treatment\n- textured surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Annihilation as interpreted by Ernst Haeckel.\n",
+        "score": {
+          "overall": 0.92,
+          "criteria": {
+            "personaAlignment": 0.95,
+            "visualQuality": 0.93,
+            "uniqueness": 0.9,
+            "coherence": 0.92,
+            "usability": 0.9
+          },
+          "features": [
+            0.8,
+            0.8,
+            0.3
+          ],
+          "feedback": "This image is exceptionally aligned with The Cyberbotanist's aesthetic. The bioluminescent mycelial network, the organic textures, and the warm, dusky greenhouse setting perfectly capture their values of interconnectedness and hidden complexity. It feels like a scene directly from 'Mushishi' or a detailed illustration by Ernst Haeckel brought to life."
+        }
+      },
+      {
+        "id": "cyberbotanist-background-1791637404855",
+        "purpose": "background",
+        "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-background-1791637404855.jpg",
+        "service": "fal",
+        "model": "fal-ai/bytedance/seedream/v4/text-to-image",
+        "prompt": "Detailed illustration: Quiet ambient UI background: herbarium paper with pressed fern shadows and faint bioluminescent spores\n\nStyle: warm earth tones with amber and ochre highlights, organic textured surfaces with visible grain, flowing organic edges, artisanal hand-crafted quality\n\nChanneling The Cyberbotanist's aesthetic universe:\n- Visual influences: \"Princess Mononoke\" aesthetic\n- Emotional tone: interconnectedness, growth, sustainability\n- Core visual elements: Mushishi, Ernst Haeckel, bioluminescent, mycelial, solarpunk\n- Subculture notes: solarpunk, biohacking\n\nTechnical specs:\n- warm color temperature\n- rich visual density\n- cinematic, lightly stylised rendering\n- organic edge treatment\n- textured surface quality\n- Aspect ratio: 16:9\n- No UI text, no watermarks, no borders\n\nCreate something that feels like it belongs in Annihilation as interpreted by Ernst Haeckel.\n",
+        "score": {
+          "overall": 0.88,
+          "criteria": {
+            "personaAlignment": 0.95,
+            "visualQuality": 0.9,
+            "uniqueness": 0.85,
+            "coherence": 0.9,
+            "usability": 0.8
+          },
+          "features": [
+            0.8,
+            0.7,
+            0.4
+          ],
+          "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The blend of natural textures, bioluminescent elements, and organic forms feels deeply rooted in their appreciation for hidden complexity and interconnectedness. It evokes a sense of discovery, much like finding a rare specimen in a forgotten herbarium."
+        }
+      }
+    ],
+    "videos": [
+      {
+        "id": "cyberbotanist-ambient-loop-1791637424142",
+        "purpose": "ambient-loop",
+        "path": "./media/baste-demo/runs/cyberbotanist/videos/cyberbotanist-ambient-loop-1791637424142.mp4",
+        "service": "fal",
+        "model": "fal-ai/bytedance/seedance/v1/pro/text-to-video",
+        "prompt": "Short cinematic loop (5 seconds): Bioluminescent spores drifting slowly over moss in a dark greenhouse, soft breathing glow\n\nMotion style: Smooth, gradual transitions\n\nThe Cyberbotanist's motion language:\n- Rhythm: ambient-inspired, folktronica-inspired pacing\n- Texture: textured surface treatments in motion\n- Energy: interconnectedness and growth\n\nVisual treatment:\n- warm palette in motion\n- Focused, intentional movement\n- Atmospheric elements: Rachel Ruysch's artistic approach\n- Camera feel: Sharp, deliberate framing\n\nLooped seamlessly. No text, no characters, pure visual atmosphere.\n",
+        "score": {
+          "overall": 0.82,
+          "criteria": {
+            "personaAlignment": 0.85,
+            "visualQuality": 0.8,
+            "uniqueness": 0.85,
+            "coherence": 0.8,
+            "usability": 0.8
+          },
+          "features": [
+            0.7,
+            0.6,
+            0.3
+          ],
+          "feedback": "This video captures a beautiful, subtle bioluminescent effect that aligns well with The Cyberbotanist's appreciation for hidden complexity and organic growth. The slow, smooth motion and textured surface treatments are particularly strong, evoking a sense of discovery and patience. It feels like a glimpse into a secret, thriving ecosystem."
+        }
+      }
+    ]
+  },
+  "archive": [
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637228379.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd24b/NZzbC6s8MCR98O8HmvzWG_225f14aed810471cb812ffc1fe9d14ad.jpg",
+      "quality": 0.89,
+      "features": [
+        0.8,
+        0.7,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the essence of The Cyberbotanist's aesthetic. The bioluminescent fungi and mycelial network evoke a sense of hidden complexity and interconnectedness, while the warm, organic tones align with their values. It feels like a scene directly out of 'Mushishi' or 'Annihilation'.",
+      "cell": "color_temperature:4|visual_density:3|abstractness:0"
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637246419.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd24d/mdLPTqMw-WJeQnycLY4ii_b1db021376a34b0483920f21ad7ab9de.jpg",
+      "quality": 0.924,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.93,
+        "uniqueness": 0.9,
+        "coherence": 0.92,
+        "usability": 0.9
+      },
+      "feedback": "This image is a stunning representation of The Cyberbotanist's aesthetic. The bioluminescent mycelial patterns integrated into the organic bench, set against a warm dusk greenhouse, perfectly capture the desired mood and visual DNA. It evokes a sense of hidden complexity and interconnectedness that would deeply resonate with them.",
+      "cell": "color_temperature:4|visual_density:4|abstractness:0"
+    },
+    {
+      "generation": 0,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637266465.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd24f/mxvHFZjzICnWkQf_9iVtQ_2cacbd686e9d4f17bbf8c1ce66fc4ba8.jpg",
+      "quality": 0.887,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.78
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial strands and glowing fungi evoke a sense of hidden complexity and interconnectedness, perfectly aligning with their values. The organic textures and warm tones create an inviting, natural feel that feels both ancient and futuristic."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637284201.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd251/cbFeFXy8v4fbpKipQcgCg_575223b7233d435bb0cd3c86b29a46c4.jpg",
+      "quality": 0.89,
+      "features": [
+        0.9,
+        0.8,
+        0.4
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network intertwined with the natural elements of the greenhouse and the hand-drawn border evokes a sense of hidden complexity and organic growth that is deeply resonant. It feels like a page from a cherished field journal, discovered rather than presented."
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637284202.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd252/BngA1X5cadTAJWpMAbhUu_41efe16e33644dc0a2c3ec3696c4c788.jpg",
+      "quality": 0.925,
+      "features": [
+        0.8,
+        0.9,
+        0.4
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.95,
+        "coherence": 0.9,
+        "usability": 0.9
+      },
+      "feedback": "This image is a stunning representation of The Cyberbotanist's aesthetic. The bioluminescent mycelial networks, organic framing, and warm, rich tones perfectly capture the essence of interconnected growth and hidden complexity. It feels like a scene directly from 'Annihilation' or 'Mushishi', infused with the wonder of Ernst Haeckel's illustrations.",
+      "cell": "color_temperature:4|visual_density:4|abstractness:1"
+    },
+    {
+      "generation": 1,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637284200.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd252/Tle1zDASo2Xs_KdnKqwy2_55aa187b67ea4d4fa9b2721bbc61d877.jpg",
+      "quality": 0.89,
+      "features": [
+        0.8,
+        0.9,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.9,
+        "usability": 0.8
+      },
+      "feedback": "This image perfectly captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network and the organic, textured style evoke a strong sense of interconnectedness and hidden complexity, reminiscent of Mushishi and Annihilation. The warm earth tones and amber highlights are spot on."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637309926.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd253/_-fz_E_XhYDQI1oPw4FXS_1bbade5890284161b0a01474a8aa05df.jpg",
+      "quality": 0.887,
+      "features": [
+        0.8,
+        0.8,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.85,
+        "coherence": 0.88,
+        "usability": 0.8
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial networks intertwined with organic textures and the warm, dusk lighting create a sense of hidden complexity and interconnectedness that is deeply resonant with their values. It feels like a discovery, something unearthed and appreciated for its subtle beauty."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637309925.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd254/iHkcn2TLpcz9YOtk5BID8_1b6ddb7578bc451383f26b2ae886596e.jpg",
+      "quality": 0.9225,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.9
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network and the organic greenhouse setting perfectly align with their values of interconnectedness and hidden complexity. It evokes a sense of wonder and discovery, feeling both natural and subtly technological."
+    },
+    {
+      "generation": 2,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637309927.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd254/OEPkNt3gYhy-UIVG7NHmD_0f9111c918f248d0bca1bb205b76f260.jpg",
+      "quality": 0.9225,
+      "features": [
+        0.7,
+        0.9,
+        0.3
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.9
+      },
+      "feedback": "This image is an exceptional representation of The Cyberbotanist's aesthetic. The bioluminescent mycelial growth intertwined with the moss and organic bench perfectly captures the desired blend of natural and technological, feeling both ancient and futuristic. The warm, rich tones and intricate details evoke a sense of hidden complexity and growth that would deeply resonate."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637327563.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd255/dFRu-Xf0MZQvNwDsZrRG1_162953bd7126485d807e5d705d59d9b5.jpg",
+      "quality": 0.9225,
+      "features": [
+        0.9,
+        0.8,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.9
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network integrated into the organic bench, set against a warm dusk greenhouse, feels deeply aligned with their values of interconnectedness and hidden complexity. It evokes the wonder of 'Annihilation' and the organic detail of 'Ernst Haeckel'."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637327561.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd255/VrljS-6Say7nJSG-_xxqe_ccdda142bf4045918ed5b6cfce486859.jpg",
+      "quality": 0.9225,
+      "features": [
+        0.7,
+        0.9,
+        0.4
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.9,
+        "uniqueness": 0.9,
+        "coherence": 0.95,
+        "usability": 0.9
+      },
+      "feedback": "This image perfectly captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network, combined with the organic textures and warm lighting, evokes a sense of hidden complexity and interconnected growth that would deeply resonate with them. It feels like a discovery, something unearthed and appreciated for its natural wonder."
+    },
+    {
+      "generation": 3,
+      "path": "./media/baste-demo/runs/cyberbotanist/images/cyberbotanist-hero-1791637327562.jpg",
+      "sourceUrl": "https://v3b.fal.media/files/b/0aadd255/FoyOEYVfCCX-H_AiUH06r_686d16ff1b8d4afeb230a8f0978f1aae.jpg",
+      "quality": 0.915,
+      "features": [
+        0.8,
+        0.9,
+        0.2
+      ],
+      "criteria": {
+        "personaAlignment": 0.95,
+        "visualQuality": 0.92,
+        "uniqueness": 0.88,
+        "coherence": 0.9,
+        "usability": 0.9
+      },
+      "feedback": "This image beautifully captures the essence of The Cyberbotanist's aesthetic. The bioluminescent mycelial network glowing through the moss, combined with the organic forms and warm tones, evokes a sense of wonder and interconnectedness. It feels like a scene directly from their ideal world, rich with hidden complexity and natural beauty."
+    }
+  ],
+  "metadata": {
+    "generationDuration": 250871,
+    "totalIterations": 3,
+    "coverage": 0.04
+  }
+}

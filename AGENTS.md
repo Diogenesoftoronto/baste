@@ -14,7 +14,7 @@ Generate UI assets from a persona's cultural influences: films, music, subcultur
 4. Judge each candidate: persona alignment 30%, visual quality 20%, uniqueness 20%, coherence 15%, usability 15%.
 5. Select a diverse final archive set; generate production assets and package metadata/relationships.
 
-Services: QuiverAI for SVG/icons/illustrations/components; OpenAI GPT Image 2 for images/backgrounds/textures; Google Veo 3 for ambient loops/transitions.
+Services: QuiverAI for SVG/icons/illustrations/components; OpenAI GPT Image 2 for images/backgrounds/textures; Google Veo 3 for ambient loops/transitions. Creating and editing are separate roles: on fal, Ideogram edits images, SAM 3 segments subjects, and Seedance animates finished images (`--edit`, `--animate`).
 
 Commands: `baste generate <persona-id>`, `baste ui-kit <persona-id>`, `baste list`, `baste show <persona-id>`.
 

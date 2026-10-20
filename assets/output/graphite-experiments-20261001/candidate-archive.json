@@ -1,0 +1,1162 @@
+[
+  {
+    "id": "baste-chromatic-bath-r1-20261001",
+    "family": "chromatic-bath",
+    "round": 1,
+    "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise",
+    "palette": [
+      "#24221D",
+      "#D2402A",
+      "#F0C534",
+      "#F1ECE2"
+    ],
+    "parameters": {
+      "seed": 417
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r1-20261001.png",
+      "format": "png",
+      "byteSize": 997077,
+      "sha256": "7e9a368ff465cb74cfcb0b413d3b52c89c296961933845a845e1cb5d5b0ccf52",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 997077,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r1-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 631,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-45f13d3b-17a1-4ce9-bd20-a0be8b4e0604.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r1-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-45f13d3b-17a1-4ce9-bd20-a0be8b4e0604.graphite"
+    }
+  },
+  {
+    "id": "baste-chromatic-bath-r2-20261001",
+    "family": "chromatic-bath",
+    "round": 2,
+    "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise",
+    "palette": [
+      "#1D3030",
+      "#237967",
+      "#D99E43",
+      "#E3E8DA"
+    ],
+    "parameters": {
+      "seed": 554
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r2-20261001.png",
+      "format": "png",
+      "byteSize": 1119547,
+      "sha256": "0418ecdb715baf6665dcc12f44783c3ce69625daccaff561ff842f2b38c1a17b",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1119547,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r2-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 673,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c40f9e63-b4bc-41aa-a22c-c77cba020790.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r2-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c40f9e63-b4bc-41aa-a22c-c77cba020790.graphite"
+    }
+  },
+  {
+    "id": "baste-chromatic-bath-r3-20261001",
+    "family": "chromatic-bath",
+    "round": 3,
+    "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise",
+    "palette": [
+      "#242638",
+      "#7B65B2",
+      "#F07858",
+      "#F1DFCC"
+    ],
+    "parameters": {
+      "seed": 691
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r3-20261001.png",
+      "format": "png",
+      "byteSize": 1045797,
+      "sha256": "5071b8a9f8afc1054c15bf4ed010307ebf883340216c495c7c6084f38ab53521",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1045797,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r3-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 628,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-184616b2-f8e2-4859-9f68-2e73a12ac470.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r3-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-184616b2-f8e2-4859-9f68-2e73a12ac470.graphite"
+    }
+  },
+  {
+    "id": "baste-chromatic-bath-r4-20261001",
+    "family": "chromatic-bath",
+    "round": 4,
+    "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise",
+    "palette": [
+      "#203657",
+      "#2F55A4",
+      "#94ADCC",
+      "#EEE5DB"
+    ],
+    "parameters": {
+      "seed": 828
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r4-20261001.png",
+      "format": "png",
+      "byteSize": 1060607,
+      "sha256": "d6cd8e490b982d2fc1816f731d8166cb2163ef50c94fa5311e2788830b3556e6",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1060607,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r4-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 692,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-aeac2ee5-d438-4c8f-acdf-0b2b5deb878d.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r4-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-aeac2ee5-d438-4c8f-acdf-0b2b5deb878d.graphite"
+    }
+  },
+  {
+    "id": "baste-chromatic-bath-r5-20261001",
+    "family": "chromatic-bath",
+    "round": 5,
+    "features": "Multi-stop perceptual gradient, cyclic shift, domain-warped fractal noise",
+    "palette": [
+      "#30252C",
+      "#B4315E",
+      "#D0A3BA",
+      "#E9DFCB"
+    ],
+    "parameters": {
+      "seed": 965
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r5-20261001.png",
+      "format": "png",
+      "byteSize": 1012477,
+      "sha256": "58d1c4a2a3044b31a567b5c32036b1d053f6f6ac59f5e8dd5ef9835f1f82befe",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1012477,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r5-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 647,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f7a6979b-7f5d-4013-b8c4-083a6e407521.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-r5-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f7a6979b-7f5d-4013-b8c4-083a6e407521.graphite"
+    }
+  },
+  {
+    "id": "baste-chalk-strata-r1-20261001",
+    "family": "chalk-strata",
+    "round": 1,
+    "features": "Repeated colour stops turn a height field into contour strata",
+    "palette": [
+      "#24221D",
+      "#D2402A",
+      "#F0C534",
+      "#F1ECE2"
+    ],
+    "parameters": {
+      "seed": 417
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r1-20261001.png",
+      "format": "png",
+      "byteSize": 1442505,
+      "sha256": "0e7a8ba35373ced5752fb179e7935f8ddf7a201a2c829fff58622ace15405eb7",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1442505,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r1-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 641,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-55a190c8-1f35-4b0f-a2d3-7fdf6fddfd7d.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r1-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-55a190c8-1f35-4b0f-a2d3-7fdf6fddfd7d.graphite"
+    }
+  },
+  {
+    "id": "baste-chalk-strata-r2-20261001",
+    "family": "chalk-strata",
+    "round": 2,
+    "features": "Repeated colour stops turn a height field into contour strata",
+    "palette": [
+      "#1D3030",
+      "#237967",
+      "#D99E43",
+      "#E3E8DA"
+    ],
+    "parameters": {
+      "seed": 554
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r2-20261001.png",
+      "format": "png",
+      "byteSize": 1405582,
+      "sha256": "000316e559426c000d473083e01c1172057a603627f7b6710f7aeea864efb8b4",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1405582,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r2-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 700,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-7ad266a0-5203-453f-9dac-86e1b63700fd.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r2-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-7ad266a0-5203-453f-9dac-86e1b63700fd.graphite"
+    }
+  },
+  {
+    "id": "baste-chalk-strata-r3-20261001",
+    "family": "chalk-strata",
+    "round": 3,
+    "features": "Repeated colour stops turn a height field into contour strata",
+    "palette": [
+      "#242638",
+      "#7B65B2",
+      "#F07858",
+      "#F1DFCC"
+    ],
+    "parameters": {
+      "seed": 691
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r3-20261001.png",
+      "format": "png",
+      "byteSize": 1469318,
+      "sha256": "ae6bc0515a81a44489bbdc904c05986433c09211546c0bb02b88491393ab1c4e",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1469318,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r3-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 674,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b6c54c36-f0c0-42e9-82b0-1501a2122a7d.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r3-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b6c54c36-f0c0-42e9-82b0-1501a2122a7d.graphite"
+    }
+  },
+  {
+    "id": "baste-chalk-strata-r4-20261001",
+    "family": "chalk-strata",
+    "round": 4,
+    "features": "Repeated colour stops turn a height field into contour strata",
+    "palette": [
+      "#203657",
+      "#2F55A4",
+      "#94ADCC",
+      "#EEE5DB"
+    ],
+    "parameters": {
+      "seed": 828
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r4-20261001.png",
+      "format": "png",
+      "byteSize": 1404886,
+      "sha256": "90aef74d8d9be874aa14e6c43f106968e830b8ee597c9b6c54028ce11d33863f",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1404886,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r4-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 675,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-fd43d19f-87fd-4ca6-9534-2e872a6aa1a4.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r4-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-fd43d19f-87fd-4ca6-9534-2e872a6aa1a4.graphite"
+    }
+  },
+  {
+    "id": "baste-chalk-strata-r5-20261001",
+    "family": "chalk-strata",
+    "round": 5,
+    "features": "Repeated colour stops turn a height field into contour strata",
+    "palette": [
+      "#30252C",
+      "#B4315E",
+      "#D0A3BA",
+      "#E9DFCB"
+    ],
+    "parameters": {
+      "seed": 965
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 8,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r5-20261001.png",
+      "format": "png",
+      "byteSize": 1482288,
+      "sha256": "c87402ebd453e37a68cd272ccf6f690c8b2d50ea9d524718650a44aed9d3436a",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 1482288,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r5-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 649,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c04f1c68-845f-4d37-912a-328bfb042403.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chalk-strata-r5-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-c04f1c68-845f-4d37-912a-328bfb042403.graphite"
+    }
+  },
+  {
+    "id": "baste-radial-dye-r1-20261001",
+    "family": "radial-dye",
+    "round": 1,
+    "features": "Repeated radial geometry and time-driven colour/rotation",
+    "palette": [
+      "#24221D",
+      "#D2402A",
+      "#F0C534",
+      "#F1ECE2"
+    ],
+    "parameters": {
+      "seed": 417
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 10,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r1-20261001.png",
+      "format": "png",
+      "byteSize": 282678,
+      "sha256": "d118125f7dc2c40501bdf1651f74ad16d918a984ede2c8b95d7070ff6852e9cb",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 282678,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r1-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 338,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-5b10d1ae-4a8c-4876-9093-943d525b30e0.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r1-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-5b10d1ae-4a8c-4876-9093-943d525b30e0.graphite"
+    }
+  },
+  {
+    "id": "baste-radial-dye-r2-20261001",
+    "family": "radial-dye",
+    "round": 2,
+    "features": "Repeated radial geometry and time-driven colour/rotation",
+    "palette": [
+      "#1D3030",
+      "#237967",
+      "#D99E43",
+      "#E3E8DA"
+    ],
+    "parameters": {
+      "seed": 554
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 10,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r2-20261001.png",
+      "format": "png",
+      "byteSize": 535569,
+      "sha256": "f2bd74172b506e2b89113d96c3dd5b55bd7dde83dac28232f6d454528b2d3572",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 535569,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r2-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 324,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-59073881-a7b4-474f-83df-9ae2800b8f0c.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r2-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-59073881-a7b4-474f-83df-9ae2800b8f0c.graphite"
+    }
+  },
+  {
+    "id": "baste-radial-dye-r3-20261001",
+    "family": "radial-dye",
+    "round": 3,
+    "features": "Repeated radial geometry and time-driven colour/rotation",
+    "palette": [
+      "#242638",
+      "#7B65B2",
+      "#F07858",
+      "#F1DFCC"
+    ],
+    "parameters": {
+      "seed": 691
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 10,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r3-20261001.png",
+      "format": "png",
+      "byteSize": 688437,
+      "sha256": "ffecaade6072f5cf8481c08119564f9532ae52e85fa418439cecc33f37a526dc",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 688437,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r3-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 328,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f359a6f9-9874-4962-a254-76e84ac17e06.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r3-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-f359a6f9-9874-4962-a254-76e84ac17e06.graphite"
+    }
+  },
+  {
+    "id": "baste-radial-dye-r4-20261001",
+    "family": "radial-dye",
+    "round": 4,
+    "features": "Repeated radial geometry and time-driven colour/rotation",
+    "palette": [
+      "#203657",
+      "#2F55A4",
+      "#94ADCC",
+      "#EEE5DB"
+    ],
+    "parameters": {
+      "seed": 828
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 10,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r4-20261001.png",
+      "format": "png",
+      "byteSize": 865401,
+      "sha256": "1d774126c963d7a8cca6d91b6d61eaf19cccf02dc38e8c455613d1c4d08b6639",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 865401,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r4-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 332,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b31c444f-47c9-4ee7-85e8-08be105c0671.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r4-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b31c444f-47c9-4ee7-85e8-08be105c0671.graphite"
+    }
+  },
+  {
+    "id": "baste-radial-dye-r5-20261001",
+    "family": "radial-dye",
+    "round": 5,
+    "features": "Repeated radial geometry and time-driven colour/rotation",
+    "palette": [
+      "#30252C",
+      "#B4315E",
+      "#D0A3BA",
+      "#E9DFCB"
+    ],
+    "parameters": {
+      "seed": 965
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 10,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r5-20261001.png",
+      "format": "png",
+      "byteSize": 926887,
+      "sha256": "ccebe0958bc9f887a1047fe2563ba472f9fbc083a7d74ee52e04fdf9ed040365",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 926887,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r5-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 331,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-71c0e8e0-bb41-4c38-af97-afdb24ed1e6d.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-r5-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-71c0e8e0-bb41-4c38-af97-afdb24ed1e6d.graphite"
+    }
+  },
+  {
+    "id": "baste-interference-weave-r1-20261001",
+    "family": "interference-weave",
+    "round": 1,
+    "features": "Two rotated arrays of dyed geometry form interference bands",
+    "palette": [
+      "#24221D",
+      "#D2402A",
+      "#F0C534",
+      "#F1ECE2"
+    ],
+    "parameters": {
+      "seed": 417
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 12,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r1-20261001.png",
+      "format": "png",
+      "byteSize": 283598,
+      "sha256": "8e8f6a494214fd218ef1c28700eeb834caa4e73ee75ccb9d47a87bcb1236c142",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 283598,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r1-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 331,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-0d6835a9-bb65-414d-a2c3-298ca56fcf7d.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r1-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-0d6835a9-bb65-414d-a2c3-298ca56fcf7d.graphite"
+    }
+  },
+  {
+    "id": "baste-interference-weave-r2-20261001",
+    "family": "interference-weave",
+    "round": 2,
+    "features": "Two rotated arrays of dyed geometry form interference bands",
+    "palette": [
+      "#1D3030",
+      "#237967",
+      "#D99E43",
+      "#E3E8DA"
+    ],
+    "parameters": {
+      "seed": 554
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 12,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r2-20261001.png",
+      "format": "png",
+      "byteSize": 550143,
+      "sha256": "20fb4b500e5ffe856a5a34b880143f802e9b2c6ab3fda68544788c9836047d16",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 550143,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r2-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 333,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1283fdac-a45e-4aea-afb5-5d10efa6a932.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r2-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-1283fdac-a45e-4aea-afb5-5d10efa6a932.graphite"
+    }
+  },
+  {
+    "id": "baste-interference-weave-r3-20261001",
+    "family": "interference-weave",
+    "round": 3,
+    "features": "Two rotated arrays of dyed geometry form interference bands",
+    "palette": [
+      "#242638",
+      "#7B65B2",
+      "#F07858",
+      "#F1DFCC"
+    ],
+    "parameters": {
+      "seed": 691
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 12,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r3-20261001.png",
+      "format": "png",
+      "byteSize": 625592,
+      "sha256": "997b2a7ee48cbfd24ffa76acb0e8fa9df614e5f96c373e38a8e09053d8e96c44",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 625592,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r3-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 342,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-a1843e8a-39d1-4034-86a4-517b240c5adb.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r3-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-a1843e8a-39d1-4034-86a4-517b240c5adb.graphite"
+    }
+  },
+  {
+    "id": "baste-interference-weave-r4-20261001",
+    "family": "interference-weave",
+    "round": 4,
+    "features": "Two rotated arrays of dyed geometry form interference bands",
+    "palette": [
+      "#203657",
+      "#2F55A4",
+      "#94ADCC",
+      "#EEE5DB"
+    ],
+    "parameters": {
+      "seed": 828
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 12,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r4-20261001.png",
+      "format": "png",
+      "byteSize": 767649,
+      "sha256": "8070ca5d2b06555564a69c3eba4b6de5d2144aab6833c33821538d9cac4233ef",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 767649,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r4-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 350,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-559590d5-39e6-4470-b4d6-886917fe333e.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r4-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-559590d5-39e6-4470-b4d6-886917fe333e.graphite"
+    }
+  },
+  {
+    "id": "baste-interference-weave-r5-20261001",
+    "family": "interference-weave",
+    "round": 5,
+    "features": "Two rotated arrays of dyed geometry form interference bands",
+    "palette": [
+      "#30252C",
+      "#B4315E",
+      "#D0A3BA",
+      "#E9DFCB"
+    ],
+    "parameters": {
+      "seed": 965
+    },
+    "validation": {
+      "valid": true,
+      "structural": {
+        "checks": {
+          "parsed": true,
+          "hasNetworkInterface": true,
+          "hasNetwork": true,
+          "hasNodesArray": true,
+          "hasExportsArray": true,
+          "nodeEntriesWellFormed": true,
+          "exportsResolveToNodes": true
+        },
+        "nodeCount": 12,
+        "reasons": []
+      }
+    },
+    "rendered": {
+      "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r5-20261001.png",
+      "format": "png",
+      "byteSize": 778657,
+      "sha256": "63f84977c3664ef8e8478cc740f41b6021e1bcdf5b3afd6356fca91d35b901ad",
+      "width": 1024,
+      "height": 640,
+      "validation": {
+        "valid": true,
+        "format": "png",
+        "byteSize": 778657,
+        "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r5-20261001.png",
+        "width": 1024,
+        "height": 640
+      },
+      "quarantine": {
+        "exitCode": 0,
+        "signal": null,
+        "quarantinedAfterWrite": false,
+        "stderrTail": ""
+      },
+      "renderMs": 337,
+      "exitCode": 0,
+      "signal": null,
+      "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-3c1fb47a-d4ff-44a3-b265-c78555e32c25.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-interference-weave-r5-20261001.png --width 1024 --height 640",
+      "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-3c1fb47a-d4ff-44a3-b265-c78555e32c25.graphite"
+    }
+  }
+]

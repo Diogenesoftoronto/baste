@@ -1,0 +1,27 @@
+{
+  "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-loop-20261001.gif",
+  "format": "gif",
+  "byteSize": 9367046,
+  "sha256": "bc79aef84390a05050ecb8d21ace026f593d0977e954ab1dc583d9a4a82a3299",
+  "width": 640,
+  "height": 400,
+  "validation": {
+    "valid": true,
+    "format": "gif",
+    "byteSize": 9367046,
+    "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-loop-20261001.gif",
+    "width": 640,
+    "height": 400
+  },
+  "quarantine": {
+    "exitCode": 0,
+    "signal": null,
+    "quarantinedAfterWrite": false,
+    "stderrTail": "\rRendering frame 1/64...\rRendering frame 2/64...\rRendering frame 3/64...\rRendering frame 4/64...\rRendering frame 5/64...\rRendering frame 6/64...\rRendering frame 7/64...\rRendering frame 8/64...\rRendering frame 9/64...\rRendering frame 10/64...\rRendering frame 11/64...\rRendering frame 12/64...\rRendering frame 13/64...\rRendering frame 14/64...\rRendering frame 15/64...\rRendering frame 16/64...\rRendering frame 17/64...\rRendering frame 18/64...\rRendering frame 19/64...\rRendering frame 20/64...\rRendering frame 21/64...\rRendering frame 22/64...\rRendering frame 23/64...\rRendering frame 24/64...\rRendering frame 25/64...\rRendering frame 26/64...\rRendering frame 27/64...\rRendering frame 28/64...\rRendering frame 29/64...\rRendering frame 30/64...\rRendering frame 31/64...\rRendering frame 32/64...\rRendering frame 33/64...\rRendering frame 34/64...\rRendering frame 35/64...\rRendering frame 36/64...\rRendering frame 37/64...\rRendering frame 38/64...\rRendering frame 39/64...\rRendering frame 40/64...\rRendering frame 41/64...\rRendering frame 42/64...\rRendering frame 43/64...\rRendering frame 44/64...\rRendering frame 45/64...\rRendering frame 46/64...\rRendering frame 47/64...\rRendering frame 48/64...\rRendering frame 49/64...\rRendering frame 50/64...\rRendering frame 51/64...\rRendering frame 52/64...\rRendering frame 53/64...\rRendering frame 54/64...\rRendering frame 55/64...\rRendering frame 56/64...\rRendering frame 57/64...\rRendering frame 58/64...\rRendering frame 59/64...\rRendering frame 60/64...\rRendering frame 61/64...\rRendering frame 62/64...\rRendering frame 63/64...\rRendering frame 64/64...\n"
+  },
+  "renderMs": 13419,
+  "exitCode": 0,
+  "signal": null,
+  "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-ea5f9f57-76b8-47e4-89cb-bd160b824d69.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-radial-dye-loop-20261001.gif --width 640 --height 400 --fps 8 --frames 64",
+  "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-ea5f9f57-76b8-47e4-89cb-bd160b824d69.graphite"
+}

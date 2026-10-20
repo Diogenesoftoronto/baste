@@ -1,0 +1,27 @@
+{
+  "artifactPath": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-2560x1600-20261001.png",
+  "format": "png",
+  "byteSize": 6284301,
+  "sha256": "2597bdc33793b09842203a4e67be46bbe6a21c64db235f761ef11ebc198e1d91",
+  "width": 2560,
+  "height": 1600,
+  "validation": {
+    "valid": true,
+    "format": "png",
+    "byteSize": 6284301,
+    "path": "/home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-2560x1600-20261001.png",
+    "width": 2560,
+    "height": 1600
+  },
+  "quarantine": {
+    "exitCode": 0,
+    "signal": null,
+    "quarantinedAfterWrite": false,
+    "stderrTail": ""
+  },
+  "renderMs": 2513,
+  "exitCode": 0,
+  "signal": null,
+  "command": "graphene-cli export /home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b758d58a-d54e-4c48-afab-ac177fb92aea.graphite --output /home/diogenes/.local/share/graphite-editor-mcp/exports/baste-chromatic-bath-2560x1600-20261001.png --width 2560 --height 1600",
+  "documentPath": "/home/diogenes/.local/share/graphite-editor-mcp/tmp/mcp-inline/render-b758d58a-d54e-4c48-afab-ac177fb92aea.graphite"
+}

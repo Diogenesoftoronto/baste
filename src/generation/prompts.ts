@@ -8,6 +8,7 @@
  */
 
 import type { Persona, AestheticProfile } from "../persona/types.js";
+import { CAMERA_MOVES, MOTION_LANGUAGE, animationFor } from "../assets/motion.js";
 
 export interface AssetType {
   kind: "svg" | "image" | "video";
@@ -139,27 +140,31 @@ function generateVideoPrompt(
   asset: AssetType
 ): GeneratedPrompt {
   const influence = selectRandomInfluence(persona.influences);
+  const animation = animationFor(persona);
+  const moves = animation.motifs.length ? `\n- What moves: ${animation.motifs.slice(0, 3).join("; ")}` : "";
 
   const prompt = `Short cinematic loop (5 seconds): ${asset.description}
 
-Motion style: ${aesthetic.motionStyle === "liquid" ? "Flowing, organic movement with smooth transitions" : aesthetic.motionStyle === "snappy" ? "Sharp, staccato movements with quick cuts" : "Smooth, gradual transitions"}
+Motion style: ${MOTION_LANGUAGE[aesthetic.motionStyle]?.character ?? MOTION_LANGUAGE.smooth.character}
 
 ${persona.name}'s motion language:
 - Rhythm: ${persona.influences.music.genres.slice(0, 2).join("-inspired, ")}-inspired pacing
 - Texture: ${aesthetic.textureStyle} surface treatments in motion
-- Energy: ${aesthetic.moodKeywords.slice(0, 2).join(" and ")}
+- Energy: ${aesthetic.moodKeywords.slice(0, 2).join(" and ")}${moves}
 
 Visual treatment:
 - ${aesthetic.colorTemperature} palette in motion
 - ${aesthetic.density === "maximalist" ? "Dense, layered visual complexity" : "Focused, intentional movement"}
 - Atmospheric elements: ${influence}
 - Camera feel: ${aesthetic.edgeStyle === "soft" ? "Soft focus, ethereal" : "Sharp, deliberate framing"}
+- Camera move: ${CAMERA_MOVES[animation.camera]}
 
-Looped seamlessly. No text, no characters, pure visual atmosphere.
+Looped seamlessly. No text, no characters, pure visual atmosphere.${animation.avoid.length ? `\nAvoid: ${animation.avoid.join(", ")}.` : ""}
 `;
 
   return {
     prompt,
+    ...(animation.avoid.length ? { negativePrompt: animation.avoid.join(", ") } : {}),
     parameters: {
       model: "veo-3",
       duration: 5,
@@ -257,16 +262,39 @@ function axisStart(aesthetic: AestheticProfile): [string, string, string] {
   return [TEMPERATURE[temperature], DENSITY[density], RENDERING[rendering]];
 }
 
+/** One step along an archive axis: which axis, from where to where, and the rewritten prompt. */
+export interface AxisStep {
+  axis: "color temperature" | "visual density" | "rendering";
+  from: string;
+  to: string;
+  prompt: string;
+}
+
+const AXES: Array<[RegExp, string[], AxisStep["axis"]]> = [
+  [/^- (.+) color temperature$/m, TEMPERATURE, "color temperature"],
+  [/^- (.+) visual density$/m, DENSITY, "visual density"],
+  [/^- (.+) rendering$/m, RENDERING, "rendering"],
+];
+
 /** Move one axis line up or down its scale by one or two steps, bouncing off either end. */
-function stepAxis(prompt: string, line: RegExp, steps: string[], suffix: string): string {
+function stepAlong(prompt: string, [line, steps, axis]: (typeof AXES)[number]): AxisStep | undefined {
   const match = line.exec(prompt);
-  if (!match) return prompt;
+  if (!match) return undefined;
   const found = steps.indexOf(match[1]);
   const from = found >= 0 ? found : Math.floor(steps.length / 2);
   const size = Math.random() < 0.3 ? 2 : 1;
   let to = from + (Math.random() < 0.5 ? -size : size);
   if (to < 0 || to >= steps.length) to = from + (to < 0 ? size : -size);
-  return prompt.replace(line, `- ${steps[to]} ${suffix}`);
+  return { axis, from: steps[from], to: steps[to], prompt: prompt.replace(line, `- ${steps[to]} ${axis}`) };
+}
+
+/**
+ * One step along a random archive axis the prompt carries. An edit makes the
+ * same move in pixels that the rewritten prompt describes, so they agree.
+ */
+export function axisStep(prompt: string): AxisStep | undefined {
+  const axes = AXES.filter(([line]) => line.test(prompt));
+  return axes.length ? stepAlong(prompt, axes[Math.floor(Math.random() * axes.length)]) : undefined;
 }
 
 export function mutatePrompt(
@@ -277,19 +305,13 @@ export function mutatePrompt(
   let mutated = basePrompt;
 
   // Explore the archive's feature space: colour temperature, density, abstraction.
-  const axes: Array<[RegExp, string[], string]> = [
-    [/^- (.+) color temperature$/m, TEMPERATURE, "color temperature"],
-    [/^- (.+) visual density$/m, DENSITY, "visual density"],
-    [/^- (.+) rendering$/m, RENDERING, "rendering"],
-  ];
   const before = mutated;
-  for (const [line, steps, suffix] of axes) {
-    if (Math.random() < mutationRate) mutated = stepAxis(mutated, line, steps, suffix);
+  for (const axis of AXES) {
+    if (Math.random() < mutationRate) mutated = stepAlong(mutated, axis)?.prompt ?? mutated;
   }
   // Every child moves somewhere in feature space, or the archive cannot grow.
   if (mutated === before) {
-    const [line, steps, suffix] = axes[Math.floor(Math.random() * axes.length)];
-    mutated = stepAxis(mutated, line, steps, suffix);
+    mutated = stepAlong(mutated, AXES[Math.floor(Math.random() * AXES.length)])?.prompt ?? mutated;
   }
 
   // Swap visual keywords

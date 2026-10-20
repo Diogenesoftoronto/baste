@@ -1,0 +1,10 @@
+{
+  "provider": "cartesia",
+  "model": "sonic-3.6",
+  "voice": "Theo",
+  "voiceId": "79f8b5fb-2cc8-479a-80df-29f7a7cf1a3e",
+  "speed": 0.9,
+  "text": "Baste starts with one person: the films they rewatch, the music they work to, the rooms they feel at home in, and the things they can’t stand in an app.",
+  "requestId": "16dceb7c-67b5-415b-8051-0fc1fa811f27",
+  "generatedAt": "2026-10-14T03:29:56.033Z"
+}

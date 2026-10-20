@@ -1,0 +1,163 @@
+{
+  "startedAt": "2026-10-02T02:26:35.505Z",
+  "baseUrl": "http://127.0.0.1:5211",
+  "captures": [
+    {
+      "file": "material-room-final.png",
+      "name": "material-room-final",
+      "route": "/materials/",
+      "viewport": {
+        "width": 1440,
+        "height": 1050
+      },
+      "fullPage": true,
+      "motion": false,
+      "status": 200,
+      "innerWidth": 1440,
+      "documentWidth": 1440,
+      "documentHeight": 3502,
+      "overflowCount": 0,
+      "overflow": [],
+      "webglMounted": true,
+      "canvases": [
+        {
+          "ready": "true",
+          "width": 720,
+          "height": 525,
+          "opacity": "1"
+        },
+        {
+          "ready": "true",
+          "width": 832,
+          "height": 693,
+          "opacity": "1"
+        },
+        {
+          "width": 300,
+          "height": 150,
+          "opacity": "1"
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "httpErrors": []
+    },
+    {
+      "file": "materials-mobile-final.png",
+      "name": "materials-mobile-final",
+      "route": "/materials/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fullPage": true,
+      "motion": false,
+      "status": 200,
+      "innerWidth": 390,
+      "documentWidth": 390,
+      "documentHeight": 5095,
+      "overflowCount": 0,
+      "overflow": [],
+      "webglMounted": true,
+      "canvases": [
+        {
+          "ready": "true",
+          "width": 195,
+          "height": 422,
+          "opacity": "1"
+        },
+        {
+          "ready": "true",
+          "width": 336,
+          "height": 336,
+          "opacity": "1"
+        },
+        {
+          "width": 300,
+          "height": 150,
+          "opacity": "1"
+        }
+      ],
+      "consoleErrors": [],
+      "pageErrors": [],
+      "failedRequests": [],
+      "httpErrors": []
+    },
+    {
+      "file": "studio-material-link.png",
+      "name": "studio-material-link",
+      "route": "/gui/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fullPage": false,
+      "motion": false,
+      "status": 200,
+      "innerWidth": 390,
+      "documentWidth": 390,
+      "documentHeight": 4026,
+      "overflowCount": 3,
+      "overflow": [
+        {
+          "element": "button.pos_relative.flex-sh_0.h_42px.px_3.fs_14px.c_ink-muted.bg_transparent.bd_0.hover:c_ink.[&[aria-selected=true]]:c_ink.[&[aria-selected=true]]:fw_600.[&[aria-selected=true]::after]:c",
+          "right": 434.23,
+          "text": "Brand kit"
+        },
+        {
+          "element": "button.pos_relative.flex-sh_0.h_42px.px_3.fs_14px.c_ink-muted.bg_transparent.bd_0.hover:c_ink.[&[aria-selected=true]]:c_ink.[&[aria-selected=true]]:fw_600.[&[aria-selected=true]::after]:c",
+          "right": 496.97,
+          "text": "Taste"
+        },
+        {
+          "element": "button.pos_relative.flex-sh_0.h_42px.px_3.fs_14px.c_ink-muted.bg_transparent.bd_0.hover:c_ink.[&[aria-selected=true]]:c_ink.[&[aria-selected=true]]:fw_600.[&[aria-selected=true]::after]:c",
+          "right": 599.92,
+          "text": "OpenPencil"
+        }
+      ],
+      "webglMounted": true,
+      "canvases": [
+        {
+          "ready": "true",
+          "width": 195,
+          "height": 422,
+          "opacity": "1"
+        },
+        {
+          "ready": "true",
+          "width": 178,
+          "height": 137,
+          "opacity": "1"
+        },
+        {
+          "width": 300,
+          "height": 150,
+          "opacity": "1"
+        }
+      ],
+      "consoleErrors": [
+        {
+          "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "location": {
+            "url": "http://127.0.0.1:5211/api/health",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "pageErrors": [],
+      "failedRequests": [],
+      "httpErrors": [
+        {
+          "url": "http://127.0.0.1:5211/api/health",
+          "status": 403
+        }
+      ]
+    }
+  ],
+  "interactions": [],
+  "finishedAt": "2026-10-02T02:29:13.838Z"
+}

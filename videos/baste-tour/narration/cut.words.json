@@ -1,0 +1,106 @@
+{
+  "model": "fal-ai/whisper",
+  "text": "What comes out is ready to use: images, vector icons, ambient loops, and design tokens for CSS, Tailwind or Panda.",
+  "heard": [
+    {
+      "text": "What",
+      "start": 0.03,
+      "end": 0.03
+    },
+    {
+      "text": "comes",
+      "start": 0.03,
+      "end": 0.23
+    },
+    {
+      "text": "out",
+      "start": 0.23,
+      "end": 0.59
+    },
+    {
+      "text": "is",
+      "start": 0.59,
+      "end": 0.71
+    },
+    {
+      "text": "ready",
+      "start": 0.71,
+      "end": 0.95
+    },
+    {
+      "text": "to",
+      "start": 0.95,
+      "end": 1.11
+    },
+    {
+      "text": "use.",
+      "start": 1.11,
+      "end": 1.59
+    },
+    {
+      "text": "Images,",
+      "start": 1.93,
+      "end": 2.55
+    },
+    {
+      "text": "vector",
+      "start": 2.55,
+      "end": 2.97
+    },
+    {
+      "text": "icons,",
+      "start": 2.97,
+      "end": 3.95
+    },
+    {
+      "text": "ambient",
+      "start": 3.95,
+      "end": 4.35
+    },
+    {
+      "text": "loops,",
+      "start": 4.35,
+      "end": 5.01
+    },
+    {
+      "text": "and",
+      "start": 5.01,
+      "end": 5.45
+    },
+    {
+      "text": "design",
+      "start": 5.45,
+      "end": 5.71
+    },
+    {
+      "text": "tokens",
+      "start": 5.71,
+      "end": 6.03
+    },
+    {
+      "text": "for",
+      "start": 6.03,
+      "end": 6.43
+    },
+    {
+      "text": "CSS,",
+      "start": 6.43,
+      "end": 7.31
+    },
+    {
+      "text": "Tailwind,",
+      "start": 7.31,
+      "end": 7.99
+    },
+    {
+      "text": "or",
+      "start": 7.99,
+      "end": 8.15
+    },
+    {
+      "text": "Panda.",
+      "start": 8.15,
+      "end": 8.59
+    }
+  ]
+}
