@@ -1,0 +1,83 @@
+Hey really cool release from Typesafe recently, using typesafe models now has the option for multimodal support. I would love to take full advantage of these new unique capabilities for using images everywhere in  jev decisions. Specifically stylistic, persona, and examples. I also think that we need better primitives and examples for motion.
+
+---
+
+<task-notification>
+<task-id>bt3sppe7y</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/tmp/claude-1000/-home-diogenes-Projects-apps-baste/49312aed-35f0-4a70-9d07-b751e3190395/tasks/bt3sppe7y.output</output-file>
+<status>completed</status>
+<summary>Background command "Run baseline build and test suite in background" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+avif over jpeg
+
+---
+
+okay then png then
+
+---
+
+another thing that I am considering is segment anything models as they might be used to create more elaborate backgrounds and foregrounds and other edits during generation. ideogram I find to be really good for creating edits with models after creating with gpt image and i think image models for image edits should be separate for image models for initial creation. This is helpful when creating animations which should also be in the personas.
+
+---
+
+spawn agents
+
+---
+
+hey max subagents for this is excessive use medium here instead or i run out of usage
+
+---
+
+<task-notification>
+<task-id>a951d712d46148201</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/tmp/claude-1000/-home-diogenes-Projects-apps-baste/49312aed-35f0-4a70-9d07-b751e3190395/tasks/a951d712d46148201.output</output-file>
+<status>killed</status>
+<summary>Agent "Map persona schema touchpoints" was stopped by Claude</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Now the fitting display components, AESTHETIC_AXES, and the site API client (to see whether `_source` or extra keys are stripped).</result>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a385450c175e71127</task-id>
+<tool-use-id>toolu_01UYQo89kXURKz6tgEaEUfST</tool-use-id>
+<output-file>/tmp/claude-1000/-home-diogenes-Projects-apps-baste/49312aed-35f0-4a70-9d07-b751e3190395/tasks/a385450c175e71127.output</output-file>
+<status>killed</status>
+<summary>Agent "Map derived asset output and serving" was stopped by Claude</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Now the MCP server, config defaults, projects, and tests.</result>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a6cdd3882f01a0e82</task-id>
+<tool-use-id>toolu_01YSkf4twpTSReTHuLMwhrvH</tool-use-id>
+<output-file>/tmp/claude-1000/-home-diogenes-Projects-apps-baste/49312aed-35f0-4a70-9d07-b751e3190395/tasks/a6cdd3882f01a0e82.output</output-file>
+<status>killed</status>
+<summary>Agent "Map QD genome refactor impact" was stopped by Claude</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Let me check `stamp()` (filename uniqueness under concurrency), the jev-vision test hit, and the full `CandidateSummary`/`RecordedRun` types.</result>
+</task-notification>
+
+---
+
+get started
+
+---
+
+hey when it comes to using avif don
+
+---
+
+don't try to shoe horn it so much. avif was mainly for static assets.
+
+---
+
+on the site
