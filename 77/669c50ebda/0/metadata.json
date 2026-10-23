@@ -1,0 +1,240 @@
+{
+  "cli_version": "0.11.3",
+  "checkpoint_id": "77669c50ebda",
+  "session_id": "733932d5-825f-4fe1-834e-d87aac9cbe6b",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-23T19:24:18.351770305Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "save_step_count": 3,
+  "files_touched": [
+    ".env.example",
+    "Dockerfile",
+    "README.md",
+    "docs/plans/design-partner.md",
+    "package-lock.json",
+    "package.json",
+    "site/package-lock.json",
+    "site/package.json",
+    "site/scripts/openui-catalog.ts",
+    "site/src/components/openui/surface.tsx",
+    "site/src/components/studio/context.ts",
+    "site/src/components/studio/flows/projects.tsx",
+    "site/src/components/studio/tabs/moodboard.tsx",
+    "site/src/components/studio/tabs/sample.tsx",
+    "site/src/components/studio/workbench.tsx",
+    "site/src/components/studio/workspace.tsx",
+    "site/src/i18n/messages/en.json",
+    "site/src/i18n/messages/fr.json",
+    "site/src/lib/fonts.ts",
+    "site/src/lib/openui/catalog.json",
+    "site/src/lib/openui/catalog.ts",
+    "site/src/lib/openui/partner.ts",
+    "site/src/lib/openui/runtime.test.ts",
+    "site/src/lib/openui/runtime.ts",
+    "site/src/lib/openui/starter.ts",
+    "site/src/lib/project-contracts.ts",
+    "site/src/lib/projects.ts",
+    "site/src/lib/samples.ts",
+    "site/src/routes/gui/index.tsx",
+    "src/assets/design-system.ts",
+    "src/gui/api.ts",
+    "src/gui/surface.ts",
+    "src/projects/commands.ts",
+    "src/projects/contracts.ts",
+    "src/projects/design.ts",
+    "src/projects/schemas.ts",
+    "src/projects/store.ts",
+    "src/samples/capture.ts",
+    "src/samples/clairic.ts",
+    "src/samples/index.ts",
+    "src/samples/read.ts",
+    "src/samples/regions.ts",
+    "tests/design-surface.test.ts",
+    "tests/samples.test.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "118e81347b37",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 805,
+    "cache_creation_tokens": 22512768,
+    "cache_read_tokens": 149452579,
+    "output_tokens": 403092,
+    "api_call_count": 394
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01FwUV3JnrFL7jiuBAszm2pw",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "hyperframes"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "118e81347b37",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 1449,
+        "end": 1450,
+        "entry_ids": [
+          "46b7c223-1c8a-4407-96e1-6d6696ccc066"
+        ],
+        "tool_use_id": "toolu_01FwUV3JnrFL7jiuBAszm2pw"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01FwUV3JnrFL7jiuBAszm2pw"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: hyperframes",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-23T19:24:17.865932633Z",
+    "agent_lines": 5853,
+    "agent_removed": 74,
+    "human_added": 0,
+    "human_modified": 57,
+    "human_removed": 30,
+    "total_committed": 5871,
+    "total_lines_changed": 6014,
+    "agent_percentage": 98.55337545726638,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2085,
+      "user_lines_removed": 19,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".devenv/bootstrap/bootstrapLib.nix": 650,
+        ".devenv/bootstrap/default.nix": 22,
+        ".devenv/bootstrap/resolve-lock.nix": 190,
+        ".devenv/input-paths.txt": 11,
+        ".devenv/load-exports": 1,
+        ".devenv/nixpkgs-config-c46eff8321b73149.nix": 29,
+        ".devenv/state/files.json": 1,
+        ".devenv/task-names.txt": 19,
+        "README.md": 35,
+        "assets/output/creative-vectors-20261023/comparison.json": 335,
+        "assets/output/creative-vectors-20261023/progress.html": 14,
+        "assets/output/vector-comparison-20261023/comparison-high.html": 12,
+        "assets/output/vector-comparison-20261023/comparison.html": 12,
+        "assets/output/vector-comparison-20261023/comparison.json": 402,
+        "assets/output/vector-comparison-20261023/review-high.json": 11,
+        "assets/output/vector-comparison-20261023/review.json": 12,
+        "package.json": 2,
+        "scripts/compare-vectors.mjs": 147,
+        "scripts/vector-creative-cases.mjs": 47,
+        "scripts/vector-creative-report.mjs": 34,
+        "src/assets/generators.ts": 41,
+        "src/config/baste-config.ts": 2,
+        "tests/fal.test.ts": 56
+      },
+      "user_removed_per_file": {
+        "package.json": 1,
+        "src/assets/generators.ts": 18
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 923,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6744,
+      "agent_lines_removed": 107,
+      "user_added_per_file": {
+        ".devenv/bootstrap/bootstrapLib.nix": 650,
+        ".devenv/bootstrap/default.nix": 22,
+        ".devenv/bootstrap/resolve-lock.nix": 190,
+        ".devenv/input-paths.txt": 11,
+        ".devenv/load-exports": 1,
+        ".devenv/nixpkgs-config-c46eff8321b73149.nix": 29,
+        ".devenv/state/files.json": 1,
+        ".devenv/task-names.txt": 19
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 973,
+      "user_lines_removed": 16,
+      "agent_lines_added": 13829,
+      "agent_lines_removed": 112,
+      "user_added_per_file": {
+        ".devenv/bootstrap/bootstrapLib.nix": 650,
+        ".devenv/bootstrap/default.nix": 22,
+        ".devenv/bootstrap/resolve-lock.nix": 190,
+        ".devenv/input-paths.txt": 11,
+        ".devenv/load-exports": 1,
+        ".devenv/nixpkgs-config-c46eff8321b73149.nix": 29,
+        ".devenv/state/files.json": 1,
+        ".devenv/task-names.txt": 19,
+        "assets/output/creative-vectors-20261023/comparison-telos.html": 2,
+        "assets/output/creative-vectors-20261023/comparison.json": 20,
+        "assets/output/vector-references-20261023/comparison-ideogram.html": 4,
+        "assets/output/vector-references-20261023/comparison.html": 4,
+        "assets/output/vector-references-20261023/references.json": 16,
+        "assets/output/vector-references-20261023/review.json": 3,
+        "scripts/vector-reference-report.mjs": 1
+      },
+      "user_removed_per_file": {
+        "assets/output/creative-vectors-20261023/comparison-telos.html": 2,
+        "assets/output/creative-vectors-20261023/comparison.json": 2,
+        "assets/output/vector-references-20261023/comparison-ideogram.html": 4,
+        "assets/output/vector-references-20261023/comparison.html": 4,
+        "assets/output/vector-references-20261023/references.json": 1,
+        "assets/output/vector-references-20261023/review.json": 2,
+        "scripts/vector-reference-report.mjs": 1
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 1001,
+      "user_lines_removed": 18,
+      "agent_lines_added": 15333,
+      "agent_lines_removed": 112,
+      "user_added_per_file": {
+        ".devenv/bootstrap/bootstrapLib.nix": 650,
+        ".devenv/bootstrap/default.nix": 22,
+        ".devenv/bootstrap/resolve-lock.nix": 190,
+        ".devenv/input-paths.txt": 11,
+        ".devenv/load-exports": 1,
+        ".devenv/nixpkgs-config-c46eff8321b73149.nix": 29,
+        ".devenv/state/files.json": 1,
+        ".devenv/task-names.txt": 19,
+        "assets/output/creative-vectors-20261023/comparison-telos.html": 2,
+        "assets/output/creative-vectors-20261023/comparison.json": 20,
+        "assets/output/vector-references-20261023/comparison-ideogram.html": 4,
+        "assets/output/vector-references-20261023/comparison.html": 4,
+        "assets/output/vector-references-20261023/references.json": 16,
+        "assets/output/vector-references-20261023/review.json": 3,
+        "scripts/vector-reference-report.mjs": 1,
+        "site/src/components/studio/tabs/sample.tsx": 2,
+        "src/samples/capture.ts": 26
+      },
+      "user_removed_per_file": {
+        "assets/output/creative-vectors-20261023/comparison-telos.html": 2,
+        "assets/output/creative-vectors-20261023/comparison.json": 2,
+        "assets/output/vector-references-20261023/comparison-ideogram.html": 4,
+        "assets/output/vector-references-20261023/comparison.html": 4,
+        "assets/output/vector-references-20261023/references.json": 1,
+        "assets/output/vector-references-20261023/review.json": 2,
+        "scripts/vector-reference-report.mjs": 1,
+        "site/src/components/studio/tabs/sample.tsx": 2
+      }
+    }
+  ]
+}
