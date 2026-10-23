@@ -1,14 +1,18 @@
 # syntax=docker/dockerfile:1
 FROM node:22-alpine AS account-builder
+# OpenUI's install script reports installs unless told not to.
+ENV OPENUI_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1
 WORKDIR /app
 COPY package*.json tsconfig.json ./
 RUN npm ci --no-audit --no-fund
 COPY src ./src
 COPY site/src/lib/account-policy.json ./site/src/lib/account-policy.json
 COPY site/src/components/legal/policies.json ./site/src/components/legal/policies.json
+COPY site/src/lib/openui/catalog.json ./site/src/lib/openui/catalog.json
 RUN npm run build
 
 FROM node:22-alpine AS site-builder
+ENV OPENUI_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1
 WORKDIR /app/site
 COPY site/package*.json ./
 RUN npm ci --no-audit --no-fund

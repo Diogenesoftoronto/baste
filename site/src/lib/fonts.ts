@@ -13,6 +13,7 @@ const PERSONA_FAMILIES = [
   "IBM+Plex+Sans:wght@400;500;600",
   "Inter:wght@400;500;600;700",
   "Inter+Tight:wght@500;600;700",
+  "Instrument+Sans:wght@400;500;600",
   "JetBrains+Mono:wght@400;500",
   "Monoton",
   "Source+Serif+4:opsz,wght@8..60,400..700",

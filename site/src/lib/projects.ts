@@ -1,7 +1,9 @@
-import type { CreateProjectRequest, ProjectCommand, ProjectDetail, ProjectSummary } from "./project-contracts";
+import type { DesignTokens } from "./api-types";
+import type { DesignReading } from "./openui/starter";
+import type { CreateProjectRequest, DesignEdge, ProjectCommand, ProjectDetail, ProjectSummary } from "./project-contracts";
 
 export { PROJECT_LIMITS } from "./project-contracts";
-export type { CreateProjectRequest, DesignProject, ProjectCommand, ProjectDetail, ProjectSummary } from "./project-contracts";
+export type { CreateProjectRequest, DesignChanges, DesignProject, ProjectCommand, ProjectDetail, ProjectRevision, ProjectSummary } from "./project-contracts";
 
 export class ProjectRequestError extends Error {
   constructor(message: string, readonly status: number) {
@@ -34,3 +36,13 @@ export const listProjects = (base: string, signal?: AbortSignal) => request<Proj
 export const getProject = (base: string, id: string, signal?: AbortSignal) => request<ProjectDetail>(base, `/${encodeURIComponent(id)}`, { signal });
 export const createProject = (base: string, body: CreateProjectRequest, csrfToken?: string) => request<ProjectDetail>(base, "", { body, csrfToken });
 export const runProjectCommand = (base: string, id: string, body: ProjectCommand, csrfToken?: string) => request<ProjectDetail>(base, `/${encodeURIComponent(id)}/commands`, { body, csrfToken });
+
+/** The saved design and the values previews need (src/projects/design.ts). */
+export interface ProjectDesign {
+  reading: DesignReading;
+  tokens: DesignTokens;
+  options: { fonts: Record<string, string>; edges: Record<DesignEdge, DesignTokens["borders"]["radius"]> };
+}
+
+export const getProjectDesign = (base: string, id: string, signal?: AbortSignal) =>
+  request<{ design: ProjectDesign | null }>(base, `/${encodeURIComponent(id)}/design`, { signal }).then((data) => data.design);

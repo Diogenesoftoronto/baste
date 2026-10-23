@@ -5,6 +5,7 @@
  */
 
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { randomUUID } from "node:crypto";
 import { readFileSync, writeFileSync, existsSync, realpathSync, statSync } from "node:fs";
 import { resolve, join, basename, sep } from "node:path";
 import type { Persona } from "../persona/types.js";
@@ -42,6 +43,10 @@ import {
 } from "../openpencil/bridge.js";
 import { watch, type FSWatcher } from "node:fs";
 import { applyProjectCommand, createProject, getProject, listProjects, ProjectError } from "../projects/commands.js";
+import { projectDesign } from "../projects/design.js";
+import { CATALOG_VERSION, readSurfaceRequest, streamSurface, surfaceAvailable } from "./surface.js";
+import { clairicAvailable } from "../samples/clairic.js";
+import { cleanLookFor, keepSample, listRuns, readRun, sampleSite, type SampleRun } from "../samples/index.js";
 
 const DEFAULT_CONFIG_PATH = "./baste.config.json";
 
@@ -275,7 +280,143 @@ const saveConfigHandler: RouteHandler = async (req, res) => {
  * Health check.
  */
 const healthHandler: RouteHandler = async (_req, res) => {
-  json(res, { status: "ok", version: "0.2.0", conversation: { mode: converseAvailable(accountEnabled()) ? "ai" : "demo", voice: voiceAvailable(accountEnabled()), voiceRequiresAccount: accountEnabled() } });
+  json(res, { status: "ok", version: "0.2.0", conversation: { mode: converseAvailable(accountEnabled()) ? "ai" : "demo", voice: voiceAvailable(accountEnabled()), voiceRequiresAccount: accountEnabled() }, surface: { available: surfaceAvailable(accountEnabled()), catalog: CATALOG_VERSION }, sampling: samplingStatus() });
+};
+
+/**
+ * Sampling a site (src/samples/): local only, because the capture runs a
+ * browser on this machine and SAM 3 and Clairic use the operator's fal and
+ * Cloudflare keys. A run happens in the background; the Studio polls it.
+ */
+const samplesDir = () => resolve(toBasteConfig(resolveConfig()).generation.outputDir, "samples");
+function samplingStatus() {
+  const local = !accountEnabled();
+  return { available: local && !!process.env.FAL_KEY, reading: clairicAvailable(accountEnabled()) };
+}
+interface ActiveSampling { status: "running" | "done" | "failed"; stage: string; error?: string; runId?: string; personaId: string; url: string; startedAt: number; controller: AbortController }
+const samplings = new Map<string, ActiveSampling>();
+const MAX_ACTIVE_SAMPLINGS = 2;
+
+/** POST /api/samples — body: { url, personaId, lookFor?: string[] | string }. */
+const startSamplingHandler: RouteHandler = async (req, res) => {
+  if (!samplingStatus().available) throw new AccountError(503, "Sampling a site needs a local Baste server with a fal key.");
+  const body = (await parseBody(req)) as { url?: unknown; personaId?: unknown; lookFor?: unknown };
+  if (typeof body.url !== "string" || !/^https?:\/\//i.test(body.url.trim())) throw new AccountError(400, "Enter a full http(s) address.");
+  const persona = typeof body.personaId === "string" ? getPersona(body.personaId) : null;
+  if (!persona) throw new AccountError(404, "Choose the persona to sample for.");
+  if ([...samplings.values()].filter((s) => s.status === "running").length >= MAX_ACTIVE_SAMPLINGS) throw new AccountError(429, "Two sites are already being sampled. Wait for one to finish.");
+  for (const [key, old] of samplings) if (old.status !== "running" && Date.now() - old.startedAt > 3_600_000) samplings.delete(key);
+  const id = randomUUID();
+  const active: ActiveSampling = { status: "running", stage: "Starting", personaId: persona.id, url: body.url.trim(), startedAt: Date.now(), controller: new AbortController() };
+  samplings.set(id, active);
+  const timeout = setTimeout(() => active.controller.abort(), 5 * 60_000);
+  void sampleSite({
+    url: active.url, persona, lookFor: cleanLookFor(body.lookFor), dir: samplesDir(),
+    falKey: process.env.FAL_KEY, read: samplingStatus().reading, signal: active.controller.signal,
+    progress: (stage) => { active.stage = stage; },
+  }).then((run) => { active.status = "done"; active.runId = run.id; active.stage = "Done"; })
+    .catch((error) => { active.status = "failed"; active.error = error instanceof Error ? error.message.slice(0, 300) : "Sampling failed."; })
+    .finally(() => clearTimeout(timeout));
+  json(res, { id, status: active.status, stage: active.stage }, 202);
+};
+
+const samplingProgressHandler: RouteHandler = async (_req, res, params) => {
+  const active = samplings.get(params.id);
+  if (!active) throw new AccountError(404, "Sampling not found.");
+  json(res, { id: params.id, status: active.status, stage: active.stage, ...(active.error ? { error: active.error } : {}), ...(active.runId ? { runId: active.runId } : {}) });
+};
+
+const cancelSamplingHandler: RouteHandler = async (_req, res, params) => {
+  samplings.get(params.id)?.controller.abort();
+  json(res, { ok: true });
+};
+
+const listSampleRunsHandler: RouteHandler = async (req, res) => {
+  if (accountEnabled()) { json(res, []); return; }
+  const personaId = new URL(req.url || "/", "http://localhost").searchParams.get("persona") ?? undefined;
+  json(res, listRuns(samplesDir(), personaId));
+};
+
+const sampleRunHandler: RouteHandler = async (_req, res, params) => {
+  const run = accountEnabled() ? null : readRun(samplesDir(), params.id);
+  if (!run) throw new AccountError(404, "Sample run not found.");
+  json(res, run);
+};
+
+/** GET /api/samples/:run/:file — a capture, crop, cut-out or kept original. */
+const sampleFileHandler: RouteHandler = async (_req, res, params) => {
+  const run = accountEnabled() ? null : readRun(samplesDir(), params.id);
+  const file = params.assetId ?? "";
+  const ext = file.split(".").pop()?.toLowerCase() ?? "";
+  const mime: Record<string, string> = { png: "image/png", jpg: "image/jpeg", webp: "image/webp", svg: "image/svg+xml" };
+  if (!run || !/^[a-zA-Z0-9_-]{1,80}\.(png|jpg|webp|svg)$/.test(file) || !mime[ext]) throw new AccountError(404, "Sample not found.");
+  const root = realpathSync(join(samplesDir(), run.id));
+  let path: string;
+  try { path = realpathSync(join(root, file)); if (!path.startsWith(`${root}${sep}`) || !statSync(path).isFile()) throw new Error(); }
+  catch { throw new AccountError(404, "Sample not found."); }
+  res.writeHead(200, { "Content-Type": mime[ext], "Cache-Control": "private, max-age=3600", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "sandbox; default-src 'none'; style-src 'unsafe-inline'" });
+  res.end(readFileSync(path));
+};
+
+/**
+ * POST /api/samples/:run/keep — body: { sampleId, why? }. Pins the best file
+ * for a sample (the page's original, else its cut-out) to the persona's
+ * moodboard, tagged with what found it, the traits it fits and the person's reason.
+ */
+const keepSampleHandler: RouteHandler = async (req, res, params) => {
+  if (accountEnabled()) throw new AccountError(404, "Sample run not found.");
+  const run = readRun(samplesDir(), params.id);
+  const body = (await parseBody(req)) as { sampleId?: unknown; why?: unknown };
+  const sample = run?.samples.find((s) => s.id === body.sampleId);
+  if (!run || !sample) throw new AccountError(404, "Sample not found.");
+  const why = typeof body.why === "string" ? body.why.trim().replace(/\s+/g, " ").slice(0, 200) : "";
+  const kept = await keepSample(samplesDir(), run as SampleRun, sample);
+  const src = `/api/samples/${run.id}/${kept.file}`;
+  const fits = (sample.judgement?.traits ?? []).filter((t) => t.kind !== "peeve" && t.p10 >= 4).sort((a, b) => b.median - a.median).slice(0, 3).map((t) => t.label);
+  const board = moodboards.get(boardKey(run.personaId)) || { personaId: run.personaId, references: [], notes: "", vibe: [] };
+  if (!board.references.some((r) => r.src === src)) {
+    board.references.push({
+      id: `ref-${Date.now()}-${Math.floor(Math.random() * 1000)}`, src, pinned: true, addedAt: Date.now(),
+      tags: [...new Set(["sampled", new URL(run.finalUrl).hostname, ...sample.foundBy.filter((f) => f !== "page"), ...(sample.text ? [sample.text.slice(0, 60)] : []), ...fits, ...(why ? [why] : [])])].slice(0, 12),
+    });
+    moodboards.set(boardKey(run.personaId), board);
+    persistMoodboards();
+  }
+  json(res, { src, kind: kept.kind, personaId: run.personaId });
+};
+
+/** GET /api/projects/:id/design — the saved design and the values previews need. */
+const projectDesignHandler: RouteHandler = async (_req, res, params) => {
+  json(res, { design: projectDesign((await getProject(params.id)).project) });
+};
+
+/**
+ * POST /api/projects/:id/surface — the design partner's reply and surface
+ * patch, as newline-delimited JSON events (see SurfaceEvent). Local only,
+ * with an OpenAI key, like conversation; the Studio keeps Baste's own
+ * surface otherwise.
+ */
+const projectSurfaceHandler: RouteHandler = async (req, res, params) => {
+  if (!surfaceAvailable(accountEnabled())) throw new AccountError(503, "The design partner isn’t available here. Baste’s own surface still works.");
+  const request = readSurfaceRequest(await parseBody(req));
+  const { project } = await getProject(params.id);
+  const design = projectDesign(project);
+  if (!design) throw new AccountError(409, "Choose an audience before working on the design.");
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 90_000);
+  const abort = () => { if (!res.writableEnded) controller.abort(); };
+  res.on("close", abort);
+  res.writeHead(200, { "Content-Type": "application/x-ndjson; charset=utf-8", "X-Content-Type-Options": "nosniff" });
+  try {
+    for await (const event of streamSurface(project, design.reading, request, process.env.BASTE_SURFACE_MODEL || process.env.BASTE_CONVERSATION_MODEL || "gpt-4o", controller.signal)) {
+      res.write(`${JSON.stringify(event)}\n`);
+    }
+    if (controller.signal.aborted && !res.destroyed) res.write(`${JSON.stringify({ type: "error", message: "The design partner took too long. Try again." })}\n`);
+  } finally {
+    clearTimeout(timeout);
+    res.off("close", abort);
+    res.end();
+  }
 };
 interface GenerateRequest {
   type?: string; assetTypes?: unknown[]; dryRun?: boolean; imageProvider?: string;
@@ -1203,6 +1344,15 @@ const routes: Array<[string, RegExp, RouteHandler]> = [
   ["POST", /^\/api\/projects$/, async (req, res) => { json(res, await createProject(await parseBody(req)), 201); }],
   ["GET", /^\/api\/projects\/([^/]+)$/, async (_req, res, params) => { json(res, await getProject(params.id)); }],
   ["POST", /^\/api\/projects\/([^/]+)\/commands$/, async (req, res, params) => { json(res, await applyProjectCommand(params.id, await parseBody(req))); }],
+  ["GET", /^\/api\/projects\/([^/]+)\/design$/, projectDesignHandler],
+  ["POST", /^\/api\/samples$/, startSamplingHandler],
+  ["GET", /^\/api\/samples$/, listSampleRunsHandler],
+  ["GET", /^\/api\/samples\/active\/([0-9a-f-]{36})$/, samplingProgressHandler],
+  ["POST", /^\/api\/samples\/active\/([0-9a-f-]{36})\/cancel$/, cancelSamplingHandler],
+  ["GET", /^\/api\/samples\/(\d{4}-\d{2}-\d{2}-[0-9a-f]{8})$/, sampleRunHandler],
+  ["POST", /^\/api\/samples\/(\d{4}-\d{2}-\d{2}-[0-9a-f]{8})\/keep$/, keepSampleHandler],
+  ["GET", /^\/api\/samples\/(\d{4}-\d{2}-\d{2}-[0-9a-f]{8})\/([^/]+)$/, sampleFileHandler],
+  ["POST", /^\/api\/projects\/([^/]+)\/surface$/, projectSurfaceHandler],
   ["GET", /^\/api\/assets\/(images|svg|videos|layers|animation)\/([^/]+)$/, getAssetHandler],
   ["GET", /^\/api\/moodboard\/([^/]+)$/, getMoodboardHandler],
   ["PUT", /^\/api\/moodboard\/([^/]+)$/, putMoodboardHandler],

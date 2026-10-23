@@ -26,7 +26,7 @@ import { AccountSection } from "~/components/studio/flows/account";
 import { needsAccountOnboarding } from "~/lib/notorganic";
 import { accountCopy } from "~/lib/account-copy";
 
-const TABS: PersonaTab[] = ["fitting", "material", "tokens", "generate", "moodboard", "brandkit", "feedback", "editor"];
+const TABS: PersonaTab[] = ["fitting", "material", "tokens", "generate", "sample", "moodboard", "brandkit", "feedback", "editor"];
 const FLOWS: StudioView[] = ["decompose", "remix", "settings", "tailor", "projects"];
 
 export default component$(() => {

@@ -8,6 +8,7 @@ import { FittingTab } from "./tabs/fitting";
 import { TokensTab } from "./tabs/tokens";
 import { GenerateTab } from "./tabs/generate";
 import { MoodboardTab } from "./tabs/moodboard";
+import { SampleTab } from "./tabs/sample";
 import { BrandKitTab } from "./tabs/brandkit";
 import { FeedbackTab } from "./tabs/feedback";
 import { EditorTab } from "./tabs/editor";
@@ -30,6 +31,7 @@ const BENCHES: Array<{ name: string; tabs: Array<{ id: PersonaTab; label: string
   ] },
   { name: "Make", tabs: [
     { id: "generate", label: "Generate" },
+    { id: "sample", label: "Sample" },
     { id: "moodboard", label: "Moodboard" },
     { id: "feedback", label: "Taste" },
     { id: "brandkit", label: "Brand kit", customOnly: true },
@@ -215,6 +217,7 @@ export const Workspace = component$(() => {
         {s.tab === "material" && <MaterialTab />}
         {s.tab === "tokens" && <TokensTab />}
         {s.tab === "generate" && <GenerateTab />}
+        {s.tab === "sample" && <SampleTab />}
         {s.tab === "moodboard" && <MoodboardTab />}
         {s.tab === "brandkit" && <BrandKitTab />}
         {s.tab === "feedback" && <FeedbackTab />}

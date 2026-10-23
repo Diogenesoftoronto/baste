@@ -50,7 +50,7 @@ export function readRecord(directory: string, id: string): ProjectRecord | undef
       const { project, entry } = record.snapshots[index];
       const receipt = record.receipts[index];
       if (project.id !== id || project.revision !== index + 1 || entry.revision !== index + 1 || receipt.revision !== index + 1 || project.createdAt !== initial.createdAt || entry.createdAt !== project.updatedAt || receiptIds.has(receipt.commandId)) throw new Error("Invalid history");
-      if ((index === 0) !== (entry.kind === "created") || (entry.kind === "revision_restored" ? !entry.restoredFrom || entry.restoredFrom > index : entry.restoredFrom !== undefined)) throw new Error("Invalid revision origin");
+      if ((index === 0) !== (entry.kind === "created") || (entry.kind === "revision_restored" || entry.kind === "design_restored" ? !entry.restoredFrom || entry.restoredFrom > index : entry.restoredFrom !== undefined)) throw new Error("Invalid revision origin");
       receiptIds.add(receipt.commandId);
     }
     return record;
