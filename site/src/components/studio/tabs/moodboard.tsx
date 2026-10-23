@@ -59,7 +59,8 @@ export const MoodboardTab = component$(() => {
     }
   });
 
-  const img = (u: string) => (s.status === "live" && /^https?:/.test(u) ? s.client!.proxyUrl(u) : u);
+  // Sampled references are served by the API itself.
+  const img = (u: string) => (s.status === "live" && /^https?:/.test(u) ? s.client!.proxyUrl(u) : u.startsWith("/api/") ? `${s.apiBase.replace(/\/+$/, "")}${u.slice(4)}` : u);
   const refs = board.value ? [...board.value.references].sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.addedAt - a.addedAt) : [];
 
   return (

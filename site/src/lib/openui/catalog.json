@@ -1,0 +1,1829 @@
+{
+  "version": 1,
+  "root": "Workbench",
+  "spec": {
+    "root": "Workbench",
+    "components": {
+      "Workbench": {
+        "signature": "Workbench(title: string, children: (Note | Preview | Section | ColorField | FontField | EdgeField | Choice | Palette | Contrast | Compare | Question | Buttons | SaveStatus)[])",
+        "description": "The surface itself."
+      },
+      "Section": {
+        "signature": "Section(title: string, children: (Note | ColorField | FontField | EdgeField | Choice | Palette | Contrast | Buttons | SaveStatus)[])",
+        "description": "A titled group of controls."
+      },
+      "Note": {
+        "signature": "Note(text: string, tone?: \"plain\" | \"aside\" | \"warning\")",
+        "description": "A short observation in the partner's voice. Use aside for asides and warning for real usability problems."
+      },
+      "Preview": {
+        "signature": "Preview(colors: {background?: string, surface?: string, primary?: string, secondary?: string, accent?: string, text?: string, textMuted?: string, border?: string}, headingFont?: \"Inter Tight\" | \"Inter\" | \"JetBrains Mono\" | \"Bricolage Grotesque\" | \"Instrument Sans\" | \"Fira Code\" | \"Space Mono\" | \"IBM Plex Sans\" | \"VT323\" | \"Chakra Petch\" | \"Fraunces\" | \"Source Serif 4\" | \"Dela Gothic One\" | \"Monoton\" | \"Archivo Black\", bodyFont?: \"Inter Tight\" | \"Inter\" | \"JetBrains Mono\" | \"Bricolage Grotesque\" | \"Instrument Sans\" | \"Fira Code\" | \"Space Mono\" | \"IBM Plex Sans\" | \"VT323\" | \"Chakra Petch\" | \"Fraunces\" | \"Source Serif 4\" | \"Dela Gothic One\" | \"Monoton\" | \"Archivo Black\", edges?: \"sharp\" | \"soft\" | \"organic\" | \"geometric\" | \"brutalist\", caption?: string)",
+        "description": "A live specimen screen in the saved design with these values laid over it. Pass $variables to follow the controls as they change."
+      },
+      "ColorField": {
+        "signature": "ColorField(label: string, value: $binding<string>, hint?: string)",
+        "description": "Colour picker bound to a $variable."
+      },
+      "FontField": {
+        "signature": "FontField(label: string, value: $binding<\"Inter Tight\" | \"Inter\" | \"JetBrains Mono\" | \"Bricolage Grotesque\" | \"Instrument Sans\" | \"Fira Code\" | \"Space Mono\" | \"IBM Plex Sans\" | \"VT323\" | \"Chakra Petch\" | \"Fraunces\" | \"Source Serif 4\" | \"Dela Gothic One\" | \"Monoton\" | \"Archivo Black\">, sample?: string)",
+        "description": "Typeface picker bound to a $variable; each option is shown in its own face."
+      },
+      "EdgeField": {
+        "signature": "EdgeField(label: string, value: $binding<\"sharp\" | \"soft\" | \"organic\" | \"geometric\" | \"brutalist\">)",
+        "description": "Corner treatment picker bound to a $variable: sharp, soft, organic, geometric or brutalist."
+      },
+      "Choice": {
+        "signature": "Choice(label: string, value: $binding<string>, options: Option[])",
+        "description": "A small set of mutually exclusive choices bound to a $variable."
+      },
+      "Option": {
+        "signature": "Option(value: string, label: string, detail?: string)",
+        "description": "One choice inside Choice."
+      },
+      "Palette": {
+        "signature": "Palette(swatches: Swatch[], caption?: string)",
+        "description": "A row of colours shown together."
+      },
+      "Swatch": {
+        "signature": "Swatch(label: string, color: string)",
+        "description": "One named colour."
+      },
+      "Contrast": {
+        "signature": "Contrast(label: string, foreground: string, background: string)",
+        "description": "Measured WCAG contrast between two colours. Pass $variables so it updates as colours change. Never state a ratio yourself."
+      },
+      "Compare": {
+        "signature": "Compare(variants: Variant[], caption?: string)",
+        "description": "Two to four treatments side by side."
+      },
+      "Variant": {
+        "signature": "Variant(name: string, note: string, colors: {background?: string, surface?: string, primary?: string, secondary?: string, accent?: string, text?: string, textMuted?: string, border?: string}, headingFont?: \"Inter Tight\" | \"Inter\" | \"JetBrains Mono\" | \"Bricolage Grotesque\" | \"Instrument Sans\" | \"Fira Code\" | \"Space Mono\" | \"IBM Plex Sans\" | \"VT323\" | \"Chakra Petch\" | \"Fraunces\" | \"Source Serif 4\" | \"Dela Gothic One\" | \"Monoton\" | \"Archivo Black\", bodyFont?: \"Inter Tight\" | \"Inter\" | \"JetBrains Mono\" | \"Bricolage Grotesque\" | \"Instrument Sans\" | \"Fira Code\" | \"Space Mono\" | \"IBM Plex Sans\" | \"VT323\" | \"Chakra Petch\" | \"Fraunces\" | \"Source Serif 4\" | \"Dela Gothic One\" | \"Monoton\" | \"Archivo Black\", edges?: \"sharp\" | \"soft\" | \"organic\" | \"geometric\" | \"brutalist\", action?: ActionExpression)",
+        "description": "One treatment in a comparison. Its action usually @Sets the matching $variables so the person can try it."
+      },
+      "Question": {
+        "signature": "Question(text: string, answers: Button[])",
+        "description": "Ask the person about a taste decision that changes the direction. Answers usually use @ToAssistant."
+      },
+      "Buttons": {
+        "signature": "Buttons(buttons: Button[])",
+        "description": "A row of buttons."
+      },
+      "Button": {
+        "signature": "Button(label: string, action?: ActionExpression, emphasis?: \"primary\" | \"secondary\")",
+        "description": "Use primary only for the one action that saves."
+      },
+      "SaveStatus": {
+        "signature": "SaveStatus(result: any, idle?: string)",
+        "description": "Shows a Mutation's progress and outcome. Pass the Mutation reference itself."
+      }
+    },
+    "componentGroups": [
+      {
+        "name": "Looking",
+        "components": [
+          "Preview",
+          "Compare",
+          "Variant",
+          "Palette",
+          "Swatch",
+          "Contrast"
+        ]
+      },
+      {
+        "name": "Adjusting",
+        "components": [
+          "Section",
+          "ColorField",
+          "FontField",
+          "EdgeField",
+          "Choice",
+          "Option"
+        ]
+      },
+      {
+        "name": "Deciding",
+        "components": [
+          "Note",
+          "Question",
+          "Buttons",
+          "Button",
+          "SaveStatus"
+        ]
+      }
+    ],
+    "schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "Workbench": {
+          "$ref": "#/$defs/Workbench"
+        },
+        "Section": {
+          "$ref": "#/$defs/Section"
+        },
+        "Note": {
+          "$ref": "#/$defs/Note"
+        },
+        "Preview": {
+          "$ref": "#/$defs/Preview"
+        },
+        "ColorField": {
+          "$ref": "#/$defs/ColorField"
+        },
+        "FontField": {
+          "$ref": "#/$defs/FontField"
+        },
+        "EdgeField": {
+          "$ref": "#/$defs/EdgeField"
+        },
+        "Choice": {
+          "$ref": "#/$defs/Choice"
+        },
+        "Option": {
+          "$ref": "#/$defs/Option"
+        },
+        "Palette": {
+          "$ref": "#/$defs/Palette"
+        },
+        "Swatch": {
+          "$ref": "#/$defs/Swatch"
+        },
+        "Contrast": {
+          "$ref": "#/$defs/Contrast"
+        },
+        "Compare": {
+          "$ref": "#/$defs/Compare"
+        },
+        "Variant": {
+          "$ref": "#/$defs/Variant"
+        },
+        "Question": {
+          "$ref": "#/$defs/Question"
+        },
+        "Buttons": {
+          "$ref": "#/$defs/Buttons"
+        },
+        "Button": {
+          "$ref": "#/$defs/Button"
+        },
+        "SaveStatus": {
+          "$ref": "#/$defs/SaveStatus"
+        }
+      },
+      "required": [
+        "Workbench",
+        "Section",
+        "Note",
+        "Preview",
+        "ColorField",
+        "FontField",
+        "EdgeField",
+        "Choice",
+        "Option",
+        "Palette",
+        "Swatch",
+        "Contrast",
+        "Compare",
+        "Variant",
+        "Question",
+        "Buttons",
+        "Button",
+        "SaveStatus"
+      ],
+      "additionalProperties": false,
+      "$defs": {
+        "Workbench": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/Note"
+                  },
+                  {
+                    "$ref": "#/$defs/Preview"
+                  },
+                  {
+                    "$ref": "#/$defs/Section"
+                  },
+                  {
+                    "$ref": "#/$defs/ColorField"
+                  },
+                  {
+                    "$ref": "#/$defs/FontField"
+                  },
+                  {
+                    "$ref": "#/$defs/EdgeField"
+                  },
+                  {
+                    "$ref": "#/$defs/Choice"
+                  },
+                  {
+                    "$ref": "#/$defs/Palette"
+                  },
+                  {
+                    "$ref": "#/$defs/Contrast"
+                  },
+                  {
+                    "$ref": "#/$defs/Compare"
+                  },
+                  {
+                    "$ref": "#/$defs/Question"
+                  },
+                  {
+                    "$ref": "#/$defs/Buttons"
+                  },
+                  {
+                    "$ref": "#/$defs/SaveStatus"
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "title",
+            "children"
+          ],
+          "additionalProperties": false,
+          "description": "The surface itself."
+        },
+        "Note": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "tone": {
+              "type": "string",
+              "enum": [
+                "plain",
+                "aside",
+                "warning"
+              ]
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "description": "A short observation in the partner's voice. Use aside for asides and warning for real usability problems."
+        },
+        "Preview": {
+          "type": "object",
+          "properties": {
+            "colors": {
+              "type": "object",
+              "properties": {
+                "background": {
+                  "type": "string"
+                },
+                "surface": {
+                  "type": "string"
+                },
+                "primary": {
+                  "type": "string"
+                },
+                "secondary": {
+                  "type": "string"
+                },
+                "accent": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "textMuted": {
+                  "type": "string"
+                },
+                "border": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "headingFont": {
+              "type": "string",
+              "enum": [
+                "Inter Tight",
+                "Inter",
+                "JetBrains Mono",
+                "Bricolage Grotesque",
+                "Instrument Sans",
+                "Fira Code",
+                "Space Mono",
+                "IBM Plex Sans",
+                "VT323",
+                "Chakra Petch",
+                "Fraunces",
+                "Source Serif 4",
+                "Dela Gothic One",
+                "Monoton",
+                "Archivo Black"
+              ]
+            },
+            "bodyFont": {
+              "type": "string",
+              "enum": [
+                "Inter Tight",
+                "Inter",
+                "JetBrains Mono",
+                "Bricolage Grotesque",
+                "Instrument Sans",
+                "Fira Code",
+                "Space Mono",
+                "IBM Plex Sans",
+                "VT323",
+                "Chakra Petch",
+                "Fraunces",
+                "Source Serif 4",
+                "Dela Gothic One",
+                "Monoton",
+                "Archivo Black"
+              ]
+            },
+            "edges": {
+              "type": "string",
+              "enum": [
+                "sharp",
+                "soft",
+                "organic",
+                "geometric",
+                "brutalist"
+              ]
+            },
+            "caption": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "colors"
+          ],
+          "additionalProperties": false,
+          "description": "A live specimen screen in the saved design with these values laid over it. Pass $variables to follow the controls as they change."
+        },
+        "Section": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "children": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/Note"
+                  },
+                  {
+                    "$ref": "#/$defs/ColorField"
+                  },
+                  {
+                    "$ref": "#/$defs/FontField"
+                  },
+                  {
+                    "$ref": "#/$defs/EdgeField"
+                  },
+                  {
+                    "$ref": "#/$defs/Choice"
+                  },
+                  {
+                    "$ref": "#/$defs/Palette"
+                  },
+                  {
+                    "$ref": "#/$defs/Contrast"
+                  },
+                  {
+                    "$ref": "#/$defs/Buttons"
+                  },
+                  {
+                    "$ref": "#/$defs/SaveStatus"
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "title",
+            "children"
+          ],
+          "additionalProperties": false,
+          "description": "A titled group of controls."
+        },
+        "ColorField": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "value"
+          ],
+          "additionalProperties": false,
+          "description": "Colour picker bound to a $variable."
+        },
+        "FontField": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "Inter Tight",
+                "Inter",
+                "JetBrains Mono",
+                "Bricolage Grotesque",
+                "Instrument Sans",
+                "Fira Code",
+                "Space Mono",
+                "IBM Plex Sans",
+                "VT323",
+                "Chakra Petch",
+                "Fraunces",
+                "Source Serif 4",
+                "Dela Gothic One",
+                "Monoton",
+                "Archivo Black"
+              ]
+            },
+            "sample": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "value"
+          ],
+          "additionalProperties": false,
+          "description": "Typeface picker bound to a $variable; each option is shown in its own face."
+        },
+        "EdgeField": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string",
+              "enum": [
+                "sharp",
+                "soft",
+                "organic",
+                "geometric",
+                "brutalist"
+              ]
+            }
+          },
+          "required": [
+            "label",
+            "value"
+          ],
+          "additionalProperties": false,
+          "description": "Corner treatment picker bound to a $variable: sharp, soft, organic, geometric or brutalist."
+        },
+        "Choice": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Option"
+              }
+            }
+          },
+          "required": [
+            "label",
+            "value",
+            "options"
+          ],
+          "additionalProperties": false,
+          "description": "A small set of mutually exclusive choices bound to a $variable."
+        },
+        "Option": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "One choice inside Choice."
+        },
+        "Palette": {
+          "type": "object",
+          "properties": {
+            "swatches": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Swatch"
+              }
+            },
+            "caption": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "swatches"
+          ],
+          "additionalProperties": false,
+          "description": "A row of colours shown together."
+        },
+        "Swatch": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "color"
+          ],
+          "additionalProperties": false,
+          "description": "One named colour."
+        },
+        "Contrast": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "foreground": {
+              "type": "string"
+            },
+            "background": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "foreground",
+            "background"
+          ],
+          "additionalProperties": false,
+          "description": "Measured WCAG contrast between two colours. Pass $variables so it updates as colours change. Never state a ratio yourself."
+        },
+        "Buttons": {
+          "type": "object",
+          "properties": {
+            "buttons": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Button"
+              }
+            }
+          },
+          "required": [
+            "buttons"
+          ],
+          "additionalProperties": false,
+          "description": "A row of buttons."
+        },
+        "Button": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "action": {
+              "$ref": "#/$defs/ActionExpression"
+            },
+            "emphasis": {
+              "type": "string",
+              "enum": [
+                "primary",
+                "secondary"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false,
+          "description": "Use primary only for the one action that saves."
+        },
+        "ActionExpression": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "open_url"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "url"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "continue_conversation"
+                },
+                "context": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "params": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "SaveStatus": {
+          "type": "object",
+          "properties": {
+            "result": {},
+            "idle": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "result"
+          ],
+          "additionalProperties": false,
+          "description": "Shows a Mutation's progress and outcome. Pass the Mutation reference itself."
+        },
+        "Compare": {
+          "type": "object",
+          "properties": {
+            "variants": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Variant"
+              }
+            },
+            "caption": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "variants"
+          ],
+          "additionalProperties": false,
+          "description": "Two to four treatments side by side."
+        },
+        "Variant": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            },
+            "colors": {
+              "type": "object",
+              "properties": {
+                "background": {
+                  "type": "string"
+                },
+                "surface": {
+                  "type": "string"
+                },
+                "primary": {
+                  "type": "string"
+                },
+                "secondary": {
+                  "type": "string"
+                },
+                "accent": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "textMuted": {
+                  "type": "string"
+                },
+                "border": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "headingFont": {
+              "type": "string",
+              "enum": [
+                "Inter Tight",
+                "Inter",
+                "JetBrains Mono",
+                "Bricolage Grotesque",
+                "Instrument Sans",
+                "Fira Code",
+                "Space Mono",
+                "IBM Plex Sans",
+                "VT323",
+                "Chakra Petch",
+                "Fraunces",
+                "Source Serif 4",
+                "Dela Gothic One",
+                "Monoton",
+                "Archivo Black"
+              ]
+            },
+            "bodyFont": {
+              "type": "string",
+              "enum": [
+                "Inter Tight",
+                "Inter",
+                "JetBrains Mono",
+                "Bricolage Grotesque",
+                "Instrument Sans",
+                "Fira Code",
+                "Space Mono",
+                "IBM Plex Sans",
+                "VT323",
+                "Chakra Petch",
+                "Fraunces",
+                "Source Serif 4",
+                "Dela Gothic One",
+                "Monoton",
+                "Archivo Black"
+              ]
+            },
+            "edges": {
+              "type": "string",
+              "enum": [
+                "sharp",
+                "soft",
+                "organic",
+                "geometric",
+                "brutalist"
+              ]
+            },
+            "action": {
+              "$ref": "#/$defs/ActionExpression"
+            }
+          },
+          "required": [
+            "name",
+            "note",
+            "colors"
+          ],
+          "additionalProperties": false,
+          "description": "One treatment in a comparison. Its action usually @Sets the matching $variables so the person can try it."
+        },
+        "Question": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "answers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Button"
+              }
+            }
+          },
+          "required": [
+            "text",
+            "answers"
+          ],
+          "additionalProperties": false,
+          "description": "Ask the person about a taste decision that changes the direction. Answers usually use @ToAssistant."
+        }
+      }
+    },
+    "id": "baste-workbench"
+  },
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "Workbench": {
+        "$ref": "#/$defs/Workbench"
+      },
+      "Section": {
+        "$ref": "#/$defs/Section"
+      },
+      "Note": {
+        "$ref": "#/$defs/Note"
+      },
+      "Preview": {
+        "$ref": "#/$defs/Preview"
+      },
+      "ColorField": {
+        "$ref": "#/$defs/ColorField"
+      },
+      "FontField": {
+        "$ref": "#/$defs/FontField"
+      },
+      "EdgeField": {
+        "$ref": "#/$defs/EdgeField"
+      },
+      "Choice": {
+        "$ref": "#/$defs/Choice"
+      },
+      "Option": {
+        "$ref": "#/$defs/Option"
+      },
+      "Palette": {
+        "$ref": "#/$defs/Palette"
+      },
+      "Swatch": {
+        "$ref": "#/$defs/Swatch"
+      },
+      "Contrast": {
+        "$ref": "#/$defs/Contrast"
+      },
+      "Compare": {
+        "$ref": "#/$defs/Compare"
+      },
+      "Variant": {
+        "$ref": "#/$defs/Variant"
+      },
+      "Question": {
+        "$ref": "#/$defs/Question"
+      },
+      "Buttons": {
+        "$ref": "#/$defs/Buttons"
+      },
+      "Button": {
+        "$ref": "#/$defs/Button"
+      },
+      "SaveStatus": {
+        "$ref": "#/$defs/SaveStatus"
+      }
+    },
+    "required": [
+      "Workbench",
+      "Section",
+      "Note",
+      "Preview",
+      "ColorField",
+      "FontField",
+      "EdgeField",
+      "Choice",
+      "Option",
+      "Palette",
+      "Swatch",
+      "Contrast",
+      "Compare",
+      "Variant",
+      "Question",
+      "Buttons",
+      "Button",
+      "SaveStatus"
+    ],
+    "additionalProperties": false,
+    "$defs": {
+      "Workbench": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Note"
+                },
+                {
+                  "$ref": "#/$defs/Preview"
+                },
+                {
+                  "$ref": "#/$defs/Section"
+                },
+                {
+                  "$ref": "#/$defs/ColorField"
+                },
+                {
+                  "$ref": "#/$defs/FontField"
+                },
+                {
+                  "$ref": "#/$defs/EdgeField"
+                },
+                {
+                  "$ref": "#/$defs/Choice"
+                },
+                {
+                  "$ref": "#/$defs/Palette"
+                },
+                {
+                  "$ref": "#/$defs/Contrast"
+                },
+                {
+                  "$ref": "#/$defs/Compare"
+                },
+                {
+                  "$ref": "#/$defs/Question"
+                },
+                {
+                  "$ref": "#/$defs/Buttons"
+                },
+                {
+                  "$ref": "#/$defs/SaveStatus"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "title",
+          "children"
+        ],
+        "additionalProperties": false,
+        "description": "The surface itself."
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "plain",
+              "aside",
+              "warning"
+            ]
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false,
+        "description": "A short observation in the partner's voice. Use aside for asides and warning for real usability problems."
+      },
+      "Preview": {
+        "type": "object",
+        "properties": {
+          "colors": {
+            "type": "object",
+            "properties": {
+              "background": {
+                "type": "string"
+              },
+              "surface": {
+                "type": "string"
+              },
+              "primary": {
+                "type": "string"
+              },
+              "secondary": {
+                "type": "string"
+              },
+              "accent": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "textMuted": {
+                "type": "string"
+              },
+              "border": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "headingFont": {
+            "type": "string",
+            "enum": [
+              "Inter Tight",
+              "Inter",
+              "JetBrains Mono",
+              "Bricolage Grotesque",
+              "Instrument Sans",
+              "Fira Code",
+              "Space Mono",
+              "IBM Plex Sans",
+              "VT323",
+              "Chakra Petch",
+              "Fraunces",
+              "Source Serif 4",
+              "Dela Gothic One",
+              "Monoton",
+              "Archivo Black"
+            ]
+          },
+          "bodyFont": {
+            "type": "string",
+            "enum": [
+              "Inter Tight",
+              "Inter",
+              "JetBrains Mono",
+              "Bricolage Grotesque",
+              "Instrument Sans",
+              "Fira Code",
+              "Space Mono",
+              "IBM Plex Sans",
+              "VT323",
+              "Chakra Petch",
+              "Fraunces",
+              "Source Serif 4",
+              "Dela Gothic One",
+              "Monoton",
+              "Archivo Black"
+            ]
+          },
+          "edges": {
+            "type": "string",
+            "enum": [
+              "sharp",
+              "soft",
+              "organic",
+              "geometric",
+              "brutalist"
+            ]
+          },
+          "caption": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "colors"
+        ],
+        "additionalProperties": false,
+        "description": "A live specimen screen in the saved design with these values laid over it. Pass $variables to follow the controls as they change."
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Note"
+                },
+                {
+                  "$ref": "#/$defs/ColorField"
+                },
+                {
+                  "$ref": "#/$defs/FontField"
+                },
+                {
+                  "$ref": "#/$defs/EdgeField"
+                },
+                {
+                  "$ref": "#/$defs/Choice"
+                },
+                {
+                  "$ref": "#/$defs/Palette"
+                },
+                {
+                  "$ref": "#/$defs/Contrast"
+                },
+                {
+                  "$ref": "#/$defs/Buttons"
+                },
+                {
+                  "$ref": "#/$defs/SaveStatus"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "title",
+          "children"
+        ],
+        "additionalProperties": false,
+        "description": "A titled group of controls."
+      },
+      "ColorField": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ],
+        "additionalProperties": false,
+        "description": "Colour picker bound to a $variable."
+      },
+      "FontField": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "enum": [
+              "Inter Tight",
+              "Inter",
+              "JetBrains Mono",
+              "Bricolage Grotesque",
+              "Instrument Sans",
+              "Fira Code",
+              "Space Mono",
+              "IBM Plex Sans",
+              "VT323",
+              "Chakra Petch",
+              "Fraunces",
+              "Source Serif 4",
+              "Dela Gothic One",
+              "Monoton",
+              "Archivo Black"
+            ]
+          },
+          "sample": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ],
+        "additionalProperties": false,
+        "description": "Typeface picker bound to a $variable; each option is shown in its own face."
+      },
+      "EdgeField": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "enum": [
+              "sharp",
+              "soft",
+              "organic",
+              "geometric",
+              "brutalist"
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ],
+        "additionalProperties": false,
+        "description": "Corner treatment picker bound to a $variable: sharp, soft, organic, geometric or brutalist."
+      },
+      "Choice": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Option"
+            }
+          }
+        },
+        "required": [
+          "label",
+          "value",
+          "options"
+        ],
+        "additionalProperties": false,
+        "description": "A small set of mutually exclusive choices bound to a $variable."
+      },
+      "Option": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label"
+        ],
+        "additionalProperties": false,
+        "description": "One choice inside Choice."
+      },
+      "Palette": {
+        "type": "object",
+        "properties": {
+          "swatches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Swatch"
+            }
+          },
+          "caption": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "swatches"
+        ],
+        "additionalProperties": false,
+        "description": "A row of colours shown together."
+      },
+      "Swatch": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "color"
+        ],
+        "additionalProperties": false,
+        "description": "One named colour."
+      },
+      "Contrast": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "foreground": {
+            "type": "string"
+          },
+          "background": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "foreground",
+          "background"
+        ],
+        "additionalProperties": false,
+        "description": "Measured WCAG contrast between two colours. Pass $variables so it updates as colours change. Never state a ratio yourself."
+      },
+      "Buttons": {
+        "type": "object",
+        "properties": {
+          "buttons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Button"
+            }
+          }
+        },
+        "required": [
+          "buttons"
+        ],
+        "additionalProperties": false,
+        "description": "A row of buttons."
+      },
+      "Button": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "action": {
+            "$ref": "#/$defs/ActionExpression"
+          },
+          "emphasis": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "secondary"
+            ]
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "additionalProperties": false,
+        "description": "Use primary only for the one action that saves."
+      },
+      "ActionExpression": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "open_url"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "url"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "continue_conversation"
+              },
+              "context": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string"
+                },
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "SaveStatus": {
+        "type": "object",
+        "properties": {
+          "result": {},
+          "idle": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "additionalProperties": false,
+        "description": "Shows a Mutation's progress and outcome. Pass the Mutation reference itself."
+      },
+      "Compare": {
+        "type": "object",
+        "properties": {
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Variant"
+            }
+          },
+          "caption": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "variants"
+        ],
+        "additionalProperties": false,
+        "description": "Two to four treatments side by side."
+      },
+      "Variant": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "colors": {
+            "type": "object",
+            "properties": {
+              "background": {
+                "type": "string"
+              },
+              "surface": {
+                "type": "string"
+              },
+              "primary": {
+                "type": "string"
+              },
+              "secondary": {
+                "type": "string"
+              },
+              "accent": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "textMuted": {
+                "type": "string"
+              },
+              "border": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "headingFont": {
+            "type": "string",
+            "enum": [
+              "Inter Tight",
+              "Inter",
+              "JetBrains Mono",
+              "Bricolage Grotesque",
+              "Instrument Sans",
+              "Fira Code",
+              "Space Mono",
+              "IBM Plex Sans",
+              "VT323",
+              "Chakra Petch",
+              "Fraunces",
+              "Source Serif 4",
+              "Dela Gothic One",
+              "Monoton",
+              "Archivo Black"
+            ]
+          },
+          "bodyFont": {
+            "type": "string",
+            "enum": [
+              "Inter Tight",
+              "Inter",
+              "JetBrains Mono",
+              "Bricolage Grotesque",
+              "Instrument Sans",
+              "Fira Code",
+              "Space Mono",
+              "IBM Plex Sans",
+              "VT323",
+              "Chakra Petch",
+              "Fraunces",
+              "Source Serif 4",
+              "Dela Gothic One",
+              "Monoton",
+              "Archivo Black"
+            ]
+          },
+          "edges": {
+            "type": "string",
+            "enum": [
+              "sharp",
+              "soft",
+              "organic",
+              "geometric",
+              "brutalist"
+            ]
+          },
+          "action": {
+            "$ref": "#/$defs/ActionExpression"
+          }
+        },
+        "required": [
+          "name",
+          "note",
+          "colors"
+        ],
+        "additionalProperties": false,
+        "description": "One treatment in a comparison. Its action usually @Sets the matching $variables so the person can try it."
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Button"
+            }
+          }
+        },
+        "required": [
+          "text",
+          "answers"
+        ],
+        "additionalProperties": false,
+        "description": "Ask the person about a taste decision that changes the direction. Answers usually use @ToAssistant."
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "read_design",
+      "description": "The project's saved design: revision, the eight colour roles, heading and body typefaces, edge treatment, and which values differ from the audience's generated design.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "number"
+          },
+          "colors": {
+            "type": "object",
+            "properties": {
+              "background": {
+                "type": "string"
+              },
+              "surface": {
+                "type": "string"
+              },
+              "primary": {
+                "type": "string"
+              },
+              "secondary": {
+                "type": "string"
+              },
+              "accent": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              },
+              "textMuted": {
+                "type": "string"
+              },
+              "border": {
+                "type": "string"
+              }
+            }
+          },
+          "headingFont": {
+            "type": "string"
+          },
+          "bodyFont": {
+            "type": "string"
+          },
+          "edges": {
+            "type": "string",
+            "enum": [
+              "sharp",
+              "soft",
+              "organic",
+              "geometric",
+              "brutalist"
+            ]
+          },
+          "adjusted": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true
+      }
+    },
+    {
+      "name": "update_design",
+      "description": "Save design changes as a new project revision. Send only the values that change; null returns a value to the audience's generated design. summary is a few words for the project history.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "changes": {
+            "type": "object",
+            "properties": {
+              "colors": {
+                "type": "object",
+                "properties": {
+                  "background": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "surface": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "primary": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "secondary": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "accent": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "text": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "textMuted": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  },
+                  "border": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^#[0-9a-fA-F]{6}$"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "headingFont": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Inter Tight",
+                  "Inter",
+                  "JetBrains Mono",
+                  "Bricolage Grotesque",
+                  "Instrument Sans",
+                  "Fira Code",
+                  "Space Mono",
+                  "IBM Plex Sans",
+                  "VT323",
+                  "Chakra Petch",
+                  "Fraunces",
+                  "Source Serif 4",
+                  "Dela Gothic One",
+                  "Monoton",
+                  "Archivo Black",
+                  null
+                ]
+              },
+              "bodyFont": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Inter Tight",
+                  "Inter",
+                  "JetBrains Mono",
+                  "Bricolage Grotesque",
+                  "Instrument Sans",
+                  "Fira Code",
+                  "Space Mono",
+                  "IBM Plex Sans",
+                  "VT323",
+                  "Chakra Petch",
+                  "Fraunces",
+                  "Source Serif 4",
+                  "Dela Gothic One",
+                  "Monoton",
+                  "Archivo Black",
+                  null
+                ]
+              },
+              "edges": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "sharp",
+                  "soft",
+                  "organic",
+                  "geometric",
+                  "brutalist",
+                  null
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 160
+          }
+        },
+        "required": [
+          "changes",
+          "summary"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "number"
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "destructiveHint": false
+      }
+    }
+  ],
+  "readTools": [
+    "read_design"
+  ],
+  "writeTools": [
+    "update_design"
+  ]
+}

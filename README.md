@@ -35,6 +35,38 @@ devenv tasks run baste:install
 devenv up
 ```
 
+### Project workbench (OpenUI)
+
+A project with an audience gets a **workbench**: an interactive surface for its colours, typefaces and edges,
+written in [OpenUI Lang](https://www.openui.com/docs/openui-lang/architecture) and rendered by Baste's own Qwik
+adapter. Controls change a live preview without a model call; nothing is saved until you press a save button,
+which records a project version you can undo or restore from the history. Baste's own surface works without a
+model. With a local server and `OPENAI_API_KEY` (model: `BASTE_SURFACE_MODEL`, falling back to
+`BASTE_CONVERSATION_MODEL`, then `gpt-4o`), a design partner revises the surface on request: comparisons,
+taste questions, rearranged controls. Its replies stream in as patches; the server validates each against the
+catalog, makes one repair attempt and otherwise keeps the current surface. Hosted accounts don't use the
+operator's key, so they get Baste's surface only.
+
+The component and tool contract lives in `site/src/lib/openui/catalog.ts`. After changing it, run
+`npm run openui:catalog` in `site/` to regenerate the `catalog.json` the server reads; tests fail while it
+is stale. Install with `OPENUI_TELEMETRY_DISABLED=1`: `@openuidev/lang-core` otherwise reports installs.
+
+### Sampling a site (SAM 3 + Clairic)
+
+A persona's **Sample** tab captures a site's first two screens (at 2×, with a local Chrome via `playwright-core`)
+and finds what you name, plus logos, icons, imagery and buttons by default, with fal's SAM 3. Each find is
+linked to the page's own image or inline SVG when there is one, and cut out on transparency otherwise.
+[Clairic](https://developers.cloudflare.com/workers-ai/models/clairic/) then reads the words in each find and
+judges how much this audience would want it, with one calibrated estimate per persona trait (values, looks,
+pet peeves). Every “why” is a named trait with its 80% range, not generated prose. Colours and type are
+measured from the page, because Clairic cannot report values that aren't written on screen. Keeping a sample
+pins the original (or the cut-out) to the moodboard, tagged with what found it, the traits it fits and your
+reason.
+
+Local only. It needs `FAL_KEY`; reading and judging also need `CLOUDFLARE_AI_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID`, and without them samples are still found. Every page request passes the same
+public-host check as decompose. Runs are saved under `assets/output/samples/`. A typical run takes 20–35 s.
+
 Open `http://localhost:5173/gui/` for the Studio and `http://localhost:5173/docs/` for documentation.
 The site proxies `/api` to the Baste API on port 3456. Storybook is opt-in.
 See [local development](docs/development.md) for tasks, port overrides and verification boundaries.

@@ -3,7 +3,8 @@ import { lstatSync } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 import { getPersona, isBasePersona } from "../notorganic/personas.js";
 import { accountKey, accountPath, accountScope } from "../notorganic/scope.js";
-import type { DesignProject, ProjectDetail, ProjectRevision, ProjectSummary } from "./contracts.js";
+import type { DesignChanges, DesignOverrides, DesignProject, ProjectDetail, ProjectRevision, ProjectSummary } from "./contracts.js";
+import { normalizeDesign } from "./design.js";
 import { ProjectError } from "./errors.js";
 import { createProjectSchema, personaSchema, projectCommandSchema, projectIdSchema, type ProjectRecord } from "./schemas.js";
 import { listRecords, projectDirectory, readRecord, withProjectLock, writeRecord } from "./store.js";
@@ -65,6 +66,34 @@ function audienceSnapshot(personaId?: string | null): DesignProject["audience"] 
   const parsed = personaSchema.safeParse(persona);
   if (!parsed.success || parsed.data.id !== personaId) throw new ProjectError(500, "The selected audience is invalid.");
   return structuredClone(parsed.data);
+}
+
+/** Apply a partial adjustment; `null` returns a value to the audience's generated one. */
+export function mergeDesign(current: DesignOverrides | undefined, changes: DesignChanges): DesignOverrides | undefined {
+  const colors: Record<string, string> = { ...current?.colors };
+  for (const [role, value] of Object.entries(changes.colors ?? {})) {
+    if (value === null) delete colors[role]; else if (value !== undefined) colors[role] = value;
+  }
+  const next: DesignOverrides = {};
+  if (Object.keys(colors).length) next.colors = colors;
+  for (const key of ["headingFont", "bodyFont", "edges"] as const) {
+    const value = changes[key] === undefined ? current?.[key] : changes[key];
+    if (value != null) (next as Record<string, unknown>)[key] = value;
+  }
+  return Object.keys(next).length ? next : undefined;
+}
+
+function sameDesign(a: DesignOverrides | undefined, b: DesignOverrides | undefined): boolean {
+  const canonical = (design: DesignOverrides | undefined) => JSON.stringify(design ? {
+    colors: Object.fromEntries(Object.entries(design.colors ?? {}).sort(([x], [y]) => x.localeCompare(y))),
+    headingFont: design.headingFont, bodyFont: design.bodyFont, edges: design.edges,
+  } : null);
+  return canonical(a ?? {}) === canonical(b ?? {});
+}
+
+function withDesign(project: DesignProject, design: DesignOverrides | undefined): DesignProject {
+  const { design: _previous, ...rest } = project;
+  return design ? { ...rest, design } : rest;
 }
 
 export async function listProjects(): Promise<ProjectSummary[]> {
@@ -134,7 +163,21 @@ export async function applyProjectCommand(id: string, input: unknown): Promise<P
       kind = "details_updated"; summary = "Project details updated";
     } else if (command.kind === "select_audience") {
       project.audience = audienceSnapshot(command.personaId);
+      if (project.audience) project = withDesign(project, normalizeDesign(project.audience, project.design));
       kind = "audience_selected"; summary = project.audience ? "Audience selected" : "Audience cleared";
+    } else if (command.kind === "update_design") {
+      if (!project.audience) throw new ProjectError(409, "Choose an audience before adjusting the design.");
+      const design = normalizeDesign(project.audience, mergeDesign(project.design, command.changes));
+      if (sameDesign(design, project.design)) throw new ProjectError(400, "These design values are already saved.");
+      project = withDesign(project, design);
+      kind = "design_updated"; summary = command.summary || "Design adjusted";
+    } else if (command.kind === "restore_design") {
+      const snapshot = record.snapshots[command.targetRevision - 1];
+      if (!snapshot) throw new ProjectError(404, "Project revision not found.");
+      const design = project.audience ? normalizeDesign(project.audience, snapshot.project.design) : snapshot.project.design;
+      if (sameDesign(design, project.design)) throw new ProjectError(400, `The design already matches version ${command.targetRevision}.`);
+      project = withDesign(project, structuredClone(design));
+      kind = "design_restored"; summary = `Design restored from version ${command.targetRevision}`;
     } else {
       const snapshot = record.snapshots[command.targetRevision - 1];
       if (!snapshot) throw new ProjectError(404, "Project revision not found.");
@@ -143,7 +186,7 @@ export async function applyProjectCommand(id: string, input: unknown): Promise<P
     }
     project.revision = current.revision + 1;
     project.updatedAt = new Date().toISOString();
-    const entry: ProjectRevision = { revision: project.revision, kind, summary, createdAt: project.updatedAt, ...(command.kind === "restore_revision" ? { restoredFrom: command.targetRevision } : {}) };
+    const entry: ProjectRevision = { revision: project.revision, kind, summary, createdAt: project.updatedAt, ...(command.kind === "restore_revision" || command.kind === "restore_design" ? { restoredFrom: command.targetRevision } : {}) };
     record.snapshots.push({ project, entry });
     record.receipts.push({ commandId: command.commandId, fingerprint: hash, revision: project.revision });
     writeRecord(directory, id, record);

@@ -3,6 +3,7 @@ import { css, cx } from "styled-system/css";
 import { StudioCtx, errMsg, openView, refreshAccount, selectProject, toast, type StudioState } from "../context";
 import { act, btnSm, chip, emptyBox, fieldLabel, hint, input, kicker, panel, panelTitle, textarea } from "../ui";
 import { PROJECT_LIMITS, ProjectRequestError, createProject, getProject, listProjects, runProjectCommand, type ProjectCommand, type ProjectDetail, type ProjectSummary } from "~/lib/projects";
+import { DesignWorkbench } from "../workbench";
 
 interface Draft {
   name: string;
@@ -50,12 +51,13 @@ function draftFrom(detail: ProjectDetail): Draft {
   return { name: p.name, brief: p.brief, audienceId: p.audience?.id ?? "", baseRevision: p.revision };
 }
 
-function acceptDetail(f: ProjectFlowState, detail: ProjectDetail, fields: "all" | "details" | "audience" = "all") {
+/** `fields` names what the command changed; drafts of everything else are kept. */
+function acceptDetail(f: ProjectFlowState, detail: ProjectDetail, fields: "all" | "details" | "audience" | "design" = "all") {
   const p = detail.project;
   const oldDraft = f.drafts[p.id];
   const next = draftFrom(detail);
-  if (oldDraft && fields === "details") next.audienceId = oldDraft.audienceId;
-  if (oldDraft && fields === "audience") { next.name = oldDraft.name; next.brief = oldDraft.brief; }
+  if (oldDraft && (fields === "details" || fields === "design")) next.audienceId = oldDraft.audienceId;
+  if (oldDraft && (fields === "audience" || fields === "design")) { next.name = oldDraft.name; next.brief = oldDraft.brief; }
   f.detail = detail;
   f.drafts = { ...f.drafts, [p.id]: next };
   f.list = [
@@ -213,7 +215,13 @@ export const ProjectsFlow = component$(() => {
   });
 
   const detail = f.detail?.project.id === s.projectId ? f.detail : null;
-  const p = detail?.project;
+  // A plain copy: saves replace f.detail, and Qwik binds `p.x` in JSX to the
+  // store object it first saw, so reading the store directly leaves text and
+  // child props showing the previous version.
+  const p = detail ? { ...detail.project } : undefined;
+  // Spread so these reach the workbench as values: the optimizer turns `obj.x` props into getters
+  // that keep reading the object from the first render, which a save replaces.
+  const workbench = p?.audience && detail ? { projectId: p.id, revision: p.revision, latest: detail.revisions[detail.revisions.length - 1], audience: p.audience } : null;
   const draft = p ? f.drafts[p.id] : undefined;
   const changedDetails = !!p && !!draft && (draft.name !== p.name || draft.brief !== p.brief);
   const changedAudience = !!p && !!draft && draft.audienceId !== (p.audience?.id ?? "");
@@ -326,9 +334,19 @@ export const ProjectsFlow = component$(() => {
                   </form>
                 </section>
 
+                {workbench ? (
+                  <DesignWorkbench key={workbench.projectId} {...workbench}
+                    locked={locked || changed || newerVersion} onSaved$={(saved) => { if (f.active && s.projectId === saved.project.id) acceptDetail(f, saved, "design"); }} />
+                ) : (
+                  <section class={emptyBox} aria-labelledby="workbench-empty-title">
+                    <h2 id="workbench-empty-title" class={panelTitle}>Workbench</h2>
+                    <p>Choose an audience to start working on the design. Its generated design becomes the starting point you adjust.</p>
+                  </section>
+                )}
+
                 <section class={panel} aria-labelledby="project-history-title">
                   <h2 id="project-history-title" class={panelTitle}>Project history</h2>
-                  <p class={hint}>Return to an earlier brief and audience. Restoring adds a version and keeps the history.</p>
+                  <p class={hint}>Return to an earlier brief, audience and design. Restoring adds a version and keeps the history.</p>
                   {changed && <p class={hint}>Save or discard your edits before restoring a version.</p>}
                   <ol class={css({ listStyle: "none", mt: 4 })}>
                     {[...detail.revisions].sort((a, b) => b.revision - a.revision).map((revision) => <li key={revision.revision} class={css({ py: 4, borderTop: "1px solid token(colors.rule)" })}>
@@ -337,7 +355,7 @@ export const ProjectsFlow = component$(() => {
                         {revision.revision === p.revision ? <span class={kicker}>Current</span> : <button type="button" class={act("baste")} disabled={locked || changed || newerVersion} onClick$={() => f.restoreRevision = revision.revision}>Restore version {revision.revision}</button>}
                       </div>
                       {f.restoreRevision === revision.revision && <div class={css({ mt: 3, p: 4, bg: "paper-deep", rounded: "base" })}>
-                        <p class={css({ fontSize: "14px" })}>Restore the brief and audience from version {revision.revision}?</p>
+                        <p class={css({ fontSize: "14px" })}>Restore the brief, audience and design from version {revision.revision}?</p>
                         <div class={css({ display: "flex", flexWrap: "wrap", gap: 2, mt: 3 })}><button type="button" class={act("cut")} disabled={locked || changed} onClick$={() => command("restore_revision", revision.revision)}>{f.pending === "restore_revision" ? "Restoring…" : "Restore this version"}</button><button type="button" class={act("go")} disabled={locked} onClick$={() => f.restoreRevision = null}>Cancel</button></div>
                       </div>}
                     </li>)}

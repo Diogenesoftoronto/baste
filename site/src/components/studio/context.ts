@@ -4,7 +4,7 @@ import type { DesignTokens, PersonaRecord } from "~/lib/api-types";
 import { emptyHostedAccount, refreshHostedAccount, type HostedAccount } from "~/lib/notorganic";
 
 export type StudioView = "persona" | "new" | "edit" | "tailor" | "decompose" | "remix" | "settings" | "projects";
-export type PersonaTab = "fitting" | "material" | "tokens" | "generate" | "moodboard" | "brandkit" | "feedback" | "editor";
+export type PersonaTab = "fitting" | "material" | "tokens" | "generate" | "sample" | "moodboard" | "brandkit" | "feedback" | "editor";
 
 export interface Toast {
   id: number;

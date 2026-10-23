@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { PROJECT_LIMITS } from "./contracts.js";
+import { TOKEN_FONT_FAMILIES } from "../assets/design-system.js";
+import { DESIGN_COLOR_ROLES, DESIGN_EDGES, PROJECT_LIMITS } from "./contracts.js";
 
 export const projectIdSchema = z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
 const commandId = z.string().min(1).max(PROJECT_LIMITS.commandId).regex(/^[a-zA-Z0-9_-]+$/);
@@ -45,12 +46,24 @@ export const personaSchema = z.object({
   animation: personaAnimationSchema.optional(),
 }).strict();
 
+const hex = z.string().regex(/^#[0-9a-f]{6}$/i).transform(value => value.toLowerCase());
+const font = z.string().refine(value => TOKEN_FONT_FAMILIES.includes(value), "Unknown font family");
+const edges = z.enum(DESIGN_EDGES);
+const roles = <T extends z.ZodType>(value: T) => z.object(Object.fromEntries(DESIGN_COLOR_ROLES.map(role => [role, value.optional()])) as Record<(typeof DESIGN_COLOR_ROLES)[number], z.ZodOptional<T>>).strict();
+
+export const designOverridesSchema = z.object({ colors: roles(hex).optional(), headingFont: font.optional(), bodyFont: font.optional(), edges: edges.optional() }).strict();
+export const designChangesSchema = z.object({
+  colors: roles(hex.nullable()).optional(), headingFont: font.nullable().optional(), bodyFont: font.nullable().optional(), edges: edges.nullable().optional(),
+}).strict();
+
 export const createProjectSchema = z.object({ commandId, name, brief, personaId: personaId.optional() }).strict();
 const base = { commandId, baseRevision: revision };
 export const projectCommandSchema = z.discriminatedUnion("kind", [
   z.object({ ...base, kind: z.literal("update_details"), name, brief }).strict(),
   z.object({ ...base, kind: z.literal("select_audience"), personaId: personaId.nullable() }).strict(),
   z.object({ ...base, kind: z.literal("restore_revision"), targetRevision: revision }).strict(),
+  z.object({ ...base, kind: z.literal("update_design"), changes: designChangesSchema, summary: z.string().trim().max(PROJECT_LIMITS.designSummary) }).strict(),
+  z.object({ ...base, kind: z.literal("restore_design"), targetRevision: revision }).strict(),
 ]);
 
 const timestamp = z.string().datetime();
@@ -61,6 +74,7 @@ const projectSchema = z.object({
     id: z.string().min(1).max(100), name: text, personaRevision: revision,
     introduction: text, likes: texts, dislikes: texts, portraitAssetId: z.string().max(200).optional(),
   }).strict().nullable(),
+  design: designOverridesSchema.optional(),
   revision, createdAt: timestamp, updatedAt: timestamp,
 }).strict();
 
@@ -69,7 +83,7 @@ export const recordSchema = z.object({
   snapshots: z.array(z.object({
     project: projectSchema,
     entry: z.object({
-      revision, kind: z.enum(["created", "details_updated", "audience_selected", "revision_restored"]),
+      revision, kind: z.enum(["created", "details_updated", "audience_selected", "revision_restored", "design_updated", "design_restored"]),
       summary: z.string().max(500), createdAt: timestamp, restoredFrom: revision.optional(),
     }).strict(),
   }).strict()).min(1),

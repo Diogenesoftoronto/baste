@@ -128,6 +128,28 @@ export function generateDesignTokens(persona: Persona, brandKit?: BrandKit | nul
   };
 }
 
+/** A project's saved adjustments; the shape matches DesignOverrides in src/projects/contracts.ts. */
+export interface TokenOverrides {
+  colors?: Partial<Record<"background" | "surface" | "primary" | "secondary" | "accent" | "text" | "textMuted" | "border", string>>;
+  headingFont?: string;
+  bodyFont?: string;
+  edges?: AestheticProfile["edgeStyle"];
+}
+
+/** Apply project adjustments to generated tokens with the engine's own stacks and radii. */
+export function applyTokenOverrides(tokens: DesignTokens, overrides?: TokenOverrides | null): DesignTokens {
+  if (!overrides) return tokens;
+  const fontFamily = { ...tokens.typography.fontFamily };
+  if (overrides.headingFont) fontFamily.heading = fontStack(overrides.headingFont);
+  if (overrides.bodyFont) fontFamily.body = fontStack(overrides.bodyFont);
+  return {
+    ...tokens,
+    colors: { ...tokens.colors, ...overrides.colors },
+    typography: { ...tokens.typography, fontFamily },
+    borders: overrides.edges ? { ...tokens.borders, radius: EDGE_RADII[overrides.edges] } : tokens.borders,
+  };
+}
+
 function overlayColors(base: ColorPalette, kit: BrandKit): ColorPalette {
   const r = kit.paletteRoles || {};
   return {
@@ -370,52 +392,52 @@ function generateSpacing(aesthetic: AestheticProfile): SpacingTokens {
   };
 }
 
-function generateBorders(aesthetic: AestheticProfile): BorderTokens {
-  const edgeRadiusMap: Record<string, BorderTokens["radius"]> = {
-    sharp: {
-      none: "0",
-      sm: "0",
-      base: "0",
-      lg: "0",
-      xl: "0",
-      full: "9999px",
-    },
-    soft: {
-      none: "0",
-      sm: "0.25rem",
-      base: "0.5rem",
-      lg: "0.75rem",
-      xl: "1rem",
-      full: "9999px",
-    },
-    organic: {
-      none: "0",
-      sm: "0.5rem",
-      base: "0.75rem",
-      lg: "1.25rem",
-      xl: "2rem",
-      full: "9999px",
-    },
-    geometric: {
-      none: "0",
-      sm: "0.125rem",
-      base: "0.25rem",
-      lg: "0.5rem",
-      xl: "0.75rem",
-      full: "9999px",
-    },
-    brutalist: {
-      none: "0",
-      sm: "0",
-      base: "0",
-      lg: "0",
-      xl: "0.25rem",
-      full: "9999px",
-    },
-  };
+const EDGE_RADII: Record<AestheticProfile["edgeStyle"], BorderTokens["radius"]> = {
+  sharp: {
+    none: "0",
+    sm: "0",
+    base: "0",
+    lg: "0",
+    xl: "0",
+    full: "9999px",
+  },
+  soft: {
+    none: "0",
+    sm: "0.25rem",
+    base: "0.5rem",
+    lg: "0.75rem",
+    xl: "1rem",
+    full: "9999px",
+  },
+  organic: {
+    none: "0",
+    sm: "0.5rem",
+    base: "0.75rem",
+    lg: "1.25rem",
+    xl: "2rem",
+    full: "9999px",
+  },
+  geometric: {
+    none: "0",
+    sm: "0.125rem",
+    base: "0.25rem",
+    lg: "0.5rem",
+    xl: "0.75rem",
+    full: "9999px",
+  },
+  brutalist: {
+    none: "0",
+    sm: "0",
+    base: "0",
+    lg: "0",
+    xl: "0.25rem",
+    full: "9999px",
+  },
+};
 
+function generateBorders(aesthetic: AestheticProfile): BorderTokens {
   return {
-    radius: edgeRadiusMap[aesthetic.edgeStyle] || edgeRadiusMap.soft,
+    radius: EDGE_RADII[aesthetic.edgeStyle] || EDGE_RADII.soft,
     width: {
       thin: "1px",
       base: "1.5px",
