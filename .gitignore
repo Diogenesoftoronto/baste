@@ -22,3 +22,14 @@ baste.config.json
 # PandaCSS generated files
 site/styled-system
 site/styled-system-studio
+
+# >>> baste-media: paths stored in the baste-media bucket (managed by scripts/media.ts)
+/site/public/materials/graphite/chalk-strata.webp
+/site/public/materials/graphite/chromatic-bath-loop.gif
+/site/public/materials/graphite/interference-weave.webp
+/site/public/materials/graphite/radial-dye-loop.gif
+/site/public/media/fitting-loop.gif
+/site/public/media/fitting-loop.mp4
+/site/public/media/studio-guide/walkthrough-en.mp4
+/site/public/media/studio-guide/walkthrough-fr.mp4
+# <<< baste-media

@@ -46,7 +46,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: cmp Dockerfile deployment/Dockerfile.account
-      - run: docker build -f deployment/Dockerfile.account -t baste-account-review .
+      - run: docker build -f deployment/Dockerfile.account --build-arg BASTE_MEDIA_ENDPOINT --build-arg BASTE_MEDIA_BUCKET --build-arg BASTE_MEDIA_ACCESS_KEY_ID --build-arg BASTE_MEDIA_SECRET_ACCESS_KEY -t baste-account-review .
+        env:
+          BASTE_MEDIA_ENDPOINT: ${{ secrets.BASTE_MEDIA_ENDPOINT }}
+          BASTE_MEDIA_BUCKET: ${{ secrets.BASTE_MEDIA_BUCKET }}
+          BASTE_MEDIA_ACCESS_KEY_ID: ${{ secrets.BASTE_MEDIA_ACCESS_KEY_ID }}
+          BASTE_MEDIA_SECRET_ACCESS_KEY: ${{ secrets.BASTE_MEDIA_SECRET_ACCESS_KEY }}
       - run: docker run -d --name baste-account-review --network none baste-account-review
       - name: Verify container without provider network access
         run: |

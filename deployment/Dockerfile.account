@@ -1,4 +1,13 @@
 # syntax=docker/dockerfile:1
+FROM oven/bun:1.4.4 AS media
+WORKDIR /m
+COPY media.manifest.json ./
+COPY scripts/media.ts ./scripts/media.ts
+ARG BASTE_MEDIA_ENDPOINT
+ARG BASTE_MEDIA_BUCKET
+ARG BASTE_MEDIA_ACCESS_KEY_ID
+ARG BASTE_MEDIA_SECRET_ACCESS_KEY
+RUN bun scripts/media.ts pull site/public/
 FROM node:22-alpine AS account-builder
 WORKDIR /app
 COPY package*.json tsconfig.json ./
@@ -13,6 +22,7 @@ WORKDIR /app/site
 COPY site/package*.json ./
 RUN npm ci --no-audit --no-fund
 COPY site/ ./
+COPY --from=media /m/site/public ./public
 RUN npm run build:production
 
 FROM node:22-alpine

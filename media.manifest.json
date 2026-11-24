@@ -1,0 +1,39 @@
+{
+ "version": 1,
+ "bucket": "baste-media",
+ "objects": "objects/",
+ "files": {
+  "site/public/materials/graphite/chalk-strata.webp": {
+   "oid": "c24605ead310b28fc308e978cf14043c267649ca",
+   "size": 214272
+  },
+  "site/public/materials/graphite/chromatic-bath-loop.gif": {
+   "oid": "7bc5da0c3e87b2af723e40759734765fdbeb18d4",
+   "size": 18602455
+  },
+  "site/public/materials/graphite/interference-weave.webp": {
+   "oid": "80ddbb0925b0fec0a9635cee3e5a667e71337fc5",
+   "size": 285810
+  },
+  "site/public/materials/graphite/radial-dye-loop.gif": {
+   "oid": "ecbae503559a83a0b8f2620ede945401b9379a64",
+   "size": 9367046
+  },
+  "site/public/media/fitting-loop.gif": {
+   "oid": "1b2eb2aacb072736ed60d77985aad2d46d7681ea",
+   "size": 2739345
+  },
+  "site/public/media/fitting-loop.mp4": {
+   "oid": "a979647e8b532e0e19e231ed1529a6c6cde0ea6c",
+   "size": 1316947
+  },
+  "site/public/media/studio-guide/walkthrough-en.mp4": {
+   "oid": "1544354db5dfa590c21c502b3d19d2b721bf3429",
+   "size": 9458931
+  },
+  "site/public/media/studio-guide/walkthrough-fr.mp4": {
+   "oid": "9c5baa14a2fcbeb942eb03cd500612a7bac1b037",
+   "size": 9221061
+  }
+ }
+}
