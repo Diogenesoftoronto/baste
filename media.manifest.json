@@ -1,0 +1,143 @@
+{
+ "version": 1,
+ "bucket": "baste-media",
+ "objects": "objects/",
+ "files": {
+  "docs/fitting-loop.gif": {
+   "oid": "1b2eb2aacb072736ed60d77985aad2d46d7681ea",
+   "size": 2739345
+  },
+  "site/public/assets/fittings/cyberbotanist-loop.mp4": {
+   "oid": "581e83631aef605c93e971203ba633cce2fc6bc4",
+   "size": 416099
+  },
+  "site/public/assets/fittings/liminalweeb-background.avif": {
+   "oid": "7020bcb4b7bdf83d92400348991bbe0a983f4131",
+   "size": 222465
+  },
+  "site/public/assets/fittings/liminalweeb-background.webp": {
+   "oid": "4660a4fc2fb3f0ca1be15113599d8e170b09c47c",
+   "size": 248546
+  },
+  "site/public/assets/fittings/liminalweeb-loop.mp4": {
+   "oid": "0d02eb89f4ac7a6a353f42b9db97b3de069e134b",
+   "size": 443069
+  },
+  "site/public/assets/fittings/nightmarketcoder-hero.avif": {
+   "oid": "e1cfa29d2ba59fcb07e34020b714a6a39161a303",
+   "size": 331468
+  },
+  "site/public/assets/fittings/nightmarketcoder-hero.webp": {
+   "oid": "fdaad6f5123727d9d2be44783f88dcebb92a3327",
+   "size": 332092
+  },
+  "site/public/assets/fittings/nightmarketcoder-loop.mp4": {
+   "oid": "456783eb78b05638f880892d873fdf1a3ff4986e",
+   "size": 534405
+  },
+  "site/public/assets/fittings/runs/nightmarketcoder/best.avif": {
+   "oid": "c0ed48c04403f1f67fb90dc2411f9efa67b00ccd",
+   "size": 242241
+  },
+  "site/public/assets/fittings/runs/nightmarketcoder/best.webp": {
+   "oid": "d64bedd100b88cde1b2d9150f4867f57c3f0659e",
+   "size": 223348
+  },
+  "site/public/materials/graphite/chalk-strata.webp": {
+   "oid": "c24605ead310b28fc308e978cf14043c267649ca",
+   "size": 214272
+  },
+  "site/public/materials/graphite/chromatic-bath-loop.gif": {
+   "oid": "7bc5da0c3e87b2af723e40759734765fdbeb18d4",
+   "size": 18602455
+  },
+  "site/public/materials/graphite/chromatic-bath-loop.mp4": {
+   "oid": "ce57349cd3a581114fd8cb790f33fd722e7e3c77",
+   "size": 1409453
+  },
+  "site/public/materials/graphite/interference-weave.webp": {
+   "oid": "80ddbb0925b0fec0a9635cee3e5a667e71337fc5",
+   "size": 285810
+  },
+  "site/public/materials/graphite/radial-dye-loop.gif": {
+   "oid": "ecbae503559a83a0b8f2620ede945401b9379a64",
+   "size": 9367046
+  },
+  "site/public/materials/graphite/radial-dye-loop.mp4": {
+   "oid": "cd60ff3bcfe34335653f931e4d89df96e24e12e3",
+   "size": 1164321
+  },
+  "site/public/media/fitting-loop.gif": {
+   "oid": "1b2eb2aacb072736ed60d77985aad2d46d7681ea",
+   "size": 2739345
+  },
+  "site/public/media/fitting-loop.mp4": {
+   "oid": "a979647e8b532e0e19e231ed1529a6c6cde0ea6c",
+   "size": 1316947
+  },
+  "site/public/media/studio-guide/current/current-narrated.mp4": {
+   "oid": "fba23e2ef487a53536a196fdd416f99647346dba",
+   "size": 1262024
+  },
+  "site/public/media/studio-guide/current/current-studio.mp4": {
+   "oid": "1695844f7a5717232fed837c9e89cae552b8893b",
+   "size": 755374
+  },
+  "site/public/media/studio-guide/current/current-studio.webm": {
+   "oid": "b72c16c373c2163a58244d8e9cceee746267ebde",
+   "size": 7369667
+  },
+  "site/public/media/studio-guide/current/feedback.png": {
+   "oid": "0a6bb60fd23afec4cd291102a2a8d09ddc6b98b1",
+   "size": 587779
+  },
+  "site/public/media/studio-guide/current/fitting.png": {
+   "oid": "2685494d400382f78e9e77c10924c304958a88e1",
+   "size": 567978
+  },
+  "site/public/media/studio-guide/current/material.png": {
+   "oid": "d6865f11cfdbf5b532040a6b89b91efc98ca3050",
+   "size": 720007
+  },
+  "site/public/media/studio-guide/current/moodboard.png": {
+   "oid": "19ae5277e7ef35a9c140412fa3b85a132d9c0959",
+   "size": 631588
+  },
+  "site/public/media/studio-guide/current/tokens.png": {
+   "oid": "2e53a15fcb518fae0d5f9e685076d270561c09fc",
+   "size": 516760
+  },
+  "site/public/media/studio-guide/walkthrough-en.mp4": {
+   "oid": "c3220ecd31d5896ac2cb29a47afcb2821f6a3d66",
+   "size": 8453655
+  },
+  "site/public/media/studio-guide/walkthrough-fr.mp4": {
+   "oid": "9c5baa14a2fcbeb942eb03cd500612a7bac1b037",
+   "size": 9221061
+  },
+  "site/public/media/tour/baste-tour.mp4": {
+   "oid": "40f8773fff1fd22536d08ca09551b04c71644277",
+   "size": 18621608
+  },
+  "site/public/media/tour/clips/conversation.mp4": {
+   "oid": "86c9a5ad33b71db9cab66e3ae3613bd28a2b19dd",
+   "size": 436778
+  },
+  "site/public/media/tour/clips/generate.mp4": {
+   "oid": "11e08db706490602149d5f52cce52529cfd29550",
+   "size": 1762038
+  },
+  "site/public/media/tour/clips/new-persona.mp4": {
+   "oid": "ad31122298c3419a1ffc43831de145969fab85f4",
+   "size": 495985
+  },
+  "site/public/media/tour/clips/tokens.mp4": {
+   "oid": "c255b53606bab886eba925d28291f8ef43cef1cf",
+   "size": 1396475
+  },
+  "site/public/media/tour/poster.webp": {
+   "oid": "aa29a3ca3a9d0632bdfb0bd4c471e40df66bcab4",
+   "size": 203764
+  }
+ }
+}
