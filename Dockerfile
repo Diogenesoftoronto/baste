@@ -4,6 +4,7 @@ WORKDIR /app/site
 COPY site/package*.json ./
 RUN npm ci --no-audit --no-fund
 COPY site/ ./
+COPY --from=media /m/site/public ./public
 RUN npm run build:production
 
 FROM nginx:alpine
