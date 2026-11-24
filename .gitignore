@@ -62,3 +62,40 @@ media/studio-guide-narration/
 
 # Per-machine assistant preferences.
 /crush.json
+
+# >>> baste-media: paths stored in the baste-media bucket (managed by scripts/media.ts)
+/docs/fitting-loop.gif
+/site/public/assets/fittings/cyberbotanist-loop.mp4
+/site/public/assets/fittings/liminalweeb-background.avif
+/site/public/assets/fittings/liminalweeb-background.webp
+/site/public/assets/fittings/liminalweeb-loop.mp4
+/site/public/assets/fittings/nightmarketcoder-hero.avif
+/site/public/assets/fittings/nightmarketcoder-hero.webp
+/site/public/assets/fittings/nightmarketcoder-loop.mp4
+/site/public/assets/fittings/runs/nightmarketcoder/best.avif
+/site/public/assets/fittings/runs/nightmarketcoder/best.webp
+/site/public/materials/graphite/chalk-strata.webp
+/site/public/materials/graphite/chromatic-bath-loop.gif
+/site/public/materials/graphite/chromatic-bath-loop.mp4
+/site/public/materials/graphite/interference-weave.webp
+/site/public/materials/graphite/radial-dye-loop.gif
+/site/public/materials/graphite/radial-dye-loop.mp4
+/site/public/media/fitting-loop.gif
+/site/public/media/fitting-loop.mp4
+/site/public/media/studio-guide/current/current-narrated.mp4
+/site/public/media/studio-guide/current/current-studio.mp4
+/site/public/media/studio-guide/current/current-studio.webm
+/site/public/media/studio-guide/current/feedback.png
+/site/public/media/studio-guide/current/fitting.png
+/site/public/media/studio-guide/current/material.png
+/site/public/media/studio-guide/current/moodboard.png
+/site/public/media/studio-guide/current/tokens.png
+/site/public/media/studio-guide/walkthrough-en.mp4
+/site/public/media/studio-guide/walkthrough-fr.mp4
+/site/public/media/tour/baste-tour.mp4
+/site/public/media/tour/clips/conversation.mp4
+/site/public/media/tour/clips/generate.mp4
+/site/public/media/tour/clips/new-persona.mp4
+/site/public/media/tour/clips/tokens.mp4
+/site/public/media/tour/poster.webp
+# <<< baste-media
